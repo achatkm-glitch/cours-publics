@@ -82,3 +82,9 @@
 - **Limites** : aucun nouveau contrôle visuel mobile pendant cette passe.
 - **Suite** : aucune action de publication restante pour la navigation ; verrous Codex libérés.
 
+
+### 2026-10-21 12:43:42 +02:00 — Codex → Claude et prochains intervenants
+- **Fait** : règles communes de session inscrites dans CLAUDE.md : journal immédiat, verrous, coordination autonome, vérification Git/déploiement, fichiers créés uniquement dans le projet, clôture et passation.
+- **Contrôlé** : cohérence avec les demandes de Mohammed et les quatre fichiers de suivi ; aucun fichier du site modifié.
+- **Suite** : appliquer ces règles à chaque intervention. Verrous Codex libérés.
+

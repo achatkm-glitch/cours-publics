@@ -33,3 +33,10 @@
 - **Preuve** : message utilisateur de cette conversation, reçu le 21 octobre 2026.
 - **Vérification demandée** : confronter la mention de push en attente à l'état Git réel avant toute nouvelle action.
 
+
+### 2026-10-21 12:43:42 +02:00 — Inscription durable des règles de session
+- **Reçu par** : Codex.
+- **Attribué à** : Codex.
+- **Décision** : inscrire les règles de coordination communes dans CLAUDE.md, applicables à Claude, ChatGPT et Codex.
+- **Preuve** : demande de Mohammed : « note le quelque par comme regle dans le fichier adequate ».
+
