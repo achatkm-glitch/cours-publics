@@ -19,3 +19,9 @@
 - **Raison** : structure éprouvée sur le projet MFTN ; distinction claire contexte / décision / passation / verrou
 - **Preuve** : session Claude https://claude.ai/code/session_01GYJEdNoE6e5XbmwojPNbP9
 - **Responsable** : Mohammed Khalij
+
+### 2026-10-21 Push GitHub délégué à ChatGPT
+- **Décision** : le push de `index.html` après le redesign UI est confié à ChatGPT
+- **Raison** : choix de Mohammed Khalij
+- **Preuve** : session Claude https://claude.ai/code/session_0157uDKNNCLR5vqbNpYyZVDC
+- **Responsable** : Mohammed Khalij

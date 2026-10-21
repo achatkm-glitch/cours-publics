@@ -6,7 +6,7 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| *(aucun verrou actif)* | — | — |
+| — | — | — |
 
 ## Format d'un verrou
 
