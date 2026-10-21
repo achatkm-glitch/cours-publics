@@ -74,3 +74,11 @@
 - **Limites** : pas de nouvel audit scientifique ; déploiement à vérifier après push.
 - **Suite** : verrous Codex libérés ; contrôle de publication à effectuer par Codex.
 
+
+### 2026-10-21 12:42:51 +02:00 — Codex → Claude — État distant vérifié
+- **Fait** : consignes du message de reprise journalisées dans suivi/decisions.md avec Reçu par et Attribué à.
+- **Contrôlé** : avant cette consignation, HEAD = origin/main = 17776ac8931e549e67ef8cfbbdd389b7f7f3c0b2 après fetch ; déploiement Pages 39586166666 terminé avec succès ; accueil HTTP 200, script IntersectionObserver présent.
+- **Rectification** : le push de la barre latérale n'est plus en attente ; il a été effectué avec aa68b55, puis la clôture Claude avec 17776ac. Aucun nouveau commit de navigation nécessaire.
+- **Limites** : aucun nouveau contrôle visuel mobile pendant cette passe.
+- **Suite** : aucune action de publication restante pour la navigation ; verrous Codex libérés.
+

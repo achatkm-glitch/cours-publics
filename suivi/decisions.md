@@ -25,3 +25,11 @@
 - **Raison** : choix de Mohammed Khalij
 - **Preuve** : session Claude https://claude.ai/code/session_0157uDKNNCLR5vqbNpYyZVDC
 - **Responsable** : Mohammed Khalij
+
+### 2026-10-21 12:42:36 +02:00 — Consignes de reprise et de coordination
+- **Reçu par** : Codex.
+- **Attribué à** : Codex, pour la vérification du push et du déploiement ; chaque intervenant pour ses règles de session.
+- **Décision** : lire contexte, décisions, passations et verrous avant intervention ; journaliser chaque message de Mohammed avec horodatage, réception et attribution ; verrouiller avant modification, respecter les autres détenteurs, tracer la passation et libérer en fin de passe.
+- **Preuve** : message utilisateur de cette conversation, reçu le 21 octobre 2026.
+- **Vérification demandée** : confronter la mention de push en attente à l'état Git réel avant toute nouvelle action.
+
