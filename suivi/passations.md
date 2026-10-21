@@ -33,3 +33,22 @@
 - **Limites** : contenu scientifique non réaudité ; sources CFD non modifiées.
 - **Prochaine étape** : vérifier le déploiement GitHub Pages après publication.
 
+
+### 2026-10-21 De Claude (session_0157uDKNNCLR5vqbNpYyZVDC) → prochain intervenant
+- **Fait** :
+  - Refonte Design/UI de `index.html` : hero avec gradient + badge stats, cartes avec effet hover (lévitation + ombre), topbar sticky, couvertures améliorées, icônes SVG, note de bas de page, footer avec liens ORCID/ResearchGate, responsive mobile.
+- **Contrôlé** :
+  - Fichier écrit directement dans `C:\Latex\cours-publics\index.html` (via device_bash)
+  - Contenu et liens inchangés (PDFs, dates, descriptions)
+  - ⚠️ Les fichiers `suivi/` ont été lus APRÈS la modification (erreur de procédure)
+- **Limites** :
+  - Modification non encore poussée sur GitHub / GitHub Pages
+  - Aucun test visuel dans le navigateur effectué
+- **Prochaine étape** : pousser `index.html` sur GitHub (`git add index.html && git commit && git push`)
+
+### 2026-10-21 11:49:41 +02:00 — Codex → Claude
+- **Fait** : ajout des PDF officiels MFTN C1/C2 dans mftn/ et de leurs cartes dans index.html, en conservant la refonte Claude terminée selon sa passation. Compteurs actualisés : 4 documents, 3 enseignements, 445 pages.
+- **Contrôlé** : empreintes source/copie identiques, métadonnées et couvertures, liens PDF locaux, identifiants HTML. Preuves et provenance dans suivi/integration_mftn.md.
+- **Limites** : aucun contenu MFTN modifié ; pas de nouvel audit scientifique. Inspection visuelle de l'accueil à faire après déploiement.
+- **Prochaine étape** : publication puis contrôle des liens et de l'accueil en ligne ; Claude peut reprendre après libération du verrou Codex.
+
