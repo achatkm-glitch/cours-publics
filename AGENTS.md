@@ -48,3 +48,11 @@ Tout arbitrage est consigné dans `suivi/decisions.md` avec horodatage.
 - **Répertoire de travail** : `C:\Latex\cours-publics` (copie locale) ou via GitHub MCP (lecture seule pour Claude)
 - **Git** : distinguer commit local / push / déploiement GitHub Pages. Ne pas recréer un commit déjà effectué.
 - **Temporaires** : créer sous `tmp/` uniquement, ne pas versionner.
+
+## Plugin scientific-workflow
+
+Ce projet adopte explicitement le plugin `scientific-workflow-plugin`.
+- Toute production ou audit de contenu scientifique déclenche le coordinateur ou le skill adapté.
+- Les figures sont l'apanage de Claude (TikZ, PGFPlots, matplotlib) ; les autres agents relisent et auditent seulement.
+- Toute figure est indexée dans `FIGURES_INDEX.md` avant insertion.
+- Référence : `CLAUDE.md` pour le détail des skills et règles.
