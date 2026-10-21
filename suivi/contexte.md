@@ -40,6 +40,7 @@ cours-publics/
 | Acteur | Rôle |
 |---|---|
 | Mohammed Khalij | Propriétaire, décideur final |
-| Claude (Anthropic) | Assistant principal — modifications GitHub, structure |
+| Claude (Cowork) | Assistant principal — modifications GitHub, structure, coordination |
+| Code (Claude Code) | Claude via CLI — peut travailler sur la copie locale ou GitHub |
 | ChatGPT (OpenAI) | Assistant secondaire — peut intervenir sur le contenu |
 | Codex | Travaille sur la copie locale `C:\Latex\cours-publics` |
