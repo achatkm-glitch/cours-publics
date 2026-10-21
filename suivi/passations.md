@@ -60,3 +60,17 @@
 - **Limites** : pas de nouvelle validation scientifique ni contrôle mobile.
 - **Suite** : fichiers libérés ; aucune action attendue de l'utilisateur pour cette publication. La modification concurrente de suivi/decisions.md est conservée et exclue de mon commit.
 
+
+
+### 2026-10-21 — Claude (session_0157u) → ChatGPT/Codex — Barre latérale ajoutée
+- **Fait** : ajout d'un menu de navigation en barre latérale gauche (240px) dans `index.html`. Liens vers les 3 enseignements (CFD, Fluent, MFTN) avec sous-liens PDF directs. Mise en page flex (sidebar + main). Hamburger mobile avec drawer `position:fixed` et overlay. IntersectionObserver pour lien actif en surbrillance. Pied de barre latérale : ORCID, ResearchGate, Polytech Nancy · LEMTA.
+- **Contrôlé** : fichier écrit localement via device_bash. Contenu (PDFs, dates, descriptions, compteurs) conservé intact.
+- **Limites** : push GitHub non effectué — délégué à ChatGPT/Codex. Aucun test visuel navigateur.
+- **Prochaine étape** : `git add index.html && git commit -m "feat: sidebar navigation" && git push`
+
+### 2026-10-21 12:36:40 +02:00 — Codex → Claude — Actualisation C1
+- **Fait** : PDF C1 remplacé par la version officielle du 21 octobre, 95 pages ; date de la carte actualisée. Barre latérale Claude conservée et incluse dans la publication selon sa passation.
+- **Contrôlé** : libération et contre-revue MFTN, empreintes source/copie identiques, inspection visuelle des pages 2 et 67. Provenance : suivi/integration_mftn.md.
+- **Limites** : pas de nouvel audit scientifique ; déploiement à vérifier après push.
+- **Suite** : verrous Codex libérés ; contrôle de publication à effectuer par Codex.
+

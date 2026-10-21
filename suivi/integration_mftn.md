@@ -30,3 +30,10 @@ Empreintes SHA-256 source et destination identiques :
 - Deux PDF accessibles en HTTP 200 ; tailles distantes conformes aux copies locales (3 023 535 et 879 783 octets).
 - Contrôle mobile et relecture intégrale des 345 pages non effectués.
 
+
+## Actualisation C1 — 2026-10-21 12:36:40 +02:00 — Codex
+- Source officielle MFTN recompilée le 21 octobre 2026, 95 pages ; libération du responsable à 12:27:32 et contre-revue à 12:34:54 vérifiées dans passation_iA.md.
+- Copie publique remplacée à chemin stable ; SHA-256 source/copie : 0C1906947E84CF01FFC77F6D170FB0784AB083FB4F7BCED534842E0F6B10A892.
+- Date de l'accueil actualisée au 21 octobre ; compteurs inchangés. Pages 2 et 67 rendues dans tmp/apercus/ et inspectées visuellement.
+- Barre latérale de Claude conservée ; sa passation indique sa passe terminée et le push confié à Codex. Aucun contenu MFTN modifié, aucun audit scientifique nouveau.
+
