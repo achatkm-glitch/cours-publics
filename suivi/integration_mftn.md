@@ -23,3 +23,10 @@ Empreintes SHA-256 source et destination identiques :
 - Compteurs : 4 documents, 3 enseignements, 445 pages (6 + 94 + 95 + 250).
 - Aucun audit scientifique nouveau, aucune approbation des surlignages jaunes déduite de cette publication.
 - Aperçu local dans le navigateur indisponible : protocole file bloqué. Contrôle visuel de l'accueil en ligne à effectuer après déploiement.
+## Vérification après déploiement — 2026-10-21 11:51:04 +02:00 — Codex
+- Commit publié : 636af43.
+- GitHub Pages : exécution 39579969592 terminée avec succès.
+- Accueil en ligne : deux cartes MFTN présentes ; affichage de la section inspecté dans le navigateur, sans débordement visible sur la vue contrôlée.
+- Deux PDF accessibles en HTTP 200 ; tailles distantes conformes aux copies locales (3 023 535 et 879 783 octets).
+- Contrôle mobile et relecture intégrale des 345 pages non effectués.
+
