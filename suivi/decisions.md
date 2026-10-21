@@ -87,3 +87,10 @@
 - **Auteur / reçu par** : Mohammed ; reçu par Code (Claude Code, session MFTN).
 - **Attribution** : Code, par autorisation explicite de Mohammed ; le verrou Codex de 16:46 (sans activité consignée depuis) est repris pour `mftn/chapitre-01-slides.pdf` et les suivis.
 - **État** : traité ; preuves dans `suivi/integration_mftn.md`.
+
+### [2026-10-21 15:32] Adoption du plugin scientific-workflow
+- **Instruction / Décision** : Ce projet adopte explicitement le plugin `scientific-workflow-plugin` et sa gouvernance (politique projet-modele). Toute production ou audit de contenu scientifique passe par le coordinateur ou le skill adapté.
+- **Reçu par** : Claude
+- **Attribué à** : Claude (mise en place), tous les agents (application)
+- **Raison** : Garantir la rigueur scientifique et la traçabilité des figures, cours et slides publiés sur le site.
+- **Preuve** : commit 9d295d8 — CLAUDE.md + AGENTS.md mis à jour
