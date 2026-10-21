@@ -88,3 +88,18 @@
 - **Contrôlé** : cohérence avec les demandes de Mohammed et les quatre fichiers de suivi ; aucun fichier du site modifié.
 - **Suite** : appliquer ces règles à chaque intervention. Verrous Codex libérés.
 
+
+### 2026-10-21 13:19:09 +02:00 — Codex → Mohammed et prochains intervenants
+- **Fichiers** : suivi/decisions.md, suivi/passations.md ; verrou temporaire libéré.
+- **Fait** : vérification des nouveautés à committer ; demande journalisée.
+- **Contrôlé** : git fetch origin réussi ; arbre initial propre, aucun fichier non suivi ; main en avance de 1 sur origin/main, commit local 0a4512a (réorganisation AGENTS.md et CLAUDE.md).
+- **Limites** : aucun push ni contrôle du déploiement ; seules les présentes traces de vérification sont désormais non committées.
+- **Prochaine action** : publier le commit local si demandé ; inclure les traces de suivi lors du prochain commit.
+
+### 2026-10-21 13:21:25 +02:00 — Codex → Mohammed et prochains intervenants
+- **Fichiers** : suivi/decisions.md et suivi/passations.md.
+- **Fait** : journalisation de l'autorisation ; traces regroupées pour commit, puis push de main demandé par Mohammed, incluant 0a4512a.
+- **Contrôlé** : fetch réussi ; seules les deux traces de suivi sont modifiées ; aucun verrou concurrent.
+- **Limites** : cette entrée précède le push ; sa réussite sera contrôlée par égalité HEAD / origin/main et git ls-remote ; déploiement Pages non contrôlé, aucun contenu du site modifié.
+- **Destinataire** : Mohammed, Claude et prochains intervenants.
+- **Prochaine action** : commit et push immédiats ; en cas d'échec, consigner le blocage. Verrous Codex libérés.
