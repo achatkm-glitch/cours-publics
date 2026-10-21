@@ -6,7 +6,8 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| — | — | — |
+| — | aucun verrou actif (libéré par Code 2026-10-21 17:28:00, après reprise autorisée par Mohammed) | — |
+
 
 ## Format d'un verrou
 
@@ -19,4 +20,6 @@
 - Poser le verrou **avant** de modifier un fichier
 - Libérer le verrou **à la fin de la session**
 - En cas de conflit, Mohammed Khalij tranche
+
+
 

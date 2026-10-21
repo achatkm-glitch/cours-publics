@@ -37,3 +37,9 @@ Empreintes SHA-256 source et destination identiques :
 - Date de l'accueil actualisée au 21 octobre ; compteurs inchangés. Pages 2 et 67 rendues dans tmp/apercus/ et inspectées visuellement.
 - Barre latérale de Claude conservée ; sa passation indique sa passe terminée et le push confié à Codex. Aucun contenu MFTN modifié, aucun audit scientifique nouveau.
 
+
+## Actualisation C1 — 2026-10-21 17:28:00 +02:00 — Code (Claude Code)
+- Autorisation explicite de Mohammed (« tu es autorisé à le mettre à jour, le chapitre 1 ») ; reprise du verrou Codex de 16:46 sur ce seul périmètre.
+- Source : `C:\Latex\MFTN\output\slides\MFTN_Chapitre01_slides.pdf`, compilée le 21 octobre 2026 à 17:17, 95 pages, commit MFTN `370bcc7` ; p. 12 inspectée (encadré « Bilan d'adsorption à la paroi »).
+- Copie publique remplacée à chemin stable ; SHA-256 source/copie : E6B16CE1ECF83A8B5913697EC13B6FA0443D2C2F8F9B168D3EA398CCA2A32BCF.
+- `index.html` inchangé (date du 21 octobre et pagination déjà exactes). Aucun audit scientifique nouveau ; surlignages jaunes non approuvés par cette publication.
