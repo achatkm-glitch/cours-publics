@@ -23,10 +23,12 @@
   <button data-tab="cl">Conditions aux limites</button>
   <button data-tab="barre">Barre 1D</button>
   <button data-tab="peclet">Péclet</button>
+  <span class="brk"></span>
   <span class="grp">Chapitre 2</span>
-  <button data-tab="jg">Jacobi / Gauss–Seidel</button>
   <button data-tab="ordre">Ordre d'une différence</button>
   <button data-tab="neumann">Neumann</button>
+  <button data-tab="jg">Jacobi / Gauss–Seidel</button>
+  <span class="brk"></span>
   <span class="grp">Chapitre 3</span>
   <button data-tab="chaleur">Chaleur 1D</button>
   <button data-tab="chemin">Chemin de raffinement</button>
@@ -38,17 +40,38 @@
 <!-- Introduction -->
 <section class="panel active" id="p-intro">
   <h2>Introduction : pourquoi le choix du schéma compte</h2>
-  <p class="lead">Un même signal, une bosse lisse et un créneau, est transporté à vitesse constante sur un domaine périodique : après un tour entier, la solution exacte est identique au signal initial. Chaque schéma le déforme pourtant à sa façon. Test classique inspiré de la figure 6.1 de LeVeque (2002) ; les paramètres sont ceux de ce site. Introduction du cours, séance 1.</p>
+  <p class="lead">Pourquoi un cours de méthodes numériques ? Pour une même équation, on peut écrire de nombreux schémas de calcul, et ils ne se valent pas : selon le schéma, la solution calculée présente des comportements non voulus. Ici, un signal (une bosse lisse et un créneau) est transporté à vitesse constante sur un domaine périodique : après un tour entier, la solution exacte est identique au signal initial. Cinq schémas, notés A à E (leurs formules et leurs noms seront vus plus tard dans le cours), essaient de la reproduire. Observez ce que chacun fait du signal. Test inspiré de la figure 6.1 de LeVeque (2002) ; les paramètres sont ceux de ce site. Introduction du cours, séance 1.</p>
+  <div class="situation"><b>Mise en situation.</b> Un rejet polluant, une bouffée lisse suivie d'un front brusque, est entraîné par un courant uniforme dans un canal. On veut prévoir par le calcul, sans mesure, la forme du rejet un peu plus loin en aval : où arrive-t-il, avec quelle concentration maximale, et la concentration peut-elle devenir négative ou exploser ? Le signal du calculateur (une bosse et un créneau, sans unité) représente cette concentration ; après un tour, un courant parfait la ramène à l'identique. Les schémas A à E sont cinq façons de faire ce calcul : tous ne donnent pas un résultat exploitable.
+  <svg class="sit-fig" viewBox="0 0 640 250" role="img" aria-label="Schéma : un rejet polluant, une bosse lisse et un front brusque, entraîné par le courant dans un canal">
+    <rect x="50" y="170" width="540" height="50" fill="var(--blue)" opacity="0.15"/>
+    <line x1="50" y1="170" x2="590" y2="170" stroke="var(--blue)" stroke-width="2"/>
+    <line x1="50" y1="220" x2="590" y2="220" stroke="var(--blue)" stroke-width="2"/>
+    <line x1="70" y1="195" x2="180" y2="195" stroke="var(--orange)" stroke-width="4"/>
+    <polygon points="180,187 196,195 180,203" fill="var(--orange)"/>
+    <text x="206" y="199" font-size="14" fill="var(--ink)">courant uniforme, vitesse a</text>
+    <line x1="50" y1="130" x2="602" y2="130" stroke="var(--plot-axis)" stroke-width="1.4"/>
+    <line x1="50" y1="130" x2="50" y2="22" stroke="var(--plot-axis)" stroke-width="1.4"/>
+    <text x="606" y="135" font-size="14" fill="var(--ink)">x</text>
+    <text x="42" y="20" font-size="14" fill="var(--ink)">concentration u</text>
+    <polyline points="50.0,130.0 52.7,130.0 55.4,130.0 58.1,130.0 60.8,130.0 63.5,130.0 66.2,130.0 68.9,130.0 71.6,130.0 74.3,130.0 77.0,130.0 79.7,130.0 82.4,130.0 85.1,130.0 87.8,130.0 90.5,130.0 93.2,130.0 95.9,130.0 98.6,130.0 101.3,130.0 104.0,130.0 106.7,130.0 109.4,129.9 112.1,129.9 114.8,129.9 117.5,129.8 120.2,129.7 122.9,129.6 125.6,129.5 128.3,129.3 131.0,129.0 133.7,128.7 136.4,128.2 139.1,127.6 141.8,126.9 144.5,126.0 147.2,124.9 149.9,123.6 152.6,122.0 155.3,120.1 158.0,117.8 160.7,115.2 163.4,112.2 166.1,108.8 168.8,105.0 171.5,100.8 174.2,96.2 176.9,91.3 179.6,86.2 182.3,80.9 185.0,75.4 187.7,70.0 190.4,64.6 193.1,59.6 195.8,54.8 198.5,50.6 201.2,46.9 203.9,44.0 206.6,41.8 209.3,40.4 212.0,40.0 214.7,40.4 217.4,41.8 220.1,44.0 222.8,46.9 225.5,50.6 228.2,54.8 230.9,59.6 233.6,64.6 236.3,70.0 239.0,75.4 241.7,80.9 244.4,86.2 247.1,91.3 249.8,96.2 252.5,100.8 255.2,105.0 257.9,108.8 260.6,112.2 263.3,115.2 266.0,117.8 268.7,120.1 271.4,122.0 274.1,123.6 276.8,124.9 279.5,126.0 282.2,126.9 284.9,127.6 287.6,128.2 290.3,128.7 293.0,129.0 295.7,129.3 298.4,129.5 301.1,129.6 303.8,129.7 306.5,129.8 309.2,129.9 311.9,129.9 314.6,129.9 317.3,130.0 320.0,130.0 322.7,130.0 325.4,130.0 328.1,130.0 330.8,130.0 333.5,130.0 336.2,130.0 338.9,130.0 341.6,130.0 344.3,130.0 347.0,130.0 349.7,130.0 352.4,130.0 355.1,130.0 357.8,130.0 360.5,130.0 363.2,130.0 365.9,130.0 368.6,130.0 371.3,130.0 374.0,130.0 376.7,130.0 379.4,130.0 382.1,130.0 384.8,130.0 387.5,130.0 390.2,130.0 392.9,130.0 395.6,130.0 398.3,130.0 401.0,130.0 403.7,130.0 406.4,130.0 409.1,130.0 411.8,130.0 414.5,130.0 417.2,130.0 419.9,130.0 422.6,130.0 425.3,130.0 428.0,130.0 430.7,130.0 433.4,130.0 436.1,130.0 438.8,130.0 441.5,130.0 444.2,130.0 446.9,130.0 449.6,130.0 452.3,130.0 455.0,130.0 457.7,130.0 460.4,130.0 463.1,130.0 465.8,130.0 468.5,130.0 471.2,130.0 473.9,130.0 476.6,130.0 479.3,130.0 482.0,130.0 484.7,130.0 487.4,130.0 490.1,130.0 492.8,130.0 495.5,130.0 498.2,130.0 500.9,130.0 503.6,130.0 506.3,130.0 509.0,130.0 511.7,130.0 514.4,130.0 517.1,130.0 519.8,130.0 522.5,130.0 525.2,130.0 527.9,130.0 530.6,130.0 533.3,130.0 536.0,130.0 538.7,130.0 541.4,130.0 544.1,130.0 546.8,130.0 549.5,130.0 552.2,130.0 554.9,130.0 557.6,130.0 560.3,130.0 563.0,130.0 565.7,130.0 568.4,130.0 571.1,130.0 573.8,130.0 576.5,130.0 579.2,130.0 581.9,130.0 584.6,130.0 587.3,130.0 590.0,130.0" fill="none" stroke="var(--blue)" stroke-width="2.6"/>
+    <polyline points="374.0,130 374.0,40 482.0,40 482.0,130" fill="none" stroke="var(--orange)" stroke-width="2.6"/>
+    <text x="150" y="30" font-size="14" fill="var(--ink)">rejet lisse (bosse)</text>
+    <text x="366" y="30" font-size="14" fill="var(--ink)">front brusque (créneau)</text>
+    <text x="50" y="147" font-size="13" fill="var(--muted)">x = 0</text>
+    <text x="562" y="147" font-size="13" fill="var(--muted)">x = 1</text>
+    <text x="50" y="242" font-size="13" fill="var(--muted)">domaine périodique : ce qui sort en x = 1 rentre en x = 0 ; après un tour, la solution exacte est identique au signal initial</text>
+  </svg>
+  </div>
   <div class="eqs" data-eq="intro"></div>
   <div class="grid">
     <div>
       <form class="params">
         <div class="checks" role="group" aria-label="Schémas">
-          <label><input type="checkbox" name="i-s" value="amont" checked> Amont</label>
-          <label><input type="checkbox" name="i-s" value="lw" checked> Lax–Wendroff</label>
-          <label><input type="checkbox" name="i-s" value="bw" checked> Beam–Warming</label>
-          <label><input type="checkbox" name="i-s" value="lxf"> Lax–Friedrichs</label>
-          <label><input type="checkbox" name="i-s" value="ftcs"> FTCS centré</label>
+          <label><input type="checkbox" name="i-s" value="amont" checked> Schéma A</label>
+          <label><input type="checkbox" name="i-s" value="lw" checked> Schéma B</label>
+          <label><input type="checkbox" name="i-s" value="bw" checked> Schéma C</label>
+          <label><input type="checkbox" name="i-s" value="lxf"> Schéma D</label>
+          <label><input type="checkbox" name="i-s" value="ftcs"> Schéma E</label>
         </div>
         <label>Nombre de points N<span class="sl"><input type="range" id="i-N" min="20" max="400" step="10" value="100"><output></output></span></label>
         <label>Nombre de Courant C<span class="sl"><input type="range" id="i-Co" min="0.1" max="1" step="0.05" value="0.8"><output></output></span></label>
@@ -56,7 +79,7 @@
         <label>Second instant (en tours)<span class="sl"><input type="range" id="i-t2" min="0.5" max="10" step="0.5" value="5" data-unit="tours"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> avec N = 100 et C = 0,8, l'amont lisse la bosse (pic 0,745 après 1 tour, 0,449 après 5) sans oscillation ; Lax–Wendroff et Beam–Warming conservent mieux la bosse (0,978 ; 0,991) mais oscillent (minimum −0,175 ; −0,256). FTCS centré explose. Pour C = 1, les quatre schémas à stencil amont ou centré sont exacts.</p>
+      <p class="repere"><b>Vocabulaire à retrouver dans le cours :</b> <i>diffusion numérique</i> (le signal est lissé, la bosse s'abaisse et s'élargit) ; <i>dispersion numérique</i> (des oscillations apparaissent, surtout près des discontinuités) ; <i>instabilité</i> (les valeurs explosent). Chaque schéma a ses propres défauts : le choix du schéma dépend du problème.</p>
     </div>
     <div>
       <div class="msg" id="i-msg" aria-live="polite"></div>
@@ -161,6 +184,7 @@
       <div data-kt="parabolique" class="plots2" style="display:none">
         <div><canvas id="k-par" aria-label="Profils de température"></canvas><div class="legend" id="k-par-leg"></div></div>
         <div><canvas id="k-par2" aria-label="Profils en échelle logarithmique"></canvas><div class="legend" id="k-par2-leg"></div></div>
+        <div><canvas id="k-xtp" aria-label="Domaine de dépendance du point P"></canvas><div class="legend" id="k-xtp-leg"></div></div>
       </div>
       <div data-kt="hyperbolique" class="plots2" style="display:none">
         <div><canvas id="k-hyp" aria-label="Profil de l'onde"></canvas><div class="legend" id="k-hyp-leg"></div></div>
@@ -320,20 +344,22 @@
 
 <!-- Ch.2 : Neumann -->
 <section class="panel" id="p-neumann">
-  <h2>Fermetures de Neumann d'ordre 1 et 2</h2>
-  <p class="lead">Problème avec une condition de Dirichlet à gauche et une condition de Neumann à droite, de solution exacte connue. Compare la fermeture d'ordre 1 et celle d'ordre 2. Séance 2, exercice H.</p>
+  <h2>Condition de Neumann : ordre 1, ordre 2 et point fantôme</h2>
+  <p class="lead">Problème avec une condition de Dirichlet à gauche et une condition de Neumann à droite, de solution exacte connue. Compare trois façons de fermer le système au bord : formule d'ordre 1, formule régressive d'ordre 2 et point fantôme. Séance 2, exercices B, F et H.</p>
   <div class="eqs" data-eq="neumann"></div>
   <div class="grid">
     <div>
       <form class="params">
         <label>Plus petit N<span class="sl"><input type="range" id="n-N0" min="4" max="40" step="1" value="10"><output></output></span></label>
         <label>Nombre de maillages testés (N₀, 2N₀, 4N₀, …)<span class="sl"><input type="range" id="n-k" min="2" max="6" step="1" value="5"><output></output></span></label>
+        <label>N du profil d'erreur<span class="sl"><input type="range" id="n-Np" min="6" max="100" step="2" value="20"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> pour N de 10 à 80, l'ordre global observé vaut environ 1,0 avec la fermeture d'ordre 1 et environ 2,0 avec celle d'ordre 2.</p>
+      <p class="repere"><b>Repère :</b> pour N de 10 à 80, l'ordre global observé vaut environ 1,0 avec la fermeture d'ordre 1 et environ 2,0 avec la fermeture d'ordre 2 et avec le point fantôme.</p>
     </div>
     <div>
       <canvas id="n-plot" aria-label="Erreur maximale selon h"></canvas><div class="legend" id="n-leg"></div>
+      <canvas id="n-plot2" aria-label="Profil de l'erreur"></canvas><div class="legend" id="n-leg2"></div>
       <div class="cards" id="n-table"></div>
     </div>
   </div>

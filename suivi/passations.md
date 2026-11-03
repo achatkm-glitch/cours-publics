@@ -163,3 +163,9 @@
 - **Fait** : calculateurs v5 (introduction, EDP, équations affichées).
 - **Limites** : réponses attendues non publiées.
 - **Prochaine action** : relecture par Mohammed ; verrous libérés.
+
+### 2026-11-03 18:16:52 +01:00 — Code → Mohammed, Codex et prochains intervenants
+- **Fichiers** : `mftn/calculateurs/` (6 fichiers), suivis.
+- **Fait** : calculateurs v6 (voir `suivi/integration_mftn.md`).
+- **Limites** : réponses attendues non publiées.
+- **Prochaine action** : relecture par Mohammed ; verrous libérés.

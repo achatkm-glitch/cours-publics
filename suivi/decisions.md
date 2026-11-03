@@ -113,3 +113,7 @@
 ### 2026-11-03 17:45:25 +01:00 — Mise à jour des calculateurs MFTN (v5)
 - **Instruction** : « je voudrais ça aussi pour l'introduction », « les équations bien visibles, pas dans une ligne comme ça », « chapitre 1 dans le site manque le comportement, EDP, etc. : cette partie peut être illustrée ». Reçu par Code (Claude Code, session MFTN) ; publication déjà autorisée.
 - **État** : traité ; preuves dans `suivi/integration_mftn.md`.
+
+### 2026-11-03 18:16:52 +01:00 — Mise à jour des calculateurs MFTN (v6)
+- **Instruction** : « avant Jacobi au chapitre 2 il y a les schémas », « impact de l'ordre de la condition limite (ordre 1, 2, point fantôme) », « introduction : mise en situation pour illustrer, avec une figure », « garde l'essentiel (pas de profusion de données) dans tous les onglets », « interprétation à chaque modification de l'étudiant », « domaine de dépendance par type d'EDP, comme dans le cours ». Reçu par Code (Claude Code, session MFTN) ; publication déjà autorisée.
+- **État** : traité ; preuves dans `suivi/integration_mftn.md`.

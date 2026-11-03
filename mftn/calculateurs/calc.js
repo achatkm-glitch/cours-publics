@@ -101,7 +101,8 @@
   }
 
   /* 4. Fermetures de Neumann : -u''=cos x, u(0)=1, u'(1)=1-sin 1, solution exacte cos x + x.
-     ordre 1 : u_N = u_{N-1} + h g ; ordre 2 : différence régressive à trois points. */
+     ordre 1 : u_N = u_{N-1} + h g ; ordre 2 : différence régressive à trois points ;
+     ordre 3 (« fantôme ») : point fantôme u_{N+1} = u_{N-1} + 2 h g, différence centrée en x = 1 (ordre 2). */
   function neumann(N, ordre) {
     const h = 1 / N, g = 1 - Math.sin(1), ug = 1;
     const x = Array.from({ length: N + 1 }, (_, i) => i * h);
@@ -114,6 +115,14 @@
       d[0] += ug; b[n - 1] = 1; d[n - 1] += h * g;
       const u = thomas(a, b, c, d);
       full = [ug].concat(u, [u[n - 1] + h * g]);
+    } else if (ordre === 3) {
+      const n = N;
+      const A = Array.from({ length: n }, () => new Array(n).fill(0));
+      const d = new Array(n).fill(0);
+      for (let i = 0; i < n - 1; i++) { A[i][i] = 2; if (i > 0) A[i][i - 1] = -1; A[i][i + 1] = -1; d[i] = h * h * f[i + 1]; }
+      d[0] += ug;
+      A[n - 1][n - 1] = 2; A[n - 1][n - 2] = -2; d[n - 1] = h * h * f[n] + 2 * h * g;
+      full = [ug].concat(gauss(A, d));
     } else {
       const n = N;
       const A = Array.from({ length: n }, () => new Array(n).fill(0));
@@ -129,12 +138,12 @@
       full = [ug].concat(gauss(A, d));
     }
     const err = full.map((v, i) => Math.abs(v - (Math.cos(x[i]) + x[i])));
-    return { N, h, x, u: full, err: maxAbs(err) };
+    return { N, h, x, u: full, errs: err, err: maxAbs(err) };
   }
   function neumannOrdres(Ns) {
-    const rows = Ns.map(N => ({ N, e1: neumann(N, 1).err, e2: neumann(N, 2).err }));
+    const rows = Ns.map(N => ({ N, e1: neumann(N, 1).err, e2: neumann(N, 2).err, e3: neumann(N, 3).err }));
     rows.forEach((r, i) => {
-      if (i > 0) { r.p1 = Math.log2(rows[i - 1].e1 / r.e1); r.p2 = Math.log2(rows[i - 1].e2 / r.e2); }
+      if (i > 0) { r.p1 = Math.log2(rows[i - 1].e1 / r.e1); r.p2 = Math.log2(rows[i - 1].e2 / r.e2); r.p3 = Math.log2(rows[i - 1].e3 / r.e3); }
     });
     return rows;
   }

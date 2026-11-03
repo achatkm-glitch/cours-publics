@@ -2,12 +2,7 @@
 window.EQUATIONS = {
   "intro": [
     {"titre": "Problème : advection d'un signal sur un domaine périodique", "tex": "u_t+u_x=0,\\qquad x\\in[0,1]\\ \\text{(périodique)},\\qquad C=\\frac{\\Delta t}{\\Delta x}"},
-    {"titre": "Signal initial : bosse lisse et créneau", "tex": "u(x,0)=e^{-200\\,(x-0{,}3)^2}+\\mathbf 1_{]0{,}6\\,;\\,0{,}8[}(x)"},
-    {"titre": "Amont", "tex": "u_i^{n+1}=u_i^n-C\\,\\bigl(u_i^n-u_{i-1}^n\\bigr)"},
-    {"titre": "Lax–Wendroff", "tex": "u_i^{n+1}=u_i^n-\\frac C2\\,\\bigl(u_{i+1}^n-u_{i-1}^n\\bigr)+\\frac{C^2}{2}\\,\\bigl(u_{i+1}^n-2u_i^n+u_{i-1}^n\\bigr)"},
-    {"titre": "Beam–Warming", "tex": "u_i^{n+1}=u_i^n-\\frac C2\\,\\bigl(3u_i^n-4u_{i-1}^n+u_{i-2}^n\\bigr)+\\frac{C^2}{2}\\,\\bigl(u_i^n-2u_{i-1}^n+u_{i-2}^n\\bigr)"},
-    {"titre": "Lax–Friedrichs", "tex": "u_i^{n+1}=\\frac12\\,\\bigl(u_{i+1}^n+u_{i-1}^n\\bigr)-\\frac C2\\,\\bigl(u_{i+1}^n-u_{i-1}^n\\bigr)"},
-    {"titre": "FTCS centré", "tex": "u_i^{n+1}=u_i^n-\\frac C2\\,\\bigl(u_{i+1}^n-u_{i-1}^n\\bigr)"}
+    {"titre": "Signal initial : bosse lisse et créneau", "tex": "u(x,0)=e^{-200\\,(x-0{,}3)^2}+\\mathbf 1_{]0{,}6\\,;\\,0{,}8[}(x)"}
   ],
   "transport": [
     {"titre": "Équation de transport (advection et diffusion)", "tex": "\\frac{\\partial c}{\\partial t}+a\\,\\frac{\\partial c}{\\partial x}=D\\,\\frac{\\partial^2 c}{\\partial x^2}"},
@@ -55,7 +50,8 @@ window.EQUATIONS = {
   "neumann": [
     {"titre": "Problème", "tex": "-u''=\\cos x,\\qquad u(0)=1,\\quad u'(1)=g=1-\\sin 1,\\qquad u_{\\text{exacte}}=\\cos x+x"},
     {"titre": "Fermeture d'ordre 1", "tex": "u_N=u_{N-1}+h\\,g"},
-    {"titre": "Fermeture d'ordre 2", "tex": "\\frac{3u_N-4u_{N-1}+u_{N-2}}{2h}=g"}
+    {"titre": "Fermeture d'ordre 2 : différence régressive à trois points", "tex": "\\frac{3u_N-4u_{N-1}+u_{N-2}}{2h}=g"},
+    {"titre": "Point fantôme : on prolonge le maillage d'un nœud hors du domaine", "tex": "\\frac{u_{N+1}-u_{N-1}}{2h}=g\\ \\Longrightarrow\\ u_{N+1}=u_{N-1}+2h\\,g,\\qquad \\text{équation au nœud }N:\\ -2u_{N-1}+2u_N=h^2f_N+2h\\,g"}
   ],
   "chaleur": [
     {"titre": "Équation de la chaleur et nombre de Fourier de maille", "tex": "u_t=\\alpha\\,u_{xx},\\qquad \\mathrm{Fo}=\\frac{\\alpha\\,\\Delta t}{h^2}"},

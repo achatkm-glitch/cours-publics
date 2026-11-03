@@ -128,6 +128,15 @@
     el.innerHTML = `<div class="gtitle">${o.title}</div><div class="gbar">${zones}${marks}</div><div class="glabels">${labels}</div><div class="gtext">${o.text}</div>`;
   }
 
+  /* Interprétation automatique des réglages : texte calculé à partir des résultats, sans IA ni serveur. */
+  function explain(tab, lines) {
+    const panel = $('p-' + tab); if (!panel) return;
+    let box = panel.querySelector('.interp');
+    if (!box) { box = document.createElement('div'); box.className = 'interp'; const g = panel.querySelector('.grid'); if (g) g.after(box); else panel.appendChild(box); }
+    box.innerHTML = '<h3>Que montrent vos réglages ?</h3><ul>' + lines.filter(Boolean).map(l => `<li>${l}</li>`).join('') + '</ul>';
+  }
+  const ord2 = (e1, e2, r) => (isFinite(e1) && isFinite(e2) && e1 > 0 && e2 > 0) ? Math.log(e1 / e2) / Math.log(r) : NaN;
+
   /* ---------- Chapitre 1 : transport (advection-diffusion d'une gaussienne) ---------- */
   function runTransport() {
     const c = pal(), A = vals('t-a'), Ds = vals('t-D'), Ts = vals('t-t').sort((p, q) => p - q), s0 = num('t-s0'), U0 = 1;
@@ -153,6 +162,11 @@
     gauge($('t-gauge'), { min: 0.1, max: 100, title: `Nombre de Péclet Pe = |a|σ₀/D = ${pairs.length ? pairs.slice(0, 6).map(p => fmt(p.Pe, 3)).join(' ; ') : '—'}`,
       zones: [{ from: 0.1, to: 0.5, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'diffusion' }, { from: 0.5, to: 2, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'comparables' }, { from: 2, to: 100, color: 'color-mix(in srgb, var(--blue) 35%, transparent)', label: 'advection' }],
       marks: mk, text: meaning });
+    const k0 = use[0], sg0 = Calc.sigmaAt(s0, k0.D, k0.t);
+    explain('transport', [
+      `Premier cas (a = ${fmt(k0.a, 3)}, D = ${fmt(k0.D, 3)}, t = ${fmt(k0.t, 3)}) : le centre s\u2019est déplacé de a·t = <b>${fmt(k0.a * k0.t, 3)}</b> (advection) ; la largeur est passée de σ₀ = ${fmt(s0, 3)} à <b>${fmt(sg0, 4)}</b> et le pic est à <b>${fmt(100 * s0 / sg0, 3)} %</b> de sa valeur initiale (diffusion).`,
+      k0.D === 0 ? 'D = 0 : pas de diffusion, le profil est transporté sans se déformer.' : (k0.a === 0 ? 'a = 0 : pas de transport, le profil reste centré et s\u2019étale seulement.' : 'L\u2019aire sous la courbe ne change pas : la diffusion abaisse le pic mais conserve la quantité transportée.'),
+      meaning]);
   }
 
   /* ---------- Chapitre 1 : conditions aux limites sur la barre ---------- */
@@ -166,11 +180,15 @@
     const colorOf = { dirichlet: c[0], neumann: c[1], robin: c[2] };
     const S = res.map(o => ({ x: o.r.x, y: o.r.T, color: colorOf[o.t], width: style[o.t].width, dash: style[o.t].dash, label: names[o.t] }));
     draw('l-plot', 'l-leg', S, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Barre avec production' });
-    cards($('l-table'), res.map(o => ({ color: colorOf[o.t], title: names[o.t], lines: [`T(L) = <b>${fmt(o.r.TL, 3)} K</b>`, `T max = <b>${fmt(o.r.Tmax, 3)} K</b> en x = ${fmt(o.r.xmax, 4)} m`, `flux sortant en x = 0 : <b>${fmt(o.r.q0out, 1)} W/m²</b>`, `flux sortant en x = L : <b>${fmt(o.r.qLout, 1)} W/m²</b>`] })));
+    cards($('l-table'), res.map(o => ({ color: colorOf[o.t], title: names[o.t], lines: [`T(L) = <b>${fmt(o.r.TL, 3)} K</b>`, `T max = <b>${fmt(o.r.Tmax, 3)} K</b>`, `flux sortant en L : <b>${fmt(o.r.qLout, 1)} W/m²</b>`] })));
     const same = res.length > 1 && res.every(o => Math.abs(o.r.C1 - res[0].r.C1) < 1e-6 * (1 + Math.abs(res[0].r.C1)));
     $('l-msg').className = same ? 'msg good' : 'msg';
     $('l-msg').textContent = same ? 'Les conditions choisies sont équivalentes : les courbes se superposent.' :
       'Le bilan se vérifie : flux sortant en x = 0 plus flux sortant en x = L égale la puissance produite q·L = ' + fmt(base.q * base.L, 1) + ' W/m².';
+    explain('cl', [
+      same ? 'Ces conditions sont équivalentes : même solution, courbes superposées.' : 'Chaque condition fixe différemment la constante d\u2019intégration : les courbes diffèrent.',
+      ...res.map(o => `${names[o.t]} : flux sortant en x = 0 : <b>${fmt(o.r.q0out, 1)}</b>, en x = L : <b>${fmt(o.r.qLout, 1)} W/m²</b>.`),
+      `Leur somme vaut la puissance produite q·L = ${fmt(base.q * base.L, 1)} W/m².`]);
   }
 
   /* ---------- Chapitre 1 : barre 1D (différences finies et volumes finis), comparaison de maillages ---------- */
@@ -179,18 +197,20 @@
     if (!Ns.length || !schemes.length) return;
     const p = { T0: num('b-T0'), TL: num('b-TL'), L: num('b-L'), lambda: num('b-lambda'), q: num('b-q') };
     const fine = Calc.barre(Object.assign({ N: 400 }, p));
-    const S1 = [{ x: fine.x, y: fine.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [];
+    const S1 = [{ x: fine.x, y: fine.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [], er = { fd: {}, vf: {} };
     Ns.forEach((N, i) => {
       if (schemes.includes('fd')) {
         const r = Calc.barre(Object.assign({ N }, p)), bl = Calc.bilanDF(Object.assign({ N }, p)), col = tint(c[0], 0.16 * i);
         S1.push({ x: r.x, y: r.T, color: col, points: true, label: `DF, N = ${N}` });
         S2.push({ x: r.x, y: r.err, color: col, points: true, label: `DF, N = ${N}` });
+        er.fd[N] = r.maxErr;
         items.push({ color: col, title: `Différences finies · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(bl.bilan, 3)} W/m²</b>`] });
       }
       if (schemes.includes('vf')) {
         const r = Calc.barreVF(Object.assign({ N }, p)), col = tint(c[1], 0.16 * i);
         S1.push({ x: r.x, y: r.T, color: col, points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
         S2.push({ x: r.x, y: r.err, color: col, points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
+        er.vf[N] = r.maxErr;
         items.push({ color: col, title: `Volumes finis · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(r.bilan, 3)} W/m²</b>`] });
       }
     });
@@ -198,6 +218,15 @@
     draw('b-plot', 'b-leg', S1, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Solution' });
     draw('b-plot2', 'b-leg2', S2, { xlabel: 'x (m)', ylabel: 'erreur (K)', title: 'Erreur / solution analytique' });
     cards($('b-cards'), items);
+    const L = [], sorted = Ns.slice().sort((p, q) => p - q);
+    [['fd', 'Différences finies'], ['vf', 'Volumes finis']].filter(m => schemes.includes(m[0])).forEach(m => {
+      const e = er[m[0]], N1 = sorted[sorted.length - 2], N2 = sorted[sorted.length - 1], eN = e[N2];
+      if (eN < 1e-8) L.push(`${m[1]} : l\u2019erreur (${fmt(eN)} K) est de l\u2019ordre de l\u2019arrondi. La solution exacte est un polynôme de degré 2, que ce schéma reproduit exactement : ce n\u2019est pas la preuve que l\u2019ordre est « infini », seulement que le terme d\u2019erreur dominant s\u2019annule ici.`);
+      else if (sorted.length > 1) L.push(`${m[1]} : erreur ${fmt(eN)} K pour N = ${N2} ; entre N = ${N1} et N = ${N2}, ordre observé <b>${fmt(ord2(e[N1], eN, N2 / N1), 3)}</b>.`);
+      else L.push(`${m[1]} : erreur ${fmt(eN)} K pour N = ${N2}. Ajoutez un second maillage pour estimer l\u2019ordre.`);
+    });
+    L.push('Le bilan de flux proche de zéro signifie que la chaleur produite sort bien par les deux bords : le schéma est conservatif.');
+    explain('barre', L);
   }
 
   /* ---------- Chapitre 1 : Péclet, convection-diffusion en volumes finis ---------- */
@@ -205,14 +234,15 @@
     const c = pal(), PeL = num('e-PeL'), schemes = checked('e-s'), Ns = vals('e-N').map(Math.round).filter(v => v >= 4 && v <= 400).slice(0, 5);
     if (!schemes.length || !Ns.length) return;
     const xf = Calc.linspace(0, 1, 400), exf = xf.map(x => (Math.exp(PeL * (x - 1)) - Math.exp(-PeL)) / (1 - Math.exp(-PeL)));
-    const S1 = [{ x: xf, y: exf, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [];
+    const S1 = [{ x: xf, y: exf, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [], rec = [];
     const names = { centre: 'Centré', amont: 'Amont' };
     Ns.forEach((N, i) => schemes.forEach(s => {
       const r = Calc.peclet({ N, PeL, scheme: s }), col = tint(s === 'centre' ? c[0] : c[1], 0.16 * i);
       const sty = s === 'centre' ? { points: true } : { points: true, marker: 'square', dash: [3, 3], width: 1.6 };
       S1.push(Object.assign({ x: r.x, y: r.phi, color: col, label: `${names[s]}, N = ${N}` }, sty));
       S2.push(Object.assign({ x: r.x, y: r.err, color: col, label: `${names[s]}, N = ${N}` }, sty));
-      items.push({ color: col, title: `${names[s]} · N = ${N}`, lines: [`Pe de maille = <b>${fmt(r.PeH, 3)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 4)}</b>`, `φ minimum = <b>${fmt(r.min, 4)}</b>`, r.oscille ? '<b>oscille</b>' : 'monotone'] });
+      rec.push({ N, s, PeH: r.PeH, osc: r.oscille, err: r.maxErr });
+      items.push({ color: col, title: `${names[s]} · N = ${N}`, lines: [`Pe de maille = <b>${fmt(r.PeH, 3)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 4)}</b>`, r.oscille ? `<b>oscille</b> (φ min = ${fmt(r.min, 3)})` : 'monotone'] });
     }));
     const bad = schemes.includes('centre') && Ns.some(N => PeL / N > 2);
     $('e-msg').className = bad ? 'msg warn' : 'msg';
@@ -224,6 +254,11 @@
     gauge($('e-gauge'), { min: 0.1, max: 100, title: `Nombre de Péclet de maille Pe_h = Pe/N = ${Ns.map(N => fmt(PeL / N, 3)).join(' ; ')}`,
       zones: [{ from: 0.1, to: 2, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'Pe_h ≤ 2 : centré monotone' }, { from: 2, to: 100, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'Pe_h > 2 : oscillations possibles' }],
       marks: Ns.map((N, i) => ({ v: PeL / N, color: tint(c[0], 0.16 * i), label: `N = ${N}` })), text: 'Les repères indiquent Pe_h de chaque maillage ; la limite 2 sépare coefficients positifs et négatifs du schéma centré.' });
+    const cen = rec.filter(o => o.s === 'centre'), amo = rec.filter(o => o.s === 'amont'), lst = arr => arr.map(o => o.N).join(', ');
+    const L = [`Pe = ${fmt(PeL, 3)} : la solution exacte a une couche limite près de x = 1.`];
+    if (cen.length) { const os = cen.filter(o => o.osc), mo = cen.filter(o => !o.osc); L.push(`Centré : ${os.length ? 'oscille pour N = ' + lst(os) + ' (Pe_h > 2 : un coefficient devient négatif)' : ''}${os.length && mo.length ? ' ; ' : ''}${mo.length ? 'monotone pour N = ' + lst(mo) + ' (Pe_h ≤ 2)' : ''}.`); }
+    if (amo.length) L.push(`Amont : ${amo.every(o => !o.osc) ? 'monotone pour tous les N' : 'oscille pour N = ' + lst(amo.filter(o => o.osc))}, mais il étale davantage la couche limite.`);
+    explain('peclet', L);
   }
 
   /* ---------- Chapitre 2 : Jacobi / Gauss-Seidel, comparaison des deux méthodes ---------- */
@@ -232,12 +267,14 @@
     const methods = checked('j-m');
     const runs = methods.map(m => ({ m, r: Calc.jacobiGS({ n, method: m, iters: K, f }) }));
     if (!runs.length) return;
+    const need = {};
     const ref = runs[0].r;
     $('j-msg').textContent = `Après ${K} itération(s), pour n = ${n} nœuds intérieurs et f = ${fmt(f, 3)}.`;
     cards($('j-table'), runs.map((o, i) => {
       const h = o.r.history[K], long = Calc.jacobiGS({ n, method: o.m, iters: 1000, f }).history.findIndex(x => x.res < 1e-3);
+      need[o.m] = long;
       return { color: c[i], title: SCHEME[o.m], lines: [`résidu ‖r‖∞ = <b>${fmt(h.res, 5)}</b>`, `erreur algébrique max = <b>${fmt(Calc.maxAbs(h.u.map((v, j) => v - o.r.exact[j])), 5)}</b>`,
-        `itération où ‖r‖∞ < 1e-3 : <b>${long < 0 ? '> 1000' : long}</b>`, n <= 8 ? `u⁽${K}⁾ = (${h.u.map(v => fmt(v, 5)).join(' ; ')})` : ''].filter(Boolean) };
+        `itération où ‖r‖∞ < 1e-3 : <b>${long < 0 ? '> 1000' : long}</b>`].filter(Boolean) };
     }));
     const xs = [0].concat(ref.x.slice(1, n + 1), [1]);
     const S1 = [{ x: xs, y: [0].concat(ref.exact, [0]), color: css('--plot-axis'), dash: [6, 4], label: 'solution exacte' }]
@@ -245,6 +282,11 @@
     draw('j-plot', 'j-leg', S1, { xlabel: 'x', ylabel: 'u', title: 'Itérés' });
     const S2 = runs.map((o, i) => ({ x: o.r.history.map(h => h.k), y: o.r.history.map(h => h.res), color: c[i], label: SCHEME[o.m] }));
     draw('j-plot2', 'j-leg2', S2, { logy: true, xlabel: 'itération k', ylabel: 'résidu ‖r‖∞', title: 'Convergence' });
+    const nn = m => need[m] < 0 ? '> 1000' : need[m];
+    const L = runs.map(o => `${SCHEME[o.m]} : après ${K} itération(s), résidu ${fmt(o.r.history[K].res, 3)} ; seuil 1e-3 franchi à l\u2019itération <b>${nn(o.m)}</b>.`);
+    if (need.jacobi > 0 && need.gs > 0) L.push(`Rapport Jacobi / Gauss–Seidel = <b>${fmt(need.jacobi / need.gs, 3)}</b> : Gauss–Seidel réutilise les valeurs déjà mises à jour ; pour ce problème (Poisson 1D) son facteur de convergence est le carré de celui de Jacobi, d\u2019où un rapport voisin de 2.`);
+    L.push(`Le résidu mesure à quel point l\u2019équation discrète est vérifiée ; l\u2019erreur algébrique mesure l\u2019écart à la solution du système. Avec n = ${n} nœuds, le nombre d\u2019itérations croît à peu près comme n² : doublez n pour le vérifier.`);
+    explain('jg', L);
   }
 
   /* ---------- Chapitre 2 : ordre de trois différences finies ---------- */
@@ -253,20 +295,35 @@
     const rows = Calc.ordreExp(hs), o = (v) => v === undefined ? '' : ` (ordre <b>${fmt(v, 3)}</b>)`;
     $('o-msg').textContent = 'L\u2019ordre est lu comme log₂ du rapport des erreurs entre deux pas consécutifs dont le rapport est 2.';
     const defs = [['prog', 'ordreProg', 'Progressive', c[1]], ['centree', 'ordreCentree', 'Centrée', c[0]], ['regr3', 'ordreRegr3', 'Régressive à 3 points', c[2]]];
-    cards($('o-table'), defs.map(d => ({ color: d[3], title: d[2], lines: rows.map(r => `h = ${fmt(r.h, 5)} : erreur <b>${fmt(r[d[0]], 4)}</b>${o(r[d[1]])}`) })));
+    const last = rows[rows.length - 1];
+    cards($('o-table'), defs.map(d => ({ color: d[3], title: d[2], lines: [`ordre observé : <b>${last[d[1]] === undefined ? '—' : fmt(last[d[1]], 3)}</b>`, `erreur pour h = ${fmt(last.h, 4)} : <b>${fmt(last[d[0]], 3)}</b>`] })));
     const S = defs.map(d => ({ x: rows.map(r => r.h), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true }));
     draw('o-plot', 'o-leg', S, { logx: true, logy: true, xlabel: 'h', ylabel: 'erreur en x = 0', title: 'u = exp(x)' });
+    const lr = rows[rows.length - 1], tx = v => v === undefined ? 'à mesurer avec au moins deux pas' : `<b>${fmt(v, 3)}</b>`;
+    explain('ordre', [
+      `Progressive : ordre observé ${tx(lr.ordreProg)} (attendu 1) : diviser h par 2 divise l\u2019erreur par 2.`,
+      `Centrée : ordre observé ${tx(lr.ordreCentree)} (attendu 2) : diviser h par 2 divise l\u2019erreur par 4.`,
+      `Régressive à 3 points : ordre observé ${tx(lr.ordreRegr3)} (attendu 2), avec une erreur plus grande que la centrée car son coefficient d\u2019erreur est plus élevé.`,
+      'Sur le graphique en échelles logarithmiques, la pente de chaque droite est l\u2019ordre ; l\u2019ordre vient du terme d\u2019erreur de troncature obtenu par Taylor.']);
   }
 
   /* ---------- Chapitre 2 : fermetures de Neumann ---------- */
   function runNeumann() {
     const c = pal(), Ns = Array.from({ length: Math.round(num('n-k')) }, (_, i) => Math.round(num('n-N0') * Math.pow(2, i))).filter(v => v >= 4 && v <= 400);
     const rows = Calc.neumannOrdres(Ns), o = (v) => v === undefined ? '' : ` (ordre <b>${fmt(v, 3)}</b>)`;
-    cards($('n-table'), [{ color: c[1], title: 'Fermeture d\u2019ordre 1', lines: rows.map(r => `N = ${r.N} : erreur <b>${fmt(r.e1, 4)}</b>${o(r.p1)}`) },
-                         { color: c[0], title: 'Fermeture d\u2019ordre 2', lines: rows.map(r => `N = ${r.N} : erreur <b>${fmt(r.e2, 4)}</b>${o(r.p2)}`) }]);
-    const S = [{ x: rows.map(r => 1 / r.N), y: rows.map(r => r.e1), color: c[1], label: 'Neumann ordre 1', points: true },
-               { x: rows.map(r => 1 / r.N), y: rows.map(r => r.e2), color: c[0], label: 'Neumann ordre 2', points: true }];
-    draw('n-plot', 'n-leg', S, { logx: true, logy: true, xlabel: 'h = 1/N', ylabel: 'erreur maximale', title: 'cos x + x' });
+    const defs = [['e1', 'p1', 'Fermeture d\u2019ordre 1', c[1]], ['e2', 'p2', 'Fermeture d\u2019ordre 2 (régressive)', c[0]], ['e3', 'p3', 'Point fantôme', c[2]]];
+    const lastN = rows[rows.length - 1];
+    cards($('n-table'), defs.map(d => ({ color: d[3], title: d[2], lines: [`ordre observé : <b>${lastN[d[1]] === undefined ? '—' : fmt(lastN[d[1]], 3)}</b>`, `erreur pour N = ${lastN.N} : <b>${fmt(lastN[d[0]], 3)}</b>`] })));
+    draw('n-plot', 'n-leg', defs.map(d => ({ x: rows.map(r => 1 / r.N), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true })), { logx: true, logy: true, xlabel: 'h = 1/N', ylabel: 'erreur maximale', title: 'Erreur globale selon h (cos x + x)' });
+    const Np = Math.round(num('n-Np')), prof = [1, 2, 3].map(k => Calc.neumann(Np, k));
+    draw('n-plot2', 'n-leg2', defs.map((d, k) => ({ x: prof[k].x, y: prof[k].errs.map(v => Math.max(v, 1e-16)), color: d[3], label: d[2], points: true })), { logy: true, xlabel: 'x', ylabel: 'erreur en chaque nœud', title: `Où l\u2019erreur se forme (N = ${Np})` });
+    const lr = rows[rows.length - 1], tx = v => v === undefined ? 'à mesurer avec au moins deux maillages' : `<b>${fmt(v, 3)}</b>`;
+    explain('neumann', [
+      `Fermeture d\u2019ordre 1 (u<sub>N</sub> = u<sub>N−1</sub> + h g) : ordre global observé ${tx(lr.p1)}. Le schéma intérieur est d\u2019ordre 2, mais cette fermeture est d\u2019ordre 1 : l\u2019erreur née au bord se propage dans tout le domaine et limite l\u2019ordre global.`,
+      `Fermeture d\u2019ordre 2 (différence régressive à trois points) : ordre global observé ${tx(lr.p2)}. Elle fait intervenir trois nœuds : la dernière ligne de la matrice sort de la structure tridiagonale.`,
+      `Point fantôme (nœud fictif u<sub>N+1</sub> éliminé par la différence centrée en x = 1) : ordre global observé ${tx(lr.p3)}. La matrice reste tridiagonale, avec la dernière ligne (−2 ; 2) : on gagne l\u2019ordre 2 sans changer la structure.`,
+      `Sur le profil d\u2019erreur (N = ${Np}), à x = 1 : ordre 1 <b>${fmt(prof[0].errs[Np], 3)}</b>, ordre 2 <b>${fmt(prof[1].errs[Np], 3)}</b>, point fantôme <b>${fmt(prof[2].errs[Np], 3)}</b> : l\u2019erreur se forme près de la frontière et dépend directement de l\u2019ordre de la fermeture.`,
+      'Retenir : l\u2019ordre global est celui du maillon le plus faible, schéma intérieur ou condition aux limites.']);
   }
 
   /* ---------- Chapitre 3 : chaleur 1D, comparaison de schémas et de pas de temps ---------- */
@@ -287,10 +344,17 @@
     draw('c-plot', 'c-leg', S1, { xlabel: 'x (m)', ylabel: 'u', ylim: lim > 5 ? [-1.5, 1.5] : null, title: `Profils à t ≈ ${fmt(r0.t, 3)} s` });
     const rows = [];
     schemes.forEach((s, i) => dts.forEach(dt => rows.push({ s, i, dt, r: run(s, dt) })));
-    cards($('c-table'), rows.map(o => ({ color: c[o.i], title: `${SCHEME[o.s]} · Δt = ${fmt(o.dt, 4)} s`, lines: [`Fo = <b>${fmt(o.r.Fo, 4)}</b> (${Math.max(1, Math.round(tf / o.dt))} pas)`, `erreur maximale = <b>${fmt(o.r.maxErr, 4)}</b>`, `u au centre = ${fmt(o.r.u[Math.floor(o.r.u.length / 2)], 6)}`, o.r.stable ? 'critère Fo ≤ 1/2 respecté' : '<b>Fo > 1/2 : critère de FTCS non respecté</b>'] })));
+    cards($('c-table'), rows.map(o => ({ color: c[o.i], title: `${SCHEME[o.s]} · Δt = ${fmt(o.dt, 4)} s`, lines: [`Fo = <b>${fmt(o.r.Fo, 4)}</b> (${Math.max(1, Math.round(tf / o.dt))} pas)`, `erreur maximale = <b>${fmt(o.r.maxErr, 4)}</b>`, o.r.stable ? 'critère Fo ≤ 1/2 respecté' : '<b>Fo > 1/2 : critère de FTCS non respecté</b>'] })));
     const S2 = schemes.map((s, i) => { const pr = rows.filter(o => o.s === s).sort((p, q) => p.dt - q.dt); return { x: pr.map(o => o.dt), y: pr.map(o => o.r.maxErr), color: c[i], label: SCHEME[s], points: true }; });
     draw('c-plot2', 'c-leg2', S2, { logx: true, logy: true, xlabel: 'Δt (s)', ylabel: 'erreur maximale', title: 'Erreur selon Δt' });
-    $('c-mid').textContent = `Au nœud central pour Δt = ${fmt(dts[0], 4)} s : ` + first.map(o => `${SCHEME[o.s]} ${fmt(o.r.u[mid], 6)}`).join(' ; ') + ` ; exacte ${fmt(r0.exact[mid], 6)}.`;
+    const Lx = [];
+    schemes.forEach(s => { const pr = rows.filter(o => o.s === s).sort((p, q) => q.dt - p.dt), o0 = pr[0];
+      const st = s === 'ftcs' ? (o0.r.stable ? `Fo = ${fmt(o0.r.Fo, 3)} ≤ 1/2 : stable` : `Fo = ${fmt(o0.r.Fo, 3)} > 1/2 : <b>instable</b>, l’erreur explose`) : `inconditionnellement stable (Fo = ${fmt(o0.r.Fo, 3)})`;
+      const p = pr.length > 1 && pr[0].r.stable && pr[1].r.stable ? ` ; entre Δt = ${fmt(pr[0].dt, 3)} et ${fmt(pr[1].dt, 3)}, pente de l’erreur ${fmt(ord2(pr[0].r.maxErr, pr[1].r.maxErr, pr[0].dt / pr[1].dt), 3)} (inclut aussi l’erreur spatiale)` : '';
+      Lx.push(`${SCHEME[s]} : ${st}${p}.`); });
+    Lx.push('Lecture : FTCS est explicite et limité par Fo ≤ 1/2 ; BTCS est implicite et stable pour tout Δt mais d’ordre 1 en temps ; Crank–Nicolson est d’ordre 2 en temps.');
+    explain('chaleur', Lx);
+    $('c-mid').textContent = '';
   }
 
   /* ---------- Chapitre 3 : chemin de raffinement, comparaison de plusieurs exposants r ---------- */
@@ -304,6 +368,8 @@
     const S2 = all.map((rows, i) => ({ x: rows.map(r => r.h), y: rows.map(r => r.lxfTerme), color: c[i], points: true, label: `r = ${fmt(rs[i], 3)}` }));
     draw('p-plot', 'p-leg', S1, { logx: true, logy: true, xlabel: 'h', ylabel: 'α(Δt/h)²', title: 'Dufort–Frankel' });
     draw('p-plot2', 'p-leg2', S2, { logx: true, logy: true, xlabel: 'h', ylabel: 'h²/(2Δt)', title: 'Lax–Friedrichs' });
+    explain('chemin', [...rs.map(r => { const v = Calc.verdictsChemin(r); return `r = ${fmt(r, 3)} : Dufort–Frankel <b>${v.df}</b> ; Lax–Friedrichs <b>${v.lxf}</b>.`; }),
+      'Dufort–Frankel est consistant avec l\u2019équation de la chaleur seulement si α(Δt/h)² tend vers 0 ; Lax–Friedrichs seulement si h²/(2Δt) tend vers 0. Le chemin de raffinement, c\u2019est-à-dire la façon dont Δt décroît avec h, décide donc de la consistance.']);
   }
 
   /* ---------- Chapitre 3 : advection, comparaison de schémas et de maillages ---------- */
@@ -321,8 +387,12 @@
       .concat(first.map((o, i) => ({ x: o.r.x, y: o.r.u, color: c[i], label: SCHEME[o.s] })));
     draw('a-plot', 'a-leg', S, { xlabel: 'x (m)', ylabel: 'u', ylim: bad ? [-1.5, 1.5] : null, title: `Nx = ${Nxs[0]}, Co = ${fmt(Co, 3)}` });
     const items = [];
-    schemes.forEach((s, i) => Nxs.forEach(Nx => { const r = run(s, Nx); items.push({ color: c[i], title: `${SCHEME[s]} · Nx = ${Nx}`, lines: [`maximum = <b>${fmt(r.max, 4)}</b>`, `minimum = <b>${fmt(r.min, 4)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 4)}</b>`] }); }));
+    schemes.forEach((s, i) => Nxs.forEach(Nx => { const r = run(s, Nx); items.push({ color: c[i], title: `${SCHEME[s]} · Nx = ${Nx}`, lines: [`max <b>${fmt(r.max, 3)}</b> · min <b>${fmt(r.min, 3)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 3)}</b>`] }); }));
     cards($('a-table'), items);
+    const cmt = o => { const r = o.r; return !isFinite(r.max) || Math.abs(r.max) > 3 || Math.abs(r.min) > 3 ? '<b>instable</b>' : (r.min < -0.02 || r.max > 1.05 ? '<b>oscille</b> (dispersion)' : '<b>lisse</b> la solution (diffusion numérique)'); };
+    explain('adv', [`Co = ${fmt(Co, 3)}, a = ${fmt(a, 3)} : ${Math.abs(Co) > 1 ? 'Co > 1, la condition CFL est violée pour les schémas explicites' : 'Co ≤ 1, la condition CFL est respectée'}.`,
+      ...first.map(o => `${SCHEME[o.s]} : ${cmt(o)} (maximum ${fmt(o.r.max, 3)}, minimum ${fmt(o.r.min, 3)}, erreur max ${fmt(o.r.maxErr, 3)}).`),
+      ]);
   }
 
   const RUN = { intro: runIntro, edpc: runEdpc, edpb: runEdpb, transport: runTransport, cl: runCL, barre: runBarre, peclet: runPeclet, jg: runJG, ordre: runOrdre, neumann: runNeumann, chaleur: runChaleur, chemin: runChemin, adv: runAdv };
@@ -343,7 +413,7 @@
   }
 
   /* ---------- Introduction : le même signal, plusieurs schémas ---------- */
-  const INTRO = { amont: 'Amont', lw: 'Lax–Wendroff', bw: 'Beam–Warming', lxf: 'Lax–Friedrichs', ftcs: 'FTCS centré' };
+  const INTRO = { amont: 'Schéma A', lw: 'Schéma B', bw: 'Schéma C', lxf: 'Schéma D', ftcs: 'Schéma E' };
   function runIntro() {
     const c = pal(), schemes = checked('i-s'), N = Math.round(num('i-N')), Co = num('i-Co'), ts = [num('i-t1'), num('i-t2')];
     if (!schemes.length) return;
@@ -352,14 +422,23 @@
     schemes.forEach((s, si) => ts.forEach((t, k) => {
       const r = Calc.advection1d({ scheme: s, Nx: N, Co, t });
       const unstable = !isFinite(r.max) || Math.abs(r.max) > 3 || Math.abs(r.min) > 3; bad = bad || unstable;
-      const comp = unstable ? 'instable' : (r.min < -0.02 || r.max > 1.05 ? 'oscillations (dispersion)' : 'lissage (diffusion numérique)');
+      const comp = unstable ? 'instable' : (r.maxErr < 1e-9 ? 'exact (décalage d\u2019une maille par pas)' : (r.min < -0.02 || r.max > 1.05 ? 'oscillations (dispersion)' : 'lissage (diffusion numérique)'));
       plot($(`i-c-${s}-${k}`), [{ x: r.x.concat([1]), y: r.exact.concat([r.exact[0]]), color: css('--plot-axis'), width: 1.4, label: 'exacte' },
         { x: r.x, y: r.u, color: c[si % 6], noline: true, points: true, label: INTRO[s] }], { xlabel: 'x', ylabel: 'u', ylim: [-0.5, 1.5], title: `${INTRO[s]} à t = ${fmt(t, 3)}` });
-      items.push({ color: c[si % 6], title: `${INTRO[s]} · t = ${fmt(t, 3)}`, lines: [`pic de la bosse = <b>${fmt(r.bump, 3)}</b> (exacte : 1)`, `maximum = <b>${fmt(r.max, 3)}</b> ; minimum = <b>${fmt(r.min, 3)}</b>`, `erreur moyenne L¹ = <b>${fmt(r.errL1, 3)}</b>`, `comportement : <b>${comp}</b>`] });
+      items.push({ color: c[si % 6], title: `${INTRO[s]} · t = ${fmt(t, 3)}`, lines: [unstable ? 'valeurs hors échelle' : `pic <b>${fmt(r.bump, 3)}</b> (exact 1) · minimum <b>${fmt(r.min, 3)}</b>`, `<b>${comp}</b>`] });
     }));
     $('i-msg').className = bad ? 'msg warn' : 'msg';
     $('i-msg').textContent = `N = ${N} points, C = ${fmt(Co, 3)}. Ligne : solution exacte ; cercles : schéma. Un tour entier correspond à t = 1.` + (bad ? ' Au moins un schéma est instable : ses valeurs sortent de l\u2019échelle.' : '');
     cards($('i-cards'), items);
+    const L = schemes.map(s => { const r = Calc.advection1d({ scheme: s, Nx: N, Co, t: ts[0] }), un = !isFinite(r.max) || Math.abs(r.max) > 3 || Math.abs(r.min) > 3;
+      return `${INTRO[s]} à t = ${fmt(ts[0], 3)} : pic ${fmt(r.bump, 3)} (exact 1), ${un ? '<b>instable</b>' : (r.min < -0.02 || r.max > 1.05 ? 'minimum ' + fmt(r.min, 3) + ' : <b>oscillations</b> (dispersion numérique)' : '<b>lissage</b> sans dépassement (diffusion numérique)')}.`; });
+    if (Math.abs(Co - 1) < 1e-9) L.push('C = 1 : les schémas A, B, C et D se réduisent à un décalage exact d\u2019une maille par pas de temps, donc leur erreur est nulle (aux arrondis).');
+    const rs = schemes.map(s => Calc.advection1d({ scheme: s, Nx: N, Co, t: ts[0] }));
+    if (rs.some(r => isFinite(r.min) && r.min < -0.02 && Math.abs(r.min) <= 3)) L.push('Dans la situation du rejet, un minimum négatif est une concentration négative : impossible physiquement, même si le schéma « conserve » bien la bosse.');
+    if (rs.some(r => isFinite(r.bump) && r.bump < 0.9)) L.push('Un pic trop bas veut dire qu\u2019on sous-estimerait la concentration maximale qui arrive en aval.');
+    if (rs.some(r => !isFinite(r.max) || Math.abs(r.max) > 3)) L.push('Un schéma qui explose ne donne aucune prévision exploitable.');
+    L.push('Pour une même équation, le choix du schéma change le résultat : certains lissent (diffusion numérique), d\u2019autres oscillent (dispersion numérique), d\u2019autres explosent (instabilité). C\u2019est la raison d\u2019être du cours.');
+    explain('intro', L);
   }
 
   /* ---------- EDP : classer ---------- */
@@ -403,6 +482,9 @@
       zones: [{ from: -2, to: -1, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'hyperbolique' }, { from: -1, to: 1, color: 'color-mix(in srgb, var(--blue) 35%, transparent)', label: 'elliptique' }, { from: 1, to: 2, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'hyperbolique' }],
       marks: [{ v: u, color: css('--plot-axis'), label: 'u' }, { v: -1, color: css('--green'), label: 'parabolique' }, { v: 1, color: css('--green'), label: 'parabolique' }],
       text: 'Les repères verts (u = ±1) sont les valeurs où l\u2019EDP est parabolique.' });
+    explain('edpc', [`Δ = B² − AC = ${fmt(r.delta, 3)} : ${r.delta < 0 ? 'Δ < 0, donc elliptique' : (r.type === 'parabolique' ? 'Δ = 0, donc parabolique' : 'Δ > 0, donc hyperbolique')}.`,
+      `Conséquence : il faut ${info[1]} ; ${info[2]}.`,
+      `Cas non linéaire pour u = ${fmt(u, 3)} : Δ = u² − 1 = ${fmt(u * u - 1, 3)}, donc ${rn.type}. Le type dépend de la solution : il peut changer d\u2019un point à l\u2019autre du domaine.`]);
   }
 
   /* ---------- EDP : comportement des trois types ---------- */
@@ -413,14 +495,15 @@
     const L = 40, T = 26, S = W - L - 56, M = u.length, cell = S / M, axis = css('--plot-axis'), muted = css('--muted');
     const colr = v => { const t = Math.max(0, Math.min(1, (v - vmin) / ((vmax - vmin) || 1))); return `hsl(${240 * (1 - t)}, 80%, ${46 + 6 * Math.sin(Math.PI * t)}%)`; };
     for (let j = 0; j < M; j++) for (let i = 0; i < M; i++) { g.fillStyle = colr(u[j][i]); g.fillRect(L + i * cell, T + (M - 1 - j) * cell, Math.ceil(cell) + 0.5, Math.ceil(cell) + 0.5); }
-    g.strokeStyle = axis; g.lineWidth = 1.2; g.strokeRect(L, T, S, S);
+    g.strokeStyle = axis; g.lineWidth = 4; g.strokeRect(L, T, S, S);
+    g.fillStyle = '#fff'; g.strokeStyle = '#000'; g.lineWidth = 1.5; g.beginPath(); g.arc(L + S / 2, T + S / 2, 5, 0, 6.2832); g.fill(); g.stroke(); g.fillStyle = '#000'; g.font = 'bold 12px system-ui, sans-serif'; g.textAlign = 'left'; g.fillText('P', L + S / 2 + 8, T + S / 2 - 6);
     for (let k = 0; k < 50; k++) { g.fillStyle = colr(vmin + (vmax - vmin) * (1 - k / 49)); g.fillRect(L + S + 14, T + k * S / 50, 12, S / 50 + 1); }
     g.fillStyle = muted; g.font = '12px system-ui, sans-serif'; g.textAlign = 'left';
     g.fillText(fmt(vmax, 3), L + S + 30, T + 10); g.fillText(fmt(vmin, 3), L + S + 30, T + S);
     g.textAlign = 'center'; g.fillText('x', L + S / 2, T + S + 16); g.fillText('y', L - 14, T + S / 2);
     g.fillStyle = axis; g.textAlign = 'left'; g.fillText('Température (°C)', L, 16);
   }
-  function drawXT(canvas, c, xp, tp) {
+  function drawXT(canvas, c, xp, tp, par) {
     const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
     canvas.width = W * dpr; canvas.height = W * dpr;
     const g = canvas.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
@@ -432,17 +515,23 @@
     for (let v = 0; v <= TM; v += 2) { g.beginPath(); g.moveTo(L, Y(v)); g.lineTo(L + pw, Y(v)); g.stroke(); g.fillStyle = muted; g.textAlign = 'right'; g.fillText(v, L - 6, Y(v) + 4); }
     g.save(); g.beginPath(); g.rect(L, T, pw, ph); g.clip();
     g.strokeStyle = grid; g.lineWidth = 1.2;
-    for (let x0 = -2 * XR; x0 <= 2 * XR; x0 += 1) { [-1, 1].forEach(sg => { g.strokeStyle = 'rgba(120,130,140,0.35)'; g.beginPath(); g.moveTo(X(x0), Y(0)); g.lineTo(X(x0 + sg * c * TM), Y(TM)); g.stroke(); }); }
+    if (!par) for (let x0 = -2 * XR; x0 <= 2 * XR; x0 += 1) { [-1, 1].forEach(sg => { g.strokeStyle = 'rgba(120,130,140,0.35)'; g.beginPath(); g.moveTo(X(x0), Y(0)); g.lineTo(X(x0 + sg * c * TM), Y(TM)); g.stroke(); }); }
+    if (par) {
+      g.fillStyle = 'rgba(190,100,0,0.14)'; g.fillRect(L, Y(tp), pw, Y(0) - Y(tp));
+      g.strokeStyle = css('--blue'); g.lineWidth = 5; g.beginPath(); g.moveTo(L, Y(0)); g.lineTo(L + pw, Y(0)); g.stroke();
+      g.strokeStyle = css('--orange'); g.lineWidth = 1.6; g.setLineDash([4, 4]); [[-XR, 0], [XR, 0]].forEach(q => { g.beginPath(); g.moveTo(X(q[0]), Y(0)); g.lineTo(X(q[0]), Y(tp)); g.stroke(); }); g.setLineDash([]);
+    } else {
     g.fillStyle = 'rgba(190,100,0,0.22)'; g.beginPath(); g.moveTo(X(xp), Y(tp)); g.lineTo(X(xp - c * tp), Y(0)); g.lineTo(X(xp + c * tp), Y(0)); g.closePath(); g.fill();
     g.strokeStyle = css('--orange'); g.lineWidth = 2.2;
     g.beginPath(); g.moveTo(X(xp - c * tp), Y(0)); g.lineTo(X(xp), Y(tp)); g.lineTo(X(xp + c * tp), Y(0)); g.stroke();
     g.strokeStyle = css('--blue'); g.lineWidth = 5; g.beginPath(); g.moveTo(X(xp - c * tp), Y(0)); g.lineTo(X(xp + c * tp), Y(0)); g.stroke();
+    }
     g.fillStyle = css('--red'); g.beginPath(); g.arc(X(xp), Y(tp), 5, 0, 6.2832); g.fill();
     g.restore();
     g.strokeStyle = axis; g.lineWidth = 1.2; g.strokeRect(L, T, pw, ph);
     g.fillStyle = muted; g.textAlign = 'center'; g.fillText('x (m)', L + pw / 2, W - 8);
     g.save(); g.translate(14, T + ph / 2); g.rotate(-Math.PI / 2); g.fillText('t (s)', 0, 0); g.restore();
-    g.fillStyle = axis; g.textAlign = 'left'; g.fillText('Caractéristiques et domaine de dépendance de P', L, 16);
+    g.fillStyle = axis; g.textAlign = 'left'; g.fillText(par ? 'Domaine de dépendance de P : toute la ligne initiale' : 'Caractéristiques et domaine de dépendance de P', L, 16);
   }
   function runEdpb() {
     const type = checked('k-type')[0] || 'elliptique', c = pal();
@@ -450,10 +539,11 @@
     if (type === 'elliptique') {
       const N = Math.round(num('k-n')), r = Calc.laplace2d({ N, left: num('k-Tl'), right: num('k-Tr'), top: num('k-Tt'), bottom: num('k-Tb') });
       drawHeat($('k-heat'), r.u, Math.min(r.min, num('k-Tl'), num('k-Tr'), num('k-Tt'), num('k-Tb')), Math.max(r.max, num('k-Tl'), num('k-Tr'), num('k-Tt'), num('k-Tb')));
-      $('k-heat-leg').textContent = '';
+      $('k-heat-leg').textContent = 'Domaine de dépendance du point P (centre) : toute la frontière du carré (bord épais).';
       const xs = Calc.linspace(0, 1, r.M);
       draw('k-line', 'k-line-leg', [{ x: xs, y: r.ligneCentrale, color: c[0], label: 'u(x, y = 0,5)' }], { xlabel: 'x', ylabel: 'T (°C)', title: 'Ligne médiane' });
       $('k-msg').className = 'msg'; $('k-msg').textContent = 'Principe du maximum : les valeurs restent comprises entre la plus petite et la plus grande valeur imposée. Changez un seul côté : tout le champ change aussitôt, y compris loin de ce côté (influence globale).';
+      explain('edpb', [`Température au centre : <b>${fmt(r.centre, 4)} °C</b> ; moyenne des quatre côtés : ${fmt((num('k-Tl') + num('k-Tr') + num('k-Tt') + num('k-Tb')) / 4, 4)} °C (égales par symétrie du carré).`, `Valeurs comprises entre ${fmt(r.min, 4)} et ${fmt(r.max, 4)} °C : principe du maximum, pas de valeur intérieure hors des valeurs imposées.`, 'Domaine de dépendance de P : toute la frontière. Chaque côté agit sur tout le domaine : une EDP elliptique est un problème d’équilibre global.']);
       cards($('k-cards'), [{ color: c[0], title: 'Température au centre', lines: [`valeur = <b>${fmt(r.centre, 4)} °C</b>`, `minimum = <b>${fmt(r.min, 4)}</b> ; maximum = <b>${fmt(r.max, 4)}</b>`, `${r.iters} itérations de sur-relaxation`] }]);
     } else if (type === 'parabolique') {
       const D = num('k-D'), tp = num('k-tp'), gap = num('k-gap'), s0 = 0.15, ctr = gap === 0 ? [0] : [-gap / 2, gap / 2];
@@ -461,8 +551,11 @@
       const S = times.map((t, i) => ({ x: xs, y: Calc.chaleurGauss({ D, sigma0: s0, centres: ctr, t, xs }), color: c[i % 6], width: 2.2, label: `t = ${fmt(t, 3)}` }));
       draw('k-par', 'k-par-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Diffusion' });
       draw('k-par2', 'k-par2-leg', S.map(s => Object.assign({}, s)), { logy: true, xlabel: 'x (m)', ylabel: 'u (échelle logarithmique)', title: 'Même courbes, échelle log' });
+      drawXT($('k-xtp'), 0, num('k-xp'), tp, true);
+      $('k-xtp-leg').innerHTML = `<span><i style="border-color:${css('--blue')}"></i>domaine de dépendance : toute la ligne initiale</span><span><i style="border-color:${css('--orange')};border-top-style:dashed"></i>et les conditions aux limites jusqu\u2019à t</span>`;
       const sg = Calc.sigmaAt(s0, D, tp), far = Calc.chaleurGauss({ D, sigma0: s0, centres: ctr, t: tp, xs: [5, 0] });
       $('k-msg').className = 'msg'; $('k-msg').textContent = 'Dès que t > 0, la solution est non nulle partout : l\u2019information se propage à vitesse infinie, mais son effet décroît extrêmement vite avec la distance (queues gaussiennes visibles en échelle logarithmique).';
+      explain('edpb', [`À t = ${fmt(tp, 3)} s la largeur est σ = <b>${fmt(sg, 4)}</b>, contre 0,15 au départ : la diffusion étale la solution.`, `En x = 5 la valeur vaut ${far[0].toExponential(2).replace('.', ',')} : non nulle (propagation instantanée) mais minuscule.`, 'Domaine de dépendance de P : la ligne initiale entière (et les conditions aux limites jusqu’à t) ; l’influence des points éloignés existe mais décroît très vite avec la distance.']);
       cards($('k-cards'), [{ color: c[3], title: `À t = ${fmt(tp, 3)} s`, lines: [`largeur σ(t) = <b>${fmt(sg, 4)}</b>`, `valeur en x = 5 : <b>${far[0].toExponential(2).replace('.', ',')}</b> (non nulle)`, `valeur en x = 0 : <b>${far[1].toExponential(2).replace('.', ',')}</b>`] }]);
     } else {
       const cc = num('k-c'), th = num('k-th'), xp = num('k-xp'), s0 = 0.15, xs = Calc.linspace(-8, 8, 800);
@@ -472,6 +565,7 @@
       drawXT($('k-xt'), cc, xp, th); $('k-xt-leg').innerHTML = `<span><i style="border-color:${css('--orange')}"></i>caractéristiques de P</span><span><i style="border-color:${css('--blue')}"></i>domaine de dépendance</span>`;
       const uP = Calc.ondeDAlembert({ c: cc, sigma0: s0, t: th, xs: [xp, 3] });
       $('k-msg').className = 'msg'; $('k-msg').textContent = 'La bosse initiale se sépare en deux impulsions de demi-amplitude qui se déplacent à la vitesse c, en sens opposés. L\u2019information a une vitesse finie : au point P ne compte que la donnée initiale située dans le segment bleu, et rien ne se passe encore en dehors du cône.';
+      explain('edpb', [`Les deux impulsions sont en x = ±c·t = <b>±${fmt(cc * th, 3)}</b>, d’amplitude 0,5 ; la vitesse de propagation est c = ${fmt(cc, 3)}.`, `Le point P (x = ${fmt(xp, 3)}) dépend seulement des données initiales sur [${fmt(xp - cc * th, 3)} ; ${fmt(xp + cc * th, 3)}] ; u(P) = ${uP[0].toExponential(2).replace('.', ',')} : ${uP[0] > 1e-3 ? 'une impulsion a atteint P' : 'aucune impulsion n’a encore atteint P'}.`, 'Domaine de dépendance de P : le segment limité par les caractéristiques x ± c t ; en dehors, la solution reste nulle (à la précision près).']);
       cards($('k-cards'), [{ color: c[0], title: `À t = ${fmt(th, 3)} s`, lines: [`impulsions en x = ± c·t = <b>±${fmt(cc * th, 3)}</b>, amplitude 0,5`, `domaine de dépendance de P : <b>[${fmt(xp - cc * th, 3)} ; ${fmt(xp + cc * th, 3)}]</b>`, `u(P) = <b>${uP[0].toExponential(2).replace('.', ',')}</b>`, `u(x = 3) = <b>${uP[1].toExponential(2).replace('.', ',')}</b>`] }]);
     }
   }

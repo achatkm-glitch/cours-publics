@@ -221,7 +221,7 @@ window.GUIDE = {
       "exercices": "exercice C",
       "explorations": [
         {
-          "id": "S2-X1",
+          "id": "S2-X4",
           "titre": "Qui converge plus vite ?",
           "comp": [
             "C2.5"
@@ -241,7 +241,7 @@ window.GUIDE = {
           "question": "Que valent les deux résidus à k = 20 ? À partir de quelle itération le résidu passe-t-il sous 1e-3 pour chaque méthode ?"
         },
         {
-          "id": "S2-X2",
+          "id": "S2-X5",
           "titre": "Effet du nombre de nœuds",
           "comp": [
             "C2.5"
@@ -278,7 +278,7 @@ window.GUIDE = {
       "exercices": "exercices A, D",
       "explorations": [
         {
-          "id": "S2-X3",
+          "id": "S2-X1",
           "titre": "Mesurer un ordre",
           "comp": [
             "C2.1",
@@ -289,7 +289,7 @@ window.GUIDE = {
             "o-h0": "0.1",
             "o-k": "4"
           },
-          "consigne": "Gardez h₀ = 0,1 et quatre pas. Lisez dans les cartes les erreurs et les ordres des trois différences, puis observez les pentes sur le graphique logarithmique.",
+          "consigne": "Gardez h$_0$ = 0,1 et quatre pas. Lisez dans les cartes l'ordre observé et l'erreur au plus petit pas pour chacune des trois différences.",
           "question": "Quels ordres lisez-vous ? Pourquoi l'erreur de la régressive à trois points est-elle voisine du double de celle de la centrée ?"
         }
       ]
@@ -304,12 +304,13 @@ window.GUIDE = {
       "notions": [
         "point fantôme",
         "condition de Neumann",
-        "ordre global"
+        "ordre global",
+        "ordre de la condition aux limites"
       ],
       "exercices": "exercices B, F, H",
       "explorations": [
         {
-          "id": "S2-X4",
+          "id": "S2-X2",
           "titre": "La frontière commande l'ordre global",
           "comp": [
             "C2.3",
@@ -319,8 +320,23 @@ window.GUIDE = {
             "n-N0": "10",
             "n-k": "5"
           },
-          "consigne": "Gardez N = 10, 20, 40, 80, 160 et lisez dans les cartes les ordres observés des deux fermetures de Neumann.",
-          "question": "Quel ordre global obtient-on avec chaque fermeture ? Pourquoi l'ordre 1 de la fermeture limite-t-il l'ordre global alors que le schéma intérieur est d'ordre 2 ?"
+          "consigne": "Gardez N = 10, 20, 40, 80, 160 et lisez dans les cartes l'ordre observé des trois fermetures : ordre 1, ordre 2 (régressive) et point fantôme.",
+          "question": "Quel ordre global obtient-on avec chaque fermeture ? Pourquoi l'ordre 1 de la fermeture limite-t-il l'ordre global alors que le schéma intérieur est d'ordre 2 ? Quel avantage le point fantôme a-t-il sur la formule régressive à trois points ?"
+        },
+        {
+          "id": "S2-X3",
+          "titre": "Où l'erreur se forme",
+          "comp": [
+            "C2.3",
+            "C2.7"
+          ],
+          "reglages": {
+            "n-N0": "10",
+            "n-k": "5",
+            "n-Np": "20"
+          },
+          "consigne": "Avec N du profil d'erreur égal à 20, lisez sur le second graphique où l'erreur est la plus grande, et dans le texte « Que montrent vos réglages ? » sa valeur à x = 1 pour les trois fermetures. Doublez ensuite N du profil (40).",
+          "question": "Où l'erreur est-elle la plus grande avec chaque fermeture ? Comment son niveau à x = 1 change-t-il quand N double ?"
         }
       ]
     },
@@ -459,7 +475,7 @@ window.GUIDE = {
               "lw"
             ]
           },
-          "consigne": "Avec Co = 0,4 et Nx = 100, superposez les quatre schémas. Relevez le maximum et le minimum de chacun dans les cartes de résultats.",
+          "consigne": "Avec Co = 0,4 et Nx = 100, superposez les quatre schémas. Lisez le maximum et le minimum indiqués dans chaque carte.",
           "question": "Classez chaque schéma : instable, diffusion numérique ou dispersion ?"
         },
         {
@@ -573,9 +589,10 @@ window.GUIDE = {
         "C1.7"
       ],
       "notions": [
-        "schéma",
+        "schéma numérique",
         "diffusion numérique",
         "dispersion numérique",
+        "instabilité",
         "nombre de Courant"
       ],
       "exercices": "mise en route (introduction)",
@@ -599,8 +616,8 @@ window.GUIDE = {
               "bw"
             ]
           },
-          "consigne": "Observez les trois schémas après 1 puis 5 tours (N = 100, C = 0,8). Relevez dans les cartes de résultats le pic de la bosse, le maximum et le minimum de chaque schéma.",
-          "question": "Quel schéma lisse le signal ? Lesquels créent des oscillations ? Comment évoluent les erreurs entre 1 et 5 tours ?"
+          "consigne": "Observez les schémas A, B et C après 1 puis 5 tours (N = 100, C = 0,8). Relevez dans les cartes le pic de la bosse et le minimum de chacun.",
+          "question": "Lequel lisse le signal sans oscillation ? Lesquels créent des oscillations ? Comment évoluent le pic et le minimum entre 1 et 5 tours ? Proposez un nom pour chaque phénomène observé, puis cherchez le terme exact dans le polycopié."
         },
         {
           "id": "S1-I2",
@@ -621,7 +638,7 @@ window.GUIDE = {
               "bw"
             ]
           },
-          "consigne": "Passez à N = 200 points en gardant C = 0,8 et comparez les pics de la bosse et les minimums aux résultats de N = 100.",
+          "consigne": "Passez à N = 200 points en gardant C = 0,8 et comparez les pics de la bosse et les minimums des schémas A, B et C aux résultats de N = 100.",
           "question": "Qu'améliore le raffinement ? Que ne supprime-t-il pas ?"
         },
         {
@@ -645,8 +662,8 @@ window.GUIDE = {
               "ftcs"
             ]
           },
-          "consigne": "Ajoutez Lax–Friedrichs et FTCS centré aux trois premiers schémas (N = 100, C = 0,8). Comparez le pic de la bosse à t = 1.",
-          "question": "Lax–Friedrichs lisse-t-il plus ou moins que l'amont ? Que devient FTCS centré ?"
+          "consigne": "Ajoutez les schémas D et E aux trois premiers (N = 100, C = 0,8). Comparez le pic de la bosse à t = 1.",
+          "question": "Le schéma D lisse-t-il plus ou moins que le schéma A ? Que devient le schéma E ? Peut-on utiliser n'importe quel schéma pour ce problème ?"
         },
         {
           "id": "S1-I4",
@@ -668,8 +685,8 @@ window.GUIDE = {
               "lxf"
             ]
           },
-          "consigne": "Prenez C = 1 et gardez l'amont, Lax–Wendroff, Beam–Warming et Lax–Friedrichs. Lisez l'erreur moyenne et le comportement de chaque schéma.",
-          "question": "Que devient chaque schéma pour C = 1 ? Pourquoi ?"
+          "consigne": "Prenez C = 1 et gardez les schémas A, B, C et D. Lisez le comportement indiqué dans chaque carte.",
+          "question": "Que devient chaque schéma pour C = 1 ? Que conclure sur le rôle du nombre de Courant dans le choix et l'usage d'un schéma ?"
         }
       ]
     },
