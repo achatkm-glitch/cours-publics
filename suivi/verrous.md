@@ -6,7 +6,7 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| — | aucun verrou actif (libéré par Code 2026-10-21 17:28:00, après reprise autorisée par Mohammed) | — |
+| — | aucun verrou actif (libéré par Code 2026-11-03 17:05:31 +01:00) | — |
 
 
 ## Format d'un verrou

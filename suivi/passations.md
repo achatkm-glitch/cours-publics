@@ -138,3 +138,10 @@
 - **Contrôlé** : empreintes source/copie identiques ; contrôle en ligne après push consigné ci-dessous si disponible.
 - **Limites** : C2 en ligne date du 16/10 (non mis à jour, hors autorisation) ; contrôle mobile non effectué.
 - **Prochaine action** : mise à jour éventuelle du PDF C2 sur décision de Mohammed. Verrous libérés.
+
+### 2026-11-03 17:05:31 +01:00 — Code → Mohammed, Codex et prochains intervenants
+- **Fichiers** : `mftn/calculateurs/` (4 fichiers), `index.html`, `suivi/decisions.md`, `suivi/integration_mftn.md`, `suivi/passations.md`, `suivi/verrous.md`.
+- **Fait** : ajout des calculateurs MFTN au site (page, carte d'accueil, lien latéral).
+- **Contrôlé** : contrôle en ligne après déploiement consigné ci-dessous si disponible.
+- **Limites** : le dépôt local avait quatre commits non poussés (adoption du plugin scientific-workflow) qui partent avec ce push.
+- **Prochaine action** : relecture par Mohammed ; verrous libérés.

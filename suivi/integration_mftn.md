@@ -45,3 +45,10 @@ Empreintes SHA-256 source et destination identiques :
 - `index.html` inchangé (date du 21 octobre et pagination déjà exactes). Aucun audit scientifique nouveau ; surlignages jaunes non approuvés par cette publication.
 
 - Vérification en ligne 2026-10-21 17:28:51 +02:00 (Code) : https://achatkm-glitch.github.io/cours-publics/mftn/chapitre-01-slides.pdf servi, 3 023 300 octets, SHA-256 identique (E6B16CE1…). Commit b364a08 poussé.
+
+## Publication des calculateurs — 2026-11-03 17:05:31 +01:00 — Code
+- Source : `C:\Latex\MFTN\Peda_inv\site` (dépôt MFTN) ; copie publique dans `mftn/calculateurs/`.
+- Fichiers et empreintes : `mftn/calculateurs/index.html` SHA-256 2E0D07B6F2048AD14FAB1F93E5A6ABAF6FC21CFF63745AD2B3232BCB5CC808BF; `mftn/calculateurs/app.js` SHA-256 430772FBFF5A5C2B4CC82A511CE287E789BF3D0066DC44586BD75ADE024B95B9; `mftn/calculateurs/calc.js` SHA-256 0745C92B76D4EC5B520FA2B879E66624A8452BAF512B3E898E45FA88F79578C6; `mftn/calculateurs/style.css` SHA-256 60F8C4906DC96BBF1CEBD389964C5B4C957A7DA5996FD7487726FAA9DB7E1F8C.
+- Contrôles avant publication : `node test_calc.js` (50 contrôles) ; neuf onglets chargés sans erreur de console via http ; curseurs et comparaisons essayés.
+- Accueil : carte « Calculateurs de simulation MFTN » et lien latéral ajoutés ; les compteurs (4 documents, 445 pages) ne comptent que les PDF et sont inchangés.
+- Limites : relecture scientifique indépendante non faite ; vérification technique seulement.

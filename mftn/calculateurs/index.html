@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculateurs MFTN</title>
+<meta name="description" content="Calculateurs de simulation pour les séances d'introduction du cours MFTN : transport, conditions aux limites, barre 1D, Jacobi et Gauss–Seidel, ordre des schémas, chaleur 1D, advection. Comparaison de plusieurs cas et barres glissantes.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <p style="margin:0 0 6px"><a href="../../#mftn">← Cours publics · MFTN</a></p>
+  <h1>Calculateurs MFTN</h1>
+  <p>Outils de simulation pour les séances en pédagogie inversée. Aucune installation : tout s'exécute dans votre navigateur. Déplacez les curseurs et superposez plusieurs cas pour comparer.</p>
+</header>
+<nav aria-label="Calculateurs">
+  <span class="grp">Chapitre 1</span>
+  <button data-tab="transport" aria-selected="true">Transport</button>
+  <button data-tab="cl">Conditions aux limites</button>
+  <button data-tab="barre">Barre 1D</button>
+  <span class="grp">Chapitre 2</span>
+  <button data-tab="jg">Jacobi / Gauss–Seidel</button>
+  <button data-tab="ordre">Ordre d'une différence</button>
+  <button data-tab="neumann">Neumann</button>
+  <span class="grp">Chapitre 3</span>
+  <button data-tab="chaleur">Chaleur 1D</button>
+  <button data-tab="chemin">Chemin de raffinement</button>
+  <button data-tab="adv">Advection</button>
+  <button class="theme" id="theme" aria-label="Changer de thème">Clair / sombre</button>
+</nav>
+<main>
+
+<!-- Ch.1 : transport -->
+<section class="panel active" id="p-transport">
+  <h2>Transport : advection et diffusion d'une gaussienne</h2>
+  <p class="lead">Solution exacte de c<sub>t</sub> + a c<sub>x</sub> = D c<sub>xx</sub> pour une gaussienne initiale : le centre se déplace (advection), la largeur croît (diffusion). Séance 1, bloc A. Chaque paramètre a un curseur ; le champ placé dessous accepte d'autres valeurs (séparées par des espaces) pour superposer jusqu'à six courbes.</p>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <label>Vitesse a, en m/s<span class="sl"><input type="range" id="t-a" min="-3" max="3" step="0.1" value="1" data-unit="m/s"><output></output></span><input id="t-ax" value="" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
+        <label>Diffusivité D, en m²/s<span class="sl"><input type="range" id="t-D" min="0.01" max="1" step="0.01" value="0.05" data-unit="m²/s"><output></output></span><input id="t-Dx" value="" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
+        <label>Instant t, en s<span class="sl"><input type="range" id="t-t" min="0" max="10" step="0.5" value="4" data-unit="s"><output></output></span><input id="t-tx" value="0 2" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
+        <label>Largeur initiale σ₀, en m<span class="sl"><input type="range" id="t-s0" min="0.05" max="1" step="0.05" value="0.15" data-unit="m"><output></output></span></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère :</b> avec a = 1, D = 0,05 et σ₀ = 0,15, à t = 4 : centre 4, σ = 0,65, pic 0,2308 ; nombre de Péclet |a|σ₀/D = 3.</p>
+    </div>
+    <div>
+      <div class="msg" id="t-msg" aria-live="polite"></div>
+      <canvas id="t-plot" aria-label="Profils de concentration"></canvas><div class="legend" id="t-leg"></div>
+      <div class="tablewrap" id="t-table"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ch.1 : conditions aux limites -->
+<section class="panel" id="p-cl">
+  <h2>Barre : conditions aux limites Dirichlet, Neumann, Robin</h2>
+  <p class="lead">Conduction stationnaire λ T'' + q = 0 avec T(0) = T₀ imposée et trois conditions possibles en x = L. Séance 1, bloc B. Cochez plusieurs conditions pour les comparer ; par défaut, l'exemple de la paroi du polycopié où elles sont équivalentes.</p>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <div class="checks" role="group" aria-label="Conditions en x = L">
+          <label><input type="checkbox" name="l-type" value="dirichlet" checked> Dirichlet</label>
+          <label><input type="checkbox" name="l-type" value="neumann" checked> Neumann</label>
+          <label><input type="checkbox" name="l-type" value="robin" checked> Robin</label>
+        </div>
+        <label>Épaisseur L, en m<span class="sl"><input type="range" id="l-L" min="0.05" max="1" step="0.05" value="0.1" data-unit="m"><output></output></span></label>
+        <label>Conductivité λ, en W/(m·K)<span class="sl"><input type="range" id="l-lambda" min="1" max="100" step="1" value="10"><output></output></span></label>
+        <label>Production q, en W/m³<span class="sl"><input type="range" id="l-q" min="0" max="500000" step="10000" value="100000"><output></output></span></label>
+        <label>T(0), en K<span class="sl"><input type="range" id="l-T0" min="250" max="400" step="1" value="300"><output></output></span></label>
+        <label>Dirichlet : T(L), en K<span class="sl"><input type="range" id="l-TL" min="250" max="450" step="1" value="331"><output></output></span></label>
+        <label>Neumann : flux sortant en L, en W/m²<span class="sl"><input type="range" id="l-qL" min="0" max="10000" step="100" value="1900"><output></output></span></label>
+        <label>Robin : coefficient h, en W/(m²·K)<span class="sl"><input type="range" id="l-h" min="5" max="500" step="5" value="50"><output></output></span></label>
+        <label>Robin : température du fluide T∞, en K<span class="sl"><input type="range" id="l-Tinf" min="250" max="350" step="1" value="293"><output></output></span></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère (valeurs initiales) :</b> C₁ = 810 K/m, T(L) = 331 K, T max ≈ 332,8 K en x = 0,081 m ; flux sortants 8100 W/m² en x = 0 et 1900 W/m² en x = L, dont la somme vaut q·L = 10 000 W/m².</p>
+    </div>
+    <div>
+      <div class="msg" id="l-msg" aria-live="polite"></div>
+      <canvas id="l-plot" aria-label="Profils de température"></canvas><div class="legend" id="l-leg"></div>
+      <div class="tablewrap" id="l-table"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ch.1 : barre 1D -->
+<section class="panel" id="p-barre">
+  <h2>Barre 1D : schéma centré, comparaison de maillages</h2>
+  <p class="lead">Résout λ T'' + q = 0 avec T(0) = T₀ et T(L) = T_L sur N intervalles. Séance 1, bloc C. Le champ sous le curseur de N accepte d'autres valeurs (par exemple 8 16) pour superposer les maillages.</p>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <label>Nombre d'intervalles N<span class="sl"><input type="range" id="b-N" min="2" max="64" step="1" value="4"><output></output></span><input id="b-Nx" value="" placeholder="autres N à comparer (par exemple 8 16)" aria-label="Autres valeurs à comparer"></label>
+        <label>T(0), en K<span class="sl"><input type="range" id="b-T0" min="250" max="450" step="5" value="300" data-unit="K"><output></output></span></label>
+        <label>T(L), en K<span class="sl"><input type="range" id="b-TL" min="250" max="450" step="5" value="400" data-unit="K"><output></output></span></label>
+        <label>Longueur L, en m<span class="sl"><input type="range" id="b-L" min="0.1" max="2" step="0.1" value="1" data-unit="m"><output></output></span></label>
+        <label>Conductivité λ, en W/(m·K)<span class="sl"><input type="range" id="b-lambda" min="1" max="100" step="1" value="1"><output></output></span></label>
+        <label>Production q, en W/m³<span class="sl"><input type="range" id="b-q" min="0" max="1000" step="10" value="0"><output></output></span></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère :</b> N = 4, T₀ = 300 K, T_L = 400 K donne T₁ = 325 K, T₂ = 350 K, T₃ = 375 K, égaux à la solution analytique. Avec une production q &gt; 0, le schéma centré reste exact (solution quadratique) ; ajoutez N = 8 16 pour comparer les maillages.</p>
+    </div>
+    <div>
+      <div class="msg" id="b-msg" aria-live="polite"></div>
+      <canvas id="b-plot" aria-label="Profil de température"></canvas><div class="legend" id="b-leg"></div>
+      <h3 id="b-table-title"></h3>
+      <div class="tablewrap" id="b-table"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ch.2 : Jacobi / GS -->
+<section class="panel" id="p-jg">
+  <h2>Jacobi et Gauss–Seidel</h2>
+  <p class="lead">Résout −u'' = f sur [0,1] avec u(0) = u(1) = 0 et n nœuds intérieurs (h = 1/(n+1)), à partir du vecteur nul. Séance 2, exercice C. Les deux méthodes sont comparées sur les mêmes graphiques.</p>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <div class="checks" role="group" aria-label="Méthodes">
+          <label><input type="checkbox" name="j-m" value="jacobi" checked> Jacobi</label>
+          <label><input type="checkbox" name="j-m" value="gs" checked> Gauss–Seidel</label>
+        </div>
+        <label>Nœuds intérieurs n<span class="sl"><input type="range" id="j-n" min="1" max="40" step="1" value="5"><output></output></span></label>
+        <label>Second membre f<span class="sl"><input type="range" id="j-f" min="0.1" max="5" step="0.1" value="1"><output></output></span></label>
+        <label>Itérations k<span class="sl"><input type="range" id="j-k" min="0" max="200" step="1" value="2"><output></output></span></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère (n = 5, f = 1) :</b> Jacobi, u⁽¹⁾ = 1/72 partout ; u⁽²⁾ = (1/48, 1/36, 1/36, 1/36, 1/48). Gauss–Seidel, u⁽²⁾ = (7/288, 11/288, 53/1152, 29/576, 5/128). Solution exacte (5/72, 1/9, 1/8, 1/9, 5/72).</p>
+    </div>
+    <div>
+      <div class="msg" id="j-msg" aria-live="polite"></div>
+      <canvas id="j-plot" aria-label="Itérés et solution exacte"></canvas><div class="legend" id="j-leg"></div>
+      <canvas id="j-plot2" aria-label="Résidu selon l'itération" style="margin-top:12px"></canvas><div class="legend" id="j-leg2"></div>
+      <div class="tablewrap" id="j-table"></div>
+      <h3>Historique du résidu</h3>
+      <div class="tablewrap" id="j-hist"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ch.2 : ordre -->
+<section class="panel" id="p-ordre">
+  <h2>Ordre d'une différence finie</h2>
+  <p class="lead">Erreur en x = 0 de trois différences finies pour u(x) = exp(x), pour une suite de pas : progressive, centrée et régressive à trois points. Séance 2, exercice D.</p>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <label>Pas le plus grand h₀<span class="sl"><input type="range" id="o-h0" min="0.01" max="0.5" step="0.01" value="0.1"><output></output></span></label>
+        <label>Nombre de pas testés (h₀, h₀/2, h₀/4, …)<span class="sl"><input type="range" id="o-k" min="2" max="8" step="1" value="4"><output></output></span></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère :</b> progressive, 5,171×10⁻² puis 2,542×10⁻² (rapport 2) ; centrée, 1,667×10⁻³ puis 4,167×10⁻⁴ (rapport 4).</p>
+    </div>
+    <div>
+      <div class="msg" id="o-msg"></div>
+      <canvas id="o-plot" aria-label="Erreurs en échelle logarithmique"></canvas><div class="legend" id="o-leg"></div>
+      <div class="tablewrap" id="o-table"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ch.2 : Neumann -->
+<section class="panel" id="p-neumann">
+  <h2>Fermetures de Neumann d'ordre 1 et 2</h2>
+  <p class="lead">Résout −u'' = cos x sur [0,1] avec u(0) = 1 et u'(1) = 1 − sin 1 (solution exacte cos x + x). Compare la fermeture d'ordre 1 (u_N = u_{N−1} + h g) et celle d'ordre 2 (différence régressive à trois points). Séance 2, exercice H.</p>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <label>Plus petit N<span class="sl"><input type="range" id="n-N0" min="4" max="40" step="1" value="10"><output></output></span></label>
+        <label>Nombre de maillages testés (N₀, 2N₀, 4N₀, …)<span class="sl"><input type="range" id="n-k" min="2" max="6" step="1" value="5"><output></output></span></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère :</b> pour N de 10 à 80, l'ordre global observé vaut environ 1,0 avec la fermeture d'ordre 1 et environ 2,0 avec celle d'ordre 2.</p>
+    </div>
+    <div>
+      <canvas id="n-plot" aria-label="Erreur maximale selon h"></canvas><div class="legend" id="n-leg"></div>
+      <div class="tablewrap" id="n-table"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ch.3 : chaleur -->
+<section class="panel" id="p-chaleur">
+  <h2>Chaleur 1D : FTCS, BTCS, Crank–Nicolson</h2>
+  <p class="lead">Résout u_t = α u_xx sur [0,L] avec u = 0 aux bords et u(x,0) = sin(πx/L), jusqu'au temps final. Compare les schémas sur les mêmes graphiques et plusieurs pas de temps dans le tableau et le second graphique. Séance 3, exercices A et D.</p>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <div class="checks" role="group" aria-label="Schémas">
+          <label><input type="checkbox" name="c-s" value="ftcs" checked> FTCS</label>
+          <label><input type="checkbox" name="c-s" value="btcs" checked> BTCS</label>
+          <label><input type="checkbox" name="c-s" value="cn" checked> Crank–Nicolson</label>
+        </div>
+        <label>Diffusivité α, en m²/s (échelle logarithmique)<span class="sl"><input type="range" id="c-alpha" min="-7" max="-3" step="0.1" value="-5" data-log="1" data-unit="m²/s"><output></output></span></label>
+        <label>Longueur L, en m<span class="sl"><input type="range" id="c-L" min="0.05" max="0.5" step="0.01" value="0.1" data-unit="m"><output></output></span></label>
+        <label>Pas d'espace h<span class="sl"><input type="range" id="c-h" min="1" max="20" step="0.5" value="5" data-scale="0.001" data-unit="mm"><output></output></span></label>
+        <label>Temps final<span class="sl"><input type="range" id="c-tf" min="0.5" max="60" step="0.5" value="1" data-unit="s"><output></output></span></label>
+        <label>Pas de temps Δt, en s (sert au profil)<span class="sl"><input type="range" id="c-dt" min="0.05" max="20" step="0.05" value="1" data-unit="s"><output></output></span><input id="c-dtx" value="0.5 0.25" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère :</b> avec α = 10⁻⁵ m²/s, L = 0,10 m, h = 5 mm, Δt = 1 s et FTCS : Fo = 0,4, valeur centrale 0,990151 après un pas, contre 0,990179 pour la solution exacte ; pas de temps maximal 1,25 s. Passez le temps final à 10 s et Δt à 2 5 pour voir FTCS devenir instable.</p>
+    </div>
+    <div>
+      <div class="msg" id="c-msg" aria-live="polite"></div>
+      <p id="c-mid"></p>
+      <canvas id="c-plot" aria-label="Profils de température"></canvas><div class="legend" id="c-leg"></div>
+      <canvas id="c-plot2" aria-label="Erreur selon le pas de temps" style="margin-top:12px"></canvas><div class="legend" id="c-leg2"></div>
+      <div class="tablewrap" id="c-table"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ch.3 : chemin -->
+<section class="panel" id="p-chemin">
+  <h2>Chemin de raffinement Δt = c₀ hʳ</h2>
+  <p class="lead">Évalue le terme décisif du défaut local de Dufort–Frankel, α(Δt/h)², et de Lax–Friedrichs, h²/(2Δt), le long de plusieurs chemins. Séance 3, exercices C et E. Le champ sous le curseur de r accepte d'autres exposants pour les comparer.</p>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <label>Exposant r<span class="sl"><input type="range" id="p-r" min="0.5" max="3" step="0.1" value="1"><output></output></span><input id="p-rx" value="1.5 2" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
+        <label>Coefficient c₀ (unités adaptées)<span class="sl"><input type="range" id="p-c0" min="0.1" max="5" step="0.1" value="1"><output></output></span></label>
+        <label>Diffusivité α<span class="sl"><input type="range" id="p-alpha" min="0.1" max="5" step="0.1" value="1"><output></output></span></label>
+        <label>Plus grand pas h₀<span class="sl"><input type="range" id="p-h0" min="0.02" max="0.5" step="0.01" value="0.1"><output></output></span></label>
+        <label>Nombre de pas testés (h₀, h₀/2, …)<span class="sl"><input type="range" id="p-hk" min="3" max="8" step="1" value="4"><output></output></span></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère :</b> Dufort–Frankel est consistant avec la diffusion si Δt/h → 0, soit r &gt; 1 ; Lax–Friedrichs est consistant avec l'advection si et seulement si 0 &lt; r &lt; 2. Pour r = 2, le terme de Lax–Friedrichs reste constant et le schéma approche u_t + a u_x = u_xx/(2c₀).</p>
+    </div>
+    <div>
+      <div class="msg" id="p-msg">Un terme qui ne tend pas vers zéro quand h diminue signale une consistance perdue sur ce chemin.</div>
+      <div class="tablewrap" id="p-summary"></div>
+      <canvas id="p-plot" aria-label="Terme de Dufort–Frankel"></canvas><div class="legend" id="p-leg"></div>
+      <canvas id="p-plot2" aria-label="Terme de Lax–Friedrichs" style="margin-top:12px"></canvas><div class="legend" id="p-leg2"></div>
+      <h3 id="p-table-title"></h3>
+      <div class="tablewrap" id="p-table"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Ch.3 : advection -->
+<section class="panel" id="p-adv">
+  <h2>Advection d'une gaussienne</h2>
+  <p class="lead">Résout u_t + a u_x = 0 sur le domaine périodique [−2, 8] avec une gaussienne initiale (σ₀ = 0,15, amplitude 1). Superpose amont, FTCS centré, Lax–Friedrichs et Lax–Wendroff ; le tableau compare plusieurs maillages. Séance 3, exercice G.</p>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <div class="checks" role="group" aria-label="Schémas">
+          <label><input type="checkbox" name="a-s" value="amont" checked> Amont</label>
+          <label><input type="checkbox" name="a-s" value="ftcs" checked> FTCS centré</label>
+          <label><input type="checkbox" name="a-s" value="lxf" checked> Lax–Friedrichs</label>
+          <label><input type="checkbox" name="a-s" value="lw" checked> Lax–Wendroff</label>
+        </div>
+        <label>Vitesse a (négative : écoulement vers la gauche)<span class="sl"><input type="range" id="a-a" min="-3" max="3" step="0.1" value="1" data-unit="m/s"><output></output></span></label>
+        <label>Nombre de Courant Co<span class="sl"><input type="range" id="a-Co" min="0.05" max="1.2" step="0.05" value="0.4"><output></output></span></label>
+        <label>Temps final<span class="sl"><input type="range" id="a-tf" min="0.5" max="10" step="0.5" value="5" data-unit="s"><output></output></span></label>
+        <label>Nombre de points Nx (sert au profil)<span class="sl"><input type="range" id="a-Nx" min="50" max="400" step="10" value="100"><output></output></span><input id="a-Nxx" value="200" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère :</b> avec Co = 0,4 et Nx = 100 ou 200, FTCS centré est instable (amplitude croissante), l'amont et Lax–Friedrichs lissent le profil (diffusion numérique), Lax–Wendroff produit des oscillations (dispersion). Avec Co &gt; 1, l'amont devient instable à son tour. La vitesse a doit être non nulle ; pour a &lt; 0 le schéma amont prend la différence du côté opposé.</p>
+    </div>
+    <div>
+      <div class="msg" id="a-msg" aria-live="polite"></div>
+      <canvas id="a-plot" aria-label="Profil advecté"></canvas><div class="legend" id="a-leg"></div>
+      <div class="tablewrap" id="a-table"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>
+  Premier jet : vérification technique seulement. Les valeurs de repère proviennent du polycopié MFTN, sauf les itérations de Jacobi et de Gauss–Seidel, les ordres globaux de Neumann, le pas FTCS et l'exemple de la gaussienne, calculés par le rédacteur et contrôlés par les tests (<code>test_calc.js</code>).
+</footer>
+<script src="calc.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

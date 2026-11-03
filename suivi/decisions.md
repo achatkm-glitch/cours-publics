@@ -94,3 +94,10 @@
 - **Attribué à** : Claude (mise en place), tous les agents (application)
 - **Raison** : Garantir la rigueur scientifique et la traçabilité des figures, cours et slides publiés sur le site.
 - **Preuve** : commit 9d295d8 — CLAUDE.md + AGENTS.md mis à jour
+
+### 2026-11-03 17:05:31 +01:00 — Publication des calculateurs MFTN
+- **Instruction** : « alimente le site internet avec cette page internet » (page des calculateurs de simulation du dossier `Peda_inv/site` du dépôt MFTN).
+- **Auteur / reçu par** : Mohammed ; reçu par Code (Claude Code, session MFTN).
+- **Interprétation** : publier le site de calculateurs (HTML, CSS, JavaScript statiques) dans `mftn/calculateurs/` et l'ajouter à l'accueil (carte et lien latéral).
+- **Attribution** : Code, après vérification qu'aucun verrou n'était actif.
+- **État** : traité ; preuves dans `suivi/integration_mftn.md`.
