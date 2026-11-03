@@ -280,6 +280,76 @@
              oscille: phi.some((v, i) => i > 0 && v < phi[i - 1] - 1e-12) };
   }
 
-  const API = { thomas, gauss, linspace, maxAbs, barre, jacobiGS, ordreExp, neumann, neumannOrdres, chaleur, chemins, verdictsChemin, advection, sigmaAt, gaussAD, barreCL, barreVF, bilanDF, peclet };
+  /* 12. Introduction : advection d'un signal mixte (bosse lisse et créneau) sur le domaine périodique [0,1],
+     u_t + u_x = 0, a = 1 ; une période = un tour. Test classique inspiré de la figure 6.1 de LeVeque (2002) ;
+     les paramètres (bosse exp(-200 (x-0,3)^2), créneau sur ]0,6 ; 0,8[) sont ceux de ce site. */
+  function signalMixte(x) {
+    const g = Math.exp(-200 * Math.pow(x - 0.3, 2));
+    return g + (x > 0.6 + 1e-9 && x < 0.8 - 1e-9 ? 1 : 0); // bords exclus, avec tolérance d'arrondi
+  }
+  function advection1d({ scheme, Nx, Co, t }) {
+    const h = 1 / Nx, dt = Co * h, steps = Math.max(1, Math.round(t / dt)), tt = steps * dt, C = Co;
+    const x = Array.from({ length: Nx }, (_, i) => i * h);
+    let u = x.map(signalMixte);
+    for (let s = 0; s < steps; s++) {
+      const o = u;
+      u = o.map((_, i) => {
+        const u0 = o[i], um = o[(i - 1 + Nx) % Nx], um2 = o[(i - 2 + Nx) % Nx], up = o[(i + 1) % Nx];
+        if (scheme === 'amont') return u0 - C * (u0 - um);
+        if (scheme === 'lw') return u0 - C / 2 * (up - um) + C * C / 2 * (up - 2 * u0 + um);
+        if (scheme === 'bw') return u0 - C / 2 * (3 * u0 - 4 * um + um2) + C * C / 2 * (u0 - 2 * um + um2);
+        if (scheme === 'lxf') return 0.5 * (up + um) - C / 2 * (up - um);
+        return u0 - C / 2 * (up - um); // FTCS centré
+      });
+    }
+    const wrap = (v) => v - Math.floor(v);
+    const exact = x.map(xi => signalMixte(wrap(xi - tt)));
+    const err = u.map((v, i) => v - exact[i]);
+    const centre = wrap(0.3 + tt);
+    let bump = -Infinity;
+    x.forEach((xi, i) => { let d = Math.abs(xi - centre); d = Math.min(d, 1 - d); if (d <= 0.12 && u[i] > bump) bump = u[i]; });
+    return { h, dt, steps, t: tt, x, u, exact, max: Math.max.apply(null, u), min: Math.min.apply(null, u), bump,
+             errL1: err.reduce((a, e) => a + Math.abs(e), 0) / Nx, maxErr: maxAbs(err) };
+  }
+
+  /* 13. Chapitre 1 : classification et comportement des EDP. */
+  /* EDP d'ordre 2 : A u_xx + 2B u_xy + C u_yy + ... = 0 ; discriminant Delta = B^2 - A C. */
+  function classifyPDE(A, B, C) {
+    const delta = B * B - A * C, tol = 1e-9 * (1 + Math.abs(B * B) + Math.abs(A * C));
+    const type = Math.abs(delta) <= tol ? 'parabolique' : (delta < 0 ? 'elliptique' : 'hyperbolique');
+    return { delta, type };
+  }
+  /* Laplace sur le carré unité, Dirichlet constant sur chaque côté (N x N nœuds intérieurs), sur-relaxation. */
+  function laplace2d({ N, left, right, top, bottom }) {
+    const M = N + 2, u = Array.from({ length: M }, () => new Array(M).fill(0));
+    const mean = (left + right + top + bottom) / 4;
+    for (let j = 0; j < M; j++) for (let i = 0; i < M; i++) u[j][i] = mean;
+    for (let k = 0; k < M; k++) { u[k][0] = left; u[k][M - 1] = right; u[0][k] = bottom; u[M - 1][k] = top; }
+    const w = 2 / (1 + Math.sin(Math.PI / (N + 1)));
+    let diff = Infinity, it = 0;
+    while (diff > 1e-9 && it < 5000) {
+      diff = 0;
+      for (let j = 1; j <= N; j++) for (let i = 1; i <= N; i++) {
+        const nv = (1 - w) * u[j][i] + w * 0.25 * (u[j][i - 1] + u[j][i + 1] + u[j - 1][i] + u[j + 1][i]);
+        diff = Math.max(diff, Math.abs(nv - u[j][i])); u[j][i] = nv;
+      }
+      it++;
+    }
+    let lo = Infinity, hi = -Infinity;
+    u.forEach(r => r.forEach(v => { lo = Math.min(lo, v); hi = Math.max(hi, v); }));
+    const c = Math.floor((M - 1) / 2);
+    return { N, M, u, iters: it, min: lo, max: hi, centre: u[c][c], ligneCentrale: u[c].slice() };
+  }
+  /* Parabolique : chaleur sur la droite réelle, somme de gaussiennes initiales (solution exacte). */
+  function chaleurGauss({ D, sigma0, centres, t, xs }) {
+    return xs.map(x => centres.reduce((a, c0) => a + sigma0 / sigmaAt(sigma0, D, t) * Math.exp(-Math.pow(x - c0, 2) / (2 * Math.pow(sigmaAt(sigma0, D, t), 2))), 0));
+  }
+  /* Hyperbolique : équation des ondes, formule de d'Alembert pour une bosse initiale au repos. */
+  function ondeDAlembert({ c, sigma0, centre = 0, t, xs }) {
+    const f = (x) => Math.exp(-Math.pow(x - centre, 2) / (2 * sigma0 * sigma0));
+    return xs.map(x => 0.5 * (f(x - c * t) + f(x + c * t)));
+  }
+
+  const API = { thomas, gauss, linspace, maxAbs, barre, jacobiGS, ordreExp, neumann, neumannOrdres, chaleur, chemins, verdictsChemin, advection, sigmaAt, gaussAD, barreCL, barreVF, bilanDF, peclet, signalMixte, advection1d, classifyPDE, laplace2d, chaleurGauss, ondeDAlembert };
   if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.Calc = API;
 })(typeof window !== 'undefined' ? window : this);

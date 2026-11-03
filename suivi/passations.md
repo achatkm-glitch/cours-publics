@@ -157,3 +157,9 @@
 - **Fait** : mise à jour des calculateurs MFTN (volumes finis, Péclet, guide relié aux fiches).
 - **Limites** : les réponses attendues aux explorations ne sont pas publiées (corrigé enseignant dans le dépôt MFTN).
 - **Prochaine action** : relecture par Mohammed ; verrous libérés.
+
+### 2026-11-03 17:45:25 +01:00 — Code → Mohammed, Codex et prochains intervenants
+- **Fichiers** : `mftn/calculateurs/` (6 fichiers dont `equations.js`), `index.html`, suivis.
+- **Fait** : calculateurs v5 (introduction, EDP, équations affichées).
+- **Limites** : réponses attendues non publiées.
+- **Prochaine action** : relecture par Mohammed ; verrous libérés.

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Calculateurs MFTN</title>
 <meta name="description" content="Calculateurs de simulation pour les séances d'introduction du cours MFTN : transport, conditions aux limites, barre 1D, Jacobi et Gauss–Seidel, ordre des schémas, chaleur 1D, advection. Comparaison de plusieurs cas et barres glissantes.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,7 +16,10 @@
 </header>
 <nav aria-label="Calculateurs">
   <span class="grp">Chapitre 1</span>
-  <button data-tab="transport" aria-selected="true">Transport</button>
+  <button data-tab="intro" aria-selected="true">Introduction</button>
+  <button data-tab="transport">Transport</button>
+  <button data-tab="edpc">EDP : classer</button>
+  <button data-tab="edpb">EDP : comportement</button>
   <button data-tab="cl">Conditions aux limites</button>
   <button data-tab="barre">Barre 1D</button>
   <button data-tab="peclet">Péclet</button>
@@ -31,10 +35,42 @@
 </nav>
 <main>
 
+<!-- Introduction -->
+<section class="panel active" id="p-intro">
+  <h2>Introduction : pourquoi le choix du schéma compte</h2>
+  <p class="lead">Un même signal, une bosse lisse et un créneau, est transporté à vitesse constante sur un domaine périodique : après un tour entier, la solution exacte est identique au signal initial. Chaque schéma le déforme pourtant à sa façon. Test classique inspiré de la figure 6.1 de LeVeque (2002) ; les paramètres sont ceux de ce site. Introduction du cours, séance 1.</p>
+  <div class="eqs" data-eq="intro"></div>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <div class="checks" role="group" aria-label="Schémas">
+          <label><input type="checkbox" name="i-s" value="amont" checked> Amont</label>
+          <label><input type="checkbox" name="i-s" value="lw" checked> Lax–Wendroff</label>
+          <label><input type="checkbox" name="i-s" value="bw" checked> Beam–Warming</label>
+          <label><input type="checkbox" name="i-s" value="lxf"> Lax–Friedrichs</label>
+          <label><input type="checkbox" name="i-s" value="ftcs"> FTCS centré</label>
+        </div>
+        <label>Nombre de points N<span class="sl"><input type="range" id="i-N" min="20" max="400" step="10" value="100"><output></output></span></label>
+        <label>Nombre de Courant C<span class="sl"><input type="range" id="i-Co" min="0.1" max="1" step="0.05" value="0.8"><output></output></span></label>
+        <label>Premier instant (en tours)<span class="sl"><input type="range" id="i-t1" min="0.5" max="10" step="0.5" value="1" data-unit="tour"><output></output></span></label>
+        <label>Second instant (en tours)<span class="sl"><input type="range" id="i-t2" min="0.5" max="10" step="0.5" value="5" data-unit="tours"><output></output></span></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère :</b> avec N = 100 et C = 0,8, l'amont lisse la bosse (pic 0,745 après 1 tour, 0,449 après 5) sans oscillation ; Lax–Wendroff et Beam–Warming conservent mieux la bosse (0,978 ; 0,991) mais oscillent (minimum −0,175 ; −0,256). FTCS centré explose. Pour C = 1, les quatre schémas à stencil amont ou centré sont exacts.</p>
+    </div>
+    <div>
+      <div class="msg" id="i-msg" aria-live="polite"></div>
+      <div class="plotgrid" id="i-grid"></div>
+      <div class="cards" id="i-cards"></div>
+    </div>
+  </div>
+</section>
+
 <!-- Ch.1 : transport -->
-<section class="panel active" id="p-transport">
+<section class="panel" id="p-transport">
   <h2>Transport : advection et diffusion d'une gaussienne</h2>
-  <p class="lead">Solution exacte de c<sub>t</sub> + a c<sub>x</sub> = D c<sub>xx</sub> pour une gaussienne initiale : le centre se déplace (advection), la largeur croît (diffusion). Séance 1, bloc A. Chaque paramètre a un curseur ; le champ placé dessous accepte d'autres valeurs (séparées par des espaces) pour superposer jusqu'à six courbes.</p>
+  <p class="lead">Un profil gaussien est transporté par la vitesse a et étalé par la diffusion D. Les courbes montrent le centre qui se déplace, la largeur qui croît et l'aire conservée ; la jauge donne le nombre de Péclet, qui compare les deux effets. Séance 1, bloc A. Chaque paramètre a un curseur ; le champ placé dessous accepte d'autres valeurs (séparées par des espaces) pour superposer jusqu'à six courbes.</p>
+  <div class="eqs" data-eq="transport"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -55,10 +91,91 @@
   </div>
 </section>
 
+<!-- EDP : classer -->
+<section class="panel" id="p-edpc">
+  <h2>EDP : classer une équation et lire son comportement</h2>
+  <p class="lead">Le signe du discriminant des coefficients du terme d'ordre 2 donne le type de l'EDP, donc la façon dont l'information se propage et les données à fournir. Réglez A, B et C pour passer d'un type à l'autre ; la courbe tracée est la conique associée. Le dernier curseur suit un cas non linéaire dont le type change avec la solution. Séance 1, bloc B.</p>
+  <div class="eqs" data-eq="edpc"></div>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <label>Coefficient A (devant u_xx)<span class="sl"><input type="range" id="d-A" min="-3" max="3" step="0.1" value="1"><output></output></span></label>
+        <label>Coefficient B (devant 2 u_xy)<span class="sl"><input type="range" id="d-B" min="-3" max="3" step="0.1" value="0"><output></output></span></label>
+        <label>Coefficient C (devant u_yy)<span class="sl"><input type="range" id="d-C" min="-3" max="3" step="0.1" value="1"><output></output></span></label>
+        <label>Cas non linéaire : valeur de u<span class="sl"><input type="range" id="d-u" min="-2" max="2" step="0.05" value="0.5"><output></output></span></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère :</b> A = 1, B = 0, C = 4 donne Δ = −4 (elliptique). Pour la chaleur u_t − α u_xx, on a A = −α, B = 0, C = 0 : Δ = 0 (parabolique). Pour l'onde u_tt − c² u_xx, A = −c², B = 0, C = 1 : Δ = c² &gt; 0 (hyperbolique).</p>
+    </div>
+    <div>
+      <div class="msg" id="d-msg" aria-live="polite"></div>
+      <canvas id="d-plot" aria-label="Conique associée à la forme quadratique"></canvas><div class="legend" id="d-leg"></div>
+      <div class="cards" id="d-cards"></div>
+      <div class="gauge" id="d-gauge"></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDP : comportement -->
+<section class="panel" id="p-edpb">
+  <h2>EDP : comportement des trois types</h2>
+  <p class="lead">Chaque type a son comportement : une EDP elliptique décrit un équilibre où toute la frontière influence chaque point ; une EDP parabolique diffuse et lisse, avec une propagation instantanée mais très faible loin de la source ; une EDP hyperbolique propage l'information à vitesse finie, dans un cône de dépendance. Choisissez un type et jouez avec les curseurs. Séance 1, bloc B.</p>
+  <div class="eqs" data-eq="edpb"></div>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <div class="checks" role="radiogroup" aria-label="Type d'EDP">
+          <label><input type="radio" name="k-type" value="elliptique" checked> Elliptique</label>
+          <label><input type="radio" name="k-type" value="parabolique"> Parabolique</label>
+          <label><input type="radio" name="k-type" value="hyperbolique"> Hyperbolique</label>
+        </div>
+        <div data-kt="elliptique" class="kgroup">
+          <label>Côté gauche, en °C<span class="sl"><input type="range" id="k-Tl" min="0" max="100" step="5" value="100"><output></output></span></label>
+          <label>Côté droit, en °C<span class="sl"><input type="range" id="k-Tr" min="0" max="100" step="5" value="0"><output></output></span></label>
+          <label>Côté haut, en °C<span class="sl"><input type="range" id="k-Tt" min="0" max="100" step="5" value="0"><output></output></span></label>
+          <label>Côté bas, en °C<span class="sl"><input type="range" id="k-Tb" min="0" max="100" step="5" value="0"><output></output></span></label>
+          <label>Nœuds par direction<span class="sl"><input type="range" id="k-n" min="9" max="61" step="2" value="31"><output></output></span></label>
+        </div>
+        <div data-kt="parabolique" class="kgroup" style="display:none">
+          <label>Diffusivité D<span class="sl"><input type="range" id="k-D" min="0.01" max="1" step="0.01" value="0.05"><output></output></span></label>
+          <label>Instant final t<span class="sl"><input type="range" id="k-tp" min="0" max="10" step="0.5" value="2" data-unit="s"><output></output></span></label>
+          <label>Écart entre les deux sources<span class="sl"><input type="range" id="k-gap" min="0" max="8" step="0.5" value="4" data-unit="m"><output></output></span></label>
+        </div>
+        <div data-kt="hyperbolique" class="kgroup" style="display:none">
+          <label>Vitesse de propagation c<span class="sl"><input type="range" id="k-c" min="0.2" max="3" step="0.1" value="1" data-unit="m/s"><output></output></span></label>
+          <label>Instant t<span class="sl"><input type="range" id="k-th" min="0.5" max="6" step="0.1" value="2" data-unit="s"><output></output></span></label>
+          <label>Position du point P<span class="sl"><input type="range" id="k-xp" min="-4" max="4" step="0.5" value="2" data-unit="m"><output></output></span></label>
+        </div>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere" data-kt="elliptique"><b>Repère :</b> avec le côté gauche à 100 °C et les trois autres à 0 °C, la température au centre vaut 25 °C ; avec deux côtés opposés à 100 °C, 50 °C ; avec trois côtés à 100 °C, 75 °C.</p>
+      <p class="repere" data-kt="parabolique" style="display:none"><b>Repère :</b> avec D = 0,05, deux sources en x = ±2 et t = 2 : σ = 0,4717 ; la valeur en x = 5 est non nulle (5,2e-10) mais minuscule.</p>
+      <p class="repere" data-kt="hyperbolique" style="display:none"><b>Repère :</b> avec c = 1 et t = 2, la bosse initiale se sépare en deux impulsions d'amplitude 0,5 situées en x = ±2 ; en x = 3, hors du cône, la valeur est nulle (1e-10).</p>
+    </div>
+    <div>
+      <div class="msg" id="k-msg" aria-live="polite"></div>
+      <div data-kt="elliptique" class="plots2">
+        <div><canvas id="k-heat" aria-label="Champ de température"></canvas><div class="legend" id="k-heat-leg"></div></div>
+        <div><canvas id="k-line" aria-label="Profil le long de la ligne médiane"></canvas><div class="legend" id="k-line-leg"></div></div>
+      </div>
+      <div data-kt="parabolique" class="plots2" style="display:none">
+        <div><canvas id="k-par" aria-label="Profils de température"></canvas><div class="legend" id="k-par-leg"></div></div>
+        <div><canvas id="k-par2" aria-label="Profils en échelle logarithmique"></canvas><div class="legend" id="k-par2-leg"></div></div>
+      </div>
+      <div data-kt="hyperbolique" class="plots2" style="display:none">
+        <div><canvas id="k-hyp" aria-label="Profil de l'onde"></canvas><div class="legend" id="k-hyp-leg"></div></div>
+        <div><canvas id="k-xt" aria-label="Diagramme espace-temps et domaine de dépendance"></canvas><div class="legend" id="k-xt-leg"></div></div>
+      </div>
+      <div class="cards" id="k-cards"></div>
+    </div>
+  </div>
+</section>
+
 <!-- Ch.1 : conditions aux limites -->
 <section class="panel" id="p-cl">
   <h2>Barre : conditions aux limites Dirichlet, Neumann, Robin</h2>
-  <p class="lead">Conduction stationnaire λ T'' + q = 0 avec T(0) = T₀ imposée et trois conditions possibles en x = L. Séance 1, bloc B. Cochez plusieurs conditions pour les comparer ; par défaut, l'exemple de la paroi du polycopié où elles sont équivalentes.</p>
+  <p class="lead">Conduction stationnaire dans une barre avec production, la température étant imposée en x = 0 et trois conditions possibles en x = L. Séance 1, bloc B. Cochez plusieurs conditions pour les comparer ; par défaut, l'exemple de la paroi du polycopié, où elles sont équivalentes.</p>
+  <div class="eqs" data-eq="cl"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -90,7 +207,8 @@
 <!-- Ch.1 : barre 1D -->
 <section class="panel" id="p-barre">
   <h2>Barre 1D : différences finies et volumes finis</h2>
-  <p class="lead">Résout λ T'' + q = 0 avec T(0) = T₀ et T(L) = T_L sur N intervalles, par le schéma centré aux nœuds (différences finies) et par un bilan sur N cellules (volumes finis). Séance 1, bloc C. Les deux graphiques montrent la solution et son erreur par rapport à la solution analytique ; le champ sous le curseur de N accepte d'autres valeurs (par exemple 8 16) pour comparer les maillages.</p>
+  <p class="lead">Même problème traité par le schéma centré aux nœuds (différences finies) et par un bilan sur N cellules (volumes finis). Séance 1, bloc C. Les deux graphiques montrent la solution et son erreur par rapport à la solution analytique ; le champ sous le curseur de N accepte d'autres valeurs (par exemple 8 16) pour comparer les maillages.</p>
+  <div class="eqs" data-eq="barre"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -122,7 +240,8 @@
 <!-- Ch.1 : Péclet -->
 <section class="panel" id="p-peclet">
   <h2>Péclet : convection–diffusion en volumes finis</h2>
-  <p class="lead">Résout ρu φ' = Γ φ'' sur [0,1] avec φ(0) = 0 et φ(1) = 1, en volumes finis sur N cellules, avec deux reconstructions de la valeur convectée aux faces : centrée et amont. Pe = ρuL/Γ est le nombre de Péclet global et Pe_h = Pe/N celui de la maille. Séance 1, bloc A (nombre de Péclet). Comparez les schémas et superposez plusieurs maillages.</p>
+  <p class="lead">Convection–diffusion stationnaire entre deux valeurs imposées, résolue en volumes finis sur N cellules avec deux reconstructions de la valeur convectée aux faces : centrée et amont. Pe est le nombre de Péclet global et Pe_h celui de la maille. Séance 1, bloc A. Comparez les schémas et superposez plusieurs maillages.</p>
+  <div class="eqs" data-eq="peclet"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -151,7 +270,8 @@
 <!-- Ch.2 : Jacobi / GS -->
 <section class="panel" id="p-jg">
   <h2>Jacobi et Gauss–Seidel</h2>
-  <p class="lead">Résout −u'' = f sur [0,1] avec u(0) = u(1) = 0 et n nœuds intérieurs (h = 1/(n+1)), à partir du vecteur nul. Séance 2, exercice C. Les deux méthodes sont comparées sur les mêmes graphiques.</p>
+  <p class="lead">Un système tridiagonal issu de la discrétisation de la diffusion 1D est résolu par Jacobi et par Gauss–Seidel, à partir du vecteur nul. Séance 2, exercice C. Les deux méthodes sont comparées sur les mêmes graphiques.</p>
+  <div class="eqs" data-eq="jg"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -179,7 +299,8 @@
 <!-- Ch.2 : ordre -->
 <section class="panel" id="p-ordre">
   <h2>Ordre d'une différence finie</h2>
-  <p class="lead">Erreur en x = 0 de trois différences finies pour u(x) = exp(x), pour une suite de pas : progressive, centrée et régressive à trois points. Séance 2, exercice D.</p>
+  <p class="lead">Erreur en x = 0 de trois différences finies pour la fonction exponentielle, pour une suite de pas. Séance 2, exercice D.</p>
+  <div class="eqs" data-eq="ordre"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -200,7 +321,8 @@
 <!-- Ch.2 : Neumann -->
 <section class="panel" id="p-neumann">
   <h2>Fermetures de Neumann d'ordre 1 et 2</h2>
-  <p class="lead">Résout −u'' = cos x sur [0,1] avec u(0) = 1 et u'(1) = 1 − sin 1 (solution exacte cos x + x). Compare la fermeture d'ordre 1 (u_N = u_{N−1} + h g) et celle d'ordre 2 (différence régressive à trois points). Séance 2, exercice H.</p>
+  <p class="lead">Problème avec une condition de Dirichlet à gauche et une condition de Neumann à droite, de solution exacte connue. Compare la fermeture d'ordre 1 et celle d'ordre 2. Séance 2, exercice H.</p>
+  <div class="eqs" data-eq="neumann"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -220,7 +342,8 @@
 <!-- Ch.3 : chaleur -->
 <section class="panel" id="p-chaleur">
   <h2>Chaleur 1D : FTCS, BTCS, Crank–Nicolson</h2>
-  <p class="lead">Résout u_t = α u_xx sur [0,L] avec u = 0 aux bords et u(x,0) = sin(πx/L), jusqu'au temps final. Compare les schémas sur les mêmes graphiques et plusieurs pas de temps dans le tableau et le second graphique. Séance 3, exercices A et D.</p>
+  <p class="lead">Un profil sinusoïdal se refroidit entre deux bords à température nulle. Compare les schémas sur les mêmes graphiques, et plusieurs pas de temps dans les cartes et le second graphique. Séance 3, exercices A et D.</p>
+  <div class="eqs" data-eq="chaleur"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -251,7 +374,8 @@
 <!-- Ch.3 : chemin -->
 <section class="panel" id="p-chemin">
   <h2>Chemin de raffinement Δt = c₀ hʳ</h2>
-  <p class="lead">Évalue le terme décisif du défaut local de Dufort–Frankel, α(Δt/h)², et de Lax–Friedrichs, h²/(2Δt), le long de plusieurs chemins. Séance 3, exercices C et E. Le champ sous le curseur de r accepte d'autres exposants pour les comparer.</p>
+  <p class="lead">Évalue le terme décisif du défaut local de Dufort–Frankel et de Lax–Friedrichs le long de plusieurs chemins de raffinement. Séance 3, exercices C et E. Le champ sous le curseur de r accepte d'autres exposants pour les comparer.</p>
+  <div class="eqs" data-eq="chemin"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -277,7 +401,8 @@
 <!-- Ch.3 : advection -->
 <section class="panel" id="p-adv">
   <h2>Advection d'une gaussienne</h2>
-  <p class="lead">Résout u_t + a u_x = 0 sur le domaine périodique [−2, 8] avec une gaussienne initiale (σ₀ = 0,15, amplitude 1). Superpose amont, FTCS centré, Lax–Friedrichs et Lax–Wendroff ; le tableau compare plusieurs maillages. Séance 3, exercice G.</p>
+  <p class="lead">Une gaussienne est transportée sur un domaine périodique. Superpose amont, FTCS centré, Lax–Friedrichs et Lax–Wendroff ; les cartes comparent plusieurs maillages. Séance 3, exercice G.</p>
+  <div class="eqs" data-eq="adv"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -307,7 +432,9 @@
 <footer>
   Premier jet : vérification technique seulement. Les valeurs de repère proviennent du polycopié MFTN, sauf les itérations de Jacobi et de Gauss–Seidel, les ordres globaux de Neumann, le pas FTCS, l'exemple de la gaussienne, les volumes finis de la barre et la convection–diffusion, calculés par le rédacteur et contrôlés par les tests (<code>test_calc.js</code>).
 </footer>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script src="calc.js"></script>
+<script src="equations.js"></script>
 <script src="guide.js"></script>
 <script src="app.js"></script>
 </body>

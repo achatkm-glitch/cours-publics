@@ -94,7 +94,7 @@
         const px = X(v), py = Y(y);
         if (!started) { g.moveTo(px, py); started = true; } else g.lineTo(px, py);
       });
-      g.stroke();
+      if (!s.noline) g.stroke();
       g.setLineDash([]);
       if (s.points || (s.x.length <= 24 && !s.dash)) s.x.forEach((v, i) => {
         const y = s.y[i]; if (!isFinite(v) || !isFinite(y) || (o.logx && v <= 0) || (o.logy && y <= 0)) return;
@@ -120,7 +120,7 @@
   }
   /* Jauge logarithmique : zones colorées, repères par cas, texte d'interprétation. */
   function gauge(el, o) {
-    const lo = Math.log10(o.min), hi = Math.log10(o.max), pos = v => Math.max(0, Math.min(100, (Math.log10(v) - lo) / (hi - lo) * 100));
+    const f = o.linear ? (v => v) : Math.log10, lo = f(o.min), hi = f(o.max), pos = v => Math.max(0, Math.min(100, (f(v) - lo) / (hi - lo) * 100));
     const zones = o.zones.map(z => `<span class="zone" style="left:${pos(z.from)}%;width:${pos(z.to) - pos(z.from)}%;background:${z.color}"></span>`).join('');
     const marks = o.marks.map(m => `<i class="gmark" style="left:${pos(m.v)}%;background:${m.color}" title="${m.label}"></i>`).join('');
     const labels = o.zones.map(z => `<span style="left:${(pos(z.from) + pos(z.to)) / 2}%">${z.label}</span>`).join('');
@@ -325,7 +325,156 @@
     cards($('a-table'), items);
   }
 
-  const RUN = { transport: runTransport, cl: runCL, barre: runBarre, peclet: runPeclet, jg: runJG, ordre: runOrdre, neumann: runNeumann, chaleur: runChaleur, chemin: runChemin, adv: runAdv };
+  const RUN = { intro: runIntro, edpc: runEdpc, edpb: runEdpb, transport: runTransport, cl: runCL, barre: runBarre, peclet: runPeclet, jg: runJG, ordre: runOrdre, neumann: runNeumann, chaleur: runChaleur, chemin: runChemin, adv: runAdv };
+
+
+  /* ---------- Équations affichées en pleine ligne (KaTeX si disponible) ---------- */
+  function renderEquations() {
+    const E = window.EQUATIONS || {};
+    document.querySelectorAll('[data-eq]').forEach(box => {
+      const tab = box.dataset.eq, list = E[tab] || [];
+      box.innerHTML = list.map((e, i) => `<div><div class="eq-label">${e.titre}</div><div class="eq-math" data-i="${i}"></div></div>`).join('');
+      list.forEach((e, i) => {
+        const el = box.querySelector(`.eq-math[data-i="${i}"]`);
+        if (window.katex) { try { window.katex.render(e.tex, el, { displayMode: true, throwOnError: false }); } catch (err) { el.textContent = e.tex; el.classList.add('plain'); } }
+        else { el.textContent = e.tex; el.classList.add('plain'); }
+      });
+    });
+  }
+
+  /* ---------- Introduction : le même signal, plusieurs schémas ---------- */
+  const INTRO = { amont: 'Amont', lw: 'Lax–Wendroff', bw: 'Beam–Warming', lxf: 'Lax–Friedrichs', ftcs: 'FTCS centré' };
+  function runIntro() {
+    const c = pal(), schemes = checked('i-s'), N = Math.round(num('i-N')), Co = num('i-Co'), ts = [num('i-t1'), num('i-t2')];
+    if (!schemes.length) return;
+    $('i-grid').innerHTML = schemes.map(s => ts.map((t, k) => `<canvas id="i-c-${s}-${k}" aria-label="${INTRO[s]} à t = ${t}"></canvas>`).join('')).join('');
+    const items = []; let bad = false;
+    schemes.forEach((s, si) => ts.forEach((t, k) => {
+      const r = Calc.advection1d({ scheme: s, Nx: N, Co, t });
+      const unstable = !isFinite(r.max) || Math.abs(r.max) > 3 || Math.abs(r.min) > 3; bad = bad || unstable;
+      const comp = unstable ? 'instable' : (r.min < -0.02 || r.max > 1.05 ? 'oscillations (dispersion)' : 'lissage (diffusion numérique)');
+      plot($(`i-c-${s}-${k}`), [{ x: r.x.concat([1]), y: r.exact.concat([r.exact[0]]), color: css('--plot-axis'), width: 1.4, label: 'exacte' },
+        { x: r.x, y: r.u, color: c[si % 6], noline: true, points: true, label: INTRO[s] }], { xlabel: 'x', ylabel: 'u', ylim: [-0.5, 1.5], title: `${INTRO[s]} à t = ${fmt(t, 3)}` });
+      items.push({ color: c[si % 6], title: `${INTRO[s]} · t = ${fmt(t, 3)}`, lines: [`pic de la bosse = <b>${fmt(r.bump, 3)}</b> (exacte : 1)`, `maximum = <b>${fmt(r.max, 3)}</b> ; minimum = <b>${fmt(r.min, 3)}</b>`, `erreur moyenne L¹ = <b>${fmt(r.errL1, 3)}</b>`, `comportement : <b>${comp}</b>`] });
+    }));
+    $('i-msg').className = bad ? 'msg warn' : 'msg';
+    $('i-msg').textContent = `N = ${N} points, C = ${fmt(Co, 3)}. Ligne : solution exacte ; cercles : schéma. Un tour entier correspond à t = 1.` + (bad ? ' Au moins un schéma est instable : ses valeurs sortent de l\u2019échelle.' : '');
+    cards($('i-cards'), items);
+  }
+
+  /* ---------- EDP : classer ---------- */
+  function drawConic(canvas, A, B, Cc) {
+    const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
+    canvas.width = W * dpr; canvas.height = W * dpr;
+    const g = canvas.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
+    const R = 3, m = 30, S = W - 2 * m, X = x => m + (x + R) / (2 * R) * S, Y = y => m + (R - y) / (2 * R) * S;
+    const grid = css('--plot-grid'), axis = css('--plot-axis'), muted = css('--muted');
+    g.strokeStyle = grid; g.lineWidth = 1;
+    for (let v = -R; v <= R; v++) { g.beginPath(); g.moveTo(X(v), Y(-R)); g.lineTo(X(v), Y(R)); g.stroke(); g.beginPath(); g.moveTo(X(-R), Y(v)); g.lineTo(X(R), Y(v)); g.stroke(); }
+    g.strokeStyle = axis; g.lineWidth = 1.2; g.strokeRect(m, m, S, S);
+    g.beginPath(); g.moveTo(X(-R), Y(0)); g.lineTo(X(R), Y(0)); g.moveTo(X(0), Y(-R)); g.lineTo(X(0), Y(R)); g.stroke();
+    g.save(); g.beginPath(); g.rect(m, m, S, S); g.clip();
+    const curve = (sign, color, dash) => {
+      g.strokeStyle = color; g.lineWidth = 2.4; g.setLineDash(dash); let pen = false; g.beginPath();
+      for (let k = 0; k <= 1440; k++) {
+        const th = k / 1440 * 2 * Math.PI, ct = Math.cos(th), st = Math.sin(th), den = sign * (A * ct * ct + 2 * B * ct * st + Cc * st * st);
+        if (den > 1e-3) { const r = Math.min(1 / Math.sqrt(den), 20); const px = X(r * ct), py = Y(r * st); if (!pen) { g.moveTo(px, py); pen = true; } else g.lineTo(px, py); } else pen = false;
+      }
+      g.stroke(); g.setLineDash([]);
+    };
+    curve(1, css('--blue'), []); curve(-1, css('--orange'), [6, 5]);
+    g.restore();
+    g.fillStyle = muted; g.font = '12px system-ui, sans-serif'; g.textAlign = 'center'; g.fillText('x', X(R) - 8, Y(0) - 6); g.fillText('y', X(0) + 10, Y(R) + 12);
+    g.fillStyle = axis; g.textAlign = 'left'; g.fillText('Conique A x² + 2B xy + C y² = ±1', m, 18);
+  }
+  function runEdpc() {
+    const A = num('d-A'), Bc = num('d-B'), Cc = num('d-C'), u = num('d-u'), c = pal();
+    const r = Calc.classifyPDE(A, Bc, Cc), col = { elliptique: c[0], parabolique: c[2], hyperbolique: c[1] }[r.type];
+    const info = {
+      elliptique: ['Laplace, Poisson : équilibre spatial', 'conditions sur toute la frontière fermée', 'influence globale : toute la frontière agit sur chaque point', 'ellipse'],
+      parabolique: ['chaleur : évolution diffusive, dissipative', 'état initial et conditions aux limites', 'les gradients s\u2019atténuent ; propagation instantanée mais très faible', 'droites parallèles (cas dégénéré)'],
+      hyperbolique: ['ondes, advection : propagation à vitesse finie', 'données initiales et une condition à chaque frontière (en 1D, à chaque extrémité)', 'l\u2019information suit les caractéristiques, dans un cône de dépendance', 'hyperbole'] }[r.type];
+    $('d-msg').className = 'msg'; $('d-msg').innerHTML = `Δ = B² − AC = <b>${fmt(r.delta, 3)}</b> : l\u2019EDP est <b>${r.type}</b>.`;
+    cards($('d-cards'), [{ color: col, title: `Type : ${r.type}`, lines: [`prototype : ${info[0]}`, `données nécessaires : ${info[1]}`, `comportement : ${info[2]}`, `conique associée : ${info[3]}`] }]);
+    drawConic($('d-plot'), A, Bc, Cc);
+    $('d-leg').innerHTML = `<span><i style="border-color:${css('--blue')}"></i>A x² + 2B xy + C y² = 1</span><span><i style="border-color:${css('--orange')};border-top-style:dashed"></i>= −1 (conjuguée)</span>`;
+    const rn = Calc.classifyPDE(1 - u * u, 0, 1);
+    gauge($('d-gauge'), { linear: true, min: -2, max: 2, title: `Cas non linéaire (1 − u²) u_xx + u_yy = 0 : pour u = ${fmt(u, 3)}, Δ = u² − 1 = ${fmt(u * u - 1, 3)} → ${rn.type}`,
+      zones: [{ from: -2, to: -1, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'hyperbolique' }, { from: -1, to: 1, color: 'color-mix(in srgb, var(--blue) 35%, transparent)', label: 'elliptique' }, { from: 1, to: 2, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'hyperbolique' }],
+      marks: [{ v: u, color: css('--plot-axis'), label: 'u' }, { v: -1, color: css('--green'), label: 'parabolique' }, { v: 1, color: css('--green'), label: 'parabolique' }],
+      text: 'Les repères verts (u = ±1) sont les valeurs où l\u2019EDP est parabolique.' });
+  }
+
+  /* ---------- EDP : comportement des trois types ---------- */
+  function drawHeat(canvas, u, vmin, vmax) {
+    const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
+    canvas.width = W * dpr; canvas.height = W * dpr;
+    const g = canvas.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
+    const L = 40, T = 26, S = W - L - 56, M = u.length, cell = S / M, axis = css('--plot-axis'), muted = css('--muted');
+    const colr = v => { const t = Math.max(0, Math.min(1, (v - vmin) / ((vmax - vmin) || 1))); return `hsl(${240 * (1 - t)}, 80%, ${46 + 6 * Math.sin(Math.PI * t)}%)`; };
+    for (let j = 0; j < M; j++) for (let i = 0; i < M; i++) { g.fillStyle = colr(u[j][i]); g.fillRect(L + i * cell, T + (M - 1 - j) * cell, Math.ceil(cell) + 0.5, Math.ceil(cell) + 0.5); }
+    g.strokeStyle = axis; g.lineWidth = 1.2; g.strokeRect(L, T, S, S);
+    for (let k = 0; k < 50; k++) { g.fillStyle = colr(vmin + (vmax - vmin) * (1 - k / 49)); g.fillRect(L + S + 14, T + k * S / 50, 12, S / 50 + 1); }
+    g.fillStyle = muted; g.font = '12px system-ui, sans-serif'; g.textAlign = 'left';
+    g.fillText(fmt(vmax, 3), L + S + 30, T + 10); g.fillText(fmt(vmin, 3), L + S + 30, T + S);
+    g.textAlign = 'center'; g.fillText('x', L + S / 2, T + S + 16); g.fillText('y', L - 14, T + S / 2);
+    g.fillStyle = axis; g.textAlign = 'left'; g.fillText('Température (°C)', L, 16);
+  }
+  function drawXT(canvas, c, xp, tp) {
+    const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
+    canvas.width = W * dpr; canvas.height = W * dpr;
+    const g = canvas.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
+    const L = 52, R = 14, T = 26, Bm = 46, pw = W - L - R, ph = W - T - Bm, XR = 6, TM = 6;
+    const X = x => L + (x + XR) / (2 * XR) * pw, Y = t => T + ph - t / TM * ph;
+    const grid = css('--plot-grid'), axis = css('--plot-axis'), muted = css('--muted');
+    g.strokeStyle = grid; g.lineWidth = 1;
+    for (let v = -XR; v <= XR; v += 2) { g.beginPath(); g.moveTo(X(v), T); g.lineTo(X(v), T + ph); g.stroke(); g.fillStyle = muted; g.font = '12px system-ui, sans-serif'; g.textAlign = 'center'; g.fillText(v, X(v), T + ph + 16); }
+    for (let v = 0; v <= TM; v += 2) { g.beginPath(); g.moveTo(L, Y(v)); g.lineTo(L + pw, Y(v)); g.stroke(); g.fillStyle = muted; g.textAlign = 'right'; g.fillText(v, L - 6, Y(v) + 4); }
+    g.save(); g.beginPath(); g.rect(L, T, pw, ph); g.clip();
+    g.strokeStyle = grid; g.lineWidth = 1.2;
+    for (let x0 = -2 * XR; x0 <= 2 * XR; x0 += 1) { [-1, 1].forEach(sg => { g.strokeStyle = 'rgba(120,130,140,0.35)'; g.beginPath(); g.moveTo(X(x0), Y(0)); g.lineTo(X(x0 + sg * c * TM), Y(TM)); g.stroke(); }); }
+    g.fillStyle = 'rgba(190,100,0,0.22)'; g.beginPath(); g.moveTo(X(xp), Y(tp)); g.lineTo(X(xp - c * tp), Y(0)); g.lineTo(X(xp + c * tp), Y(0)); g.closePath(); g.fill();
+    g.strokeStyle = css('--orange'); g.lineWidth = 2.2;
+    g.beginPath(); g.moveTo(X(xp - c * tp), Y(0)); g.lineTo(X(xp), Y(tp)); g.lineTo(X(xp + c * tp), Y(0)); g.stroke();
+    g.strokeStyle = css('--blue'); g.lineWidth = 5; g.beginPath(); g.moveTo(X(xp - c * tp), Y(0)); g.lineTo(X(xp + c * tp), Y(0)); g.stroke();
+    g.fillStyle = css('--red'); g.beginPath(); g.arc(X(xp), Y(tp), 5, 0, 6.2832); g.fill();
+    g.restore();
+    g.strokeStyle = axis; g.lineWidth = 1.2; g.strokeRect(L, T, pw, ph);
+    g.fillStyle = muted; g.textAlign = 'center'; g.fillText('x (m)', L + pw / 2, W - 8);
+    g.save(); g.translate(14, T + ph / 2); g.rotate(-Math.PI / 2); g.fillText('t (s)', 0, 0); g.restore();
+    g.fillStyle = axis; g.textAlign = 'left'; g.fillText('Caractéristiques et domaine de dépendance de P', L, 16);
+  }
+  function runEdpb() {
+    const type = checked('k-type')[0] || 'elliptique', c = pal();
+    document.querySelectorAll('[data-kt]').forEach(el => { el.style.display = el.dataset.kt === type ? '' : 'none'; });
+    if (type === 'elliptique') {
+      const N = Math.round(num('k-n')), r = Calc.laplace2d({ N, left: num('k-Tl'), right: num('k-Tr'), top: num('k-Tt'), bottom: num('k-Tb') });
+      drawHeat($('k-heat'), r.u, Math.min(r.min, num('k-Tl'), num('k-Tr'), num('k-Tt'), num('k-Tb')), Math.max(r.max, num('k-Tl'), num('k-Tr'), num('k-Tt'), num('k-Tb')));
+      $('k-heat-leg').textContent = '';
+      const xs = Calc.linspace(0, 1, r.M);
+      draw('k-line', 'k-line-leg', [{ x: xs, y: r.ligneCentrale, color: c[0], label: 'u(x, y = 0,5)' }], { xlabel: 'x', ylabel: 'T (°C)', title: 'Ligne médiane' });
+      $('k-msg').className = 'msg'; $('k-msg').textContent = 'Principe du maximum : les valeurs restent comprises entre la plus petite et la plus grande valeur imposée. Changez un seul côté : tout le champ change aussitôt, y compris loin de ce côté (influence globale).';
+      cards($('k-cards'), [{ color: c[0], title: 'Température au centre', lines: [`valeur = <b>${fmt(r.centre, 4)} °C</b>`, `minimum = <b>${fmt(r.min, 4)}</b> ; maximum = <b>${fmt(r.max, 4)}</b>`, `${r.iters} itérations de sur-relaxation`] }]);
+    } else if (type === 'parabolique') {
+      const D = num('k-D'), tp = num('k-tp'), gap = num('k-gap'), s0 = 0.15, ctr = gap === 0 ? [0] : [-gap / 2, gap / 2];
+      const xs = Calc.linspace(-8, 8, 800), times = [0, tp / 4, tp / 2, tp].filter((t, i, a) => a.indexOf(t) === i);
+      const S = times.map((t, i) => ({ x: xs, y: Calc.chaleurGauss({ D, sigma0: s0, centres: ctr, t, xs }), color: c[i % 6], width: 2.2, label: `t = ${fmt(t, 3)}` }));
+      draw('k-par', 'k-par-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Diffusion' });
+      draw('k-par2', 'k-par2-leg', S.map(s => Object.assign({}, s)), { logy: true, xlabel: 'x (m)', ylabel: 'u (échelle logarithmique)', title: 'Même courbes, échelle log' });
+      const sg = Calc.sigmaAt(s0, D, tp), far = Calc.chaleurGauss({ D, sigma0: s0, centres: ctr, t: tp, xs: [5, 0] });
+      $('k-msg').className = 'msg'; $('k-msg').textContent = 'Dès que t > 0, la solution est non nulle partout : l\u2019information se propage à vitesse infinie, mais son effet décroît extrêmement vite avec la distance (queues gaussiennes visibles en échelle logarithmique).';
+      cards($('k-cards'), [{ color: c[3], title: `À t = ${fmt(tp, 3)} s`, lines: [`largeur σ(t) = <b>${fmt(sg, 4)}</b>`, `valeur en x = 5 : <b>${far[0].toExponential(2).replace('.', ',')}</b> (non nulle)`, `valeur en x = 0 : <b>${far[1].toExponential(2).replace('.', ',')}</b>`] }]);
+    } else {
+      const cc = num('k-c'), th = num('k-th'), xp = num('k-xp'), s0 = 0.15, xs = Calc.linspace(-8, 8, 800);
+      const S = [{ x: xs, y: Calc.ondeDAlembert({ c: cc, sigma0: s0, t: 0, xs }), color: css('--plot-axis'), dash: [6, 4], label: 't = 0' },
+                 { x: xs, y: Calc.ondeDAlembert({ c: cc, sigma0: s0, t: th, xs }), color: c[0], width: 2.4, label: `t = ${fmt(th, 3)}` }];
+      draw('k-hyp', 'k-hyp-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Équation des ondes' });
+      drawXT($('k-xt'), cc, xp, th); $('k-xt-leg').innerHTML = `<span><i style="border-color:${css('--orange')}"></i>caractéristiques de P</span><span><i style="border-color:${css('--blue')}"></i>domaine de dépendance</span>`;
+      const uP = Calc.ondeDAlembert({ c: cc, sigma0: s0, t: th, xs: [xp, 3] });
+      $('k-msg').className = 'msg'; $('k-msg').textContent = 'La bosse initiale se sépare en deux impulsions de demi-amplitude qui se déplacent à la vitesse c, en sens opposés. L\u2019information a une vitesse finie : au point P ne compte que la donnée initiale située dans le segment bleu, et rien ne se passe encore en dehors du cône.';
+      cards($('k-cards'), [{ color: c[0], title: `À t = ${fmt(th, 3)} s`, lines: [`impulsions en x = ± c·t = <b>±${fmt(cc * th, 3)}</b>, amplitude 0,5`, `domaine de dépendance de P : <b>[${fmt(xp - cc * th, 3)} ; ${fmt(xp + cc * th, 3)}]</b>`, `u(P) = <b>${uP[0].toExponential(2).replace('.', ',')}</b>`, `u(x = 3) = <b>${uP[1].toExponential(2).replace('.', ',')}</b>`] }]);
+    }
+  }
 
   /* ---------- Guide : notions, compétences, explorations avec réglages prêts à l'emploi ---------- */
   function applyPreset(tab, idx) {
@@ -355,7 +504,7 @@
     });
   }
 
-  let current = 'transport';
+  let current = 'intro';
   function safe(name) {
     try { RUN[name](); } catch (e) { const p = $('p-' + name).querySelector('.msg'); if (p) { p.className = 'msg bad'; p.textContent = 'Paramètres invalides : ' + e.message; } }
   }
@@ -380,10 +529,12 @@
       const r = document.documentElement, dark = (r.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
       r.dataset.theme = dark ? 'light' : 'dark'; safe(current);
     });
+    renderEquations();
+    window.addEventListener('load', renderEquations);
     renderGuides();
     window.addEventListener('resize', () => safe(current));
     const h = location.hash.replace('#', '');
-    show(RUN[h] ? h : 'transport');
+    show(RUN[h] ? h : 'intro');
   }
   document.addEventListener('DOMContentLoaded', init);
 })();

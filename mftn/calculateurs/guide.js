@@ -565,6 +565,289 @@ window.GUIDE = {
           "question": "Que fait chaque schéma près de la paroi x = 1 ? Quel prix paie l'amont pour éviter les oscillations ?"
         }
       ]
+    },
+    "intro": {
+      "seance": 1,
+      "fiche": "Séance 1 (chapitre 1), introduction du cours",
+      "competences": [
+        "C1.7"
+      ],
+      "notions": [
+        "schéma",
+        "diffusion numérique",
+        "dispersion numérique",
+        "nombre de Courant"
+      ],
+      "exercices": "mise en route (introduction)",
+      "explorations": [
+        {
+          "id": "S1-I1",
+          "titre": "Trois schémas, trois comportements",
+          "comp": [
+            "C1.7"
+          ],
+          "reglages": {
+            "i-N": "100",
+            "i-Co": "0.8",
+            "i-t1": "1",
+            "i-t2": "5"
+          },
+          "checks": {
+            "i-s": [
+              "amont",
+              "lw",
+              "bw"
+            ]
+          },
+          "consigne": "Observez les trois schémas après 1 puis 5 tours (N = 100, C = 0,8). Relevez dans les cartes de résultats le pic de la bosse, le maximum et le minimum de chaque schéma.",
+          "question": "Quel schéma lisse le signal ? Lesquels créent des oscillations ? Comment évoluent les erreurs entre 1 et 5 tours ?"
+        },
+        {
+          "id": "S1-I2",
+          "titre": "Affiner le maillage suffit-il ?",
+          "comp": [
+            "C1.7"
+          ],
+          "reglages": {
+            "i-N": "200",
+            "i-Co": "0.8",
+            "i-t1": "1",
+            "i-t2": "5"
+          },
+          "checks": {
+            "i-s": [
+              "amont",
+              "lw",
+              "bw"
+            ]
+          },
+          "consigne": "Passez à N = 200 points en gardant C = 0,8 et comparez les pics de la bosse et les minimums aux résultats de N = 100.",
+          "question": "Qu'améliore le raffinement ? Que ne supprime-t-il pas ?"
+        },
+        {
+          "id": "S1-I3",
+          "titre": "Tous les schémas ne se valent pas",
+          "comp": [
+            "C1.7"
+          ],
+          "reglages": {
+            "i-N": "100",
+            "i-Co": "0.8",
+            "i-t1": "1",
+            "i-t2": "5"
+          },
+          "checks": {
+            "i-s": [
+              "amont",
+              "lw",
+              "bw",
+              "lxf",
+              "ftcs"
+            ]
+          },
+          "consigne": "Ajoutez Lax–Friedrichs et FTCS centré aux trois premiers schémas (N = 100, C = 0,8). Comparez le pic de la bosse à t = 1.",
+          "question": "Lax–Friedrichs lisse-t-il plus ou moins que l'amont ? Que devient FTCS centré ?"
+        },
+        {
+          "id": "S1-I4",
+          "titre": "Le nombre de Courant décide",
+          "comp": [
+            "C1.7"
+          ],
+          "reglages": {
+            "i-N": "100",
+            "i-Co": "1",
+            "i-t1": "1",
+            "i-t2": "5"
+          },
+          "checks": {
+            "i-s": [
+              "amont",
+              "lw",
+              "bw",
+              "lxf"
+            ]
+          },
+          "consigne": "Prenez C = 1 et gardez l'amont, Lax–Wendroff, Beam–Warming et Lax–Friedrichs. Lisez l'erreur moyenne et le comportement de chaque schéma.",
+          "question": "Que devient chaque schéma pour C = 1 ? Pourquoi ?"
+        }
+      ]
+    },
+    "edpc": {
+      "seance": 1,
+      "fiche": "Séance 1 (chapitre 1), bloc B",
+      "competences": [
+        "C1.4"
+      ],
+      "notions": [
+        "discriminant",
+        "EDP elliptique, parabolique, hyperbolique",
+        "données nécessaires",
+        "type qui dépend de la solution"
+      ],
+      "exercices": "bloc B (B1, B5)",
+      "explorations": [
+        {
+          "id": "S1-D1",
+          "titre": "Un cas elliptique",
+          "comp": [
+            "C1.4"
+          ],
+          "reglages": {
+            "d-A": "1",
+            "d-B": "0",
+            "d-C": "4",
+            "d-u": "0.5"
+          },
+          "consigne": "Réglez A = 1, B = 0, C = 4 (équation u_xx + 4 u_yy = 0). Lisez le discriminant, le type, les données nécessaires et la forme de la conique.",
+          "question": "Quel est le type ? Quelles conditions faut-il fournir, et que dit-on de l'influence de la frontière ?"
+        },
+        {
+          "id": "S1-D2",
+          "titre": "Un cas parabolique",
+          "comp": [
+            "C1.4"
+          ],
+          "reglages": {
+            "d-A": "-1",
+            "d-B": "0",
+            "d-C": "0",
+            "d-u": "0.5"
+          },
+          "consigne": "Réglez A = −1, B = 0, C = 0 (équation de la chaleur u_t − α u_xx avec α = 1). Lisez le discriminant et la forme de la conique.",
+          "question": "Quel est le type ? Pourquoi la conique est-elle dégénérée ? Quelles données faut-il ?"
+        },
+        {
+          "id": "S1-D3",
+          "titre": "Un cas hyperbolique",
+          "comp": [
+            "C1.4"
+          ],
+          "reglages": {
+            "d-A": "-3",
+            "d-B": "0",
+            "d-C": "1",
+            "d-u": "0.5"
+          },
+          "consigne": "Réglez A = −3, B = 0, C = 1 (équation des ondes u_tt − 3 u_xx, de vitesse c = √3). Lisez le discriminant et la forme de la conique.",
+          "question": "Quel est le type ? Quelles données initiales et aux limites faut-il ?"
+        },
+        {
+          "id": "S1-D4",
+          "titre": "Quand le type dépend de la solution",
+          "comp": [
+            "C1.4"
+          ],
+          "reglages": {
+            "d-A": "1",
+            "d-B": "0",
+            "d-C": "1",
+            "d-u": "1.5"
+          },
+          "consigne": "Faites glisser le curseur de u de −2 à 2 et observez la jauge du cas non linéaire (1 − u²) u_xx + u_yy = 0 ; arrêtez-vous en u = 1,5.",
+          "question": "Pour quelles valeurs de u l'équation est-elle elliptique, parabolique, hyperbolique ? Que vaut Δ pour u = 1,5 ?"
+        }
+      ]
+    },
+    "edpb": {
+      "seance": 1,
+      "fiche": "Séance 1 (chapitre 1), bloc B",
+      "competences": [
+        "C1.4",
+        "C1.5"
+      ],
+      "notions": [
+        "principe du maximum",
+        "propagation instantanée ou à vitesse finie",
+        "domaine de dépendance",
+        "influence de la frontière"
+      ],
+      "exercices": "bloc B (B1 à B4)",
+      "explorations": [
+        {
+          "id": "S1-K1",
+          "titre": "Elliptique : toute la frontière agit",
+          "comp": [
+            "C1.4",
+            "C1.5"
+          ],
+          "reglages": {
+            "k-Tl": "100",
+            "k-Tr": "0",
+            "k-Tt": "0",
+            "k-Tb": "0",
+            "k-n": "31",
+            "k-D": "0.05",
+            "k-tp": "2",
+            "k-gap": "4",
+            "k-c": "1",
+            "k-th": "2",
+            "k-xp": "2"
+          },
+          "checks": {
+            "k-type": [
+              "elliptique"
+            ]
+          },
+          "consigne": "Avec le côté gauche à 100 °C et les trois autres à 0 °C, lisez la température au centre. Portez ensuite le côté droit à 100 °C, puis le côté haut.",
+          "question": "Quelle est la température au centre dans chaque cas ? Pourquoi dit-on qu'une EDP elliptique dépend de toute la frontière ?"
+        },
+        {
+          "id": "S1-K2",
+          "titre": "Parabolique : vitesse infinie, effet minuscule",
+          "comp": [
+            "C1.4"
+          ],
+          "reglages": {
+            "k-Tl": "100",
+            "k-Tr": "0",
+            "k-Tt": "0",
+            "k-Tb": "0",
+            "k-n": "31",
+            "k-D": "0.05",
+            "k-tp": "2",
+            "k-gap": "4",
+            "k-c": "1",
+            "k-th": "2",
+            "k-xp": "2"
+          },
+          "checks": {
+            "k-type": [
+              "parabolique"
+            ]
+          },
+          "consigne": "Deux sources chaudes en x = ±2 diffusent (D = 0,05). Lisez la largeur σ(t) et la valeur en x = 5 à t = 2, puis portez t à 8 et comparez ; regardez les deux graphiques, dont celui en échelle logarithmique.",
+          "question": "La solution est-elle nulle en x = 5 ? Comment la valeur évolue-t-elle avec t ? Que montre l'échelle logarithmique ?"
+        },
+        {
+          "id": "S1-K3",
+          "titre": "Hyperbolique : vitesse finie et cône de dépendance",
+          "comp": [
+            "C1.4",
+            "C1.5"
+          ],
+          "reglages": {
+            "k-Tl": "100",
+            "k-Tr": "0",
+            "k-Tt": "0",
+            "k-Tb": "0",
+            "k-n": "31",
+            "k-D": "0.05",
+            "k-tp": "2",
+            "k-gap": "4",
+            "k-c": "1",
+            "k-th": "2",
+            "k-xp": "2"
+          },
+          "checks": {
+            "k-type": [
+              "hyperbolique"
+            ]
+          },
+          "consigne": "Avec c = 1, t = 2 et le point P en x = 2, lisez la position des impulsions, le domaine de dépendance de P et la valeur de u en x = 3. Doublez ensuite c.",
+          "question": "Où sont les impulsions ? Que vaut u en x = 3 ? Qu'est-ce que le domaine de dépendance, et que change c ?"
+        }
+      ]
     }
   }
 };
