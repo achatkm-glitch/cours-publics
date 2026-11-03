@@ -125,3 +125,7 @@
 ### 2026-11-03 19:39:07 +01:00 — Mise à jour des calculateurs MFTN (v8)
 - **Instruction** : « on corrige tout, toi et ChatGPT, selon la règle FIFO » (audit AUD-2026-022 : profils à support compact pour la chaleur et l'onde, formulations des explorations). Reçu par Code (Claude Code, session MFTN) ; publication déjà autorisée.
 - **État** : traité ; preuves dans `suivi/integration_mftn.md`.
+
+### 2026-11-03 20:03:01 +01:00 — Mise à jour des calculateurs MFTN (v9)
+- **Instruction** : « on corrige tout selon la règle FIFO » (résidus de la contre-lecture de Codex sur AUD-2026-022 : compétences C2.7 et C3.5 présentées comme approfondissements). Reçu par Code ; publication déjà autorisée.
+- **État** : traité ; preuves dans `suivi/integration_mftn.md`.

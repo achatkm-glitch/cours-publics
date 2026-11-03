@@ -180,3 +180,8 @@
 - **Fichiers** : `mftn/calculateurs/` (7 fichiers), suivis.
 - **Fait** : calculateurs v8.
 - **Prochaine action** : relecture ; verrous libérés.
+
+### 2026-11-03 20:03:01 +01:00 — Code → Mohammed, Codex et prochains intervenants
+- **Fichiers** : `mftn/calculateurs/` (7 fichiers), suivis.
+- **Fait** : calculateurs v9.
+- **Prochaine action** : relecture ; verrous libérés.

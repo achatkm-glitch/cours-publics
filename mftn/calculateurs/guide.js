@@ -13,12 +13,12 @@ window.GUIDE = {
     "C2.4": "assembler le système de Poisson en une dimension (le cas 2D est un approfondissement, exercice G)",
     "C2.5": "choisir et appliquer Jacobi ou Gauss–Seidel, puis contrôler la convergence par le résidu",
     "C2.6": "définir le défaut local d'un schéma et déterminer son ordre de consistance par Taylor",
-    "C2.7": "mesurer un ordre observé par raffinement",
+    "C2.7": "(approfondissement : exercices D et H) mesurer un ordre observé par raffinement",
     "C3.1": "construire les schémas explicite, implicite et de Crank–Nicolson pour la chaleur 1D",
     "C3.2": "appliquer la condition pratique sur le pas de temps de FTCS et dimensionner un calcul",
     "C3.3": "comparer les défauts des schémas FTCS, BTCS, Dufort–Frankel et de la famille θ",
     "C3.4": "reconnaître une consistance qui dépend du chemin de raffinement",
-    "C3.5": "distinguer, pour les schémas d'advection, le comportement observé (diffusion, dispersion, instabilité) de l'ordre, dont l'établissement est un approfondissement (exercice E)"
+    "C3.5": "(approfondissement) distinguer, pour les schémas d'advection, le comportement observé (diffusion, dispersion, instabilité) de l'ordre, dont l'établissement est un approfondissement (exercice E)"
   },
   "tabs": {
     "transport": {
