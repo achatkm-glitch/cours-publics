@@ -65,3 +65,16 @@ h3 { margin: 14px 0 4px; font-size: 1rem; color: var(--muted); }
 
 .grid > div, form.params, label { min-width: 0; }
 .repere { overflow-wrap: anywhere; }
+
+.plots2 { display: flex; flex-wrap: wrap; gap: 14px; }
+.plots2 > div { flex: 1 1 280px; max-width: 460px; min-width: 0; }
+details > summary { cursor: pointer; color: var(--blue); margin: 10px 0; }
+.guide { margin-top: 22px; border-top: 1px solid var(--line); padding-top: 12px; }
+.guide h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--blue); }
+.guide h4 { margin: 10px 0 4px; font-size: 0.95rem; color: var(--muted); }
+.guide ul { margin: 4px 0 8px 18px; padding: 0; }
+.guide .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 800px) { .guide .two { grid-template-columns: 1fr; } }
+.explo { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 8px 0; background: var(--bg); }
+.explo p { margin: 6px 0; }
+.explo .codes { color: var(--muted); font-size: 0.85rem; }

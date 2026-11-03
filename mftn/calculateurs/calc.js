@@ -232,6 +232,54 @@
              q0out: lambda * C1, qLout: q * L - lambda * C1 };
   }
 
-  const API = { thomas, gauss, linspace, maxAbs, barre, jacobiGS, ordreExp, neumann, neumannOrdres, chaleur, chemins, verdictsChemin, advection, sigmaAt, gaussAD, barreCL };
+  /* 10. Barre 1D en volumes finis (cellules centrées, N cellules de largeur h = L/N) :
+     lambda T'' + q = 0, T(0) = T0, T(L) = TL imposées aux faces (demi-cellule aux bords).
+     Bilan sur la cellule i : lambda[(T_{i+1}-T_i)/h - (T_i-T_{i-1})/h] + q h = 0. */
+  function barreVF({ N, T0, TL, L = 1, lambda = 1, q = 0 }) {
+    const h = L / N, n = N;
+    const a = new Array(n).fill(-1), b = new Array(n).fill(2), c = new Array(n).fill(-1);
+    const d = new Array(n).fill(h * h * q / lambda);
+    b[0] = 3; d[0] += 2 * T0;
+    b[n - 1] = 3; d[n - 1] += 2 * TL;
+    const T = thomas(a, b, c, d);
+    const x = Array.from({ length: n }, (_, i) => (i + 0.5) * h);
+    const exact = x.map(xi => T0 + (TL - T0) * xi / L + q / (2 * lambda) * xi * (L - xi));
+    const err = T.map((t, i) => t - exact[i]);
+    // flux sortants aux deux faces de bord (convention de barreCL : q0out = lambda T'(0), qLout = -lambda T'(L))
+    const q0out = lambda * (T[0] - T0) / (h / 2), qLout = lambda * (T[n - 1] - TL) / (h / 2);
+    return { h, x, T, exact, err, maxErr: maxAbs(err), q0out, qLout, bilan: q0out + qLout - q * L };
+  }
+  /* Bilan de flux du schéma aux différences finies (différences d'ordre 1 aux bords). */
+  function bilanDF({ N, T0, TL, L = 1, lambda = 1, q = 0 }) {
+    const r = barre({ N, T0, TL, L, lambda, q }), h = r.h;
+    const q0out = lambda * (r.T[1] - T0) / h, qLout = -lambda * (TL - r.T[N - 1]) / h;
+    return { q0out, qLout, bilan: q0out + qLout - q * L };
+  }
+
+  /* 11. Convection-diffusion stationnaire 1D en volumes finis (cellules centrées) :
+     F phi' = Gamma phi'', phi(0) = 0, phi(L) = 1, F = rho u = 1, Gamma = L/PeL.
+     Schémas convectifs : 'centre' ou 'amont' ; PeL = rho u L / Gamma ; Pe de maille = PeL/N. */
+  function peclet({ N, PeL, scheme }) {
+    const L = 1, F = 1, G = L / PeL, h = L / N, D = G / h, n = N;
+    const A = new Array(n), Bd = new Array(n), Cd = new Array(n), d = new Array(n).fill(0);
+    for (let i = 0; i < n; i++) {
+      if (scheme === 'centre') { A[i] = -F / 2 - D; Bd[i] = 2 * D; Cd[i] = F / 2 - D; }
+      else { A[i] = -F - D; Bd[i] = F + 2 * D; Cd[i] = -D; }
+    }
+    // cellule 1 : face ouest imposée phi0 = 0 (demi-cellule)
+    Bd[0] = scheme === 'centre' ? F / 2 + 3 * D : F + 3 * D; d[0] = 0;
+    // cellule N : face est imposée phiL = 1 (demi-cellule)
+    // amont : la valeur convectée à la face est celle de la cellule amont (phi_N), même au bord
+    Bd[n - 1] = scheme === 'centre' ? 3 * D - F / 2 : F + 3 * D;
+    d[n - 1] = scheme === 'centre' ? -F * 1 + 2 * D * 1 : 2 * D * 1;
+    const phi = thomas(A, Bd, Cd, d);
+    const x = Array.from({ length: n }, (_, i) => (i + 0.5) * h);
+    const exact = x.map(xi => (Math.exp(PeL * (xi - L)) - Math.exp(-PeL * L)) / (1 - Math.exp(-PeL * L)));
+    const err = phi.map((v, i) => v - exact[i]);
+    return { h, PeH: PeL / N, x, phi, exact, err, maxErr: maxAbs(err), min: Math.min.apply(null, phi), max: Math.max.apply(null, phi),
+             oscille: phi.some((v, i) => i > 0 && v < phi[i - 1] - 1e-12) };
+  }
+
+  const API = { thomas, gauss, linspace, maxAbs, barre, jacobiGS, ordreExp, neumann, neumannOrdres, chaleur, chemins, verdictsChemin, advection, sigmaAt, gaussAD, barreCL, barreVF, bilanDF, peclet };
   if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.Calc = API;
 })(typeof window !== 'undefined' ? window : this);

@@ -101,3 +101,7 @@
 - **Interprétation** : publier le site de calculateurs (HTML, CSS, JavaScript statiques) dans `mftn/calculateurs/` et l'ajouter à l'accueil (carte et lien latéral).
 - **Attribution** : Code, après vérification qu'aucun verrou n'était actif.
 - **État** : traité ; preuves dans `suivi/integration_mftn.md`.
+
+### 2026-11-03 17:24:51 +01:00 — Mise à jour des calculateurs MFTN
+- **Instruction** : « les fiches doivent amener à utiliser ce calculateur et vice versa », « met à côté l'erreur comparée à la solution », « met aussi le schéma volume fini », « pas de tableau de valeur », « différencie avec des couleurs », « peut-être voir où insérer le Pe ». Reçu par Code (Claude Code, session MFTN) ; publication déjà autorisée (« alimente le site internet avec cette page »).
+- **État** : traité ; preuves dans `suivi/integration_mftn.md`.

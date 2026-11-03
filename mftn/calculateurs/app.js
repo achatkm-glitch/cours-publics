@@ -26,6 +26,12 @@
     return (a >= 1e5 || a < 1e-3) ? v.toExponential(3).replace('.', ',') : v.toFixed(d).replace('.', ',');
   };
   const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  /* Éclaircit une couleur #rrggbb (f entre 0 et 1) : nuances d'une même famille pour distinguer les maillages. */
+  const tint = (col, f) => {
+    const m = /^#([0-9a-f]{6})$/i.exec(col); if (!m) return col;
+    const n = parseInt(m[1], 16), mix = v => Math.round(v + (255 - v) * f);
+    return 'rgb(' + mix((n >> 16) & 255) + ',' + mix((n >> 8) & 255) + ',' + mix(n & 255) + ')';
+  };
   const pal = () => ['--blue', '--orange', '--green', '--red', '--c5', '--c6'].map(css);
   const SCHEME = { ftcs: 'FTCS', btcs: 'BTCS', cn: 'Crank–Nicolson', amont: 'Amont', lxf: 'Lax–Friedrichs', lw: 'Lax–Wendroff', jacobi: 'Jacobi', gs: 'Gauss–Seidel' };
 
@@ -92,7 +98,8 @@
       g.setLineDash([]);
       if (s.points || (s.x.length <= 24 && !s.dash)) s.x.forEach((v, i) => {
         const y = s.y[i]; if (!isFinite(v) || !isFinite(y) || (o.logx && v <= 0) || (o.logy && y <= 0)) return;
-        g.beginPath(); g.arc(X(v), Y(y), 3, 0, 6.2832); g.fill();
+        if (s.marker === 'square') g.fillRect(X(v) - 3.2, Y(y) - 3.2, 6.4, 6.4);
+        else { g.beginPath(); g.arc(X(v), Y(y), 3, 0, 6.2832); g.fill(); }
       });
     });
     g.restore();
@@ -148,21 +155,66 @@
       'Le bilan se vérifie : flux sortant en x = 0 plus flux sortant en x = L égale la puissance produite q·L = ' + fmt(base.q * base.L, 1) + ' W/m².';
   }
 
-  /* ---------- Chapitre 1 : barre 1D (schéma centré), comparaison de maillages ---------- */
+  /* ---------- Chapitre 1 : barre 1D (différences finies et volumes finis), comparaison de maillages ---------- */
   function runBarre() {
-    const c = pal(), Ns = vals('b-N').map(Math.round).filter(v => v >= 2 && v <= 2000);
+    const c = pal(), Ns = vals('b-N').map(Math.round).filter(v => v >= 2 && v <= 2000).slice(0, 5), schemes = checked('b-s');
+    if (!Ns.length || !schemes.length) return;
     const p = { T0: num('b-T0'), TL: num('b-TL'), L: num('b-L'), lambda: num('b-lambda'), q: num('b-q') };
-    const runs = Ns.slice(0, 6).map(N => Calc.barre(Object.assign({ N }, p)));
-    if (!runs.length) return;
     const fine = Calc.barre(Object.assign({ N: 400 }, p));
-    const S = [{ x: fine.x, y: fine.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }]
-      .concat(runs.map((r, i) => ({ x: r.x, y: r.T, color: c[i % 6], points: true, label: `N = ${r.x.length - 1}` })));
-    draw('b-plot', 'b-leg', S, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Barre 1D' });
-    $('b-msg').innerHTML = runs.map(r => `N = ${r.x.length - 1} : Δx = ${fmt(r.h, 5)} m, erreur maximale = ${fmt(r.maxErr)} K`).join(' ; ') +
-      (runs.every(r => r.maxErr < 1e-8) ? '. Le schéma centré est exact ici (solution au plus quadratique).' : '.');
-    const r0 = runs[0];
-    table($('b-table'), ['i', 'x (m)', 'T (K)', 'T exacte (K)', 'erreur (K)'], r0.x.map((x, i) => [i, fmt(x, 4), fmt(r0.T[i], 4), fmt(r0.exact[i], 4), fmt(r0.err[i], 4)]));
-    $('b-table-title').textContent = `Détail pour N = ${r0.x.length - 1}`;
+    const S1 = [{ x: fine.x, y: fine.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], lines = [];
+    let first = null;
+    Ns.forEach((N, i) => {
+      let msg = `N = ${N}`;
+      if (schemes.includes('fd')) {
+        const r = Calc.barre(Object.assign({ N }, p)), bl = Calc.bilanDF(Object.assign({ N }, p));
+        S1.push({ x: r.x, y: r.T, color: tint(c[0], 0.16 * i), points: true, label: `DF, N = ${N}` });
+        S2.push({ x: r.x, y: r.err, color: tint(c[0], 0.16 * i), points: true, label: `DF, N = ${N}` });
+        msg += ` : différences finies, erreur ${fmt(r.maxErr)} K, bilan de flux ${fmt(bl.bilan, 3)} W/m²`;
+        if (!first) first = { fd: r };
+        else if (!first.fd) first.fd = r;
+      }
+      if (schemes.includes('vf')) {
+        const r = Calc.barreVF(Object.assign({ N }, p));
+        S1.push({ x: r.x, y: r.T, color: tint(c[1], 0.16 * i), points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
+        S2.push({ x: r.x, y: r.err, color: tint(c[1], 0.16 * i), points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
+        msg += `${schemes.includes('fd') ? ' ;' : ' :'} volumes finis, erreur ${fmt(r.maxErr)} K, bilan de flux ${fmt(r.bilan, 3)} W/m²`;
+        if (!first) first = { vf: r };
+        else if (!first.vf) first.vf = r;
+      }
+      lines.push(msg);
+    });
+    $('b-msg').innerHTML = lines.join('<br>') + '<br><small>Bleu, cercles : différences finies (nœuds) ; orange, carrés : volumes finis (centres des cellules). Les nuances plus claires correspondent aux maillages plus fins. Erreur = solution calculée − solution analytique.</small>';
+    draw('b-plot', 'b-leg', S1, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Solution' });
+    draw('b-plot2', 'b-leg2', S2, { xlabel: 'x (m)', ylabel: 'erreur (K)', title: 'Erreur / solution analytique' });
+    const Nf = Ns[0];
+    $('b-table-title').textContent = `Valeurs pour N = ${Nf}`;
+    const tb = (r, id, name) => table($(id), [name + ' : i', 'x (m)', 'T (K)', 'T exacte (K)', 'erreur (K)'], r.x.map((x, i) => [i, fmt(x, 4), fmt(r.T[i], 4), fmt(r.exact[i], 4), fmt(r.err[i], 4)]));
+    if (schemes.includes('fd')) tb(Calc.barre(Object.assign({ N: Nf }, p)), 'b-table', 'DF'); else $('b-table').innerHTML = '';
+    if (schemes.includes('vf')) tb(Calc.barreVF(Object.assign({ N: Nf }, p)), 'b-table2', 'VF'); else $('b-table2').innerHTML = '';
+  }
+
+  /* ---------- Chapitre 1 : Péclet, convection-diffusion en volumes finis ---------- */
+  function runPeclet() {
+    const c = pal(), PeL = num('e-PeL'), schemes = checked('e-s'), Ns = vals('e-N').map(Math.round).filter(v => v >= 4 && v <= 400).slice(0, 5);
+    if (!schemes.length || !Ns.length) return;
+    const xf = Calc.linspace(0, 1, 400), exf = xf.map(x => (Math.exp(PeL * (x - 1)) - Math.exp(-PeL)) / (1 - Math.exp(-PeL)));
+    const S1 = [{ x: xf, y: exf, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], rows = [];
+    const names = { centre: 'Centré', amont: 'Amont' };
+    Ns.forEach((N, i) => schemes.forEach(s => {
+      const r = Calc.peclet({ N, PeL, scheme: s });
+      const sty = s === 'centre' ? { points: true } : { points: true, marker: 'square', dash: [3, 3], width: 1.4 };
+      S1.push(Object.assign({ x: r.x, y: r.phi, color: tint(s === 'centre' ? c[0] : c[1], 0.16 * i), label: `${names[s]}, N = ${N}` }, sty));
+      S2.push(Object.assign({ x: r.x, y: r.err, color: tint(s === 'centre' ? c[0] : c[1], 0.16 * i), label: `${names[s]}, N = ${N}` }, sty));
+      rows.push([names[s], N, fmt(r.PeH, 3), fmt(r.maxErr, 4), fmt(r.min, 4), r.oscille ? 'oui' : 'non']);
+    }));
+    const r0 = Calc.peclet({ N: Ns[0], PeL, scheme: 'centre' });
+    const bad = schemes.includes('centre') && r0.PeH > 2;
+    $('e-msg').className = bad ? 'msg warn' : 'msg';
+    $('e-msg').textContent = `N = ${Ns[0]} : Pe_h = Pe/N = ${fmt(r0.PeH, 3)}.` + (bad ? ' Pe_h > 2 : le coefficient du voisin aval du schéma centré devient négatif, les oscillations sont possibles.' : ' Pe_h ≤ 2 : les coefficients du schéma centré restent positifs.') +
+      ' Bleu, cercles : centré ; orange, carrés : amont ; nuances plus claires : maillages plus fins.';
+    draw('e-plot', 'e-leg', S1, { xlabel: 'x', ylabel: 'φ', title: 'Solution', ylim: null });
+    draw('e-plot2', 'e-leg2', S2, { xlabel: 'x', ylabel: 'erreur', title: 'Erreur / solution analytique' });
+    table($('e-table'), ['schéma', 'N', 'Pe_h', 'erreur max', 'φ minimum', 'oscille'], rows);
   }
 
   /* ---------- Chapitre 2 : Jacobi / Gauss-Seidel, comparaison des deux méthodes ---------- */
@@ -175,7 +227,7 @@
     $('j-msg').innerHTML = runs.map(o => { const h = o.r.history[K]; return `${SCHEME[o.m]} : ‖r‖∞ = ${fmt(h.res, 5)}, erreur algébrique maximale = ${fmt(Calc.maxAbs(h.u.map((v, i) => v - o.r.exact[i])), 5)}`; }).join(' ; ') + ` (après ${K} itération(s)).`;
     table($('j-table'), ['nœud', 'x'].concat(runs.map(o => SCHEME[o.m]), ['exacte']),
       ref.exact.map((e, i) => [i + 1, fmt(ref.x[i + 1], 4)].concat(runs.map(o => fmt(o.r.history[K].u[i], 6)), [fmt(e, 6)])));
-    const kmax = Math.min(K, 15);
+    const kmax = Math.min(K, 40);
     table($('j-hist'), ['k'].concat(runs.map(o => '‖r‖∞ ' + SCHEME[o.m])),
       Array.from({ length: kmax + 1 }, (_, k) => [k].concat(runs.map(o => fmt(o.r.history[k].res, 5)))));
     const xs = [0].concat(ref.x.slice(1, n + 1), [1]);
@@ -271,7 +323,36 @@
     table($('a-table'), ['schéma', 'Nx', 'maximum', 'minimum', 'erreur max'], rows);
   }
 
-  const RUN = { transport: runTransport, cl: runCL, barre: runBarre, jg: runJG, ordre: runOrdre, neumann: runNeumann, chaleur: runChaleur, chemin: runChemin, adv: runAdv };
+
+  /* ---------- Guide : notions, compétences, explorations avec réglages prêts à l'emploi ---------- */
+  function applyPreset(tab, idx) {
+    const e = window.GUIDE.tabs[tab].explorations[idx];
+    Object.keys(e.reglages || {}).forEach(id => { const el = $(id); if (el) el.value = e.reglages[id]; });
+    Object.keys(e.checks || {}).forEach(name => document.querySelectorAll('input[name="' + name + '"]').forEach(cb => { cb.checked = e.checks[name].indexOf(cb.value) >= 0; }));
+    syncSliders(); safe(current);
+    const m = $('p-' + tab).querySelector('.preset-note'); if (m) m.textContent = 'Réglages de ' + e.id + ' appliqués : lisez le résultat, puis répondez sur la fiche.';
+    $('p-' + tab).querySelector('.grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function renderGuides() {
+    const G = window.GUIDE; if (!G) return;
+    Object.keys(G.tabs).forEach(tab => {
+      const panel = $('p-' + tab); if (!panel) return;
+      const t = G.tabs[tab], box = document.createElement('div'); box.className = 'guide';
+      const comps = t.competences.map(k => `<li><b>${k}</b> ${G.competences[k]}</li>`).join('');
+      const notions = t.notions.map(n => `<li>${n}</li>`).join('');
+      const ex = t.explorations.map((e, i) => `<div class="explo"><b>${e.id} · ${e.titre}</b> <span class="codes">(${e.comp.join(', ')})</span>
+        <p>${e.consigne}</p><p><i>Question :</i> ${e.question}</p><button type="button" class="btn alt" data-explo="${tab}|${i}">Appliquer ces réglages</button></div>`).join('');
+      box.innerHTML = `<h3>Pour approfondir : ${t.fiche}</h3>
+        <div class="two"><div><h4>Compétences travaillées</h4><ul>${comps}</ul></div>
+        <div><h4>Notions à définir et à retrouver sur la fiche</h4><ul>${notions}</ul><p>Exercices liés : ${t.exercices}.</p></div></div>
+        <h4>Explorations guidées</h4>${ex}<p class="preset-note" aria-live="polite"></p>
+        <p class="repere">Notez vos réponses dans la rubrique « Explorations au calculateur » de la fiche de séance.</p>`;
+      panel.appendChild(box);
+      box.querySelectorAll('[data-explo]').forEach(b => b.addEventListener('click', () => { const [tb, i] = b.dataset.explo.split('|'); applyPreset(tb, parseInt(i, 10)); }));
+    });
+  }
+
+  const RUN = { transport: runTransport, cl: runCL, barre: runBarre, peclet: runPeclet, jg: runJG, ordre: runOrdre, neumann: runNeumann, chaleur: runChaleur, chemin: runChemin, adv: runAdv };
   let current = 'transport';
   function safe(name) {
     try { RUN[name](); } catch (e) { const p = $('p-' + name).querySelector('.msg'); if (p) { p.className = 'msg bad'; p.textContent = 'Paramètres invalides : ' + e.message; } }
@@ -297,6 +378,7 @@
       const r = document.documentElement, dark = (r.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
       r.dataset.theme = dark ? 'light' : 'dark'; safe(current);
     });
+    renderGuides();
     window.addEventListener('resize', () => safe(current));
     const h = location.hash.replace('#', '');
     show(RUN[h] ? h : 'transport');

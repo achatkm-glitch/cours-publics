@@ -55,3 +55,9 @@ Empreintes SHA-256 source et destination identiques :
 
 ### Vérification en ligne — 2026-11-03 17:07:42 +01:00 — Code
 - https://achatkm-glitch.github.io/cours-publics/mftn/calculateurs/ servie ; `index.html`, `app.js`, `calc.js` et `style.css` identiques aux copies locales (empreintes comparées, fins de ligne normalisées) ; les neuf onglets se chargent sans erreur de console ; barre 1D N = 4 : 325, 350, 375 K. Accueil : carte et lien latéral présents.
+
+## Mise à jour des calculateurs — 2026-11-03 17:24:51 +01:00 — Code
+- Contenu : onglet Barre 1D en différences finies et volumes finis avec graphique d'erreur à côté de la solution, nouvel onglet Péclet (convection–diffusion en volumes finis), couleurs par schéma, valeurs nodales repliées, guide par onglet (compétences, notions, exercices, explorations avec réglages prêts à l'emploi).
+- Fichiers et empreintes : `mftn/calculateurs/index.html` SHA-256 8FDC7BF035FDAAAC21DEEDC2C20B44DA400711EEF812C1BADFD04240B1CAA286; `mftn/calculateurs/app.js` SHA-256 830221D7CC99E31F516E0F304C1FC54CF36A7EC59DEE5B1EDD7D0E51C172E50F; `mftn/calculateurs/calc.js` SHA-256 E24C32212A9BE929AFD3D94AE2BA389614FBF6A7D195558F73CB0993E2FA2B7E; `mftn/calculateurs/style.css` SHA-256 20E650C73F07D23D75A38537FB9F5C5CB1CFD54A7958FF62E2CD76773BBB43D8; `mftn/calculateurs/guide.js` SHA-256 953406CE068AFB3CA4340CA9C8A2276748AAE7C766FEEDAD7F930A8D3DC1630C.
+- Contrôles : `node test_calc.js` (63 contrôles, dont les valeurs annoncées dans les explorations) ; dix onglets et dix-huit explorations appliquées dans le navigateur intégré sans erreur de console.
+- Limites : relecture scientifique indépendante non faite ; vérification technique seulement.

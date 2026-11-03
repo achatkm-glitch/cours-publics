@@ -18,6 +18,7 @@
   <button data-tab="transport" aria-selected="true">Transport</button>
   <button data-tab="cl">Conditions aux limites</button>
   <button data-tab="barre">Barre 1D</button>
+  <button data-tab="peclet">Péclet</button>
   <span class="grp">Chapitre 2</span>
   <button data-tab="jg">Jacobi / Gauss–Seidel</button>
   <button data-tab="ordre">Ordre d'une différence</button>
@@ -87,12 +88,16 @@
 
 <!-- Ch.1 : barre 1D -->
 <section class="panel" id="p-barre">
-  <h2>Barre 1D : schéma centré, comparaison de maillages</h2>
-  <p class="lead">Résout λ T'' + q = 0 avec T(0) = T₀ et T(L) = T_L sur N intervalles. Séance 1, bloc C. Le champ sous le curseur de N accepte d'autres valeurs (par exemple 8 16) pour superposer les maillages.</p>
+  <h2>Barre 1D : différences finies et volumes finis</h2>
+  <p class="lead">Résout λ T'' + q = 0 avec T(0) = T₀ et T(L) = T_L sur N intervalles, par le schéma centré aux nœuds (différences finies) et par un bilan sur N cellules (volumes finis). Séance 1, bloc C. Les deux graphiques montrent la solution et son erreur par rapport à la solution analytique ; le champ sous le curseur de N accepte d'autres valeurs (par exemple 8 16) pour comparer les maillages.</p>
   <div class="grid">
     <div>
       <form class="params">
-        <label>Nombre d'intervalles N<span class="sl"><input type="range" id="b-N" min="2" max="64" step="1" value="4"><output></output></span><input id="b-Nx" value="" placeholder="autres N à comparer (par exemple 8 16)" aria-label="Autres valeurs à comparer"></label>
+        <div class="checks" role="group" aria-label="Schémas">
+          <label><input type="checkbox" name="b-s" value="fd" checked> Différences finies</label>
+          <label><input type="checkbox" name="b-s" value="vf" checked> Volumes finis</label>
+        </div>
+        <label>Nombre d'intervalles ou de cellules N<span class="sl"><input type="range" id="b-N" min="2" max="64" step="1" value="4"><output></output></span><input id="b-Nx" value="" placeholder="autres N à comparer (par exemple 8 16)" aria-label="Autres valeurs à comparer"></label>
         <label>T(0), en K<span class="sl"><input type="range" id="b-T0" min="250" max="450" step="5" value="300" data-unit="K"><output></output></span></label>
         <label>T(L), en K<span class="sl"><input type="range" id="b-TL" min="250" max="450" step="5" value="400" data-unit="K"><output></output></span></label>
         <label>Longueur L, en m<span class="sl"><input type="range" id="b-L" min="0.1" max="2" step="0.1" value="1" data-unit="m"><output></output></span></label>
@@ -100,13 +105,47 @@
         <label>Production q, en W/m³<span class="sl"><input type="range" id="b-q" min="0" max="1000" step="10" value="0"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> N = 4, T₀ = 300 K, T_L = 400 K donne T₁ = 325 K, T₂ = 350 K, T₃ = 375 K, égaux à la solution analytique. Avec une production q &gt; 0, le schéma centré reste exact (solution quadratique) ; ajoutez N = 8 16 pour comparer les maillages.</p>
+      <p class="repere"><b>Repère :</b> N = 4, T₀ = 300 K, T_L = 400 K, q = 0 : les deux schémas sont exacts (solution affine). Avec q = 100 W/m³ (λ = 1, L = 1) : les différences finies restent exactes (solution quadratique) ; les volumes finis ont une erreur de 0,78 K (N = 4) puis 0,20 K (N = 8), divisée par 4 quand N double (ordre 2). Le bilan de flux est exact en volumes finis (schéma conservatif) et vaut −q·h en différences finies.</p>
     </div>
     <div>
       <div class="msg" id="b-msg" aria-live="polite"></div>
-      <canvas id="b-plot" aria-label="Profil de température"></canvas><div class="legend" id="b-leg"></div>
-      <h3 id="b-table-title"></h3>
-      <div class="tablewrap" id="b-table"></div>
+      <div class="plots2">
+        <div><canvas id="b-plot" aria-label="Solution"></canvas><div class="legend" id="b-leg"></div></div>
+        <div><canvas id="b-plot2" aria-label="Erreur par rapport à la solution analytique"></canvas><div class="legend" id="b-leg2"></div></div>
+      </div>
+      <details><summary>Afficher les valeurs nodales</summary>
+        <h3 id="b-table-title"></h3>
+        <div class="tablewrap" id="b-table"></div>
+        <div class="tablewrap" id="b-table2"></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- Ch.1 : Péclet -->
+<section class="panel" id="p-peclet">
+  <h2>Péclet : convection–diffusion en volumes finis</h2>
+  <p class="lead">Résout ρu φ' = Γ φ'' sur [0,1] avec φ(0) = 0 et φ(1) = 1, en volumes finis sur N cellules, avec deux reconstructions de la valeur convectée aux faces : centrée et amont. Pe = ρuL/Γ est le nombre de Péclet global et Pe_h = Pe/N celui de la maille. Séance 1, bloc A (nombre de Péclet). Comparez les schémas et superposez plusieurs maillages.</p>
+  <div class="grid">
+    <div>
+      <form class="params">
+        <div class="checks" role="group" aria-label="Schémas">
+          <label><input type="checkbox" name="e-s" value="centre" checked> Centré</label>
+          <label><input type="checkbox" name="e-s" value="amont" checked> Amont</label>
+        </div>
+        <label>Nombre de Péclet global Pe<span class="sl"><input type="range" id="e-PeL" min="1" max="200" step="1" value="50"><output></output></span></label>
+        <label>Nombre de cellules N<span class="sl"><input type="range" id="e-N" min="4" max="200" step="1" value="10"><output></output></span><input id="e-Nx" value="" placeholder="autres N à comparer (jusqu'à 5 valeurs au total)" aria-label="Autres valeurs à comparer"></label>
+        <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
+      </form>
+      <p class="repere"><b>Repère :</b> avec Pe = 50 et N = 10 (Pe_h = 5), le schéma centré oscille (minimum −1,50) alors que l'amont reste monotone (erreur 0,20). Le centré cesse d'osciller à partir de N = 25 (Pe_h ≤ 2). Pour N = 100, le centré (erreur 0,029) est plus précis que l'amont (0,069).</p>
+    </div>
+    <div>
+      <div class="msg" id="e-msg" aria-live="polite"></div>
+      <div class="plots2">
+        <div><canvas id="e-plot" aria-label="Solution"></canvas><div class="legend" id="e-leg"></div></div>
+        <div><canvas id="e-plot2" aria-label="Erreur par rapport à la solution analytique"></canvas><div class="legend" id="e-leg2"></div></div>
+      </div>
+      <div class="tablewrap" id="e-table"></div>
     </div>
   </div>
 </section>
@@ -133,7 +172,7 @@
       <div class="msg" id="j-msg" aria-live="polite"></div>
       <canvas id="j-plot" aria-label="Itérés et solution exacte"></canvas><div class="legend" id="j-leg"></div>
       <canvas id="j-plot2" aria-label="Résidu selon l'itération" style="margin-top:12px"></canvas><div class="legend" id="j-leg2"></div>
-      <div class="tablewrap" id="j-table"></div>
+      <details><summary>Afficher les valeurs nodales</summary><div class="tablewrap" id="j-table"></div></details>
       <h3>Historique du résidu</h3>
       <div class="tablewrap" id="j-hist"></div>
     </div>
@@ -196,11 +235,11 @@
         <label>Diffusivité α, en m²/s (échelle logarithmique)<span class="sl"><input type="range" id="c-alpha" min="-7" max="-3" step="0.1" value="-5" data-log="1" data-unit="m²/s"><output></output></span></label>
         <label>Longueur L, en m<span class="sl"><input type="range" id="c-L" min="0.05" max="0.5" step="0.01" value="0.1" data-unit="m"><output></output></span></label>
         <label>Pas d'espace h<span class="sl"><input type="range" id="c-h" min="1" max="20" step="0.5" value="5" data-scale="0.001" data-unit="mm"><output></output></span></label>
-        <label>Temps final<span class="sl"><input type="range" id="c-tf" min="0.5" max="60" step="0.5" value="1" data-unit="s"><output></output></span></label>
+        <label>Temps final<span class="sl"><input type="range" id="c-tf" min="0.5" max="300" step="0.5" value="1" data-unit="s"><output></output></span></label>
         <label>Pas de temps Δt, en s (sert au profil)<span class="sl"><input type="range" id="c-dt" min="0.05" max="20" step="0.05" value="1" data-unit="s"><output></output></span><input id="c-dtx" value="0.5 0.25" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> avec α = 10⁻⁵ m²/s, L = 0,10 m, h = 5 mm, Δt = 1 s et FTCS : Fo = 0,4, valeur centrale 0,990151 après un pas, contre 0,990179 pour la solution exacte ; pas de temps maximal 1,25 s. Passez le temps final à 10 s et Δt à 2 5 pour voir FTCS devenir instable.</p>
+      <p class="repere"><b>Repère :</b> avec α = 10⁻⁵ m²/s, L = 0,10 m, h = 5 mm, Δt = 1 s et FTCS : Fo = 0,4, valeur centrale 0,990151 après un pas, contre 0,990179 pour la solution exacte ; pas de temps maximal 1,25 s. Avec un temps final de 200 s et Δt = 2 s (Fo = 0,8), FTCS devient instable alors que BTCS et Crank–Nicolson restent précis.</p>
     </div>
     <div>
       <div class="msg" id="c-msg" aria-live="polite"></div>
@@ -270,9 +309,10 @@
 
 </main>
 <footer>
-  Premier jet : vérification technique seulement. Les valeurs de repère proviennent du polycopié MFTN, sauf les itérations de Jacobi et de Gauss–Seidel, les ordres globaux de Neumann, le pas FTCS et l'exemple de la gaussienne, calculés par le rédacteur et contrôlés par les tests (<code>test_calc.js</code>).
+  Premier jet : vérification technique seulement. Les valeurs de repère proviennent du polycopié MFTN, sauf les itérations de Jacobi et de Gauss–Seidel, les ordres globaux de Neumann, le pas FTCS, l'exemple de la gaussienne, les volumes finis de la barre et la convection–diffusion, calculés par le rédacteur et contrôlés par les tests (<code>test_calc.js</code>).
 </footer>
 <script src="calc.js"></script>
+<script src="guide.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

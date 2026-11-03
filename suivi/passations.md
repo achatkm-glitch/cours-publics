@@ -145,3 +145,9 @@
 - **Contrôlé** : contrôle en ligne après déploiement consigné ci-dessous si disponible.
 - **Limites** : le dépôt local avait quatre commits non poussés (adoption du plugin scientific-workflow) qui partent avec ce push.
 - **Prochaine action** : relecture par Mohammed ; verrous libérés.
+
+### 2026-11-03 17:24:51 +01:00 — Code → Mohammed, Codex et prochains intervenants
+- **Fichiers** : `mftn/calculateurs/` (5 fichiers), `index.html`, suivis.
+- **Fait** : mise à jour des calculateurs MFTN (volumes finis, Péclet, guide relié aux fiches).
+- **Limites** : les réponses attendues aux explorations ne sont pas publiées (corrigé enseignant dans le dépôt MFTN).
+- **Prochaine action** : relecture par Mohammed ; verrous libérés.
