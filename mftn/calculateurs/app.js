@@ -111,11 +111,22 @@
   function legend(el, items) {
     el.innerHTML = items.map(s => `<span><i style="border-color:${s.color};border-top-style:${s.dash ? 'dashed' : 'solid'}"></i>${s.label}</span>`).join('');
   }
-  function table(el, head, rows) {
-    el.innerHTML = '<table><thead><tr>' + head.map(h => `<th>${h}</th>`).join('') + '</tr></thead><tbody>' +
-      rows.map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('') + '</tbody></table>';
-  }
   const draw = (canvasId, legId, series, opts) => { plot($(canvasId), series, opts); legend($(legId), series); };
+
+  /* ---------- résultats : cartes colorées (pas de tableaux) et jauge du nombre de Péclet ---------- */
+  function cards(el, items) {
+    el.className = 'cards';
+    el.innerHTML = items.map(it => `<div class="rcard" style="border-left-color:${it.color || 'var(--blue)'}"><b>${it.title}</b>${it.lines.map(l => `<span>${l}</span>`).join('')}</div>`).join('');
+  }
+  /* Jauge logarithmique : zones colorées, repères par cas, texte d'interprétation. */
+  function gauge(el, o) {
+    const lo = Math.log10(o.min), hi = Math.log10(o.max), pos = v => Math.max(0, Math.min(100, (Math.log10(v) - lo) / (hi - lo) * 100));
+    const zones = o.zones.map(z => `<span class="zone" style="left:${pos(z.from)}%;width:${pos(z.to) - pos(z.from)}%;background:${z.color}"></span>`).join('');
+    const marks = o.marks.map(m => `<i class="gmark" style="left:${pos(m.v)}%;background:${m.color}" title="${m.label}"></i>`).join('');
+    const labels = o.zones.map(z => `<span style="left:${(pos(z.from) + pos(z.to)) / 2}%">${z.label}</span>`).join('');
+    el.className = 'gauge';
+    el.innerHTML = `<div class="gtitle">${o.title}</div><div class="gbar">${zones}${marks}</div><div class="glabels">${labels}</div><div class="gtext">${o.text}</div>`;
+  }
 
   /* ---------- Chapitre 1 : transport (advection-diffusion d'une gaussienne) ---------- */
   function runTransport() {
@@ -125,15 +136,23 @@
     const use = combos.slice(0, 6);
     $('t-msg').className = combos.length > 6 ? 'msg warn' : 'msg';
     $('t-msg').textContent = (combos.length > 6 ? `Seules les 6 premières combinaisons sur ${combos.length} sont tracées. ` : '') +
-      'Le centre se déplace à la vitesse a (advection) ; la largeur σ(t) = √(σ₀² + 2Dt) augmente (diffusion) ; l’aire sous la courbe est conservée.';
+      'Le centre se déplace à la vitesse a (advection) ; la largeur σ(t) = √(σ₀² + 2Dt) augmente (diffusion) ; l\u2019aire sous la courbe est conservée.';
     let lo = Infinity, hi = -Infinity;
     use.forEach(k => { const s = Calc.sigmaAt(s0, k.D, k.t); lo = Math.min(lo, k.a * k.t - 4 * s); hi = Math.max(hi, k.a * k.t + 4 * s); });
     const xs = Calc.linspace(lo, hi, 400);
     const S = use.map((k, i) => ({ x: xs, y: Calc.gaussAD({ a: k.a, D: k.D, sigma0: s0, U0, t: k.t, xs }), color: c[i % 6], width: 2.4,
       label: `a = ${fmt(k.a, 3)}, D = ${fmt(k.D, 3)}, t = ${fmt(k.t, 3)}` }));
     draw('t-plot', 't-leg', S, { xlabel: 'x', ylabel: 'c', title: 'Advection–diffusion' });
-    table($('t-table'), ['a', 'D', 't', 'centre a·t', 'σ(t)', 'pic', 'Pe = |a|σ₀/D'],
-      use.map(k => { const s = Calc.sigmaAt(s0, k.D, k.t); return [fmt(k.a, 3), fmt(k.D, 3), fmt(k.t, 3), fmt(k.a * k.t, 3), fmt(s, 4), fmt(U0 * s0 / s, 4), k.D > 0 ? fmt(Math.abs(k.a) * s0 / k.D, 3) : '∞']; }));
+    cards($('t-table'), use.map((k, i) => { const s = Calc.sigmaAt(s0, k.D, k.t);
+      return { color: c[i % 6], title: `a = ${fmt(k.a, 3)} · D = ${fmt(k.D, 3)} · t = ${fmt(k.t, 3)}`, lines: [`centre a·t = <b>${fmt(k.a * k.t, 3)}</b>`, `largeur σ(t) = <b>${fmt(s, 4)}</b>`, `pic = <b>${fmt(U0 * s0 / s, 4)}</b>`] }; }));
+    // jauge du nombre de Péclet : un repère par couple (a, D)
+    const pairs = []; A.forEach(a => Ds.forEach(D => { if (D > 0 && a !== 0) pairs.push({ a, D, Pe: Math.abs(a) * s0 / D }); }));
+    const mk = pairs.slice(0, 6).map((p, i) => ({ v: p.Pe, color: c[i % 6], label: `a = ${fmt(p.a, 3)}, D = ${fmt(p.D, 3)}` }));
+    const P0 = pairs.length ? pairs[0].Pe : NaN;
+    const meaning = !isFinite(P0) ? 'Pe n\u2019est pas défini (vitesse ou diffusivité nulle).' : P0 > 2 ? 'Pe > 2 : l\u2019advection domine, le profil est surtout transporté.' : P0 < 0.5 ? 'Pe < 0,5 : la diffusion domine, le profil est surtout étalé.' : 'Pe voisin de 1 : advection et diffusion sont comparables.';
+    gauge($('t-gauge'), { min: 0.1, max: 100, title: `Nombre de Péclet Pe = |a|σ₀/D = ${pairs.length ? pairs.slice(0, 6).map(p => fmt(p.Pe, 3)).join(' ; ') : '—'}`,
+      zones: [{ from: 0.1, to: 0.5, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'diffusion' }, { from: 0.5, to: 2, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'comparables' }, { from: 2, to: 100, color: 'color-mix(in srgb, var(--blue) 35%, transparent)', label: 'advection' }],
+      marks: mk, text: meaning });
   }
 
   /* ---------- Chapitre 1 : conditions aux limites sur la barre ---------- */
@@ -143,12 +162,11 @@
     const names = { dirichlet: 'Dirichlet', neumann: 'Neumann (flux imposé)', robin: 'Robin (échange convectif)' };
     const par = { dirichlet: { TL: num('l-TL') }, neumann: { qL: num('l-qL') }, robin: { h: num('l-h'), Tinf: num('l-Tinf') } };
     const style = { dirichlet: { width: 6, dash: [] }, neumann: { width: 3.5, dash: [9, 5] }, robin: { width: 1.6, dash: [2, 4] } };
-    const res = types.map((t, i) => ({ t, r: Calc.barreCL(Object.assign({ type: t }, base, par[t])) }));
+    const res = types.map(t => ({ t, r: Calc.barreCL(Object.assign({ type: t }, base, par[t])) }));
     const colorOf = { dirichlet: c[0], neumann: c[1], robin: c[2] };
     const S = res.map(o => ({ x: o.r.x, y: o.r.T, color: colorOf[o.t], width: style[o.t].width, dash: style[o.t].dash, label: names[o.t] }));
     draw('l-plot', 'l-leg', S, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Barre avec production' });
-    table($('l-table'), ['condition en x = L', 'T(L) (K)', 'T max (K)', 'x de T max (m)', 'flux sortant x=0 (W/m²)', 'flux sortant x=L (W/m²)'],
-      res.map(o => [names[o.t], fmt(o.r.TL, 3), fmt(o.r.Tmax, 3), fmt(o.r.xmax, 4), fmt(o.r.q0out, 1), fmt(o.r.qLout, 1)]));
+    cards($('l-table'), res.map(o => ({ color: colorOf[o.t], title: names[o.t], lines: [`T(L) = <b>${fmt(o.r.TL, 3)} K</b>`, `T max = <b>${fmt(o.r.Tmax, 3)} K</b> en x = ${fmt(o.r.xmax, 4)} m`, `flux sortant en x = 0 : <b>${fmt(o.r.q0out, 1)} W/m²</b>`, `flux sortant en x = L : <b>${fmt(o.r.qLout, 1)} W/m²</b>`] })));
     const same = res.length > 1 && res.every(o => Math.abs(o.r.C1 - res[0].r.C1) < 1e-6 * (1 + Math.abs(res[0].r.C1)));
     $('l-msg').className = same ? 'msg good' : 'msg';
     $('l-msg').textContent = same ? 'Les conditions choisies sont équivalentes : les courbes se superposent.' :
@@ -161,36 +179,25 @@
     if (!Ns.length || !schemes.length) return;
     const p = { T0: num('b-T0'), TL: num('b-TL'), L: num('b-L'), lambda: num('b-lambda'), q: num('b-q') };
     const fine = Calc.barre(Object.assign({ N: 400 }, p));
-    const S1 = [{ x: fine.x, y: fine.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], lines = [];
-    let first = null;
+    const S1 = [{ x: fine.x, y: fine.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [];
     Ns.forEach((N, i) => {
-      let msg = `N = ${N}`;
       if (schemes.includes('fd')) {
-        const r = Calc.barre(Object.assign({ N }, p)), bl = Calc.bilanDF(Object.assign({ N }, p));
-        S1.push({ x: r.x, y: r.T, color: tint(c[0], 0.16 * i), points: true, label: `DF, N = ${N}` });
-        S2.push({ x: r.x, y: r.err, color: tint(c[0], 0.16 * i), points: true, label: `DF, N = ${N}` });
-        msg += ` : différences finies, erreur ${fmt(r.maxErr)} K, bilan de flux ${fmt(bl.bilan, 3)} W/m²`;
-        if (!first) first = { fd: r };
-        else if (!first.fd) first.fd = r;
+        const r = Calc.barre(Object.assign({ N }, p)), bl = Calc.bilanDF(Object.assign({ N }, p)), col = tint(c[0], 0.16 * i);
+        S1.push({ x: r.x, y: r.T, color: col, points: true, label: `DF, N = ${N}` });
+        S2.push({ x: r.x, y: r.err, color: col, points: true, label: `DF, N = ${N}` });
+        items.push({ color: col, title: `Différences finies · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(bl.bilan, 3)} W/m²</b>`] });
       }
       if (schemes.includes('vf')) {
-        const r = Calc.barreVF(Object.assign({ N }, p));
-        S1.push({ x: r.x, y: r.T, color: tint(c[1], 0.16 * i), points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
-        S2.push({ x: r.x, y: r.err, color: tint(c[1], 0.16 * i), points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
-        msg += `${schemes.includes('fd') ? ' ;' : ' :'} volumes finis, erreur ${fmt(r.maxErr)} K, bilan de flux ${fmt(r.bilan, 3)} W/m²`;
-        if (!first) first = { vf: r };
-        else if (!first.vf) first.vf = r;
+        const r = Calc.barreVF(Object.assign({ N }, p)), col = tint(c[1], 0.16 * i);
+        S1.push({ x: r.x, y: r.T, color: col, points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
+        S2.push({ x: r.x, y: r.err, color: col, points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
+        items.push({ color: col, title: `Volumes finis · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(r.bilan, 3)} W/m²</b>`] });
       }
-      lines.push(msg);
     });
-    $('b-msg').innerHTML = lines.join('<br>') + '<br><small>Bleu, cercles : différences finies (nœuds) ; orange, carrés : volumes finis (centres des cellules). Les nuances plus claires correspondent aux maillages plus fins. Erreur = solution calculée − solution analytique.</small>';
+    $('b-msg').innerHTML = 'Bleu, cercles : différences finies (nœuds) ; orange, carrés : volumes finis (centres des cellules). Les nuances plus claires correspondent aux maillages plus fins. Erreur = solution calculée − solution analytique ; bilan de flux = flux sortants − q·L.';
     draw('b-plot', 'b-leg', S1, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Solution' });
     draw('b-plot2', 'b-leg2', S2, { xlabel: 'x (m)', ylabel: 'erreur (K)', title: 'Erreur / solution analytique' });
-    const Nf = Ns[0];
-    $('b-table-title').textContent = `Valeurs pour N = ${Nf}`;
-    const tb = (r, id, name) => table($(id), [name + ' : i', 'x (m)', 'T (K)', 'T exacte (K)', 'erreur (K)'], r.x.map((x, i) => [i, fmt(x, 4), fmt(r.T[i], 4), fmt(r.exact[i], 4), fmt(r.err[i], 4)]));
-    if (schemes.includes('fd')) tb(Calc.barre(Object.assign({ N: Nf }, p)), 'b-table', 'DF'); else $('b-table').innerHTML = '';
-    if (schemes.includes('vf')) tb(Calc.barreVF(Object.assign({ N: Nf }, p)), 'b-table2', 'VF'); else $('b-table2').innerHTML = '';
+    cards($('b-cards'), items);
   }
 
   /* ---------- Chapitre 1 : Péclet, convection-diffusion en volumes finis ---------- */
@@ -198,23 +205,25 @@
     const c = pal(), PeL = num('e-PeL'), schemes = checked('e-s'), Ns = vals('e-N').map(Math.round).filter(v => v >= 4 && v <= 400).slice(0, 5);
     if (!schemes.length || !Ns.length) return;
     const xf = Calc.linspace(0, 1, 400), exf = xf.map(x => (Math.exp(PeL * (x - 1)) - Math.exp(-PeL)) / (1 - Math.exp(-PeL)));
-    const S1 = [{ x: xf, y: exf, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], rows = [];
+    const S1 = [{ x: xf, y: exf, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [];
     const names = { centre: 'Centré', amont: 'Amont' };
     Ns.forEach((N, i) => schemes.forEach(s => {
-      const r = Calc.peclet({ N, PeL, scheme: s });
-      const sty = s === 'centre' ? { points: true } : { points: true, marker: 'square', dash: [3, 3], width: 1.4 };
-      S1.push(Object.assign({ x: r.x, y: r.phi, color: tint(s === 'centre' ? c[0] : c[1], 0.16 * i), label: `${names[s]}, N = ${N}` }, sty));
-      S2.push(Object.assign({ x: r.x, y: r.err, color: tint(s === 'centre' ? c[0] : c[1], 0.16 * i), label: `${names[s]}, N = ${N}` }, sty));
-      rows.push([names[s], N, fmt(r.PeH, 3), fmt(r.maxErr, 4), fmt(r.min, 4), r.oscille ? 'oui' : 'non']);
+      const r = Calc.peclet({ N, PeL, scheme: s }), col = tint(s === 'centre' ? c[0] : c[1], 0.16 * i);
+      const sty = s === 'centre' ? { points: true } : { points: true, marker: 'square', dash: [3, 3], width: 1.6 };
+      S1.push(Object.assign({ x: r.x, y: r.phi, color: col, label: `${names[s]}, N = ${N}` }, sty));
+      S2.push(Object.assign({ x: r.x, y: r.err, color: col, label: `${names[s]}, N = ${N}` }, sty));
+      items.push({ color: col, title: `${names[s]} · N = ${N}`, lines: [`Pe de maille = <b>${fmt(r.PeH, 3)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 4)}</b>`, `φ minimum = <b>${fmt(r.min, 4)}</b>`, r.oscille ? '<b>oscille</b>' : 'monotone'] });
     }));
-    const r0 = Calc.peclet({ N: Ns[0], PeL, scheme: 'centre' });
-    const bad = schemes.includes('centre') && r0.PeH > 2;
+    const bad = schemes.includes('centre') && Ns.some(N => PeL / N > 2);
     $('e-msg').className = bad ? 'msg warn' : 'msg';
-    $('e-msg').textContent = `N = ${Ns[0]} : Pe_h = Pe/N = ${fmt(r0.PeH, 3)}.` + (bad ? ' Pe_h > 2 : le coefficient du voisin aval du schéma centré devient négatif, les oscillations sont possibles.' : ' Pe_h ≤ 2 : les coefficients du schéma centré restent positifs.') +
-      ' Bleu, cercles : centré ; orange, carrés : amont ; nuances plus claires : maillages plus fins.';
-    draw('e-plot', 'e-leg', S1, { xlabel: 'x', ylabel: 'φ', title: 'Solution', ylim: null });
+    $('e-msg').textContent = 'Bleu, cercles : centré ; orange, carrés : amont ; nuances plus claires : maillages plus fins. ' +
+      (bad ? 'Pe de maille > 2 : le coefficient du voisin aval du schéma centré devient négatif, les oscillations sont possibles.' : 'Pe de maille ≤ 2 : les coefficients du schéma centré restent positifs.');
+    draw('e-plot', 'e-leg', S1, { xlabel: 'x', ylabel: 'φ', title: 'Solution' });
     draw('e-plot2', 'e-leg2', S2, { xlabel: 'x', ylabel: 'erreur', title: 'Erreur / solution analytique' });
-    table($('e-table'), ['schéma', 'N', 'Pe_h', 'erreur max', 'φ minimum', 'oscille'], rows);
+    cards($('e-table'), items);
+    gauge($('e-gauge'), { min: 0.1, max: 100, title: `Nombre de Péclet de maille Pe_h = Pe/N = ${Ns.map(N => fmt(PeL / N, 3)).join(' ; ')}`,
+      zones: [{ from: 0.1, to: 2, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'Pe_h ≤ 2 : centré monotone' }, { from: 2, to: 100, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'Pe_h > 2 : oscillations possibles' }],
+      marks: Ns.map((N, i) => ({ v: PeL / N, color: tint(c[0], 0.16 * i), label: `N = ${N}` })), text: 'Les repères indiquent Pe_h de chaque maillage ; la limite 2 sépare coefficients positifs et négatifs du schéma centré.' });
   }
 
   /* ---------- Chapitre 2 : Jacobi / Gauss-Seidel, comparaison des deux méthodes ---------- */
@@ -224,12 +233,12 @@
     const runs = methods.map(m => ({ m, r: Calc.jacobiGS({ n, method: m, iters: K, f }) }));
     if (!runs.length) return;
     const ref = runs[0].r;
-    $('j-msg').innerHTML = runs.map(o => { const h = o.r.history[K]; return `${SCHEME[o.m]} : ‖r‖∞ = ${fmt(h.res, 5)}, erreur algébrique maximale = ${fmt(Calc.maxAbs(h.u.map((v, i) => v - o.r.exact[i])), 5)}`; }).join(' ; ') + ` (après ${K} itération(s)).`;
-    table($('j-table'), ['nœud', 'x'].concat(runs.map(o => SCHEME[o.m]), ['exacte']),
-      ref.exact.map((e, i) => [i + 1, fmt(ref.x[i + 1], 4)].concat(runs.map(o => fmt(o.r.history[K].u[i], 6)), [fmt(e, 6)])));
-    const kmax = Math.min(K, 40);
-    table($('j-hist'), ['k'].concat(runs.map(o => '‖r‖∞ ' + SCHEME[o.m])),
-      Array.from({ length: kmax + 1 }, (_, k) => [k].concat(runs.map(o => fmt(o.r.history[k].res, 5)))));
+    $('j-msg').textContent = `Après ${K} itération(s), pour n = ${n} nœuds intérieurs et f = ${fmt(f, 3)}.`;
+    cards($('j-table'), runs.map((o, i) => {
+      const h = o.r.history[K], long = Calc.jacobiGS({ n, method: o.m, iters: 1000, f }).history.findIndex(x => x.res < 1e-3);
+      return { color: c[i], title: SCHEME[o.m], lines: [`résidu ‖r‖∞ = <b>${fmt(h.res, 5)}</b>`, `erreur algébrique max = <b>${fmt(Calc.maxAbs(h.u.map((v, j) => v - o.r.exact[j])), 5)}</b>`,
+        `itération où ‖r‖∞ < 1e-3 : <b>${long < 0 ? '> 1000' : long}</b>`, n <= 8 ? `u⁽${K}⁾ = (${h.u.map(v => fmt(v, 5)).join(' ; ')})` : ''].filter(Boolean) };
+    }));
     const xs = [0].concat(ref.x.slice(1, n + 1), [1]);
     const S1 = [{ x: xs, y: [0].concat(ref.exact, [0]), color: css('--plot-axis'), dash: [6, 4], label: 'solution exacte' }]
       .concat(runs.map((o, i) => ({ x: xs, y: [0].concat(o.r.history[K].u, [0]), color: c[i], points: true, label: SCHEME[o.m] + ' (k = ' + K + ')' })));
@@ -241,22 +250,20 @@
   /* ---------- Chapitre 2 : ordre de trois différences finies ---------- */
   function runOrdre() {
     const c = pal(), hs = Array.from({ length: Math.round(num('o-k')) }, (_, i) => num('o-h0') / Math.pow(2, i));
-    const rows = Calc.ordreExp(hs), o = (v) => v === undefined ? '—' : fmt(v, 3);
-    table($('o-table'), ['h', 'progressive', 'ordre', 'centrée', 'ordre', 'régressive 3 pts', 'ordre'],
-      rows.map(r => [fmt(r.h, 5), fmt(r.prog, 4), o(r.ordreProg), fmt(r.centree, 4), o(r.ordreCentree), fmt(r.regr3, 4), o(r.ordreRegr3)]));
-    $('o-msg').textContent = 'L’ordre est lu comme log₂ du rapport des erreurs entre deux pas consécutifs dont le rapport est 2.';
-    const S = [{ x: rows.map(r => r.h), y: rows.map(r => r.prog), color: c[1], label: 'progressive (ordre 1)', points: true },
-               { x: rows.map(r => r.h), y: rows.map(r => r.centree), color: c[0], label: 'centrée (ordre 2)', points: true },
-               { x: rows.map(r => r.h), y: rows.map(r => r.regr3), color: c[2], label: 'régressive à 3 points (ordre 2)', points: true }];
+    const rows = Calc.ordreExp(hs), o = (v) => v === undefined ? '' : ` (ordre <b>${fmt(v, 3)}</b>)`;
+    $('o-msg').textContent = 'L\u2019ordre est lu comme log₂ du rapport des erreurs entre deux pas consécutifs dont le rapport est 2.';
+    const defs = [['prog', 'ordreProg', 'Progressive', c[1]], ['centree', 'ordreCentree', 'Centrée', c[0]], ['regr3', 'ordreRegr3', 'Régressive à 3 points', c[2]]];
+    cards($('o-table'), defs.map(d => ({ color: d[3], title: d[2], lines: rows.map(r => `h = ${fmt(r.h, 5)} : erreur <b>${fmt(r[d[0]], 4)}</b>${o(r[d[1]])}`) })));
+    const S = defs.map(d => ({ x: rows.map(r => r.h), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true }));
     draw('o-plot', 'o-leg', S, { logx: true, logy: true, xlabel: 'h', ylabel: 'erreur en x = 0', title: 'u = exp(x)' });
   }
 
   /* ---------- Chapitre 2 : fermetures de Neumann ---------- */
   function runNeumann() {
     const c = pal(), Ns = Array.from({ length: Math.round(num('n-k')) }, (_, i) => Math.round(num('n-N0') * Math.pow(2, i))).filter(v => v >= 4 && v <= 400);
-    const rows = Calc.neumannOrdres(Ns);
-    table($('n-table'), ['N', 'erreur ordre 1', 'ordre observé', 'erreur ordre 2', 'ordre observé'],
-      rows.map(r => [r.N, fmt(r.e1, 4), r.p1 === undefined ? '—' : fmt(r.p1, 3), fmt(r.e2, 4), r.p2 === undefined ? '—' : fmt(r.p2, 3)]));
+    const rows = Calc.neumannOrdres(Ns), o = (v) => v === undefined ? '' : ` (ordre <b>${fmt(v, 3)}</b>)`;
+    cards($('n-table'), [{ color: c[1], title: 'Fermeture d\u2019ordre 1', lines: rows.map(r => `N = ${r.N} : erreur <b>${fmt(r.e1, 4)}</b>${o(r.p1)}`) },
+                         { color: c[0], title: 'Fermeture d\u2019ordre 2', lines: rows.map(r => `N = ${r.N} : erreur <b>${fmt(r.e2, 4)}</b>${o(r.p2)}`) }]);
     const S = [{ x: rows.map(r => 1 / r.N), y: rows.map(r => r.e1), color: c[1], label: 'Neumann ordre 1', points: true },
                { x: rows.map(r => 1 / r.N), y: rows.map(r => r.e2), color: c[0], label: 'Neumann ordre 2', points: true }];
     draw('n-plot', 'n-leg', S, { logx: true, logy: true, xlabel: 'h = 1/N', ylabel: 'erreur maximale', title: 'cos x + x' });
@@ -279,9 +286,8 @@
       .concat(first.map((o, i) => ({ x: o.r.x, y: o.r.u, color: c[i], points: true, label: SCHEME[o.s] })));
     draw('c-plot', 'c-leg', S1, { xlabel: 'x (m)', ylabel: 'u', ylim: lim > 5 ? [-1.5, 1.5] : null, title: `Profils à t ≈ ${fmt(r0.t, 3)} s` });
     const rows = [];
-    schemes.forEach(s => dts.forEach(dt => { const r = run(s, dt); rows.push({ s, dt, r }); }));
-    table($('c-table'), ['schéma', 'Δt (s)', 'pas', 'Fo', 'u au centre', 'erreur max', 'stable'],
-      rows.map(o => [SCHEME[o.s], fmt(o.dt, 4), Math.max(1, Math.round(tf / o.dt)), fmt(o.r.Fo, 4), fmt(o.r.u[Math.floor(o.r.u.length / 2)], 6), fmt(o.r.maxErr, 4), o.r.stable ? 'oui' : 'non']));
+    schemes.forEach((s, i) => dts.forEach(dt => rows.push({ s, i, dt, r: run(s, dt) })));
+    cards($('c-table'), rows.map(o => ({ color: c[o.i], title: `${SCHEME[o.s]} · Δt = ${fmt(o.dt, 4)} s`, lines: [`Fo = <b>${fmt(o.r.Fo, 4)}</b> (${Math.max(1, Math.round(tf / o.dt))} pas)`, `erreur maximale = <b>${fmt(o.r.maxErr, 4)}</b>`, `u au centre = ${fmt(o.r.u[Math.floor(o.r.u.length / 2)], 6)}`, o.r.stable ? 'critère Fo ≤ 1/2 respecté' : '<b>Fo > 1/2 : critère de FTCS non respecté</b>'] })));
     const S2 = schemes.map((s, i) => { const pr = rows.filter(o => o.s === s).sort((p, q) => p.dt - q.dt); return { x: pr.map(o => o.dt), y: pr.map(o => o.r.maxErr), color: c[i], label: SCHEME[s], points: true }; });
     draw('c-plot2', 'c-leg2', S2, { logx: true, logy: true, xlabel: 'Δt (s)', ylabel: 'erreur maximale', title: 'Erreur selon Δt' });
     $('c-mid').textContent = `Au nœud central pour Δt = ${fmt(dts[0], 4)} s : ` + first.map(o => `${SCHEME[o.s]} ${fmt(o.r.u[mid], 6)}`).join(' ; ') + ` ; exacte ${fmt(r0.exact[mid], 6)}.`;
@@ -291,13 +297,9 @@
   function runChemin() {
     const c = pal(), rs = vals('p-r').slice(0, 6), c0 = num('p-c0'), alpha = num('p-alpha'), hs = Array.from({ length: Math.round(num('p-hk')) }, (_, i) => num('p-h0') / Math.pow(2, i));
     if (!rs.length) return;
-    table($('p-summary'), ['r', 'Dufort–Frankel (diffusion)', 'Lax–Friedrichs (advection)'],
-      rs.map(r => { const v = Calc.verdictsChemin(r); return [fmt(r, 3), v.df, v.lxf]; }));
-    const rows0 = Calc.chemins({ c0, r: rs[0], alpha, hs });
-    table($('p-table'), ['h', 'Δt = c₀hʳ', 'Δt/h', 'α(Δt/h)² (DF)', 'h²/(2Δt) (LxF)'],
-      rows0.map(r => [fmt(r.h, 5), fmt(r.dt, 5), fmt(r.dtSurH, 5), fmt(r.dfTerme, 5), fmt(r.lxfTerme, 5)]));
-    $('p-table-title').textContent = `Détail pour r = ${fmt(rs[0], 3)}`;
     const all = rs.map(r => Calc.chemins({ c0, r, alpha, hs }));
+    cards($('p-summary'), rs.map((r, i) => { const v = Calc.verdictsChemin(r), last = all[i][all[i].length - 1];
+      return { color: c[i], title: `r = ${fmt(r, 3)}`, lines: [`Dufort–Frankel : <b>${v.df}</b>`, `Lax–Friedrichs : <b>${v.lxf}</b>`, `pour h = ${fmt(last.h, 4)} : α(Δt/h)² = ${fmt(last.dfTerme, 4)} ; h²/(2Δt) = ${fmt(last.lxfTerme, 4)}`] }; }));
     const S1 = all.map((rows, i) => ({ x: rows.map(r => r.h), y: rows.map(r => r.dfTerme), color: c[i], points: true, label: `r = ${fmt(rs[i], 3)}` }));
     const S2 = all.map((rows, i) => ({ x: rows.map(r => r.h), y: rows.map(r => r.lxfTerme), color: c[i], points: true, label: `r = ${fmt(rs[i], 3)}` }));
     draw('p-plot', 'p-leg', S1, { logx: true, logy: true, xlabel: 'h', ylabel: 'α(Δt/h)²', title: 'Dufort–Frankel' });
@@ -314,15 +316,16 @@
     const bad = first.some(o => !isFinite(o.r.max) || Math.abs(o.r.max) > 3 || Math.abs(o.r.min) > 3);
     const r0 = first[0].r;
     $('a-msg').className = bad ? 'msg warn' : 'msg';
-    $('a-msg').textContent = `Nx = ${Nxs[0]} : Δx = ${fmt(r0.h, 5)} ; Δt = ${fmt(r0.dt, 5)} ; ${r0.steps} pas ; t = ${fmt(r0.t, 4)} s.` + (bad ? ' Au moins un schéma est instable : l’échelle verticale est limitée.' : '');
+    $('a-msg').textContent = `Nx = ${Nxs[0]} : Δx = ${fmt(r0.h, 5)} ; Δt = ${fmt(r0.dt, 5)} ; ${r0.steps} pas ; t = ${fmt(r0.t, 4)} s.` + (bad ? ' Au moins un schéma est instable : l\u2019échelle verticale est limitée.' : '');
     const S = [{ x: r0.x, y: r0.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution exacte' }]
       .concat(first.map((o, i) => ({ x: o.r.x, y: o.r.u, color: c[i], label: SCHEME[o.s] })));
     draw('a-plot', 'a-leg', S, { xlabel: 'x (m)', ylabel: 'u', ylim: bad ? [-1.5, 1.5] : null, title: `Nx = ${Nxs[0]}, Co = ${fmt(Co, 3)}` });
-    const rows = [];
-    schemes.forEach(s => Nxs.forEach(Nx => { const r = run(s, Nx); rows.push([SCHEME[s], Nx, fmt(r.max, 4), fmt(r.min, 4), fmt(r.maxErr, 4)]); }));
-    table($('a-table'), ['schéma', 'Nx', 'maximum', 'minimum', 'erreur max'], rows);
+    const items = [];
+    schemes.forEach((s, i) => Nxs.forEach(Nx => { const r = run(s, Nx); items.push({ color: c[i], title: `${SCHEME[s]} · Nx = ${Nx}`, lines: [`maximum = <b>${fmt(r.max, 4)}</b>`, `minimum = <b>${fmt(r.min, 4)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 4)}</b>`] }); }));
+    cards($('a-table'), items);
   }
 
+  const RUN = { transport: runTransport, cl: runCL, barre: runBarre, peclet: runPeclet, jg: runJG, ordre: runOrdre, neumann: runNeumann, chaleur: runChaleur, chemin: runChemin, adv: runAdv };
 
   /* ---------- Guide : notions, compétences, explorations avec réglages prêts à l'emploi ---------- */
   function applyPreset(tab, idx) {
@@ -352,7 +355,6 @@
     });
   }
 
-  const RUN = { transport: runTransport, cl: runCL, barre: runBarre, peclet: runPeclet, jg: runJG, ordre: runOrdre, neumann: runNeumann, chaleur: runChaleur, chemin: runChemin, adv: runAdv };
   let current = 'transport';
   function safe(name) {
     try { RUN[name](); } catch (e) { const p = $('p-' + name).querySelector('.msg'); if (p) { p.className = 'msg bad'; p.textContent = 'Paramètres invalides : ' + e.message; } }

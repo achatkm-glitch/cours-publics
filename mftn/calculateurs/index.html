@@ -48,8 +48,9 @@
     </div>
     <div>
       <div class="msg" id="t-msg" aria-live="polite"></div>
+      <div class="gauge" id="t-gauge"></div>
       <canvas id="t-plot" aria-label="Profils de concentration"></canvas><div class="legend" id="t-leg"></div>
-      <div class="tablewrap" id="t-table"></div>
+      <div class="cards" id="t-table"></div>
     </div>
   </div>
 </section>
@@ -81,7 +82,7 @@
     <div>
       <div class="msg" id="l-msg" aria-live="polite"></div>
       <canvas id="l-plot" aria-label="Profils de température"></canvas><div class="legend" id="l-leg"></div>
-      <div class="tablewrap" id="l-table"></div>
+      <div class="cards" id="l-table"></div>
     </div>
   </div>
 </section>
@@ -113,11 +114,7 @@
         <div><canvas id="b-plot" aria-label="Solution"></canvas><div class="legend" id="b-leg"></div></div>
         <div><canvas id="b-plot2" aria-label="Erreur par rapport à la solution analytique"></canvas><div class="legend" id="b-leg2"></div></div>
       </div>
-      <details><summary>Afficher les valeurs nodales</summary>
-        <h3 id="b-table-title"></h3>
-        <div class="tablewrap" id="b-table"></div>
-        <div class="tablewrap" id="b-table2"></div>
-      </details>
+      <div class="cards" id="b-cards"></div>
     </div>
   </div>
 </section>
@@ -145,7 +142,8 @@
         <div><canvas id="e-plot" aria-label="Solution"></canvas><div class="legend" id="e-leg"></div></div>
         <div><canvas id="e-plot2" aria-label="Erreur par rapport à la solution analytique"></canvas><div class="legend" id="e-leg2"></div></div>
       </div>
-      <div class="tablewrap" id="e-table"></div>
+      <div class="gauge" id="e-gauge"></div>
+      <div class="cards" id="e-table"></div>
     </div>
   </div>
 </section>
@@ -172,9 +170,8 @@
       <div class="msg" id="j-msg" aria-live="polite"></div>
       <canvas id="j-plot" aria-label="Itérés et solution exacte"></canvas><div class="legend" id="j-leg"></div>
       <canvas id="j-plot2" aria-label="Résidu selon l'itération" style="margin-top:12px"></canvas><div class="legend" id="j-leg2"></div>
-      <details><summary>Afficher les valeurs nodales</summary><div class="tablewrap" id="j-table"></div></details>
-      <h3>Historique du résidu</h3>
-      <div class="tablewrap" id="j-hist"></div>
+      <div class="cards" id="j-table"></div>
+
     </div>
   </div>
 </section>
@@ -195,7 +192,7 @@
     <div>
       <div class="msg" id="o-msg"></div>
       <canvas id="o-plot" aria-label="Erreurs en échelle logarithmique"></canvas><div class="legend" id="o-leg"></div>
-      <div class="tablewrap" id="o-table"></div>
+      <div class="cards" id="o-table"></div>
     </div>
   </div>
 </section>
@@ -215,7 +212,7 @@
     </div>
     <div>
       <canvas id="n-plot" aria-label="Erreur maximale selon h"></canvas><div class="legend" id="n-leg"></div>
-      <div class="tablewrap" id="n-table"></div>
+      <div class="cards" id="n-table"></div>
     </div>
   </div>
 </section>
@@ -246,7 +243,7 @@
       <p id="c-mid"></p>
       <canvas id="c-plot" aria-label="Profils de température"></canvas><div class="legend" id="c-leg"></div>
       <canvas id="c-plot2" aria-label="Erreur selon le pas de temps" style="margin-top:12px"></canvas><div class="legend" id="c-leg2"></div>
-      <div class="tablewrap" id="c-table"></div>
+      <div class="cards" id="c-table"></div>
     </div>
   </div>
 </section>
@@ -269,11 +266,10 @@
     </div>
     <div>
       <div class="msg" id="p-msg">Un terme qui ne tend pas vers zéro quand h diminue signale une consistance perdue sur ce chemin.</div>
-      <div class="tablewrap" id="p-summary"></div>
+      <div class="cards" id="p-summary"></div>
       <canvas id="p-plot" aria-label="Terme de Dufort–Frankel"></canvas><div class="legend" id="p-leg"></div>
       <canvas id="p-plot2" aria-label="Terme de Lax–Friedrichs" style="margin-top:12px"></canvas><div class="legend" id="p-leg2"></div>
-      <h3 id="p-table-title"></h3>
-      <div class="tablewrap" id="p-table"></div>
+
     </div>
   </div>
 </section>
@@ -302,7 +298,7 @@
     <div>
       <div class="msg" id="a-msg" aria-live="polite"></div>
       <canvas id="a-plot" aria-label="Profil advecté"></canvas><div class="legend" id="a-leg"></div>
-      <div class="tablewrap" id="a-table"></div>
+      <div class="cards" id="a-table"></div>
     </div>
   </div>
 </section>

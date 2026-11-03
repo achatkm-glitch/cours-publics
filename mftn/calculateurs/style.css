@@ -78,3 +78,17 @@ details > summary { cursor: pointer; color: var(--blue); margin: 10px 0; }
 .explo { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 8px 0; background: var(--bg); }
 .explo p { margin: 6px 0; }
 .explo .codes { color: var(--muted); font-size: 0.85rem; }
+
+.cards { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.rcard { flex: 1 1 190px; min-width: 0; border: 1px solid var(--line); border-left: 5px solid var(--blue); border-radius: 8px; padding: 8px 10px; background: var(--bg); display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; }
+.rcard b:first-child { color: var(--ink); }
+.rcard span { color: var(--muted); font-variant-numeric: tabular-nums; }
+.rcard span b { color: var(--ink); }
+.gauge { margin: 10px 0 14px; }
+.gtitle { font-weight: 600; margin-bottom: 6px; }
+.gbar { position: relative; height: 18px; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--bg); }
+.gbar .zone { position: absolute; top: 0; bottom: 0; }
+.gbar .gmark { position: absolute; top: -2px; bottom: -2px; width: 4px; margin-left: -2px; border-radius: 2px; box-shadow: 0 0 0 1px var(--card); }
+.glabels { position: relative; height: 18px; font-size: 0.78rem; color: var(--muted); }
+.glabels span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.gtext { font-size: 0.9rem; color: var(--muted); margin-top: 2px; }

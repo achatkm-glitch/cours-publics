@@ -52,7 +52,7 @@ window.GUIDE = {
             "t-tx": "",
             "t-s0": "0.15"
           },
-          "consigne": "Les deux courbes ont la même vitesse a = 1 et le même instant t = 4, mais des diffusivités D = 0,01 et D = 0,05. Relevez dans le tableau le centre, la largeur σ(t), le pic et le nombre de Péclet de chacune.",
+          "consigne": "Les deux courbes ont la même vitesse a = 1 et le même instant t = 4, mais des diffusivités D = 0,01 et D = 0,05. Relevez dans les cartes de résultats le centre, la largeur σ(t) et le pic de chacune, et repérez leur nombre de Péclet sur la jauge.",
           "question": "Quel mécanisme fixe la position du centre ? Lequel fixe la largeur ? Que devient le pic quand D augmente, et pourquoi ?"
         },
         {
@@ -96,8 +96,14 @@ window.GUIDE = {
             "C1.5"
           ],
           "reglages": {
+            "l-L": "0.1",
+            "l-lambda": "10",
             "l-q": "0",
-            "l-qL": "0"
+            "l-T0": "300",
+            "l-TL": "331",
+            "l-qL": "0",
+            "l-h": "50",
+            "l-Tinf": "293"
           },
           "checks": {
             "l-type": [
@@ -115,7 +121,14 @@ window.GUIDE = {
             "C1.5"
           ],
           "reglages": {
-            "l-h": "200"
+            "l-L": "0.1",
+            "l-lambda": "10",
+            "l-q": "100000",
+            "l-T0": "300",
+            "l-TL": "331",
+            "l-qL": "1900",
+            "l-h": "200",
+            "l-Tinf": "293"
           },
           "checks": {
             "l-type": [
@@ -224,7 +237,7 @@ window.GUIDE = {
               "gs"
             ]
           },
-          "consigne": "Avec n = 5, f = 1 et k = 20, comparez les deux méthodes dans l'historique du résidu et sur le graphique de convergence.",
+          "consigne": "Avec n = 5, f = 1 et k = 20, comparez les deux méthodes dans les cartes de résultats et sur le graphique de convergence.",
           "question": "Que valent les deux résidus à k = 20 ? À partir de quelle itération le résidu passe-t-il sous 1e-3 pour chaque méthode ?"
         },
         {
@@ -244,7 +257,7 @@ window.GUIDE = {
               "gs"
             ]
           },
-          "consigne": "Passez à n = 20 nœuds et k = 100 itérations. Lisez sur le graphique logarithmique l'itération où chaque courbe franchit 1e-3.",
+          "consigne": "Passez à n = 20 nœuds et k = 100 itérations. Lisez dans les cartes (ou sur le graphique logarithmique) l'itération où chaque courbe franchit 1e-3.",
           "question": "Comment le nombre d'itérations évolue-t-il avec n ? Quel est le rapport entre Jacobi et Gauss–Seidel ?"
         }
       ]
@@ -276,7 +289,7 @@ window.GUIDE = {
             "o-h0": "0.1",
             "o-k": "4"
           },
-          "consigne": "Gardez h₀ = 0,1 et quatre pas. Lisez dans le tableau les erreurs et les ordres des trois différences, puis observez les pentes sur le graphique logarithmique.",
+          "consigne": "Gardez h₀ = 0,1 et quatre pas. Lisez dans les cartes les erreurs et les ordres des trois différences, puis observez les pentes sur le graphique logarithmique.",
           "question": "Quels ordres lisez-vous ? Pourquoi l'erreur de la régressive à trois points est-elle voisine du double de celle de la centrée ?"
         }
       ]
@@ -306,7 +319,7 @@ window.GUIDE = {
             "n-N0": "10",
             "n-k": "5"
           },
-          "consigne": "Gardez N = 10, 20, 40, 80, 160 et lisez les ordres observés des deux fermetures de Neumann.",
+          "consigne": "Gardez N = 10, 20, 40, 80, 160 et lisez dans les cartes les ordres observés des deux fermetures de Neumann.",
           "question": "Quel ordre global obtient-on avec chaque fermeture ? Pourquoi l'ordre 1 de la fermeture limite-t-il l'ordre global alors que le schéma intérieur est d'ordre 2 ?"
         }
       ]
@@ -348,7 +361,7 @@ window.GUIDE = {
               "cn"
             ]
           },
-          "consigne": "Avec h = 5 mm et un temps final de 200 s, prenez Δt = 2 s (Fo = 0,8), puis Δt = 1 s (Fo = 0,4). Relevez l'erreur maximale de chaque schéma dans le tableau.",
+          "consigne": "Avec h = 5 mm et un temps final de 200 s, prenez Δt = 2 s (Fo = 0,8), puis Δt = 1 s (Fo = 0,4). Relevez l'erreur maximale de chaque schéma dans les cartes de résultats.",
           "question": "Que se passe-t-il pour FTCS quand Fo dépasse 1/2 ? Les schémas implicites sont-ils concernés ?"
         },
         {
@@ -373,7 +386,7 @@ window.GUIDE = {
               "cn"
             ]
           },
-          "consigne": "Prenez h = 1 mm, un temps final de 1 s et les pas Δt = 1, 0,5 et 0,25 s. Lisez les erreurs dans le tableau et la pente du second graphique.",
+          "consigne": "Prenez h = 1 mm, un temps final de 1 s et les pas Δt = 1, 0,5 et 0,25 s. Lisez les erreurs dans les cartes et la pente du second graphique.",
           "question": "Quel ordre en temps lit-on pour FTCS et BTCS ? Pourquoi l'erreur de Crank–Nicolson ne diminue-t-elle plus ?"
         }
       ]
@@ -446,7 +459,7 @@ window.GUIDE = {
               "lw"
             ]
           },
-          "consigne": "Avec Co = 0,4 et Nx = 100, superposez les quatre schémas. Relevez le maximum et le minimum de chacun dans le tableau.",
+          "consigne": "Avec Co = 0,4 et Nx = 100, superposez les quatre schémas. Relevez le maximum et le minimum de chacun dans les cartes de résultats.",
           "question": "Classez chaque schéma : instable, diffusion numérique ou dispersion ?"
         },
         {
@@ -507,7 +520,7 @@ window.GUIDE = {
               "centre"
             ]
           },
-          "consigne": "Gardez seulement le schéma centré, avec Pe = 50. Superposez N = 10, 20, 24, 25 et 26 et lisez dans le tableau le nombre de Péclet de maille et la présence d'oscillations.",
+          "consigne": "Gardez seulement le schéma centré, avec Pe = 50. Superposez N = 10, 20, 24, 25 et 26 et lisez dans les cartes le nombre de Péclet de maille et la présence d'oscillations (voir aussi la jauge).",
           "question": "À partir de quel N les oscillations disparaissent-elles ? Que vaut alors Pe_h ? Quel lien avec le signe du coefficient du voisin aval ?"
         },
         {
@@ -528,7 +541,7 @@ window.GUIDE = {
               "amont"
             ]
           },
-          "consigne": "Gardez les deux schémas et prenez N = 100 puis 200 (Pe_h = 0,5 puis 0,25). Lisez les erreurs maximales dans le tableau.",
+          "consigne": "Gardez les deux schémas et prenez N = 100 puis 200 (Pe_h = 0,5 puis 0,25). Lisez les erreurs maximales dans les cartes de résultats.",
           "question": "Quel schéma est le plus précis ? Comment l'erreur de chacun évolue-t-elle quand N double ?"
         },
         {
