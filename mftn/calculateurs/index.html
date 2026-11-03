@@ -143,7 +143,7 @@
 <!-- EDP : comportement -->
 <section class="panel" id="p-edpb">
   <h2>EDP : comportement des trois types</h2>
-  <p class="lead">Chaque type a son comportement : une EDP elliptique décrit un équilibre où toute la frontière influence chaque point ; une EDP parabolique diffuse et lisse, avec une propagation instantanée mais très faible loin de la source ; une EDP hyperbolique propage l'information à vitesse finie, dans un cône de dépendance. Choisissez un type et jouez avec les curseurs. Séance 1, bloc B.</p>
+  <p class="lead">Chaque type a son comportement : une EDP elliptique décrit un équilibre où toute la frontière influence chaque point ; une EDP parabolique diffuse et lisse, avec une propagation instantanée mais très faible loin de sources initialement compactes ; une EDP hyperbolique propage l'information à vitesse finie, dans un cône de dépendance. Choisissez un type et jouez avec les curseurs. Séance 1, bloc B.</p>
   <div class="eqs" data-eq="edpb"></div>
   <div class="grid">
     <div>
@@ -161,7 +161,7 @@
           <label>Nœuds par direction<span class="sl"><input type="range" id="k-n" min="9" max="61" step="2" value="31"><output></output></span></label>
         </div>
         <div data-kt="parabolique" class="kgroup" style="display:none">
-          <label>Diffusivité D<span class="sl"><input type="range" id="k-D" min="0.01" max="1" step="0.01" value="0.05"><output></output></span></label>
+          <label>Diffusivité D (m²/s)<span class="sl"><input type="range" id="k-D" min="0.01" max="1" step="0.01" value="0.05"><output></output></span></label>
           <label>Instant final t<span class="sl"><input type="range" id="k-tp" min="0" max="10" step="0.5" value="2" data-unit="s"><output></output></span></label>
           <label>Écart entre les deux sources<span class="sl"><input type="range" id="k-gap" min="0" max="8" step="0.5" value="4" data-unit="m"><output></output></span></label>
         </div>
@@ -173,8 +173,8 @@
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
       <p class="repere" data-kt="elliptique"><b>Repère :</b> avec le côté gauche à 100 °C et les trois autres à 0 °C, la température au centre vaut 25 °C ; avec deux côtés opposés à 100 °C, 50 °C ; avec trois côtés à 100 °C, 75 °C.</p>
-      <p class="repere" data-kt="parabolique" style="display:none"><b>Repère :</b> avec D = 0,05, deux sources en x = ±2 et t = 2 : σ = 0,4717 ; la valeur en x = 5 est non nulle (5,2e-10) mais minuscule.</p>
-      <p class="repere" data-kt="hyperbolique" style="display:none"><b>Repère :</b> avec c = 1 et t = 2, la bosse initiale se sépare en deux impulsions d'amplitude 0,5 situées en x = ±2 ; en x = 3, hors du cône, la valeur est nulle (1e-10).</p>
+      <p class="repere" data-kt="parabolique" style="display:none"><b>Repère :</b> les profils initiaux sont des bosses cosinus de rayon 0,5 m, donc exactement nuls hors de leurs supports. Avec D = 0,05 m²/s et deux centres en x = ±2 m, u(5,0) = 0 ; à t = 2 s, u(5) ≈ 1,04 × 10⁻⁹ et à t = 8 s, u(5) ≈ 9,81 × 10⁻⁴.</p>
+      <p class="repere" data-kt="hyperbolique" style="display:none"><b>Repère :</b> le profil initial est exactement nul hors de [−0,5 ; 0,5]. Avec c = 1 et t = 2, ses deux bosses de demi-amplitude ont leurs maxima en x = ±2 et un rayon de 0,5 m ; en x = 3, u = 0 exactement.</p>
     </div>
     <div>
       <div class="msg" id="k-msg" aria-live="polite"></div>

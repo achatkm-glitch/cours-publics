@@ -349,16 +349,33 @@
     const c = Math.floor((M - 1) / 2);
     return { N, M, u, iters: it, min: lo, max: hi, centre: u[c][c], ligneCentrale: u[c].slice() };
   }
-  /* Parabolique : chaleur sur la droite réelle, somme de gaussiennes initiales (solution exacte). */
-  function chaleurGauss({ D, sigma0, centres, t, xs }) {
-    return xs.map(x => centres.reduce((a, c0) => a + sigma0 / sigmaAt(sigma0, D, t) * Math.exp(-Math.pow(x - c0, 2) / (2 * Math.pow(sigmaAt(sigma0, D, t), 2))), 0));
+  /* Bosse cosinus à support compact : f=0 hors de [centre-rayon, centre+rayon]. */
+  function bosseCompacte(x, centre = 0, rayon = 0.5) {
+    if (!(rayon > 0)) return 0;
+    const z = (x - centre) / rayon;
+    return Math.abs(z) < 1 ? 0.5 * (1 + Math.cos(Math.PI * z)) : 0;
   }
-  /* Hyperbolique : équation des ondes, formule de d'Alembert pour une bosse initiale au repos. */
-  function ondeDAlembert({ c, sigma0, centre = 0, t, xs }) {
-    const f = (x) => Math.exp(-Math.pow(x - centre, 2) / (2 * sigma0 * sigma0));
-    return xs.map(x => 0.5 * (f(x - c * t) + f(x + c * t)));
+  /* Chaleur sur R : convolution d'une bosse compacte avec le noyau fondamental.
+     L'intégrale sur le support initial est évaluée par Simpson composite. */
+  function chaleurCompacte({ D, rayon = 0.5, centres = [0], t, xs }) {
+    if (!(D > 0) || !(t > 0)) return xs.map(x => centres.reduce((s, c0) => s + bosseCompacte(x, c0, rayon), 0));
+    const n = 160, dt = 2 * rayon / n, norm = 1 / Math.sqrt(4 * Math.PI * D * t);
+    return xs.map(x => centres.reduce((sum, c0) => {
+      let q = 0;
+      for (let i = 0; i <= n; i++) {
+        const y = c0 - rayon + i * dt;
+        const kernel = norm * Math.exp(-Math.pow(x - y, 2) / (4 * D * t));
+        const w = i === 0 || i === n ? 1 : (i % 2 ? 4 : 2);
+        q += w * kernel * bosseCompacte(y, c0, rayon);
+      }
+      return sum + q * dt / 3;
+    }, 0));
+  }
+  /* Hyperbolique : formule de d'Alembert pour une bosse initiale compacte au repos. */
+  function ondeDAlembert({ c, rayon = 0.5, centre = 0, t, xs }) {
+    return xs.map(x => 0.5 * (bosseCompacte(x - c * t, centre, rayon) + bosseCompacte(x + c * t, centre, rayon)));
   }
 
-  const API = { thomas, gauss, linspace, maxAbs, barre, jacobiGS, ordreExp, neumann, neumannOrdres, chaleur, chemins, verdictsChemin, advection, sigmaAt, gaussAD, barreCL, barreVF, bilanDF, peclet, signalMixte, advection1d, classifyPDE, laplace2d, chaleurGauss, ondeDAlembert };
+  const API = { thomas, gauss, linspace, maxAbs, barre, jacobiGS, ordreExp, neumann, neumannOrdres, chaleur, chemins, verdictsChemin, advection, sigmaAt, gaussAD, barreCL, barreVF, bilanDF, peclet, signalMixte, advection1d, classifyPDE, laplace2d, bosseCompacte, chaleurCompacte, ondeDAlembert };
   if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.Calc = API;
 })(typeof window !== 'undefined' ? window : this);

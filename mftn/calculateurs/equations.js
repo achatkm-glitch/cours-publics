@@ -14,8 +14,8 @@ window.EQUATIONS = {
   ],
   "edpb": [
     {"titre": "Elliptique : équation de Laplace sur le carré unité", "tex": "\\nabla^2u=u_{xx}+u_{yy}=0\\ \\text{dans }]0,1[^2,\\qquad u=\\text{valeur imposée sur chaque côté}"},
-    {"titre": "Parabolique : diffusion, solution exacte pour des gaussiennes initiales", "tex": "u_t=D\\,u_{xx}\\ \\Longrightarrow\\ u(x,t)=\\sum_k\\frac{\\sigma_0}{\\sigma(t)}\\,e^{-\\frac{(x-x_k)^2}{2\\sigma(t)^2}},\\qquad\\sigma(t)=\\sqrt{\\sigma_0^2+2Dt}"},
-    {"titre": "Hyperbolique : équation des ondes, formule de d'Alembert (repos initial)", "tex": "u_{tt}=c^2u_{xx}\\ \\Longrightarrow\\ u(x,t)=\\tfrac12\\bigl[f(x-ct)+f(x+ct)\\bigr],\\qquad \\text{domaine de dépendance de }(x,t):\\ [x-ct,\\,x+ct]"}
+    {"titre": "Parabolique : diffusion d'un profil initial compact", "tex": "u_t=D\\,u_{xx},\\qquad u(x,t)=\\int_{-\\infty}^{\\infty}\\frac{e^{-\\frac{(x-y)^2}{4Dt}}}{\\sqrt{4\\pi Dt}}\\,u_0(y)\\,\\mathrm{d}y,\\qquad t>0"},
+    {"titre": "Hyperbolique : d'Alembert pour une bosse initiale compacte au repos", "tex": "u_{tt}=c^2u_{xx},\\qquad u(x,t)=\\tfrac12\\bigl[f(x-ct)+f(x+ct)\\bigr],\\qquad f(x)=\\begin{cases}\\tfrac12(1+\\cos(\\pi x/R)),&|x|<R,\\\\0,&|x|\\ge R,\\end{cases}\\qquad R=0{,}5"}
   ],
   "cl": [
     {"titre": "Conduction stationnaire avec production", "tex": "\\lambda\\,T''+q=0,\\qquad T(0)=T_0\\qquad\\Longrightarrow\\qquad T(x)=T_0+C_1x-\\frac{q}{2\\lambda}\\,x^2"},

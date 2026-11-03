@@ -10,7 +10,7 @@ window.GUIDE = {
     "C2.1": "construire une approximation de dérivée à partir d'un développement de Taylor",
     "C2.2": "choisir le stencil, construire le schéma, puis déterminer son erreur de troncature et son ordre",
     "C2.3": "discrétiser des conditions de Dirichlet et de Neumann et en lire l'effet sur la matrice",
-    "C2.4": "assembler le système de Poisson en une et deux dimensions",
+    "C2.4": "assembler le système de Poisson en une dimension (le cas 2D est un approfondissement, exercice G)",
     "C2.5": "choisir et appliquer Jacobi ou Gauss–Seidel, puis contrôler la convergence par le résidu",
     "C2.6": "définir le défaut local d'un schéma et déterminer son ordre de consistance par Taylor",
     "C2.7": "mesurer un ordre observé par raffinement",
@@ -18,7 +18,7 @@ window.GUIDE = {
     "C3.2": "appliquer la condition pratique sur le pas de temps de FTCS et dimensionner un calcul",
     "C3.3": "comparer les défauts des schémas FTCS, BTCS, Dufort–Frankel et de la famille θ",
     "C3.4": "reconnaître une consistance qui dépend du chemin de raffinement",
-    "C3.5": "établir l'ordre des schémas d'advection sans le confondre avec leur stabilité"
+    "C3.5": "distinguer, pour les schémas d'advection, le comportement observé (diffusion, dispersion, instabilité) de l'ordre, dont l'établissement est un approfondissement (exercice E)"
   },
   "tabs": {
     "transport": {
@@ -142,7 +142,7 @@ window.GUIDE = {
           },
           "consigne": "Revenez aux valeurs initiales de la paroi (les trois courbes coïncident), puis augmentez h jusqu'à 200 W/(m²·K).",
           "question": "Quelle courbe change ? Pourquoi les deux autres restent-elles identiques ? Que vaut le bilan des flux ?",
-          "main": "Pour q = 10⁵ W/m³ et L = 0,1 m, calculez la puissance produite par unité de surface q·L, que doivent se partager les deux faces."
+          "main": "Pour q = 100 000 W/m³ et L = 0,1 m, calculez la puissance produite par unité de surface q·L, que doivent se partager les deux faces."
         }
       ]
     },
@@ -389,8 +389,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Avec h = 5 mm et un temps final de 200 s, prenez Δt = 2 s (Fo = 0,8), puis Δt = 1 s (Fo = 0,4). Relevez l'erreur maximale de chaque schéma dans les cartes de résultats.",
-          "question": "Que se passe-t-il pour FTCS quand Fo dépasse 1/2 ? Les schémas implicites sont-ils concernés ?",
-          "main": "Pour α = 10⁻⁵ m²/s et h = 5 mm, calculez Fo = αΔt/h² pour Δt = 2 s et 1 s, ainsi que le pas de temps maximal de FTCS."
+          "question": "Que se passe-t-il pour FTCS quand Fo dépasse 1/2 ? L'ordre de grandeur de l'erreur affichée dépend-il des arrondis ? Les schémas implicites sont-ils concernés ?",
+          "main": "Pour α = 1e-5 m²/s et h = 5 mm, calculez Fo = αΔt/h² pour Δt = 2 s et 1 s, ainsi que le pas de temps maximal de FTCS."
         },
         {
           "id": "S3-X2",
@@ -415,7 +415,7 @@ window.GUIDE = {
             ]
           },
           "consigne": "Prenez h = 1 mm, un temps final de 1 s et les pas Δt = 1, 0,5 et 0,25 s. Lisez les erreurs dans les cartes et la pente du second graphique.",
-          "question": "Quel ordre en temps lit-on pour FTCS et BTCS ? Pourquoi l'erreur de Crank–Nicolson ne diminue-t-elle plus ?",
+          "question": "Quel ordre en temps lit-on pour FTCS et BTCS ? Pourquoi l'erreur de Crank–Nicolson ne diminue-t-elle plus ? Fo > 1/2 pour FTCS : pourquoi son erreur reste-t-elle pourtant petite ici ?",
           "main": "Avec h = 1 mm, calculez Fo pour Δt = 1 ; 0,5 et 0,25 s. FTCS respecte-t-il Fo ≤ 1/2 ? Prévoyez l'ordre en temps de FTCS, BTCS et Crank–Nicolson."
         }
       ]
@@ -497,7 +497,6 @@ window.GUIDE = {
           "id": "S3-X5",
           "titre": "Co = 1 : le décalage exact",
           "comp": [
-            "C3.4",
             "C3.5"
           ],
           "reglages": {
@@ -861,9 +860,9 @@ window.GUIDE = {
               "parabolique"
             ]
           },
-          "consigne": "Deux sources chaudes en x = ±2 diffusent (D = 0,05). Lisez la largeur σ(t) et la valeur en x = 5 à t = 2, puis portez t à 8 et comparez ; regardez les deux graphiques, dont celui en échelle logarithmique.",
-          "question": "La solution est-elle nulle en x = 5 ? Comment la valeur évolue-t-elle avec t ? Que montre l'échelle logarithmique ?",
-          "main": "Avec σ₀ = 0,15 et D = 0,05, calculez la largeur σ(t) = √(σ₀² + 2Dt) à t = 2 puis à t = 8."
+          "consigne": "Deux bosses cosinus de rayon 0,5 m, centrées en x = ±2 m, diffusent avec D = 0,05 m²/s. Vérifiez d'abord que x = 5 m est hors du support initial. Lisez ensuite u(5) à t = 2 s puis à t = 8 s et comparez les deux graphiques, dont celui en échelle logarithmique.",
+          "question": "La température en x = 5 est-elle nulle au départ ? Que devient-elle dès t > 0 ? Comment évolue-t-elle entre t = 2 et t = 8 ?",
+          "main": "Les supports initiaux sont [−2,5 ; −1,5] et [1,5 ; 2,5]. En déduire u(5,0) = 0. Pour l'équation de la chaleur sur la droite réelle, prévoir si u(5,t) reste nul ou devient non nul pour t > 0."
         },
         {
           "id": "S1-K3",
@@ -890,9 +889,9 @@ window.GUIDE = {
               "hyperbolique"
             ]
           },
-          "consigne": "Avec c = 1, t = 2 et le point P en x = 2, lisez la position des impulsions, le domaine de dépendance de P et la valeur de u en x = 3. Doublez ensuite c.",
-          "question": "Où sont les impulsions ? Que vaut u en x = 3 ? Qu'est-ce que le domaine de dépendance, et que change c ?",
-          "main": "Avec c = 1, t = 2 et P en x = 2, calculez la position des impulsions (±c·t) et le domaine de dépendance de P, [x − ct ; x + ct]."
+          "consigne": "La bosse initiale est nulle hors de [−0,5 ; 0,5]. Avec c = 1, t = 2 et P en x = 2, lisez les maxima des deux bosses, leurs supports, le domaine de dépendance de P et u en x = 3. Doublez ensuite c et observez le déplacement des supports.",
+          "question": "Où se trouvent les maxima et les fronts ? Que vaut u en x = 3 ? Comment le domaine de dépendance varie-t-il avec c ?",
+          "main": "À partir de la formule de d'Alembert, prévoir les maxima en x = ±ct et le rayon 0,5 m de chaque bosse. Pour P = (2,2) avec c = 1, calculer le domaine de dépendance [x − ct ; x + ct] = [0 ; 4]."
         }
       ]
     }

@@ -581,27 +581,29 @@
       explain('edpb', [`Température au centre : <b>${fmt(r.centre, 4)} °C</b> ; moyenne des quatre côtés : ${fmt((num('k-Tl') + num('k-Tr') + num('k-Tt') + num('k-Tb')) / 4, 4)} °C (égales par symétrie du carré).`, `Valeurs comprises entre ${fmt(r.min, 4)} et ${fmt(r.max, 4)} °C : principe du maximum, pas de valeur intérieure hors des valeurs imposées.`, 'Domaine de dépendance de P : toute la frontière. Chaque côté agit sur tout le domaine : une EDP elliptique est un problème d’équilibre global.']);
       cards($('k-cards'), [{ color: c[0], title: 'Température au centre', lines: [`valeur = <b>${fmt(r.centre, 4)} °C</b>`, `minimum = <b>${fmt(r.min, 4)}</b> ; maximum = <b>${fmt(r.max, 4)}</b>`, `${r.iters} itérations de sur-relaxation`] }]);
     } else if (type === 'parabolique') {
-      const D = num('k-D'), tp = num('k-tp'), gap = num('k-gap'), s0 = 0.15, ctr = gap === 0 ? [0] : [-gap / 2, gap / 2];
+      const D = num('k-D'), tp = num('k-tp'), gap = num('k-gap'), rayon = 0.5, ctr = gap === 0 ? [0] : [-gap / 2, gap / 2];
       const xs = Calc.linspace(-8, 8, 800), times = [0, tp / 4, tp / 2, tp].filter((t, i, a) => a.indexOf(t) === i);
-      const S = times.map((t, i) => ({ x: xs, y: Calc.chaleurGauss({ D, sigma0: s0, centres: ctr, t, xs }), color: c[i % 6], width: 2.2, label: `t = ${fmt(t, 3)}` }));
-      draw('k-par', 'k-par-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Diffusion' });
+      const S = times.map((t, i) => ({ x: xs, y: Calc.chaleurCompacte({ D, rayon, centres: ctr, t, xs }), color: c[i % 6], width: 2.2, label: `t = ${fmt(t, 3)}` }));
+      draw('k-par', 'k-par-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Diffusion d’une bosse à support compact' });
       draw('k-par2', 'k-par2-leg', S.map(s => Object.assign({}, s)), { logy: true, xlabel: 'x (m)', ylabel: 'u (échelle logarithmique)', title: 'Même courbes, échelle log' });
       drawXT($('k-xtp'), 0, num('k-xp'), tp, true);
       $('k-xtp-leg').innerHTML = `<span><i style="border-color:${css('--blue')}"></i>domaine de dépendance : toute la ligne initiale</span><span><i style="border-color:${css('--orange')};border-top-style:dashed"></i>et les conditions aux limites jusqu\u2019à t</span>`;
-      const sg = Calc.sigmaAt(s0, D, tp), far = Calc.chaleurGauss({ D, sigma0: s0, centres: ctr, t: tp, xs: [5, 0] });
-      $('k-msg').className = 'msg'; $('k-msg').textContent = 'Dès que t > 0, la solution est non nulle partout : l\u2019information se propage à vitesse infinie, mais son effet décroît extrêmement vite avec la distance (queues gaussiennes visibles en échelle logarithmique).';
-      explain('edpb', [`À t = ${fmt(tp, 3)} s la largeur est σ = <b>${fmt(sg, 4)}</b>, contre 0,15 au départ : la diffusion étale la solution.`, `En x = 5 la valeur vaut ${far[0].toExponential(2).replace('.', ',')} : non nulle (propagation instantanée) mais minuscule.`, 'Domaine de dépendance de P : la ligne initiale entière (et les conditions aux limites jusqu’à t) ; l’influence des points éloignés existe mais décroît très vite avec la distance.']);
-      cards($('k-cards'), [{ color: c[3], title: `À t = ${fmt(tp, 3)} s`, lines: [`largeur σ(t) = <b>${fmt(sg, 4)}</b>`, `valeur en x = 5 : <b>${far[0].toExponential(2).replace('.', ',')}</b> (non nulle)`, `valeur en x = 0 : <b>${far[1].toExponential(2).replace('.', ',')}</b>`] }]);
+      const far = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: tp, xs: [5, 0] });
+      const far2 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 2, xs: [5] })[0];
+      const far8 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 8, xs: [5] })[0];
+      $('k-msg').className = 'msg'; $('k-msg').textContent = 'Au départ, les deux bosses sont exactement nulles hors de leurs intervalles de support. Pour tout t > 0, la solution de l’équation de la chaleur sur la droite réelle est non nulle à toute distance ; si elle est extrêmement faible, l’arrondi numérique peut toutefois afficher zéro.';
+      explain('edpb', [`Chaque profil initial est nul hors de [centre − ${fmt(rayon, 2)} ; centre + ${fmt(rayon, 2)}] m. Ainsi u(5,0) = 0.`, `Après diffusion, u(5,2) ≈ ${far2.toExponential(2).replace('.', ',')} et u(5,8) ≈ ${far8.toExponential(2).replace('.', ',')} : l’effet apparaît à distance dès t > 0.`, 'La chaleur a une vitesse de propagation infinie dans le modèle continu : à tout t > 0, la solution idéale est non nulle sur toute la droite.']);
+      cards($('k-cards'), [{ color: c[3], title: `À t = ${fmt(tp, 3)} s`, lines: [`u(5, 0) = <b>0</b> : x = 5 est hors du support initial`, `u(5, ${fmt(tp, 3)}) = <b>${far[0].toExponential(2).replace('.', ',')}</b>`, `u(0, ${fmt(tp, 3)}) = <b>${far[1].toExponential(2).replace('.', ',')}</b>`, `repères : u(5, 2) ≈ ${far2.toExponential(2).replace('.', ',')} ; u(5, 8) ≈ ${far8.toExponential(2).replace('.', ',')}`] }]);
     } else {
-      const cc = num('k-c'), th = num('k-th'), xp = num('k-xp'), s0 = 0.15, xs = Calc.linspace(-8, 8, 800);
-      const S = [{ x: xs, y: Calc.ondeDAlembert({ c: cc, sigma0: s0, t: 0, xs }), color: css('--plot-axis'), dash: [6, 4], label: 't = 0' },
-                 { x: xs, y: Calc.ondeDAlembert({ c: cc, sigma0: s0, t: th, xs }), color: c[0], width: 2.4, label: `t = ${fmt(th, 3)}` }];
+      const cc = num('k-c'), th = num('k-th'), xp = num('k-xp'), rayon = 0.5, xs = Calc.linspace(-8, 8, 800);
+      const S = [{ x: xs, y: Calc.ondeDAlembert({ c: cc, rayon, t: 0, xs }), color: css('--plot-axis'), dash: [6, 4], label: 't = 0' },
+                 { x: xs, y: Calc.ondeDAlembert({ c: cc, rayon, t: th, xs }), color: c[0], width: 2.4, label: `t = ${fmt(th, 3)}` }];
       draw('k-hyp', 'k-hyp-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Équation des ondes' });
       drawXT($('k-xt'), cc, xp, th); $('k-xt-leg').innerHTML = `<span><i style="border-color:${css('--orange')}"></i>caractéristiques de P</span><span><i style="border-color:${css('--blue')}"></i>domaine de dépendance</span>`;
-      const uP = Calc.ondeDAlembert({ c: cc, sigma0: s0, t: th, xs: [xp, 3] });
-      $('k-msg').className = 'msg'; $('k-msg').textContent = 'La bosse initiale se sépare en deux impulsions de demi-amplitude qui se déplacent à la vitesse c, en sens opposés. L\u2019information a une vitesse finie : au point P ne compte que la donnée initiale située dans le segment bleu, et rien ne se passe encore en dehors du cône.';
-      explain('edpb', [`Les deux impulsions sont en x = ±c·t = <b>±${fmt(cc * th, 3)}</b>, d’amplitude 0,5 ; la vitesse de propagation est c = ${fmt(cc, 3)}.`, `Le point P (x = ${fmt(xp, 3)}) dépend seulement des données initiales sur [${fmt(xp - cc * th, 3)} ; ${fmt(xp + cc * th, 3)}] ; u(P) = ${uP[0].toExponential(2).replace('.', ',')} : ${uP[0] > 1e-3 ? 'une impulsion a atteint P' : 'aucune impulsion n’a encore atteint P'}.`, 'Domaine de dépendance de P : le segment limité par les caractéristiques x ± c t ; en dehors, la solution reste nulle (à la précision près).']);
-      cards($('k-cards'), [{ color: c[0], title: `À t = ${fmt(th, 3)} s`, lines: [`impulsions en x = ± c·t = <b>±${fmt(cc * th, 3)}</b>, amplitude 0,5`, `domaine de dépendance de P : <b>[${fmt(xp - cc * th, 3)} ; ${fmt(xp + cc * th, 3)}]</b>`, `u(P) = <b>${uP[0].toExponential(2).replace('.', ',')}</b>`, `u(x = 3) = <b>${uP[1].toExponential(2).replace('.', ',')}</b>`] }]);
+      const uP = Calc.ondeDAlembert({ c: cc, rayon, t: th, xs: [xp, 3] });
+      $('k-msg').className = 'msg'; $('k-msg').textContent = 'La bosse initiale, exactement nulle hors de [−0,5 ; 0,5], donne deux bosses de demi-amplitude qui se déplacent à la vitesse c. Le support reste borné : l’information ne dépasse pas les fronts de propagation.';
+      explain('edpb', [`Les maxima sont en x = ±c·t = <b>±${fmt(cc * th, 3)}</b> ; chaque bosse garde une demi-largeur ${fmt(rayon, 2)}.`, `Le domaine de dépendance de P (x = ${fmt(xp, 3)}) est [${fmt(xp - cc * th, 3)} ; ${fmt(xp + cc * th, 3)}] sur la ligne initiale. u(P) = ${uP[0].toExponential(2).replace('.', ',')} ; en x = 3, u = ${uP[1].toExponential(2).replace('.', ',')}.`, 'Hors des supports transportés, la solution reste exactement nulle : la propagation a une vitesse finie.']);
+      cards($('k-cards'), [{ color: c[0], title: `À t = ${fmt(th, 3)} s`, lines: [`maxima en x = ± c·t = <b>±${fmt(cc * th, 3)}</b>, amplitude 0,5`, `supports des bosses : ±c·t ± ${fmt(rayon, 2)} m`, `domaine de dépendance de P : <b>[${fmt(xp - cc * th, 3)} ; ${fmt(xp + cc * th, 3)}]</b>`, `u(P) = <b>${uP[0].toExponential(2).replace('.', ',')}</b>`, `u(x = 3) = <b>${uP[1].toExponential(2).replace('.', ',')}</b>`] }]);
     }
   }
 
