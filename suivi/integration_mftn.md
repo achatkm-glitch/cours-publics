@@ -52,3 +52,6 @@ Empreintes SHA-256 source et destination identiques :
 - Contrôles avant publication : `node test_calc.js` (50 contrôles) ; neuf onglets chargés sans erreur de console via http ; curseurs et comparaisons essayés.
 - Accueil : carte « Calculateurs de simulation MFTN » et lien latéral ajoutés ; les compteurs (4 documents, 445 pages) ne comptent que les PDF et sont inchangés.
 - Limites : relecture scientifique indépendante non faite ; vérification technique seulement.
+
+### Vérification en ligne — 2026-11-03 17:07:42 +01:00 — Code
+- https://achatkm-glitch.github.io/cours-publics/mftn/calculateurs/ servie ; `index.html`, `app.js`, `calc.js` et `style.css` identiques aux copies locales (empreintes comparées, fins de ligne normalisées) ; les neuf onglets se chargent sans erreur de console ; barre 1D N = 4 : 325, 350, 375 K. Accueil : carte et lien latéral présents.
