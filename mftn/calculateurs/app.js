@@ -32,7 +32,7 @@
     const n = parseInt(m[1], 16), mix = v => Math.round(v + (255 - v) * f);
     return 'rgb(' + mix((n >> 16) & 255) + ',' + mix((n >> 8) & 255) + ',' + mix(n & 255) + ')';
   };
-  const pal = () => ['--blue', '--orange', '--green', '--red', '--c5', '--c6'].map(css);
+  const pal = () => ['--blue', '--orange', '--green', '--red', '--c5', '--c6', '--c7', '--c8'].map(css);   // huit couleurs bien séparées : jamais deux courbes de même couleur sur un graphique
   const SCHEME = { ftcs: 'FTCS (explicite)', btcs: 'BTCS (implicite)', cn: 'Crank–Nicolson (θ = 1/2)', df: 'Dufort–Frankel (explicite)', ri: 'Richardson (explicite)', amont: 'Amont (explicite)', lxf: 'Lax–Friedrichs (explicite)', lw: 'Lax–Wendroff (explicite)', bw: 'Beam–Warming (explicite)', cimp: 'Centré implicite', jacobi: 'Jacobi', gs: 'Gauss–Seidel' };
 
   /* ---------- tracé : cadre d'axes carré, axes linéaires ou logarithmiques ---------- */
@@ -45,6 +45,7 @@
   }
   function plot(canvas, series, o) {
     o = o || {};
+    (window.__plotLog = window.__plotLog || {})[canvas.id] = (series || []).map(s => s.color); // contrôle des couleurs en double
     const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
     canvas.width = W * dpr; canvas.height = W * dpr;
     const g = canvas.getContext('2d');
@@ -193,28 +194,29 @@
 
   /* ---------- Chapitre 1 : barre 1D (différences finies et volumes finis), comparaison de maillages ---------- */
   function runBarre() {
-    const c = pal(), Ns = vals('b-N').map(Math.round).filter(v => v >= 2 && v <= 2000).slice(0, 5), schemes = checked('b-s');
+    const c = pal(), Ns = vals('b-N').map(Math.round).filter(v => v >= 2 && v <= 2000).slice(0, 4), schemes = checked('b-s');
     if (!Ns.length || !schemes.length) return;
     const p = { T0: num('b-T0'), TL: num('b-TL'), L: num('b-L'), lambda: num('b-lambda'), q: num('b-q') };
     const fine = Calc.barre(Object.assign({ N: 400 }, p));
     const S1 = [{ x: fine.x, y: fine.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [], er = { fd: {}, vf: {} };
+    let kc = 0;
     Ns.forEach((N, i) => {
       if (schemes.includes('fd')) {
-        const r = Calc.barre(Object.assign({ N }, p)), bl = Calc.bilanDF(Object.assign({ N }, p)), col = tint(c[0], 0.16 * i);
+        const r = Calc.barre(Object.assign({ N }, p)), bl = Calc.bilanDF(Object.assign({ N }, p)), col = c[kc++ % 8];
         S1.push({ x: r.x, y: r.T, color: col, points: true, label: `DF, N = ${N}` });
         S2.push({ x: r.x, y: r.err, color: col, points: true, label: `DF, N = ${N}` });
         er.fd[N] = r.maxErr;
         items.push({ color: col, title: `Différences finies · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(bl.bilan, 3)} W/m²</b>`] });
       }
       if (schemes.includes('vf')) {
-        const r = Calc.barreVF(Object.assign({ N }, p)), col = tint(c[1], 0.16 * i);
+        const r = Calc.barreVF(Object.assign({ N }, p)), col = c[kc++ % 8];
         S1.push({ x: r.x, y: r.T, color: col, points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
         S2.push({ x: r.x, y: r.err, color: col, points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
         er.vf[N] = r.maxErr;
         items.push({ color: col, title: `Volumes finis · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(r.bilan, 3)} W/m²</b>`] });
       }
     });
-    $('b-msg').innerHTML = 'Bleu, cercles : différences finies (nœuds) ; orange, carrés : volumes finis (centres des cellules). Les nuances plus claires correspondent aux maillages plus fins. Erreur = solution calculée − solution analytique ; bilan de flux = flux sortants − q·L.';
+    $('b-msg').innerHTML = 'Cercles : différences finies (nœuds) ; carrés : volumes finis (centres des cellules). Chaque courbe a sa couleur (quatre maillages au plus). Erreur = solution calculée − solution analytique ; bilan de flux = flux sortants − q·L.';
     draw('b-plot', 'b-leg', S1, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Solution' });
     // erreurs de l'ordre de l'arrondi : on fige l'axe pour ne pas amplifier le bruit machine en « courbes » trompeuses
     const eMax = Math.max.apply(null, S2.map(q => Calc.maxAbs(q.y)));
@@ -235,13 +237,14 @@
 
   /* ---------- Chapitre 1 : Péclet, convection-diffusion en volumes finis ---------- */
   function runPeclet() {
-    const c = pal(), PeL = num('e-PeL'), schemes = checked('e-s'), Ns = vals('e-N').map(Math.round).filter(v => v >= 4 && v <= 400).slice(0, 5);
+    const c = pal(), PeL = num('e-PeL'), schemes = checked('e-s'), Ns = vals('e-N').map(Math.round).filter(v => v >= 4 && v <= 400).slice(0, 4);
     if (!schemes.length || !Ns.length) return;
     const xf = Calc.linspace(0, 1, 400), exf = xf.map(x => (Math.exp(PeL * (x - 1)) - Math.exp(-PeL)) / (1 - Math.exp(-PeL)));
     const S1 = [{ x: xf, y: exf, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [], rec = [];
     const names = { centre: 'Centré', amont: 'Amont' };
+    let kc = 0;
     Ns.forEach((N, i) => schemes.forEach(s => {
-      const r = Calc.peclet({ N, PeL, scheme: s }), col = tint(s === 'centre' ? c[0] : c[1], 0.16 * i);
+      const r = Calc.peclet({ N, PeL, scheme: s }), col = c[kc++ % 8];
       const sty = s === 'centre' ? { points: true } : { points: true, marker: 'square', dash: [3, 3], width: 1.6 };
       S1.push(Object.assign({ x: r.x, y: r.phi, color: col, label: `${names[s]}, N = ${N}` }, sty));
       S2.push(Object.assign({ x: r.x, y: r.err, color: col, label: `${names[s]}, N = ${N}` }, sty));
@@ -250,14 +253,14 @@
     }));
     const bad = schemes.includes('centre') && Ns.some(N => PeL / N > 2);
     $('e-msg').className = bad ? 'msg warn' : 'msg';
-    $('e-msg').textContent = 'Bleu, cercles : centré ; orange, carrés : amont ; nuances plus claires : maillages plus fins. ' +
+    $('e-msg').textContent = 'Cercles : centré ; carrés : amont ; une couleur par courbe (quatre maillages au plus). ' +
       (bad ? 'Pe de maille > 2 : le coefficient du voisin aval du schéma centré devient négatif, les oscillations sont possibles.' : 'Pe de maille ≤ 2 : les coefficients du schéma centré restent positifs.');
     draw('e-plot', 'e-leg', S1, { xlabel: 'x', ylabel: 'φ', title: 'Solution' });
     draw('e-plot2', 'e-leg2', S2, { xlabel: 'x', ylabel: 'erreur', title: 'Erreur / solution analytique' });
     cards($('e-table'), items);
     gauge($('e-gauge'), { min: 0.1, max: 100, title: `Nombre de Péclet de maille Pe_h = Pe/N = ${Ns.map(N => fmt(PeL / N, 3)).join(' ; ')}`,
       zones: [{ from: 0.1, to: 2, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'Pe_h ≤ 2 : centré monotone' }, { from: 2, to: 100, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'Pe_h > 2 : oscillations possibles' }],
-      marks: Ns.map((N, i) => ({ v: PeL / N, color: tint(c[0], 0.16 * i), label: `N = ${N}` })), text: 'Les repères indiquent Pe_h de chaque maillage ; la limite 2 sépare coefficients positifs et négatifs du schéma centré.' });
+      marks: Ns.map((N, i) => ({ v: PeL / N, color: c[(schemes.length * i) % 8], label: `N = ${N}` })), text: 'Les repères indiquent Pe_h de chaque maillage ; la limite 2 sépare coefficients positifs et négatifs du schéma centré.' });
     const cen = rec.filter(o => o.s === 'centre'), amo = rec.filter(o => o.s === 'amont'), lst = arr => arr.map(o => o.N).join(', ');
     const L = [`Pe = ${fmt(PeL, 3)} : la solution exacte a une couche limite près de x = 1.`];
     if (cen.length) { const os = cen.filter(o => o.osc), mo = cen.filter(o => !o.osc); L.push(`Centré : ${os.length ? 'oscille pour N = ' + lst(os) + ' (Pe_h > 2 : un coefficient devient négatif)' : ''}${os.length && mo.length ? ' ; ' : ''}${mo.length ? 'monotone pour N = ' + lst(mo) + ' (Pe_h ≤ 2)' : ''}.`); }
@@ -343,14 +346,14 @@
   /* ---------- Chapitre 3 : chaleur 1D, comparaison de schémas et de pas de temps ---------- */
   function runChaleur() {
     const c = pal(), alpha = num('c-alpha'), L = num('c-L'), h = num('c-h'), tf = num('c-tf');
-    const dts = vals('c-dt').filter(v => v > 0), schemes = checked('c-s');
+    const dts = vals('c-Fo').filter(v => v > 0).map(F => F * h * h / alpha), schemes = checked('c-s');   // Fo est la variable ; Δt = Fo h²/α
     if (!dts.length || !schemes.length) return;
     const run = (s, dt) => Calc.chaleur({ alpha, L, h, dt, steps: Math.max(1, Math.round(tf / dt)), scheme: s });
     const first = schemes.map(s => ({ s, r: run(s, dts[0]) }));
     const r0 = first[0].r, mid = Math.floor(r0.u.length / 2);
     const warn = first.some(o => (o.s === 'ftcs' && o.r.Fo > 0.5) || o.s === 'ri');
     $('c-msg').className = warn ? 'msg bad' : 'msg good';
-    $('c-msg').textContent = `Δt = ${fmt(dts[0], 4)} s : Fo = ${fmt(r0.Fo, 4)} ; pas de temps maximal de FTCS = ${fmt(r0.dtMax, 4)} s.` + (warn ? (first.some(o => o.s === 'ri') ? ' Richardson est instable quel que soit Fo' + (first.some(o => o.s === 'ftcs' && o.r.Fo > 0.5) ? ' ; FTCS aussi, car Fo > 1/2.' : '.') : ' Fo > 1/2 : FTCS est instable.') : '');
+    $('c-msg').textContent = `Fo = ${fmt(r0.Fo, 4)} (Δt = ${fmt(dts[0], 4)} s) ; pas de temps maximal de FTCS = ${fmt(r0.dtMax, 4)} s.` + (warn ? (first.some(o => o.s === 'ri') ? ' Richardson est instable quel que soit Fo' + (first.some(o => o.s === 'ftcs' && o.r.Fo > 0.5) ? ' ; FTCS aussi, car Fo > 1/2.' : '.') : ' Fo > 1/2 : FTCS est instable.') : '');
     const lim = Math.max(1.2, ...first.flatMap(o => o.r.u.map(Math.abs)).filter(isFinite));
     const S1 = [{ x: r0.x, y: r0.u0, color: c[5], dash: [2, 4], label: 'état initial' },
                 { x: r0.x, y: r0.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution exacte' }]

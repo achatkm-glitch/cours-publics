@@ -407,8 +407,8 @@ window.GUIDE = {
             "c-L": "0.1",
             "c-h": "5",
             "c-tf": "200",
-            "c-dt": "2",
-            "c-dtx": ""
+            "c-Fo": "0.8",
+            "c-Fox": ""
           },
           "checks": {
             "c-s": [
@@ -417,7 +417,7 @@ window.GUIDE = {
               "cn"
             ]
           },
-          "consigne": "Avec h = 5 mm et un temps final de 200 s, prenez Δt = 2 s (Fo = 0,8), puis Δt = 1 s (Fo = 0,4). Relevez l'erreur maximale de chaque schéma dans les cartes de résultats.",
+          "consigne": "Avec h = 5 mm et un temps final de 200 s, réglez Fo = 0,8 (Δt = 2 s), puis Fo = 0,4 (Δt = 1 s). Relevez l'erreur maximale de chaque schéma dans les cartes de résultats.",
           "question": "Que se passe-t-il pour FTCS quand Fo dépasse 1/2 ? L'ordre de grandeur de l'erreur affichée dépend-il des arrondis ? Les schémas implicites sont-ils concernés ?",
           "main": "Pour α = 1e-5 m²/s et h = 5 mm, calculez Fo = αΔt/h² pour Δt = 2 s et 1 s, ainsi que le pas de temps maximal de FTCS.",
           "corr": true
@@ -433,8 +433,8 @@ window.GUIDE = {
             "c-L": "0.1",
             "c-h": "1",
             "c-tf": "1",
-            "c-dt": "1",
-            "c-dtx": "0.5 0.25"
+            "c-Fo": "10",
+            "c-Fox": "5 2.5"
           },
           "checks": {
             "c-s": [
@@ -443,7 +443,7 @@ window.GUIDE = {
               "cn"
             ]
           },
-          "consigne": "Prenez h = 1 mm, un temps final de 1 s et les pas Δt = 1, 0,5 et 0,25 s. Lisez les erreurs dans les cartes et la pente du second graphique.",
+          "consigne": "Prenez h = 1 mm, un temps final de 1 s et les valeurs Fo = 10, 5 et 2,5 (Δt = 1 ; 0,5 et 0,25 s). Lisez les erreurs dans les cartes et la pente du second graphique.",
           "question": "Quel ordre en temps lit-on pour FTCS et BTCS ? Pourquoi l'erreur de Crank–Nicolson ne diminue-t-elle plus ? Fo > 1/2 pour FTCS : pourquoi son erreur reste-t-elle pourtant petite ici ?",
           "main": "Avec h = 1 mm, calculez Fo pour Δt = 1 ; 0,5 et 0,25 s. FTCS respecte-t-il Fo ≤ 1/2 ? Prévoyez l'ordre en temps de FTCS, BTCS et Crank–Nicolson.",
           "corr": true
@@ -460,8 +460,8 @@ window.GUIDE = {
             "c-L": "0.1",
             "c-h": "5",
             "c-tf": "200",
-            "c-dt": "2",
-            "c-dtx": ""
+            "c-Fo": "0.8",
+            "c-Fox": ""
           },
           "checks": {
             "c-s": [
@@ -473,7 +473,7 @@ window.GUIDE = {
             ]
           },
           "main": "Pour chacun des cinq schémas (FTCS, BTCS, Crank–Nicolson, Dufort–Frankel, Richardson), dites s'il est explicite ou implicite et, pour Fo = 0,8, si le cours annonce une limite sur Fo.",
-          "consigne": "Avec h = 5 mm, un temps final de 200 s et Δt = 2 s (Fo = 0,8), cochez les cinq schémas et relevez dans les cartes l'erreur maximale et l'indication de stabilité de chacun.",
+          "consigne": "Avec h = 5 mm, un temps final de 200 s et Fo = 0,8 (Δt = 2 s), cochez les cinq schémas et relevez dans les cartes l'erreur maximale et l'indication de stabilité de chacun.",
           "question": "Quels schémas explosent ? Parmi les schémas explicites, lesquels restent bornés ici ? Que résout un schéma implicite à chaque pas, et que gagne-t-on ?",
           "corr": true
         }

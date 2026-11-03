@@ -1,19 +1,19 @@
 :root {
   --bg: #f6f8fb; --card: #ffffff; --ink: #1d2733; --muted: #5b6b7b; --line: #d5dde6;
   --blue: #00549f; --blue-soft: #e8f1fa; --orange: #be6400; --green: #006e46; --red: #b3261e;
-  --plot-grid: #e4e9ef; --plot-axis: #1d2733; --c5: #7b3fa0; --c6: #00838f;
+  --plot-grid: #e4e9ef; --plot-axis: #1d2733; --c5: #7b3fa0; --c6: #8a7a00; --c7: #d6336c; --c8: #5b6b7b;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #12181f; --card: #1a232d; --ink: #e6edf4; --muted: #9fb0c0; --line: #2b3946;
     --blue: #6fb3f2; --blue-soft: #1c2c3d; --orange: #f0a04b; --green: #55c79a; --red: #ff8a80;
-    --plot-grid: #2b3946; --plot-axis: #e6edf4; --c5: #c59bf0; --c6: #5fd0da;
+    --plot-grid: #2b3946; --plot-axis: #e6edf4; --c5: #c59bf0; --c6: #e8d44d; --c7: #ff8fd0; --c8: #9aa7b4;
   }
 }
 :root[data-theme="dark"] {
   --bg: #12181f; --card: #1a232d; --ink: #e6edf4; --muted: #9fb0c0; --line: #2b3946;
   --blue: #6fb3f2; --blue-soft: #1c2c3d; --orange: #f0a04b; --green: #55c79a; --red: #ff8a80;
-  --plot-grid: #2b3946; --plot-axis: #e6edf4; --c5: #c59bf0; --c6: #5fd0da;
+  --plot-grid: #2b3946; --plot-axis: #e6edf4; --c5: #c59bf0; --c6: #e8d44d; --c7: #ff8fd0; --c8: #9aa7b4;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, "Segoe UI", Roboto, sans-serif; }

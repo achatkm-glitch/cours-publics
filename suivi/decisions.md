@@ -157,3 +157,7 @@
 ### 2026-11-03 22:41:32 +01:00 — Mise à jour des calculateurs MFTN (v15)
 - **Instruction** : captures des onglets « Conditions aux limites discrétisées » et « Conditions aux limites » : « ici faut mettre Neumann, Fourier ». Reçu par Code ; publication déjà autorisée.
 - **État** : traité ; preuves dans `suivi/integration_mftn.md`.
+
+### 2026-11-03 22:53:26 +01:00 — Mise à jour des calculateurs MFTN (v16)
+- **Instruction** : « évite d'avoir deux courbes de même couleur », « sur un même graphique bien sûr ». Reçu par Code ; publication déjà autorisée.
+- **État** : traité ; preuves dans `suivi/integration_mftn.md`.

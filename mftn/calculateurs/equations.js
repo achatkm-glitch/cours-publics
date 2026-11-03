@@ -60,8 +60,8 @@ window.EQUATIONS = {
     {"titre": "FTCS (explicite)", "tex": "u_i^{n+1}=u_i^n+\\mathrm{Fo}\\,\\bigl(u_{i+1}^n-2u_i^n+u_{i-1}^n\\bigr),\\qquad \\mathrm{Fo}\\le\\tfrac12"},
     {"titre": "BTCS (implicite)", "tex": "-\\mathrm{Fo}\\,u_{i-1}^{n+1}+(1+2\\,\\mathrm{Fo})\\,u_i^{n+1}-\\mathrm{Fo}\\,u_{i+1}^{n+1}=u_i^n"},
     {"titre": "Crank–Nicolson", "tex": "-\\tfrac{\\mathrm{Fo}}{2}u_{i-1}^{n+1}+(1+\\mathrm{Fo})\\,u_i^{n+1}-\\tfrac{\\mathrm{Fo}}{2}u_{i+1}^{n+1}=\\tfrac{\\mathrm{Fo}}{2}u_{i-1}^n+(1-\\mathrm{Fo})\\,u_i^n+\\tfrac{\\mathrm{Fo}}{2}u_{i+1}^n"},
-    {"titre": "Dufort–Frankel (explicite, trois niveaux)", "tex": "\\frac{u_i^{n+1}-u_i^{n-1}}{2\\Delta t}-\\alpha\\,\\frac{u_{i-1}^n-u_i^{n+1}-u_i^{n-1}+u_{i+1}^n}{h^2}=0"},
-    {"titre": "Richardson (explicite, trois niveaux)", "tex": "\\frac{u_i^{n+1}-u_i^{n-1}}{2\\Delta t}-\\alpha\\,\\frac{u_{i+1}^n-2u_i^n+u_{i-1}^n}{h^2}=0"}
+    {"titre": "Dufort–Frankel (explicite, trois niveaux)", "tex": "(1+2\\,\\mathrm{Fo})\\,u_i^{n+1}=(1-2\\,\\mathrm{Fo})\\,u_i^{n-1}+2\\,\\mathrm{Fo}\\,\\bigl(u_{i+1}^n+u_{i-1}^n\\bigr)"},
+    {"titre": "Richardson (explicite, trois niveaux)", "tex": "u_i^{n+1}=u_i^{n-1}+2\\,\\mathrm{Fo}\\,\\bigl(u_{i+1}^n-2u_i^n+u_{i-1}^n\\bigr)"}
   ],
   "chemin": [
     {"titre": "Chemin de raffinement", "tex": "\\Delta t=c_0\\,h^{\\,r}"},

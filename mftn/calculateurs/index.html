@@ -380,14 +380,14 @@
           <label><input type="checkbox" name="c-s" value="df"> Dufort–Frankel (explicite)</label>
           <label><input type="checkbox" name="c-s" value="ri"> Richardson (explicite)</label>
         </div>
+        <label>Nombre de Fourier de maille Fo = αΔt/h² (sert au profil ; Δt en découle)<span class="sl"><input type="range" id="c-Fo" min="0.05" max="12" step="0.05" value="0.4"><output></output></span><input id="c-Fox" value="0.2 0.1" placeholder="autres valeurs de Fo à comparer, séparées par des espaces" aria-label="Autres valeurs de Fo à comparer"></label>
         <label>Diffusivité α, en m²/s (échelle logarithmique)<span class="sl"><input type="range" id="c-alpha" min="-7" max="-3" step="0.1" value="-5" data-log="1" data-unit="m²/s"><output></output></span></label>
         <label>Longueur L, en m<span class="sl"><input type="range" id="c-L" min="0.05" max="0.5" step="0.01" value="0.1" data-unit="m"><output></output></span></label>
         <label>Pas d'espace h<span class="sl"><input type="range" id="c-h" min="1" max="20" step="0.5" value="5" data-scale="0.001" data-unit="mm"><output></output></span></label>
         <label>Temps final<span class="sl"><input type="range" id="c-tf" min="0.5" max="300" step="0.5" value="1" data-unit="s"><output></output></span></label>
-        <label>Pas de temps Δt, en s (sert au profil)<span class="sl"><input type="range" id="c-dt" min="0.05" max="20" step="0.05" value="1" data-unit="s"><output></output></span><input id="c-dtx" value="0.5 0.25" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> avec α = 10⁻⁵ m²/s, L = 0,10 m, h = 5 mm, Δt = 1 s et FTCS : Fo = 0,4, valeur centrale 0,990151 après un pas, contre 0,990179 pour la solution exacte ; pas de temps maximal 1,25 s. Avec un temps final de 200 s et Δt = 2 s (Fo = 0,8), FTCS devient instable alors que BTCS et Crank–Nicolson restent précis.</p>
+      <p class="repere"><b>Repère :</b> avec α = 10⁻⁵ m²/s, L = 0,10 m, h = 5 mm, Fo = 0,4 (Δt = 1 s) et FTCS : valeur centrale 0,990151 après un pas, contre 0,990179 pour la solution exacte ; pas de temps maximal 1,25 s. Avec un temps final de 200 s et Fo = 0,8 (Δt = 2 s), FTCS devient instable alors que BTCS et Crank–Nicolson restent précis.</p>
     </div>
     <div>
       <div class="msg" id="c-msg" aria-live="polite"></div>
