@@ -10,10 +10,7 @@ window.EQUATIONS = {
     {"titre": "Nombre de Péclet", "tex": "\\mathrm{Pe}=\\frac{|a|\\,\\sigma_0}{D}=\\frac{\\text{temps de diffusion}}{\\text{temps d'advection}}"}
   ],
   "edpc": [
-    {"titre": "EDP quasi linéaire d'ordre 2 à deux variables", "tex": "A\\,u_{xx}+2B\\,u_{xy}+C\\,u_{yy}+F(x,y,u,u_x,u_y)=0"},
-    {"titre": "Discriminant et type", "tex": "\\Delta=B^2-AC\\qquad\\begin{cases}\\Delta<0&\\text{elliptique}\\\\ \\Delta=0&\\text{parabolique}\\\\ \\Delta>0&\\text{hyperbolique}\\end{cases}"},
-    {"titre": "Prototypes", "tex": "\\nabla^2u=f\\ \\ (\\text{elliptique}),\\qquad u_t=\\alpha\\nabla^2u\\ \\ (\\text{parabolique}),\\qquad u_{tt}=c^2\\nabla^2u\\ \\ (\\text{hyperbolique})"},
-    {"titre": "Cas non linéaire : le type dépend de la solution", "tex": "(1-u^2)\\,u_{xx}+u_{yy}=0\\ \\Longrightarrow\\ \\Delta=u^2-1"}
+    {"titre": "EDP quasi linéaire d'ordre 2 à deux variables", "tex": "A\\,u_{xx}+2B\\,u_{xy}+C\\,u_{yy}+F(x,y,u,u_x,u_y)=0"}
   ],
   "edpb": [
     {"titre": "Elliptique : équation de Laplace sur le carré unité", "tex": "\\nabla^2u=u_{xx}+u_{yy}=0\\ \\text{dans }]0,1[^2,\\qquad u=\\text{valeur imposée sur chaque côté}"},

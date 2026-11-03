@@ -112,3 +112,9 @@ details > summary { cursor: pointer; color: var(--blue); margin: 10px 0; }
 .situation { margin: 10px 0; padding: 10px 14px; border-left: 4px solid var(--orange); background: var(--card); border-radius: 8px; line-height: 1.5; }
 
 .sit-fig { display: block; width: 100%; max-width: 640px; height: auto; margin: 10px auto 0; }
+
+.guide .main { padding: 6px 10px; border-left: 3px solid var(--orange); background: var(--card); border-radius: 6px; }
+
+.sit2 { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin: 10px 0; padding: 10px 14px; border: 1px solid var(--line); border-left: 4px solid var(--orange); border-radius: 8px; background: var(--card); }
+.sit2 .sit-txt { flex: 1 1 260px; line-height: 1.5; }
+.sit2 .sit-svg { flex: 0 1 380px; width: 100%; max-width: 380px; height: auto; }

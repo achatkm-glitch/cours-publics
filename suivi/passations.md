@@ -169,3 +169,9 @@
 - **Fait** : calculateurs v6 (voir `suivi/integration_mftn.md`).
 - **Limites** : réponses attendues non publiées.
 - **Prochaine action** : relecture par Mohammed ; verrous libérés.
+
+### 2026-11-03 18:33:02 +01:00 — Code → Mohammed, Codex et prochains intervenants
+- **Fichiers** : `mftn/calculateurs/` (7 fichiers dont `situations.js`), suivis.
+- **Fait** : calculateurs v7 (voir `suivi/integration_mftn.md`).
+- **Limites** : réponses attendues non publiées.
+- **Prochaine action** : relecture par Mohammed ; verrous libérés.

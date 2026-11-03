@@ -285,7 +285,7 @@
     const nn = m => need[m] < 0 ? '> 1000' : need[m];
     const L = runs.map(o => `${SCHEME[o.m]} : après ${K} itération(s), résidu ${fmt(o.r.history[K].res, 3)} ; seuil 1e-3 franchi à l\u2019itération <b>${nn(o.m)}</b>.`);
     if (need.jacobi > 0 && need.gs > 0) L.push(`Rapport Jacobi / Gauss–Seidel = <b>${fmt(need.jacobi / need.gs, 3)}</b> : Gauss–Seidel réutilise les valeurs déjà mises à jour ; pour ce problème (Poisson 1D) son facteur de convergence est le carré de celui de Jacobi, d\u2019où un rapport voisin de 2.`);
-    L.push(`Le résidu mesure à quel point l\u2019équation discrète est vérifiée ; l\u2019erreur algébrique mesure l\u2019écart à la solution du système. Avec n = ${n} nœuds, le nombre d\u2019itérations croît à peu près comme n² : doublez n pour le vérifier.`);
+    L.push(`Le résidu mesure à quel point l\u2019équation discrète est vérifiée ; l\u2019erreur algébrique mesure l\u2019écart à la solution du système. Plus n est grand, plus il faut d\u2019itérations : comparez n = 5 et n = 20.`);
     explain('jg', L);
   }
 
@@ -398,6 +398,18 @@
   const RUN = { intro: runIntro, edpc: runEdpc, edpb: runEdpb, transport: runTransport, cl: runCL, barre: runBarre, peclet: runPeclet, jg: runJG, ordre: runOrdre, neumann: runNeumann, chaleur: runChaleur, chemin: runChemin, adv: runAdv };
 
 
+  /* ---------- Situations physiques (schémas illustratifs) ---------- */
+  function renderSituations() {
+    const S = window.SITUATIONS || {};
+    Object.keys(S).forEach(tab => {
+      const panel = $('p-' + tab); if (!panel || panel.querySelector('.sit2')) return;
+      const lead = panel.querySelector('.lead'); if (!lead) return;
+      const box = document.createElement('div'); box.className = 'sit2';
+      box.innerHTML = `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}`;
+      lead.after(box);
+    });
+  }
+
   /* ---------- Équations affichées en pleine ligne (KaTeX si disponible) ---------- */
   function renderEquations() {
     const E = window.EQUATIONS || {};
@@ -466,6 +478,27 @@
     g.fillStyle = muted; g.font = '12px system-ui, sans-serif'; g.textAlign = 'center'; g.fillText('x', X(R) - 8, Y(0) - 6); g.fillText('y', X(0) + 10, Y(R) + 12);
     g.fillStyle = axis; g.textAlign = 'left'; g.fillText('Conique A x² + 2B xy + C y² = ±1', m, 18);
   }
+  /* Domaine de dépendance du point P selon le type (notion du cours : poly 1.6, diapositive « Domaine de dépendance »). */
+  function drawDep(canvas, type) {
+    if (type === 'parabolique') return drawXT(canvas, 0, 0, 3, true);
+    if (type === 'hyperbolique') return drawXT(canvas, 1, 0, 3, false);
+    const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
+    canvas.width = W * dpr; canvas.height = W * dpr;
+    const g = canvas.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
+    const m = 40, S = W - 2 * m, axis = css('--plot-axis'), blue = css('--blue'), orange = css('--orange'), muted = css('--muted');
+    g.fillStyle = 'rgba(111,179,242,0.10)'; g.fillRect(m, m, S, S);
+    g.strokeStyle = blue; g.lineWidth = 6; g.strokeRect(m, m, S, S);
+    const cx = m + S / 2, cy = m + S / 2;
+    g.strokeStyle = orange; g.fillStyle = orange; g.lineWidth = 2.4;
+    [[m + 8, cy, cx - 10, cy], [m + S - 8, cy, cx + 10, cy], [cx, m + 8, cx, cy - 10], [cx, m + S - 8, cx, cy + 10]].forEach(q => {
+      g.beginPath(); g.moveTo(q[0], q[1]); g.lineTo(q[2], q[3]); g.stroke();
+      const an = Math.atan2(q[3] - q[1], q[2] - q[0]); g.beginPath(); g.moveTo(q[2], q[3]); g.lineTo(q[2] - 9 * Math.cos(an - 0.45), q[3] - 9 * Math.sin(an - 0.45)); g.lineTo(q[2] - 9 * Math.cos(an + 0.45), q[3] - 9 * Math.sin(an + 0.45)); g.closePath(); g.fill();
+    });
+    g.fillStyle = css('--red'); g.beginPath(); g.arc(cx, cy, 6, 0, 6.2832); g.fill();
+    g.fillStyle = axis; g.font = 'bold 13px system-ui, sans-serif'; g.textAlign = 'left'; g.fillText('P', cx + 10, cy - 8);
+    g.fillStyle = muted; g.font = '12px system-ui, sans-serif'; g.fillText('x', m + S + 6, m + S / 2 + 4); g.fillText('y', m + S / 2 + 6, m - 8);
+    g.fillStyle = axis; g.fillText('Domaine de dépendance de P : toute la frontière', m, 20);
+  }
   function runEdpc() {
     const A = num('d-A'), Bc = num('d-B'), Cc = num('d-C'), u = num('d-u'), c = pal();
     const r = Calc.classifyPDE(A, Bc, Cc), col = { elliptique: c[0], parabolique: c[2], hyperbolique: c[1] }[r.type];
@@ -476,6 +509,8 @@
     $('d-msg').className = 'msg'; $('d-msg').innerHTML = `Δ = B² − AC = <b>${fmt(r.delta, 3)}</b> : l\u2019EDP est <b>${r.type}</b>.`;
     cards($('d-cards'), [{ color: col, title: `Type : ${r.type}`, lines: [`prototype : ${info[0]}`, `données nécessaires : ${info[1]}`, `comportement : ${info[2]}`, `conique associée : ${info[3]}`] }]);
     drawConic($('d-plot'), A, Bc, Cc);
+    drawDep($('d-dep'), r.type);
+    $('d-dep-leg').textContent = { elliptique: 'Elliptique : toute la frontière (bord épais) influence P.', parabolique: 'Parabolique : toute la ligne initiale (et les conditions aux limites jusqu\u2019à t) influence P.', hyperbolique: 'Hyperbolique : seul le segment limité par les caractéristiques influence P.' }[r.type];
     $('d-leg').innerHTML = `<span><i style="border-color:${css('--blue')}"></i>A x² + 2B xy + C y² = 1</span><span><i style="border-color:${css('--orange')};border-top-style:dashed"></i>= −1 (conjuguée)</span>`;
     const rn = Calc.classifyPDE(1 - u * u, 0, 1);
     gauge($('d-gauge'), { linear: true, min: -2, max: 2, title: `Cas non linéaire (1 − u²) u_xx + u_yy = 0 : pour u = ${fmt(u, 3)}, Δ = u² − 1 = ${fmt(u * u - 1, 3)} → ${rn.type}`,
@@ -587,7 +622,7 @@
       const comps = t.competences.map(k => `<li><b>${k}</b> ${G.competences[k]}</li>`).join('');
       const notions = t.notions.map(n => `<li>${n}</li>`).join('');
       const ex = t.explorations.map((e, i) => `<div class="explo"><b>${e.id} · ${e.titre}</b> <span class="codes">(${e.comp.join(', ')})</span>
-        <p>${e.consigne}</p><p><i>Question :</i> ${e.question}</p><button type="button" class="btn alt" data-explo="${tab}|${i}">Appliquer ces réglages</button></div>`).join('');
+        ${e.main ? `<p class="main"><b>D\u2019abord, à la main :</b> ${e.main}</p>` : ''}<p>${e.consigne}</p><p><i>Question :</i> ${e.question}</p><button type="button" class="btn alt" data-explo="${tab}|${i}">Appliquer ces réglages</button></div>`).join('');
       box.innerHTML = `<h3>Pour approfondir : ${t.fiche}</h3>
         <div class="two"><div><h4>Compétences travaillées</h4><ul>${comps}</ul></div>
         <div><h4>Notions à définir et à retrouver sur la fiche</h4><ul>${notions}</ul><p>Exercices liés : ${t.exercices}.</p></div></div>
@@ -624,6 +659,7 @@
       r.dataset.theme = dark ? 'light' : 'dark'; safe(current);
     });
     renderEquations();
+    renderSituations();
     window.addEventListener('load', renderEquations);
     renderGuides();
     window.addEventListener('resize', () => safe(current));

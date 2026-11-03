@@ -53,7 +53,8 @@ window.GUIDE = {
             "t-s0": "0.15"
           },
           "consigne": "Les deux courbes ont la même vitesse a = 1 et le même instant t = 4, mais des diffusivités D = 0,01 et D = 0,05. Relevez dans les cartes de résultats le centre, la largeur σ(t) et le pic de chacune, et repérez leur nombre de Péclet sur la jauge.",
-          "question": "Quel mécanisme fixe la position du centre ? Lequel fixe la largeur ? Que devient le pic quand D augmente, et pourquoi ?"
+          "question": "Quel mécanisme fixe la position du centre ? Lequel fixe la largeur ? Que devient le pic quand D augmente, et pourquoi ?",
+          "main": "Avec σ₀ = 0,15 et t = 4, calculez le centre a·t, la largeur σ(t) = √(σ₀² + 2Dt) pour D = 0,01 puis 0,05, et le nombre de Péclet Pe = |a|σ₀/D."
         },
         {
           "id": "S1-X2",
@@ -70,7 +71,8 @@ window.GUIDE = {
             "t-s0": "0.15"
           },
           "consigne": "Avec D = 0,15, le nombre de Péclet |a|σ₀/D vaut 1. Relevez σ(4) et le pic, et comparez la courbe à t = 4 à celle de t = 0.",
-          "question": "Que dire du rôle de la diffusion devant celui de l'advection quand Pe vaut 1 ?"
+          "question": "Que dire du rôle de la diffusion devant celui de l'advection quand Pe vaut 1 ?",
+          "main": "Avec D = 0,15, calculez Pe, σ(4) et le pic σ₀/σ."
         }
       ]
     },
@@ -111,7 +113,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Ne gardez que la condition de Neumann, avec une production nulle et un flux imposé nul en x = L.",
-          "question": "Que représente un flux imposé nul ? Pourquoi le profil est-il plat ?"
+          "question": "Que représente un flux imposé nul ? Pourquoi le profil est-il plat ?",
+          "main": "Pour une barre sans production avec T(0) = 300 K et T'(L) = 0, résolvez T'' = 0 à la main et donnez T(x) et les flux."
         },
         {
           "id": "S1-X4",
@@ -138,7 +141,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Revenez aux valeurs initiales de la paroi (les trois courbes coïncident), puis augmentez h jusqu'à 200 W/(m²·K).",
-          "question": "Quelle courbe change ? Pourquoi les deux autres restent-elles identiques ? Que vaut le bilan des flux ?"
+          "question": "Quelle courbe change ? Pourquoi les deux autres restent-elles identiques ? Que vaut le bilan des flux ?",
+          "main": "Pour q = 10⁵ W/m³ et L = 0,1 m, calculez la puissance produite par unité de surface q·L, que doivent se partager les deux faces."
         }
       ]
     },
@@ -177,7 +181,8 @@ window.GUIDE = {
             "b-s": [
               "fd"
             ]
-          }
+          },
+          "main": "Pour −λT'' = q avec q constant, T est un polynôme de degré 2. Calculez T'''' et dites ce que devient le terme d'erreur (h²/12) T'''' de la dérivée seconde centrée."
         },
         {
           "id": "S1-X6",
@@ -202,7 +207,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Ajoutez les volumes finis (carrés) aux différences finies (cercles). Comparez les deux graphiques d'erreur et lisez les erreurs maximales et les bilans de flux dans le message.",
-          "question": "Les volumes finis sont-ils exacts ici ? Comment leur erreur évolue-t-elle quand N double ? Que valent les bilans de flux des deux schémas ?"
+          "question": "Les volumes finis sont-ils exacts ici ? Comment leur erreur évolue-t-elle quand N double ? Que valent les bilans de flux des deux schémas ?",
+          "main": "Avec q = 100 W/m³, λ = 1 W/(m·K) et L = 1 m, calculez q h²/(8λ) pour N = 4, 8, 16 (h = L/N) et prévoyez comment cette quantité évolue quand N double."
         }
       ]
     },
@@ -238,7 +244,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Avec n = 5, f = 1 et k = 20, comparez les deux méthodes dans les cartes de résultats et sur le graphique de convergence.",
-          "question": "Que valent les deux résidus à k = 20 ? À partir de quelle itération le résidu passe-t-il sous 1e-3 pour chaque méthode ?"
+          "question": "Que valent les deux résidus à k = 20 ? À partir de quelle itération le résidu passe-t-il sous 1e-3 pour chaque méthode ?",
+          "main": "Pour n = 5, f = 1 (h = 1/6, h²f = 1/36), calculez à la main la première itération de Jacobi à partir du vecteur nul."
         },
         {
           "id": "S2-X5",
@@ -258,7 +265,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Passez à n = 20 nœuds et k = 100 itérations. Lisez dans les cartes (ou sur le graphique logarithmique) l'itération où chaque courbe franchit 1e-3.",
-          "question": "Comment le nombre d'itérations évolue-t-il avec n ? Quel est le rapport entre Jacobi et Gauss–Seidel ?"
+          "question": "Comment le nombre d'itérations évolue-t-il avec n ? Quel est le rapport entre Jacobi et Gauss–Seidel ?",
+          "main": "Pour n = 5 puis n = 20, calculez le résidu initial ‖b‖∞ = h²f (vecteur nul) avec h = 1/(n+1)."
         }
       ]
     },
@@ -290,7 +298,8 @@ window.GUIDE = {
             "o-k": "4"
           },
           "consigne": "Gardez h$_0$ = 0,1 et quatre pas. Lisez dans les cartes l'ordre observé et l'erreur au plus petit pas pour chacune des trois différences.",
-          "question": "Quels ordres lisez-vous ? Pourquoi l'erreur de la régressive à trois points est-elle voisine du double de celle de la centrée ?"
+          "question": "Quels ordres lisez-vous ? Pourquoi l'erreur de la régressive à trois points est-elle voisine du double de celle de la centrée ?",
+          "main": "Pour u = exp(x) en x = 0 et h = 0,1, déduisez de Taylor le terme d'erreur dominant de chaque différence et calculez sa valeur."
         }
       ]
     },
@@ -321,7 +330,8 @@ window.GUIDE = {
             "n-k": "5"
           },
           "consigne": "Gardez N = 10, 20, 40, 80, 160 et lisez dans les cartes l'ordre observé des trois fermetures : ordre 1, ordre 2 (régressive) et point fantôme.",
-          "question": "Quel ordre global obtient-on avec chaque fermeture ? Pourquoi l'ordre 1 de la fermeture limite-t-il l'ordre global alors que le schéma intérieur est d'ordre 2 ? Quel avantage le point fantôme a-t-il sur la formule régressive à trois points ?"
+          "question": "Quel ordre global obtient-on avec chaque fermeture ? Pourquoi l'ordre 1 de la fermeture limite-t-il l'ordre global alors que le schéma intérieur est d'ordre 2 ? Quel avantage le point fantôme a-t-il sur la formule régressive à trois points ?",
+          "main": "Écrivez la dernière ligne de chacun des trois systèmes (fermeture d'ordre 1, ordre 2 régressive, point fantôme) et prévoyez l'ordre global de chacun."
         },
         {
           "id": "S2-X3",
@@ -336,7 +346,8 @@ window.GUIDE = {
             "n-Np": "20"
           },
           "consigne": "Avec N du profil d'erreur égal à 20, lisez sur le second graphique où l'erreur est la plus grande, et dans le texte « Que montrent vos réglages ? » sa valeur à x = 1 pour les trois fermetures. Doublez ensuite N du profil (40).",
-          "question": "Où l'erreur est-elle la plus grande avec chaque fermeture ? Comment son niveau à x = 1 change-t-il quand N double ?"
+          "question": "Où l'erreur est-elle la plus grande avec chaque fermeture ? Comment son niveau à x = 1 change-t-il quand N double ?",
+          "main": "Prévoyez de quel facteur l'erreur en x = 1 est divisée quand N double, pour la fermeture d'ordre 1 puis pour les deux d'ordre 2."
         }
       ]
     },
@@ -378,7 +389,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Avec h = 5 mm et un temps final de 200 s, prenez Δt = 2 s (Fo = 0,8), puis Δt = 1 s (Fo = 0,4). Relevez l'erreur maximale de chaque schéma dans les cartes de résultats.",
-          "question": "Que se passe-t-il pour FTCS quand Fo dépasse 1/2 ? Les schémas implicites sont-ils concernés ?"
+          "question": "Que se passe-t-il pour FTCS quand Fo dépasse 1/2 ? Les schémas implicites sont-ils concernés ?",
+          "main": "Pour α = 10⁻⁵ m²/s et h = 5 mm, calculez Fo = αΔt/h² pour Δt = 2 s et 1 s, ainsi que le pas de temps maximal de FTCS."
         },
         {
           "id": "S3-X2",
@@ -403,7 +415,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Prenez h = 1 mm, un temps final de 1 s et les pas Δt = 1, 0,5 et 0,25 s. Lisez les erreurs dans les cartes et la pente du second graphique.",
-          "question": "Quel ordre en temps lit-on pour FTCS et BTCS ? Pourquoi l'erreur de Crank–Nicolson ne diminue-t-elle plus ?"
+          "question": "Quel ordre en temps lit-on pour FTCS et BTCS ? Pourquoi l'erreur de Crank–Nicolson ne diminue-t-elle plus ?",
+          "main": "Avec h = 1 mm, calculez Fo pour Δt = 1 ; 0,5 et 0,25 s. FTCS respecte-t-il Fo ≤ 1/2 ? Prévoyez l'ordre en temps de FTCS, BTCS et Crank–Nicolson."
         }
       ]
     },
@@ -436,7 +449,8 @@ window.GUIDE = {
             "p-hk": "4"
           },
           "consigne": "Comparez les chemins r = 1, 1,5 et 2 avec c₀ = 1 et α = 1. Pour chacun, observez comment les deux termes évoluent quand h diminue.",
-          "question": "Pour quels r chaque schéma (Dufort–Frankel, Lax–Friedrichs) est-il consistant ? Que vaut chaque terme quand il ne tend pas vers zéro ?"
+          "question": "Pour quels r chaque schéma (Dufort–Frankel, Lax–Friedrichs) est-il consistant ? Que vaut chaque terme quand il ne tend pas vers zéro ?",
+          "main": "Pour α = c₀ = 1, calculez, en fonction de h, les termes α(Δt/h)² et h²/(2Δt) avec Δt = c₀ fois h puissance r, pour r = 1, 1,5 et 2."
         }
       ]
     },
@@ -476,7 +490,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Avec Co = 0,4 et Nx = 100, superposez les quatre schémas. Lisez le maximum et le minimum indiqués dans chaque carte.",
-          "question": "Classez chaque schéma : instable, diffusion numérique ou dispersion ?"
+          "question": "Classez chaque schéma : instable, diffusion numérique ou dispersion ?",
+          "main": "Avant de lancer le calcul, prévoyez pour chaque schéma (FTCS centré, amont, Lax–Friedrichs, Lax–Wendroff) s'il sera instable, diffusif ou dispersif, d'après ce que dit le polycopié."
         },
         {
           "id": "S3-X5",
@@ -500,7 +515,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Prenez Co = 1 et gardez l'amont, Lax–Friedrichs et Lax–Wendroff. Lisez l'erreur maximale.",
-          "question": "Pourquoi les trois schémas deviennent-ils exacts ? Que devient l'amont pour Co = 1,2 ?"
+          "question": "Pourquoi les trois schémas deviennent-ils exacts ? Que devient l'amont pour Co = 1,2 ?",
+          "main": "Pour Co = 1 (a = 1), écrivez la nouvelle valeur du nœud i avec le schéma amont et montrez qu'elle est égale à l'ancienne valeur du nœud i−1. Faites de même pour Lax–Friedrichs et Lax–Wendroff."
         }
       ]
     },
@@ -537,7 +553,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Gardez seulement le schéma centré, avec Pe = 50. Superposez N = 10, 20, 24, 25 et 26 et lisez dans les cartes le nombre de Péclet de maille et la présence d'oscillations (voir aussi la jauge).",
-          "question": "À partir de quel N les oscillations disparaissent-elles ? Que vaut alors Pe_h ? Quel lien avec le signe du coefficient du voisin aval ?"
+          "question": "À partir de quel N les oscillations disparaissent-elles ? Que vaut alors Pe_h ? Quel lien avec le signe du coefficient du voisin aval ?",
+          "main": "Pour Pe = 50, calculez le nombre de Péclet de maille Pe_h = Pe/N pour N = 10, 20, 24, 25 et 26, et comparez à 2."
         },
         {
           "id": "S1-X8",
@@ -558,7 +575,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Gardez les deux schémas et prenez N = 100 puis 200 (Pe_h = 0,5 puis 0,25). Lisez les erreurs maximales dans les cartes de résultats.",
-          "question": "Quel schéma est le plus précis ? Comment l'erreur de chacun évolue-t-elle quand N double ?"
+          "question": "Quel schéma est le plus précis ? Comment l'erreur de chacun évolue-t-elle quand N double ?",
+          "main": "Calculez Pe_h pour N = 100 et 200 (Pe = 50) et prévoyez de quel facteur l'erreur de chaque schéma est divisée quand N double (centré d'ordre 2, amont d'ordre 1)."
         },
         {
           "id": "S1-X9",
@@ -578,7 +596,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Avec Pe = 50 et N = 10 (Pe_h = 5), comparez les deux schémas sur les deux graphiques.",
-          "question": "Que fait chaque schéma près de la paroi x = 1 ? Quel prix paie l'amont pour éviter les oscillations ?"
+          "question": "Que fait chaque schéma près de la paroi x = 1 ? Quel prix paie l'amont pour éviter les oscillations ?",
+          "main": "Pour Pe_h = 5, calculez le coefficient du voisin aval du schéma centré, D(1 − Pe_h/2), et donnez son signe."
         }
       ]
     },
@@ -617,7 +636,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Observez les schémas A, B et C après 1 puis 5 tours (N = 100, C = 0,8). Relevez dans les cartes le pic de la bosse et le minimum de chacun.",
-          "question": "Lequel lisse le signal sans oscillation ? Lesquels créent des oscillations ? Comment évoluent le pic et le minimum entre 1 et 5 tours ? Proposez un nom pour chaque phénomène observé, puis cherchez le terme exact dans le polycopié."
+          "question": "Lequel lisse le signal sans oscillation ? Lesquels créent des oscillations ? Comment évoluent le pic et le minimum entre 1 et 5 tours ? Proposez un nom pour chaque phénomène observé, puis cherchez le terme exact dans le polycopié.",
+          "main": "Pour N = 100 points et C = 0,8 (vitesse 1, domaine de longueur 1) : calculez le pas de temps, le déplacement du signal à chaque pas exprimé en nombre de mailles, et le nombre de pas pour un tour."
         },
         {
           "id": "S1-I2",
@@ -639,7 +659,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Passez à N = 200 points en gardant C = 0,8 et comparez les pics de la bosse et les minimums des schémas A, B et C aux résultats de N = 100.",
-          "question": "Qu'améliore le raffinement ? Que ne supprime-t-il pas ?"
+          "question": "Qu'améliore le raffinement ? Que ne supprime-t-il pas ?",
+          "main": "Même question pour N = 200 et C = 0,8 : pas de temps et nombre de pas pour un tour."
         },
         {
           "id": "S1-I3",
@@ -663,7 +684,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Ajoutez les schémas D et E aux trois premiers (N = 100, C = 0,8). Comparez le pic de la bosse à t = 1.",
-          "question": "Le schéma D lisse-t-il plus ou moins que le schéma A ? Que devient le schéma E ? Peut-on utiliser n'importe quel schéma pour ce problème ?"
+          "question": "Le schéma D lisse-t-il plus ou moins que le schéma A ? Que devient le schéma E ? Peut-on utiliser n'importe quel schéma pour ce problème ?",
+          "main": "Sur une feuille, dessinez la solution exacte après un demi-tour : où se trouvent la bosse (centre 0,3 au départ) et le créneau (de 0,6 à 0,8) ? Prévoyez ce qu'un « bon » schéma devrait montrer."
         },
         {
           "id": "S1-I4",
@@ -686,7 +708,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Prenez C = 1 et gardez les schémas A, B, C et D. Lisez le comportement indiqué dans chaque carte.",
-          "question": "Que devient chaque schéma pour C = 1 ? Que conclure sur le rôle du nombre de Courant dans le choix et l'usage d'un schéma ?"
+          "question": "Que devient chaque schéma pour C = 1 ? Que conclure sur le rôle du nombre de Courant dans le choix et l'usage d'un schéma ?",
+          "main": "Pour C = 1, écrivez ce que vaut le déplacement du signal à chaque pas, en nombre de mailles, et le nombre de pas pour un tour avec N = 100."
         }
       ]
     },
@@ -717,7 +740,8 @@ window.GUIDE = {
             "d-u": "0.5"
           },
           "consigne": "Réglez A = 1, B = 0, C = 4 (équation u_xx + 4 u_yy = 0). Lisez le discriminant, le type, les données nécessaires et la forme de la conique.",
-          "question": "Quel est le type ? Quelles conditions faut-il fournir, et que dit-on de l'influence de la frontière ?"
+          "question": "Quel est le type ? Quelles conditions faut-il fournir, et que dit-on de l'influence de la frontière ?",
+          "main": "Calculez à la main le discriminant Δ = B² − AC pour A = 1, B = 0, C = 4, et donnez le type."
         },
         {
           "id": "S1-D2",
@@ -732,7 +756,8 @@ window.GUIDE = {
             "d-u": "0.5"
           },
           "consigne": "Réglez A = −1, B = 0, C = 0 (équation de la chaleur u_t − α u_xx avec α = 1). Lisez le discriminant et la forme de la conique.",
-          "question": "Quel est le type ? Pourquoi la conique est-elle dégénérée ? Quelles données faut-il ?"
+          "question": "Quel est le type ? Pourquoi la conique est-elle dégénérée ? Quelles données faut-il ?",
+          "main": "Calculez Δ pour A = −1, B = 0, C = 0 et donnez le type."
         },
         {
           "id": "S1-D3",
@@ -747,7 +772,8 @@ window.GUIDE = {
             "d-u": "0.5"
           },
           "consigne": "Réglez A = −3, B = 0, C = 1 (équation des ondes u_tt − 3 u_xx, de vitesse c = √3). Lisez le discriminant et la forme de la conique.",
-          "question": "Quel est le type ? Quelles données initiales et aux limites faut-il ?"
+          "question": "Quel est le type ? Quelles données initiales et aux limites faut-il ?",
+          "main": "Calculez Δ pour A = −3, B = 0, C = 1 et donnez le type et la vitesse c."
         },
         {
           "id": "S1-D4",
@@ -762,7 +788,8 @@ window.GUIDE = {
             "d-u": "1.5"
           },
           "consigne": "Faites glisser le curseur de u de −2 à 2 et observez la jauge du cas non linéaire (1 − u²) u_xx + u_yy = 0 ; arrêtez-vous en u = 1,5.",
-          "question": "Pour quelles valeurs de u l'équation est-elle elliptique, parabolique, hyperbolique ? Que vaut Δ pour u = 1,5 ?"
+          "question": "Pour quelles valeurs de u l'équation est-elle elliptique, parabolique, hyperbolique ? Que vaut Δ pour u = 1,5 ?",
+          "main": "Pour (1 − u²) u_xx + u_yy = 0, écrivez A, B, C et Δ en fonction de u, puis évaluez Δ pour u = 1,5."
         }
       ]
     },
@@ -807,7 +834,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Avec le côté gauche à 100 °C et les trois autres à 0 °C, lisez la température au centre. Portez ensuite le côté droit à 100 °C, puis le côté haut.",
-          "question": "Quelle est la température au centre dans chaque cas ? Pourquoi dit-on qu'une EDP elliptique dépend de toute la frontière ?"
+          "question": "Quelle est la température au centre dans chaque cas ? Pourquoi dit-on qu'une EDP elliptique dépend de toute la frontière ?",
+          "main": "Par symétrie du carré, prévoyez la température au centre quand un côté, deux côtés opposés, puis trois côtés sont à 100 °C (les autres à 0 °C)."
         },
         {
           "id": "S1-K2",
@@ -834,7 +862,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Deux sources chaudes en x = ±2 diffusent (D = 0,05). Lisez la largeur σ(t) et la valeur en x = 5 à t = 2, puis portez t à 8 et comparez ; regardez les deux graphiques, dont celui en échelle logarithmique.",
-          "question": "La solution est-elle nulle en x = 5 ? Comment la valeur évolue-t-elle avec t ? Que montre l'échelle logarithmique ?"
+          "question": "La solution est-elle nulle en x = 5 ? Comment la valeur évolue-t-elle avec t ? Que montre l'échelle logarithmique ?",
+          "main": "Avec σ₀ = 0,15 et D = 0,05, calculez la largeur σ(t) = √(σ₀² + 2Dt) à t = 2 puis à t = 8."
         },
         {
           "id": "S1-K3",
@@ -862,7 +891,8 @@ window.GUIDE = {
             ]
           },
           "consigne": "Avec c = 1, t = 2 et le point P en x = 2, lisez la position des impulsions, le domaine de dépendance de P et la valeur de u en x = 3. Doublez ensuite c.",
-          "question": "Où sont les impulsions ? Que vaut u en x = 3 ? Qu'est-ce que le domaine de dépendance, et que change c ?"
+          "question": "Où sont les impulsions ? Que vaut u en x = 3 ? Qu'est-ce que le domaine de dépendance, et que change c ?",
+          "main": "Avec c = 1, t = 2 et P en x = 2, calculez la position des impulsions (±c·t) et le domaine de dépendance de P, [x − ct ; x + ct]."
         }
       ]
     }
