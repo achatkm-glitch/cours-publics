@@ -141,3 +141,7 @@
 ### 2026-11-03 21:56:06 +01:00 — Correction de l'onglet Barre 1D (v11.1)
 - **Instruction** : question de l'utilisateur sur le graphique d'erreur (bruit d'arrondi qui n'a pas à se superposer). Reçu par Code ; publication déjà autorisée.
 - **État** : traité ; preuve dans `suivi/integration_mftn.md`.
+
+### 2026-11-03 22:16:17 +01:00 — Mise à jour des calculateurs MFTN (v12)
+- **Instruction** : « dédoublonne les onglets EDP » ; « le titre Neumann n'est pas le bon : ajouter Fourier, on parle de condition aux limites discrétisée » ; question sur le graphique d'erreur de l'onglet Barre 1D (traitée avant, v11.1). Reçu par Code ; publication déjà autorisée.
+- **État** : traité ; preuves dans `suivi/integration_mftn.md`.

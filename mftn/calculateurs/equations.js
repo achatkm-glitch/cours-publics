@@ -47,6 +47,7 @@ window.EQUATIONS = {
   ],
   "neumann": [
     {"titre": "Problème", "tex": "-u''=\\cos x,\\qquad u(0)=1,\\quad u'(1)=g=1-\\sin 1,\\qquad u_{\\text{exacte}}=\\cos x+x"},
+    {"titre": "Flux imposé et loi de Fourier : la dérivée à discrétiser", "tex": "q_x=-\\lambda\\,T'(x)\\quad\\Longrightarrow\\quad -\\lambda\\,T'(1)=q_L\\quad\\Longrightarrow\\quad T'(1)=-\\frac{q_L}{\\lambda}=g"},
     {"titre": "Fermeture d'ordre 1", "tex": "u_N=u_{N-1}+h\\,g"},
     {"titre": "Fermeture d'ordre 2 : différence régressive à trois points", "tex": "\\frac{3u_N-4u_{N-1}+u_{N-2}}{2h}=g"},
     {"titre": "Point fantôme : on prolonge le maillage d'un nœud hors du domaine", "tex": "\\frac{u_{N+1}-u_{N-1}}{2h}=g\\ \\Longrightarrow\\ u_{N+1}=u_{N-1}+2h\\,g,\\qquad \\text{équation au nœud }N:\\ -2u_{N-1}+2u_N=h^2f_N+2h\\,g"}

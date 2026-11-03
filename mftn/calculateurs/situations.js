@@ -38,7 +38,14 @@
         t(150, 150, 'courant : advection') + t(262, 150, 'étalement : diffusion'))
     },
     edpc: { texte: "Trois situations, trois types : un équilibre (plaque aux bords à températures imposées), une évolution diffusive (barre qui se refroidit) et une propagation (onde dans un tube).", svg: trois },
-    edpb: { texte: "Une plaque en régime permanent, une barre qui diffuse la chaleur, une onde dans un tube : le comportement de la solution et le domaine de dépendance du point P changent avec le type.", svg: trois },
+    edpb: {
+      texte: "Un pictogramme par type : une plaque en régime permanent (elliptique), une barre qui diffuse la chaleur (parabolique), une onde dans un tube (hyperbolique). Le pictogramme affiché suit le type choisi.",
+      svg: [
+        ['elliptique', grad('g3a', '--red', '--blue') + `<rect x="95" y="36" width="190" height="100" rx="3" fill="url(#g3a)" opacity="0.55"/><rect x="95" y="36" width="190" height="100" rx="3" fill="none" stroke="var(--plot-axis)" stroke-width="4"/>` + t(100, 26, 'plaque chauffée, régime permanent', 'font-weight="600"') + t(100, 156, 'chaque côté agit sur toute la plaque')],
+        ['parabolique', grad('g3b', '--red', '--blue') + `<rect x="60" y="62" width="260" height="34" rx="3" fill="url(#g3b)" opacity="0.6" stroke="var(--plot-axis)" stroke-width="1.5"/>` + arr(80, 120, 300, 120, 'var(--muted)', 1.6) + t(60, 46, 'barre qui se refroidit', 'font-weight="600"') + t(60, 148, 'la chaleur diffuse et lisse le profil')],
+        ['hyperbolique', `<rect x="40" y="62" width="300" height="34" rx="17" fill="var(--blue)" opacity="0.18" stroke="var(--plot-axis)" stroke-width="1.5"/><path d="M52 79 q8 -22 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0" fill="none" stroke="var(--orange)" stroke-width="2.6"/>` + t(40, 46, 'onde dans un tube', 'font-weight="600"') + t(40, 148, 'propagation à vitesse finie')]
+      ].map(q => `<svg class="sit-svg" data-kt="${q[0]}" viewBox="0 0 380 170" role="img" aria-hidden="true">${q[1]}</svg>`).join('')
+    },
     cl: {
       photo: { src: 'img/Aqua_Tower_thermal_imaging.jpg', alt: 'Thermographie infrarouge d’une tour', legende: 'Thermographie infrarouge (caméra FLIR b60) d’une tour : la chaleur s’échappe par les dalles de balcons qui traversent l’enveloppe isolée. Jim D’Aloisio, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, <a href="https://commons.wikimedia.org/wiki/File:Aqua_Tower_thermal_imaging.jpg">via Wikimedia Commons</a>.' },
       texte: "Une paroi qui produit de la chaleur (résistance électrique, réaction) : à chaque extrémité on peut imposer la température, le flux, ou un échange convectif avec l'air ambiant.",
@@ -79,7 +86,7 @@
         arr(100, 142, 190, 142, 'var(--orange)', 1.8) + arr(190, 142, 100, 142, 'var(--orange)', 1.8) + t(130, 160, 'pas h') + t(20, 38, 'capteurs de température dans une paroi'))
     },
     neumann: {
-      texte: "À une extrémité on connaît le flux de chaleur (film chauffant ; paroi isolée si le flux est nul), pas la température : il faut fermer le système avec une formule au bord, dont l'ordre compte.",
+      texte: "À une extrémité on connaît le flux de chaleur (film chauffant ; paroi isolée si le flux est nul), pas la température : la loi de Fourier le transforme en une dérivée imposée, qu'il faut discrétiser par une formule au bord dont l'ordre compte.",
       svg: wrap(
         grad('gn', '--blue', '--orange') + hatch('hn') +
         `<rect x="14" y="50" width="30" height="70" fill="var(--blue)" opacity="0.5" stroke="var(--plot-axis)"/>` + t(8, 40, 'T imposée') +

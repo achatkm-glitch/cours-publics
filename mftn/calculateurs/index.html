@@ -26,7 +26,7 @@
   <span class="brk"></span>
   <span class="grp">Chapitre 2</span>
   <button data-tab="ordre">Ordre d'une différence</button>
-  <button data-tab="neumann">Neumann</button>
+  <button data-tab="neumann">Conditions aux limites discrétisées</button>
   <button data-tab="jg">Jacobi / Gauss–Seidel</button>
   <span class="brk"></span>
   <span class="grp">Chapitre 3</span>
@@ -117,7 +117,7 @@
 
 <!-- EDP : classer -->
 <section class="panel" id="p-edpc">
-  <h2>EDP : classer une équation et lire son comportement</h2>
+  <h2>EDP : classer une équation et lire son domaine de dépendance</h2>
   <p class="lead">Le signe du discriminant des coefficients du terme d'ordre 2 donne le type de l'EDP, donc la façon dont l'information se propage et les données à fournir. Réglez A, B et C pour passer d'un type à l'autre ; la courbe tracée est la conique associée. Le dernier curseur suit un cas non linéaire dont le type change avec la solution. Séance 1, bloc B.</p>
   <div class="eqs" data-eq="edpc"></div>
   <div class="grid">
@@ -169,7 +169,6 @@
         <div data-kt="hyperbolique" class="kgroup" style="display:none">
           <label>Vitesse de propagation c<span class="sl"><input type="range" id="k-c" min="0.2" max="3" step="0.1" value="1" data-unit="m/s"><output></output></span></label>
           <label>Instant t<span class="sl"><input type="range" id="k-th" min="0.5" max="6" step="0.1" value="2" data-unit="s"><output></output></span></label>
-          <label>Position du point P<span class="sl"><input type="range" id="k-xp" min="-4" max="4" step="0.5" value="2" data-unit="m"><output></output></span></label>
         </div>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
@@ -186,11 +185,9 @@
       <div data-kt="parabolique" class="plots2" style="display:none">
         <div><canvas id="k-par" aria-label="Profils de température"></canvas><div class="legend" id="k-par-leg"></div></div>
         <div><canvas id="k-par2" aria-label="Profils en échelle logarithmique"></canvas><div class="legend" id="k-par2-leg"></div></div>
-        <div><canvas id="k-xtp" aria-label="Domaine de dépendance du point P"></canvas><div class="legend" id="k-xtp-leg"></div></div>
       </div>
       <div data-kt="hyperbolique" class="plots2" style="display:none">
         <div><canvas id="k-hyp" aria-label="Profil de l'onde"></canvas><div class="legend" id="k-hyp-leg"></div></div>
-        <div><canvas id="k-xt" aria-label="Diagramme espace-temps et domaine de dépendance"></canvas><div class="legend" id="k-xt-leg"></div></div>
       </div>
       <div class="cards" id="k-cards"></div>
     </div>
@@ -346,8 +343,8 @@
 
 <!-- Ch.2 : Neumann -->
 <section class="panel" id="p-neumann">
-  <h2>Condition de Neumann : ordre 1, ordre 2 et point fantôme</h2>
-  <p class="lead">Problème avec une condition de Dirichlet à gauche et une condition de Neumann à droite, de solution exacte connue. Compare trois façons de fermer le système au bord : formule d'ordre 1, formule régressive d'ordre 2 et point fantôme. Séance 2, exercices B, F et H.</p>
+  <h2>Conditions aux limites discrétisées : Neumann d'ordre 1, d'ordre 2 et point fantôme</h2>
+  <p class="lead">Problème avec une condition de Dirichlet à gauche et une condition de Neumann à droite, de solution exacte connue. En thermique, un flux imposé q donne, par la loi de Fourier (−λ T′ = q), la dérivée à imposer au bord. Compare trois façons de discrétiser cette condition pour fermer le système : formule d'ordre 1, formule régressive d'ordre 2 et point fantôme. Séance 2, exercices B, F et H.</p>
   <div class="eqs" data-eq="neumann"></div>
   <div class="grid">
     <div>

@@ -200,3 +200,8 @@
 - **Fichiers** : `mftn/calculateurs/app.js`, suivis.
 - **Fait** : correction du graphique d'erreur de l'onglet Barre 1D.
 - **Prochaine action** : relecture ; verrous libérés.
+
+### 2026-11-03 22:16:17 +01:00 — Code → Mohammed, Codex et prochains intervenants
+- **Fichiers** : `mftn/calculateurs/` (7 fichiers), suivis.
+- **Fait** : calculateurs v12 (dédoublonnage EDP, renommage de l'onglet Neumann, loi de Fourier).
+- **Prochaine action** : relecture ; verrous libérés.

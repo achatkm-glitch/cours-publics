@@ -513,7 +513,7 @@
       parabolique: ['chaleur : évolution diffusive, dissipative', 'état initial et conditions aux limites', 'les gradients s\u2019atténuent ; propagation instantanée mais très faible', 'droites parallèles (cas dégénéré)'],
       hyperbolique: ['ondes, advection : propagation à vitesse finie', 'données initiales et une condition à chaque frontière (en 1D, à chaque extrémité)', 'l\u2019information suit les caractéristiques, dans un cône de dépendance', 'hyperbole'] }[r.type];
     $('d-msg').className = 'msg'; $('d-msg').innerHTML = `Δ = B² − AC = <b>${fmt(r.delta, 3)}</b> : l\u2019EDP est <b>${r.type}</b>.`;
-    cards($('d-cards'), [{ color: col, title: `Type : ${r.type}`, lines: [`prototype : ${info[0]}`, `données nécessaires : ${info[1]}`, `comportement : ${info[2]}`, `conique associée : ${info[3]}`] }]);
+    cards($('d-cards'), [{ color: col, title: `Type : ${r.type}`, lines: [`prototype : ${info[0]}`, `données nécessaires : ${info[1]}`, `conique associée : ${info[3]}`] }]);
     drawConic($('d-plot'), A, Bc, Cc);
     drawDep($('d-dep'), r.type);
     $('d-dep-leg').textContent = { elliptique: 'Elliptique : toute la frontière (bord épais) influence P.', parabolique: 'Parabolique : toute la ligne initiale (et les conditions aux limites jusqu\u2019à t) influence P.', hyperbolique: 'Hyperbolique : seul le segment limité par les caractéristiques influence P.' }[r.type];
@@ -524,7 +524,7 @@
       marks: [{ v: u, color: css('--plot-axis'), label: 'u' }, { v: -1, color: css('--green'), label: 'parabolique' }, { v: 1, color: css('--green'), label: 'parabolique' }],
       text: 'Les repères verts (u = ±1) sont les valeurs où l\u2019EDP est parabolique.' });
     explain('edpc', [`Δ = B² − AC = ${fmt(r.delta, 3)} : ${r.delta < 0 ? 'Δ < 0, donc elliptique' : (r.type === 'parabolique' ? 'Δ = 0, donc parabolique' : 'Δ > 0, donc hyperbolique')}.`,
-      `Conséquence : il faut ${info[1]} ; ${info[2]}.`,
+      `Données à fournir : ${info[1]}.`,
       `Cas non linéaire pour u = ${fmt(u, 3)} : Δ = u² − 1 = ${fmt(u * u - 1, 3)}, donc ${rn.type}. Le type dépend de la solution : il peut changer d\u2019un point à l\u2019autre du domaine.`]);
   }
 
@@ -537,7 +537,6 @@
     const colr = v => { const t = Math.max(0, Math.min(1, (v - vmin) / ((vmax - vmin) || 1))); return `hsl(${240 * (1 - t)}, 80%, ${46 + 6 * Math.sin(Math.PI * t)}%)`; };
     for (let j = 0; j < M; j++) for (let i = 0; i < M; i++) { g.fillStyle = colr(u[j][i]); g.fillRect(L + i * cell, T + (M - 1 - j) * cell, Math.ceil(cell) + 0.5, Math.ceil(cell) + 0.5); }
     g.strokeStyle = axis; g.lineWidth = 4; g.strokeRect(L, T, S, S);
-    g.fillStyle = '#fff'; g.strokeStyle = '#000'; g.lineWidth = 1.5; g.beginPath(); g.arc(L + S / 2, T + S / 2, 5, 0, 6.2832); g.fill(); g.stroke(); g.fillStyle = '#000'; g.font = 'bold 12px system-ui, sans-serif'; g.textAlign = 'left'; g.fillText('P', L + S / 2 + 8, T + S / 2 - 6);
     for (let k = 0; k < 50; k++) { g.fillStyle = colr(vmin + (vmax - vmin) * (1 - k / 49)); g.fillRect(L + S + 14, T + k * S / 50, 12, S / 50 + 1); }
     g.fillStyle = muted; g.font = '12px system-ui, sans-serif'; g.textAlign = 'left';
     g.fillText(fmt(vmax, 3), L + S + 30, T + 10); g.fillText(fmt(vmin, 3), L + S + 30, T + S);
@@ -580,11 +579,11 @@
     if (type === 'elliptique') {
       const N = Math.round(num('k-n')), r = Calc.laplace2d({ N, left: num('k-Tl'), right: num('k-Tr'), top: num('k-Tt'), bottom: num('k-Tb') });
       drawHeat($('k-heat'), r.u, Math.min(r.min, num('k-Tl'), num('k-Tr'), num('k-Tt'), num('k-Tb')), Math.max(r.max, num('k-Tl'), num('k-Tr'), num('k-Tt'), num('k-Tb')));
-      $('k-heat-leg').textContent = 'Domaine de dépendance du point P (centre) : toute la frontière du carré (bord épais).';
+      $('k-heat-leg').textContent = '';
       const xs = Calc.linspace(0, 1, r.M);
       draw('k-line', 'k-line-leg', [{ x: xs, y: r.ligneCentrale, color: c[0], label: 'u(x, y = 0,5)' }], { xlabel: 'x', ylabel: 'T (°C)', title: 'Ligne médiane' });
       $('k-msg').className = 'msg'; $('k-msg').textContent = 'Principe du maximum : les valeurs restent comprises entre la plus petite et la plus grande valeur imposée. Changez un seul côté : tout le champ change aussitôt, y compris loin de ce côté (influence globale).';
-      explain('edpb', [`Température au centre : <b>${fmt(r.centre, 4)} °C</b> ; moyenne des quatre côtés : ${fmt((num('k-Tl') + num('k-Tr') + num('k-Tt') + num('k-Tb')) / 4, 4)} °C (égales par symétrie du carré).`, `Valeurs comprises entre ${fmt(r.min, 4)} et ${fmt(r.max, 4)} °C : principe du maximum, pas de valeur intérieure hors des valeurs imposées.`, 'Domaine de dépendance de P : toute la frontière. Chaque côté agit sur tout le domaine : une EDP elliptique est un problème d’équilibre global.']);
+      explain('edpb', [`Température au centre : <b>${fmt(r.centre, 4)} °C</b> ; moyenne des quatre côtés : ${fmt((num('k-Tl') + num('k-Tr') + num('k-Tt') + num('k-Tb')) / 4, 4)} °C (égales par symétrie du carré).`, `Valeurs comprises entre ${fmt(r.min, 4)} et ${fmt(r.max, 4)} °C : principe du maximum, pas de valeur intérieure hors des valeurs imposées.`, 'Chaque côté agit sur tout le domaine : une EDP elliptique est un problème d’équilibre global.']);
       cards($('k-cards'), [{ color: c[0], title: 'Température au centre', lines: [`valeur = <b>${fmt(r.centre, 4)} °C</b>`, `minimum = <b>${fmt(r.min, 4)}</b> ; maximum = <b>${fmt(r.max, 4)}</b>`, `${r.iters} itérations de sur-relaxation`] }]);
     } else if (type === 'parabolique') {
       const D = num('k-D'), tp = num('k-tp'), gap = num('k-gap'), rayon = 0.5, ctr = gap === 0 ? [0] : [-gap / 2, gap / 2];
@@ -592,8 +591,6 @@
       const S = times.map((t, i) => ({ x: xs, y: Calc.chaleurCompacte({ D, rayon, centres: ctr, t, xs }), color: c[i % 6], width: 2.2, label: `t = ${fmt(t, 3)}` }));
       draw('k-par', 'k-par-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Diffusion d’une bosse à support compact' });
       draw('k-par2', 'k-par2-leg', S.map(s => Object.assign({}, s)), { logy: true, xlabel: 'x (m)', ylabel: 'u (échelle logarithmique)', title: 'Même courbes, échelle log' });
-      drawXT($('k-xtp'), 0, num('k-xp'), tp, true);
-      $('k-xtp-leg').innerHTML = `<span><i style="border-color:${css('--blue')}"></i>domaine de dépendance : toute la ligne initiale</span><span><i style="border-color:${css('--orange')};border-top-style:dashed"></i>et les conditions aux limites jusqu\u2019à t</span>`;
       const far = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: tp, xs: [5, 0] });
       const far2 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 2, xs: [5] })[0];
       const far8 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 8, xs: [5] })[0];
@@ -601,15 +598,14 @@
       explain('edpb', [`Chaque profil initial est nul hors de [centre − ${fmt(rayon, 2)} ; centre + ${fmt(rayon, 2)}] m. Ainsi u(5,0) = 0.`, `Après diffusion, u(5,2) ≈ ${far2.toExponential(2).replace('.', ',')} et u(5,8) ≈ ${far8.toExponential(2).replace('.', ',')} : l’effet apparaît à distance dès t > 0.`, 'La chaleur a une vitesse de propagation infinie dans le modèle continu : à tout t > 0, la solution idéale est non nulle sur toute la droite.']);
       cards($('k-cards'), [{ color: c[3], title: `À t = ${fmt(tp, 3)} s`, lines: [`u(5, 0) = <b>0</b> : x = 5 est hors du support initial`, `u(5, ${fmt(tp, 3)}) = <b>${far[0].toExponential(2).replace('.', ',')}</b>`, `u(0, ${fmt(tp, 3)}) = <b>${far[1].toExponential(2).replace('.', ',')}</b>`, `repères : u(5, 2) ≈ ${far2.toExponential(2).replace('.', ',')} ; u(5, 8) ≈ ${far8.toExponential(2).replace('.', ',')}`] }]);
     } else {
-      const cc = num('k-c'), th = num('k-th'), xp = num('k-xp'), rayon = 0.5, xs = Calc.linspace(-8, 8, 800);
+      const cc = num('k-c'), th = num('k-th'), rayon = 0.5, xs = Calc.linspace(-8, 8, 800);
       const S = [{ x: xs, y: Calc.ondeDAlembert({ c: cc, rayon, t: 0, xs }), color: css('--plot-axis'), dash: [6, 4], label: 't = 0' },
                  { x: xs, y: Calc.ondeDAlembert({ c: cc, rayon, t: th, xs }), color: c[0], width: 2.4, label: `t = ${fmt(th, 3)}` }];
       draw('k-hyp', 'k-hyp-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Équation des ondes' });
-      drawXT($('k-xt'), cc, xp, th); $('k-xt-leg').innerHTML = `<span><i style="border-color:${css('--orange')}"></i>caractéristiques de P</span><span><i style="border-color:${css('--blue')}"></i>domaine de dépendance</span>`;
-      const uP = Calc.ondeDAlembert({ c: cc, rayon, t: th, xs: [xp, 3] });
+      const u3 = Calc.ondeDAlembert({ c: cc, rayon, t: th, xs: [3] })[0];
       $('k-msg').className = 'msg'; $('k-msg').textContent = 'La bosse initiale, exactement nulle hors de [−0,5 ; 0,5], donne deux bosses de demi-amplitude qui se déplacent à la vitesse c. Le support reste borné : l’information ne dépasse pas les fronts de propagation.';
-      explain('edpb', [`Les maxima sont en x = ±c·t = <b>±${fmt(cc * th, 3)}</b> ; chaque bosse garde une demi-largeur ${fmt(rayon, 2)}.`, `Le domaine de dépendance de P (x = ${fmt(xp, 3)}) est [${fmt(xp - cc * th, 3)} ; ${fmt(xp + cc * th, 3)}] sur la ligne initiale. u(P) = ${uP[0].toExponential(2).replace('.', ',')} ; en x = 3, u = ${uP[1].toExponential(2).replace('.', ',')}.`, 'Hors des supports transportés, la solution reste exactement nulle : la propagation a une vitesse finie.']);
-      cards($('k-cards'), [{ color: c[0], title: `À t = ${fmt(th, 3)} s`, lines: [`maxima en x = ± c·t = <b>±${fmt(cc * th, 3)}</b>, amplitude 0,5`, `supports des bosses : ±c·t ± ${fmt(rayon, 2)} m`, `domaine de dépendance de P : <b>[${fmt(xp - cc * th, 3)} ; ${fmt(xp + cc * th, 3)}]</b>`, `u(P) = <b>${uP[0].toExponential(2).replace('.', ',')}</b>`, `u(x = 3) = <b>${uP[1].toExponential(2).replace('.', ',')}</b>`] }]);
+      explain('edpb', [`Les maxima sont en x = ±c·t = <b>±${fmt(cc * th, 3)}</b> ; chaque bosse garde une demi-largeur ${fmt(rayon, 2)}.`, `En x = 3, u = ${u3 === 0 ? '0 exactement : ce point est hors des supports transportés' : u3.toExponential(2).replace('.', ',')}.`, 'Hors des supports transportés, la solution reste exactement nulle : la propagation a une vitesse finie.']);
+      cards($('k-cards'), [{ color: c[0], title: `À t = ${fmt(th, 3)} s`, lines: [`maxima en x = ± c·t = <b>±${fmt(cc * th, 3)}</b>, amplitude 0,5`, `supports des bosses : ±c·t ± ${fmt(rayon, 2)} m`, `u(x = 3) = <b>${u3 === 0 ? '0' : u3.toExponential(2).replace('.', ',')}</b>`] }]);
     }
   }
 

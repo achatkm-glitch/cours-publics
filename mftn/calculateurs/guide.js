@@ -1,7 +1,7 @@
 window.GUIDE = {
   "competences": {
     "C1.1": "distinguer une grandeur extensive de sa grandeur spécifique",
-    "C1.2": "établir la forme locale et la forme intégrale d'une équation de transport",
+    "C1.2": "établir les formes locale et intégrale d'un bilan de transport (approfondissement : exercice A4 facultatif)",
     "C1.3": "identifier les termes d'accumulation, de convection, de diffusion et de source, et contrôler leurs unités",
     "C1.4": "reconnaître le caractère elliptique, parabolique ou hyperbolique d'une EDP scalaire d'ordre 2",
     "C1.5": "choisir des conditions initiales et aux limites compatibles avec le type d'EDP",
@@ -16,9 +16,9 @@ window.GUIDE = {
     "C2.7": "(approfondissement : exercices D et H) mesurer un ordre observé par raffinement",
     "C3.1": "construire les schémas explicite, implicite et de Crank–Nicolson pour la chaleur 1D",
     "C3.2": "appliquer la condition pratique sur le pas de temps de FTCS et dimensionner un calcul",
-    "C3.3": "comparer les défauts des schémas FTCS, BTCS, Dufort–Frankel et de la famille θ",
+    "C3.3": "établir le défaut local de FTCS et analyser ceux de Dufort–Frankel et Lax–Friedrichs selon le chemin de raffinement (Lax–Friedrichs : approfondissement, exercice E)",
     "C3.4": "reconnaître une consistance qui dépend du chemin de raffinement",
-    "C3.5": "(approfondissement) distinguer, pour les schémas d'advection, le comportement observé (diffusion, dispersion, instabilité) de l'ordre, dont l'établissement est un approfondissement (exercice E)"
+    "C3.5": "(approfondissement) distinguer, pour les schémas d'advection, le comportement observé (diffusion, dispersion, instabilité) de l'analyse de leur ordre"
   },
   "tabs": {
     "transport": {
@@ -41,7 +41,6 @@ window.GUIDE = {
           "id": "S1-X1",
           "titre": "Qui déplace, qui élargit ?",
           "comp": [
-            "C1.2",
             "C1.3"
           ],
           "reglages": {
@@ -58,7 +57,7 @@ window.GUIDE = {
         },
         {
           "id": "S1-X2",
-          "titre": "Quand la diffusion devient-elle comparable à l'advection ?",
+          "titre": "Que compare le nombre de Péclet ?",
           "comp": [
             "C1.3"
           ],
@@ -71,8 +70,9 @@ window.GUIDE = {
             "t-s0": "0.15"
           },
           "consigne": "Avec D = 0,15, le nombre de Péclet |a|σ₀/D vaut 1. Relevez σ(4) et le pic, et comparez la courbe à t = 4 à celle de t = 0.",
-          "question": "Que dire du rôle de la diffusion devant celui de l'advection quand Pe vaut 1 ?",
-          "main": "Avec D = 0,15, calculez Pe, σ(4) et le pic σ₀/σ."
+          "question": "Que compare Pe = 1 à l'échelle initiale ? Que montrent séparément le déplacement du centre et l'élargissement à t = 4 ?",
+          "main": "Avec D = 0,15, calculez Pe, σ(4) et le pic σ₀/σ.",
+          "corr": true
         }
       ]
     },
@@ -316,7 +316,9 @@ window.GUIDE = {
         "point fantôme",
         "condition de Neumann",
         "ordre global",
-        "ordre de la condition aux limites"
+        "ordre de la condition aux limites",
+        "loi de Fourier",
+        "condition aux limites discrétisée"
       ],
       "exercices": "exercices B, F, H",
       "explorations": [
@@ -399,8 +401,7 @@ window.GUIDE = {
           "id": "S3-X2",
           "titre": "Lire l'ordre en temps",
           "comp": [
-            "C3.1",
-            "C3.3"
+            "C3.1"
           ],
           "reglages": {
             "c-alpha": "-5",
@@ -726,7 +727,8 @@ window.GUIDE = {
         "discriminant",
         "EDP elliptique, parabolique, hyperbolique",
         "données nécessaires",
-        "type qui dépend de la solution"
+        "type qui dépend de la solution",
+        "domaine de dépendance"
       ],
       "exercices": "bloc B (B1, B5)",
       "explorations": [
@@ -742,9 +744,10 @@ window.GUIDE = {
             "d-C": "4",
             "d-u": "0.5"
           },
-          "consigne": "Réglez A = 1, B = 0, C = 4 (équation u_xx + 4 u_yy = 0). Lisez le discriminant, le type, les données nécessaires et la forme de la conique.",
-          "question": "Quel est le type ? Quelles conditions faut-il fournir, et que dit-on de l'influence de la frontière ?",
-          "main": "Calculez à la main le discriminant Δ = B² − AC pour A = 1, B = 0, C = 4, et donnez le type."
+          "consigne": "Réglez A = 1, B = 0, C = 4 (équation u_xx + 4 u_yy = 0). Lisez le discriminant, le type, les données nécessaires et la forme de la conique et le schéma de dépendance sous la conique.",
+          "question": "Quel est le type ? Quelles conditions faut-il fournir, et que dit-on de l'influence de la frontière ? Quel est le domaine de dépendance du point P (schéma sous la conique) ?",
+          "main": "Calculez à la main le discriminant Δ = B² − AC pour A = 1, B = 0, C = 4, et donnez le type.",
+          "corr": true
         },
         {
           "id": "S1-D2",
@@ -758,9 +761,10 @@ window.GUIDE = {
             "d-C": "0",
             "d-u": "0.5"
           },
-          "consigne": "Réglez A = −1, B = 0, C = 0 (équation de la chaleur u_t − α u_xx avec α = 1). Lisez le discriminant et la forme de la conique.",
-          "question": "Quel est le type ? Pourquoi la conique est-elle dégénérée ? Quelles données faut-il ?",
-          "main": "Calculez Δ pour A = −1, B = 0, C = 0 et donnez le type."
+          "consigne": "Réglez A = −1, B = 0, C = 0 (équation de la chaleur u_t − α u_xx avec α = 1). Lisez le discriminant et la forme de la conique et le schéma de dépendance sous la conique.",
+          "question": "Quel est le type ? Pourquoi la conique est-elle dégénérée ? Quelles données faut-il ? Quel est le domaine de dépendance du point P ?",
+          "main": "Calculez Δ pour A = −1, B = 0, C = 0 et donnez le type.",
+          "corr": true
         },
         {
           "id": "S1-D3",
@@ -774,9 +778,10 @@ window.GUIDE = {
             "d-C": "1",
             "d-u": "0.5"
           },
-          "consigne": "Réglez A = −3, B = 0, C = 1 (équation des ondes u_tt − 3 u_xx, de vitesse c = √3). Lisez le discriminant et la forme de la conique.",
-          "question": "Quel est le type ? Quelles données initiales et aux limites faut-il ?",
-          "main": "Calculez Δ pour A = −3, B = 0, C = 1 et donnez le type et la vitesse c."
+          "consigne": "Réglez A = −3, B = 0, C = 1 (équation des ondes u_tt − 3 u_xx, de vitesse c = √3). Lisez le discriminant et la forme de la conique et le schéma de dépendance sous la conique.",
+          "question": "Quel est le type ? Quelles données initiales et aux limites faut-il ? Quel est le domaine de dépendance du point P ?",
+          "main": "Calculez Δ pour A = −3, B = 0, C = 1 et donnez le type et la vitesse c.",
+          "corr": true
         },
         {
           "id": "S1-D4",
@@ -806,7 +811,6 @@ window.GUIDE = {
       "notions": [
         "principe du maximum",
         "propagation instantanée ou à vitesse finie",
-        "domaine de dépendance",
         "influence de la frontière"
       ],
       "exercices": "bloc B (B1 à B4)",
@@ -894,9 +898,9 @@ window.GUIDE = {
               "hyperbolique"
             ]
           },
-          "consigne": "La bosse initiale est nulle hors de [−0,5 ; 0,5]. Avec c = 1, t = 2 et P en x = 2, lisez les maxima des deux bosses, leurs supports, le domaine de dépendance de P et u en x = 3. Doublez ensuite c et observez le déplacement des supports.",
-          "question": "Où se trouvent les maxima et les fronts ? Que vaut u en x = 3 ? Comment le domaine de dépendance varie-t-il avec c ?",
-          "main": "À partir de la formule de d'Alembert, prévoir les maxima en x = ±ct et le rayon 0,5 m de chaque bosse. Pour P = (2,2) avec c = 1, calculer le domaine de dépendance [x − ct ; x + ct] = [0 ; 4].",
+          "consigne": "La bosse initiale est nulle hors de [−0,5 ; 0,5]. Avec c = 1 et t = 2, lisez les maxima des deux bosses, leurs supports et u en x = 3. Doublez ensuite c et observez le déplacement des supports.",
+          "question": "Où se trouvent les maxima et les fronts ? Que vaut u en x = 3 ? Comment le déplacement des supports change-t-il quand c double ?",
+          "main": "À partir de la formule de d'Alembert, prévoir les maxima en x = ±ct et le rayon 0,5 m de chaque bosse pour c = 1 et t = 2, puis leurs supports et la valeur en x = 3.",
           "corr": true
         }
       ]
