@@ -108,3 +108,8 @@ Empreintes SHA-256 source et destination identiques :
 - Contenu : onglet « Ordre d'une différence » avec la différence centrée de la dérivée seconde (ordre 2), équation, interprétation et exploration S2-X1 mises à jour.
 - Fichiers et empreintes : `mftn/calculateurs/index.html` SHA-256 B79D6B20E1A0E9D39C02B281644528C9E4131F9437708DB8A8710086A0803646; `mftn/calculateurs/app.js` SHA-256 EA0A8BD5A1A8349C976EB891D9D50B38ADA4EB408107A31BF2037637CE56E4DC; `mftn/calculateurs/calc.js` SHA-256 261CEBB4BA37B073223089C64B0FC7E4C4CE9A31C0B6A48FB8C837B7E66B993D; `mftn/calculateurs/style.css` SHA-256 BC8B494E8913251ADBDA9F2B3892F296A03728FDC92E0CD5B66CA268DCD93209; `mftn/calculateurs/guide.js` SHA-256 3B8C5721FD16AFA50FD9FD41CC595DFBEBEF09CB35656B40C8F47D36AF9F6EB6; `mftn/calculateurs/equations.js` SHA-256 9535EF9612CA776DDE3143A71F9F9BBF9C91D4B1DA619311CB79454A28973AD3; `mftn/calculateurs/situations.js` SHA-256 551823DF5B7792B5A6B0416FD4A827D671DFE1C23D463566DF3FA62B1E128504.
 - Contrôles : `node test_calc.js` (77 contrôles, dont l'ordre 2 de la dérivée seconde) ; onglet chargé dans le navigateur intégré, aucune erreur de console.
+
+## Correction de l'onglet Barre 1D — 2026-11-03 21:56:06 +01:00 — Code
+- Contenu : quand les erreurs sont inférieures à 1e-9 K (bruit d'arrondi), l'axe du graphique d'erreur est figé à ±1e-6 K et un message l'explique (nœuds et centres de cellules à des abscisses différentes).
+- Fichier : `mftn/calculateurs/app.js` SHA-256 274A8639CE3AE52493D64E6F069A2AF375B76CE0EAFAFB92A28D7973AFC4D604 (seul fichier publié ; les autres fichiers du site sont inchangés).
+- Contrôles : `node test_calc.js` ; cas sans production (message affiché) et avec production q = 100 (pas de message) vérifiés dans le navigateur intégré.

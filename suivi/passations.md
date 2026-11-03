@@ -195,3 +195,8 @@
 - **Fichiers** : `mftn/calculateurs/` (7 fichiers), suivis.
 - **Fait** : calculateurs v11 (dérivée seconde).
 - **Prochaine action** : relecture ; verrous libérés.
+
+### 2026-11-03 21:56:06 +01:00 — Code → Mohammed, Codex et prochains intervenants
+- **Fichiers** : `mftn/calculateurs/app.js`, suivis.
+- **Fait** : correction du graphique d'erreur de l'onglet Barre 1D.
+- **Prochaine action** : relecture ; verrous libérés.

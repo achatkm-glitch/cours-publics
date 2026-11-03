@@ -137,3 +137,7 @@
 ### 2026-11-03 21:19:57 +01:00 — Mise à jour des calculateurs MFTN (v11)
 - **Instruction** : « dans le site, ajouter dans “ordre d'une différence” la dérivée seconde ». Reçu par Code ; publication déjà autorisée.
 - **État** : traité ; preuves dans `suivi/integration_mftn.md`.
+
+### 2026-11-03 21:56:06 +01:00 — Correction de l'onglet Barre 1D (v11.1)
+- **Instruction** : question de l'utilisateur sur le graphique d'erreur (bruit d'arrondi qui n'a pas à se superposer). Reçu par Code ; publication déjà autorisée.
+- **État** : traité ; preuve dans `suivi/integration_mftn.md`.

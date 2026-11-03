@@ -216,7 +216,11 @@
     });
     $('b-msg').innerHTML = 'Bleu, cercles : différences finies (nœuds) ; orange, carrés : volumes finis (centres des cellules). Les nuances plus claires correspondent aux maillages plus fins. Erreur = solution calculée − solution analytique ; bilan de flux = flux sortants − q·L.';
     draw('b-plot', 'b-leg', S1, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Solution' });
-    draw('b-plot2', 'b-leg2', S2, { xlabel: 'x (m)', ylabel: 'erreur (K)', title: 'Erreur / solution analytique' });
+    // erreurs de l'ordre de l'arrondi : on fige l'axe pour ne pas amplifier le bruit machine en « courbes » trompeuses
+    const eMax = Math.max.apply(null, S2.map(q => Calc.maxAbs(q.y)));
+    const arrondi = eMax < 1e-9;
+    if (arrondi) $('b-msg').innerHTML += ' <b>Les erreurs sont inférieures à 10⁻⁹ K : ce n\u2019est que du bruit d\u2019arrondi, les deux schémas sont exacts ici.</b> Les points ne se superposent pas car les nœuds (différences finies) et les centres de cellules (volumes finis) sont à des abscisses différentes.';
+    draw('b-plot2', 'b-leg2', S2, { xlabel: 'x (m)', ylabel: 'erreur (K)', ylim: arrondi ? [-1e-6, 1e-6] : null, title: 'Erreur / solution analytique' });
     cards($('b-cards'), items);
     const L = [], sorted = Ns.slice().sort((p, q) => p - q);
     [['fd', 'Différences finies'], ['vf', 'Volumes finis']].filter(m => schemes.includes(m[0])).forEach(m => {
