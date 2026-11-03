@@ -281,9 +281,10 @@ window.GUIDE = {
       "notions": [
         "erreur de troncature",
         "ordre formel d'un schéma",
-        "défaut local"
+        "défaut local",
+        "dérivée seconde centrée"
       ],
-      "exercices": "exercices A, D",
+      "exercices": "exercices A, D, E",
       "explorations": [
         {
           "id": "S2-X1",
@@ -297,9 +298,10 @@ window.GUIDE = {
             "o-h0": "0.1",
             "o-k": "4"
           },
-          "consigne": "Gardez h$_0$ = 0,1 et quatre pas. Lisez dans les cartes l'ordre observé et l'erreur au plus petit pas pour chacune des trois différences.",
-          "question": "Quels ordres lisez-vous ? Pourquoi l'erreur de la régressive à trois points est-elle voisine du double de celle de la centrée ?",
-          "main": "Pour u = exp(x) en x = 0 et h = 0,1, déduisez de Taylor le terme d'erreur dominant de chaque différence et calculez sa valeur."
+          "consigne": "Gardez h₀ = 0,1 et quatre pas. Lisez dans les cartes l'ordre observé et l'erreur au plus petit pas pour chacune des trois différences de la dérivée première et pour la différence centrée de la dérivée seconde.",
+          "question": "Quels ordres lisez-vous, pour la dérivée première et pour la dérivée seconde ? Pourquoi l'erreur de la régressive à trois points est-elle voisine du double de celle de la centrée ?",
+          "main": "Pour u = exp(x) en x = 0 et h = 0,1, déduisez de Taylor le terme d'erreur dominant de chaque différence de la dérivée première, puis celui de la différence centrée de la dérivée seconde, (u(h) − 2u(0) + u(−h))/h², et calculez leurs valeurs.",
+          "corr": true
         }
       ]
     },
@@ -390,7 +392,8 @@ window.GUIDE = {
           },
           "consigne": "Avec h = 5 mm et un temps final de 200 s, prenez Δt = 2 s (Fo = 0,8), puis Δt = 1 s (Fo = 0,4). Relevez l'erreur maximale de chaque schéma dans les cartes de résultats.",
           "question": "Que se passe-t-il pour FTCS quand Fo dépasse 1/2 ? L'ordre de grandeur de l'erreur affichée dépend-il des arrondis ? Les schémas implicites sont-ils concernés ?",
-          "main": "Pour α = 1e-5 m²/s et h = 5 mm, calculez Fo = αΔt/h² pour Δt = 2 s et 1 s, ainsi que le pas de temps maximal de FTCS."
+          "main": "Pour α = 1e-5 m²/s et h = 5 mm, calculez Fo = αΔt/h² pour Δt = 2 s et 1 s, ainsi que le pas de temps maximal de FTCS.",
+          "corr": true
         },
         {
           "id": "S3-X2",
@@ -416,7 +419,8 @@ window.GUIDE = {
           },
           "consigne": "Prenez h = 1 mm, un temps final de 1 s et les pas Δt = 1, 0,5 et 0,25 s. Lisez les erreurs dans les cartes et la pente du second graphique.",
           "question": "Quel ordre en temps lit-on pour FTCS et BTCS ? Pourquoi l'erreur de Crank–Nicolson ne diminue-t-elle plus ? Fo > 1/2 pour FTCS : pourquoi son erreur reste-t-elle pourtant petite ici ?",
-          "main": "Avec h = 1 mm, calculez Fo pour Δt = 1 ; 0,5 et 0,25 s. FTCS respecte-t-il Fo ≤ 1/2 ? Prévoyez l'ordre en temps de FTCS, BTCS et Crank–Nicolson."
+          "main": "Avec h = 1 mm, calculez Fo pour Δt = 1 ; 0,5 et 0,25 s. FTCS respecte-t-il Fo ≤ 1/2 ? Prévoyez l'ordre en temps de FTCS, BTCS et Crank–Nicolson.",
+          "corr": true
         }
       ]
     },
@@ -862,7 +866,8 @@ window.GUIDE = {
           },
           "consigne": "Deux bosses cosinus de rayon 0,5 m, centrées en x = ±2 m, diffusent avec D = 0,05 m²/s. Vérifiez d'abord que x = 5 m est hors du support initial. Lisez ensuite u(5) à t = 2 s puis à t = 8 s et comparez les deux graphiques, dont celui en échelle logarithmique.",
           "question": "La température en x = 5 est-elle nulle au départ ? Que devient-elle dès t > 0 ? Comment évolue-t-elle entre t = 2 et t = 8 ?",
-          "main": "Les supports initiaux sont [−2,5 ; −1,5] et [1,5 ; 2,5]. En déduire u(5,0) = 0. Pour l'équation de la chaleur sur la droite réelle, prévoir si u(5,t) reste nul ou devient non nul pour t > 0."
+          "main": "Les supports initiaux sont [−2,5 ; −1,5] et [1,5 ; 2,5]. En déduire u(5,0) = 0. Pour l'équation de la chaleur sur la droite réelle, prévoir si u(5,t) reste nul ou devient non nul pour t > 0.",
+          "corr": true
         },
         {
           "id": "S1-K3",
@@ -891,7 +896,8 @@ window.GUIDE = {
           },
           "consigne": "La bosse initiale est nulle hors de [−0,5 ; 0,5]. Avec c = 1, t = 2 et P en x = 2, lisez les maxima des deux bosses, leurs supports, le domaine de dépendance de P et u en x = 3. Doublez ensuite c et observez le déplacement des supports.",
           "question": "Où se trouvent les maxima et les fronts ? Que vaut u en x = 3 ? Comment le domaine de dépendance varie-t-il avec c ?",
-          "main": "À partir de la formule de d'Alembert, prévoir les maxima en x = ±ct et le rayon 0,5 m de chaque bosse. Pour P = (2,2) avec c = 1, calculer le domaine de dépendance [x − ct ; x + ct] = [0 ; 4]."
+          "main": "À partir de la formule de d'Alembert, prévoir les maxima en x = ±ct et le rayon 0,5 m de chaque bosse. Pour P = (2,2) avec c = 1, calculer le domaine de dépendance [x − ct ; x + ct] = [0 ; 4].",
+          "corr": true
         }
       ]
     }

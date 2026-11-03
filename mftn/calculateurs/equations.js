@@ -42,7 +42,8 @@ window.EQUATIONS = {
   "ordre": [
     {"titre": "Progressive (ordre 1)", "tex": "\\frac{u_{i+1}-u_i}{h}=u'_i+\\mathcal O(h)"},
     {"titre": "Centrée (ordre 2)", "tex": "\\frac{u_{i+1}-u_{i-1}}{2h}=u'_i+\\mathcal O(h^2)"},
-    {"titre": "Régressive à trois points (ordre 2)", "tex": "\\frac{3u_i-4u_{i-1}+u_{i-2}}{2h}=u'_i+\\mathcal O(h^2)"}
+    {"titre": "Régressive à trois points (ordre 2)", "tex": "\\frac{3u_i-4u_{i-1}+u_{i-2}}{2h}=u'_i+\\mathcal O(h^2)"},
+    {"titre": "Dérivée seconde centrée (ordre 2)", "tex": "\\frac{u_{i+1}-2u_i+u_{i-1}}{h^2}=u''_i+\\mathcal O(h^2)"}
   ],
   "neumann": [
     {"titre": "Problème", "tex": "-u''=\\cos x,\\qquad u(0)=1,\\quad u'(1)=g=1-\\sin 1,\\qquad u_{\\text{exacte}}=\\cos x+x"},

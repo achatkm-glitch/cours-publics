@@ -133,3 +133,7 @@
 ### 2026-11-03 20:49:13 +01:00 — Mise à jour des calculateurs MFTN (v10)
 - **Instruction** : « garde les schémas vectoriels et les photos sourcées » ; accord explicite de l'utilisateur au téléchargement de trois images libres de Wikimedia Commons (réponse « Les trois »). Reçu par Code (Claude Code, session MFTN) ; publication déjà autorisée.
 - **État** : traité ; preuves dans `suivi/integration_mftn.md`. Crédits et licences : `Peda_inv/CREDITS.md` du dépôt MFTN et légendes sous chaque photo.
+
+### 2026-11-03 21:19:57 +01:00 — Mise à jour des calculateurs MFTN (v11)
+- **Instruction** : « dans le site, ajouter dans “ordre d'une différence” la dérivée seconde ». Reçu par Code ; publication déjà autorisée.
+- **État** : traité ; preuves dans `suivi/integration_mftn.md`.

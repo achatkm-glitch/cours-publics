@@ -294,7 +294,7 @@
     const c = pal(), hs = Array.from({ length: Math.round(num('o-k')) }, (_, i) => num('o-h0') / Math.pow(2, i));
     const rows = Calc.ordreExp(hs), o = (v) => v === undefined ? '' : ` (ordre <b>${fmt(v, 3)}</b>)`;
     $('o-msg').textContent = 'L\u2019ordre est lu comme log₂ du rapport des erreurs entre deux pas consécutifs dont le rapport est 2.';
-    const defs = [['prog', 'ordreProg', 'Progressive', c[1]], ['centree', 'ordreCentree', 'Centrée', c[0]], ['regr3', 'ordreRegr3', 'Régressive à 3 points', c[2]]];
+    const defs = [['prog', 'ordreProg', 'Progressive', c[1]], ['centree', 'ordreCentree', 'Centrée', c[0]], ['regr3', 'ordreRegr3', 'Régressive à 3 points', c[2]], ['seconde', 'ordreSeconde', 'Dérivée seconde centrée', c[3]]];
     const last = rows[rows.length - 1];
     cards($('o-table'), defs.map(d => ({ color: d[3], title: d[2], lines: [`ordre observé : <b>${last[d[1]] === undefined ? '—' : fmt(last[d[1]], 3)}</b>`, `erreur pour h = ${fmt(last.h, 4)} : <b>${fmt(last[d[0]], 3)}</b>`] })));
     const S = defs.map(d => ({ x: rows.map(r => r.h), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true }));
@@ -304,6 +304,7 @@
       `Progressive : ordre observé ${tx(lr.ordreProg)} (attendu 1) : diviser h par 2 divise l\u2019erreur par 2.`,
       `Centrée : ordre observé ${tx(lr.ordreCentree)} (attendu 2) : diviser h par 2 divise l\u2019erreur par 4.`,
       `Régressive à 3 points : ordre observé ${tx(lr.ordreRegr3)} (attendu 2), avec une erreur plus grande que la centrée car son coefficient d\u2019erreur est plus élevé.`,
+      `Dérivée seconde centrée : ordre observé ${tx(lr.ordreSeconde)} (attendu 2), avec une erreur voisine de h²/12 fois la dérivée quatrième (ici égale à 1) ; elle approche u″ et non u′, mais suit la même loi.`,
       'Sur le graphique en échelles logarithmiques, la pente de chaque droite est l\u2019ordre ; l\u2019ordre vient du terme d\u2019erreur de troncature obtenu par Taylor.']);
   }
 

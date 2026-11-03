@@ -41,6 +41,7 @@
 <section class="panel active" id="p-intro">
   <h2>Introduction : pourquoi le choix du schéma compte</h2>
   <p class="lead">Pourquoi un cours de méthodes numériques ? Pour une même équation, on peut écrire de nombreux schémas de calcul, et ils ne se valent pas : selon le schéma, la solution calculée présente des comportements non voulus. Ici, un signal (une bosse lisse et un créneau) est transporté à vitesse constante sur un domaine périodique : après un tour entier, la solution exacte est identique au signal initial. Cinq schémas, notés A à E (leurs formules et leurs noms seront vus plus tard dans le cours), essaient de la reproduire. Observez ce que chacun fait du signal. Test inspiré de la figure 6.1 de LeVeque (2002) ; les paramètres sont ceux de ce site. Introduction du cours, séance 1.</p>
+  <p class="repere"><b>Comment travailler :</b> commencez par une prévision ou une première explication sans ouvrir le cours. Si une notion vous manque, consultez le passage indiqué dans la fiche de séance, puis revenez à l'exploration pour vérifier et expliquer votre réponse. Le cours se lit en salle, au fil des questions ; aucune lecture préalable à domicile n'est demandée.</p>
   <div class="situation"><b>Mise en situation.</b> Un rejet polluant, une bouffée lisse suivie d'un front brusque, est entraîné par un courant uniforme dans un canal. On veut prévoir par le calcul, sans mesure, la forme du rejet un peu plus loin en aval : où arrive-t-il, avec quelle concentration maximale, et la concentration peut-elle devenir négative ou exploser ? Le signal du calculateur (une bosse et un créneau, sans unité) représente cette concentration ; après un tour, un courant parfait la ramène à l'identique. Les schémas A à E sont cinq façons de faire ce calcul : tous ne donnent pas un résultat exploitable.
   <svg class="sit-fig" viewBox="0 0 640 250" role="img" aria-label="Schéma : un rejet polluant, une bosse lisse et un front brusque, entraîné par le courant dans un canal">
     <rect x="50" y="170" width="540" height="50" fill="var(--blue)" opacity="0.15"/>
@@ -323,8 +324,8 @@
 
 <!-- Ch.2 : ordre -->
 <section class="panel" id="p-ordre">
-  <h2>Ordre d'une différence finie</h2>
-  <p class="lead">Erreur en x = 0 de trois différences finies pour la fonction exponentielle, pour une suite de pas. Séance 2, exercice D.</p>
+  <h2>Ordre d'une différence finie : dérivées première et seconde</h2>
+  <p class="lead">Erreur en x = 0 de trois différences finies de la dérivée première et de la différence centrée de la dérivée seconde, pour la fonction exponentielle et une suite de pas. Séance 2, exercices D et E.</p>
   <div class="eqs" data-eq="ordre"></div>
   <div class="grid">
     <div>
@@ -333,7 +334,7 @@
         <label>Nombre de pas testés (h₀, h₀/2, h₀/4, …)<span class="sl"><input type="range" id="o-k" min="2" max="8" step="1" value="4"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> progressive, 5,171×10⁻² puis 2,542×10⁻² (rapport 2) ; centrée, 1,667×10⁻³ puis 4,167×10⁻⁴ (rapport 4).</p>
+      <p class="repere"><b>Repère :</b> progressive, 5,171×10⁻² puis 2,542×10⁻² (rapport 2) ; centrée, 1,667×10⁻³ puis 4,167×10⁻⁴ (rapport 4) ; dérivée seconde centrée, 8,34×10⁻⁴ puis 2,08×10⁻⁴ (rapport 4, ordre 2).</p>
     </div>
     <div>
       <div class="msg" id="o-msg"></div>

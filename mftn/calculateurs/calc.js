@@ -88,13 +88,16 @@
       h,
       prog: Math.abs((Math.exp(h) - 1) / h - 1),
       centree: Math.abs((Math.exp(h) - Math.exp(-h)) / (2 * h) - 1),
-      regr3: Math.abs((3 - 4 * Math.exp(-h) + Math.exp(-2 * h)) / (2 * h) - 1)
+      regr3: Math.abs((3 - 4 * Math.exp(-h) + Math.exp(-2 * h)) / (2 * h) - 1),
+      /* dérivée seconde centrée en x = 0 (u'' = 1) : (e^h - 2 + e^-h)/h^2 = (2 sinh(h/2)/h)^2, forme sans annulation */
+      seconde: Math.abs(Math.pow(2 * Math.sinh(h / 2) / h, 2) - 1)
     }));
     rows.forEach((r, i) => {
       if (i > 0) {
         r.ordreProg = Math.log2(rows[i - 1].prog / r.prog);
         r.ordreCentree = Math.log2(rows[i - 1].centree / r.centree);
         r.ordreRegr3 = Math.log2(rows[i - 1].regr3 / r.regr3);
+        r.ordreSeconde = Math.log2(rows[i - 1].seconde / r.seconde);
       }
     });
     return rows;
