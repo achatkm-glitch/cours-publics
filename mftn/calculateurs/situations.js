@@ -27,6 +27,7 @@
 
   const S = {
     transport: {
+      photo: { src: 'img/Sediment_plume_at_sea_1280px.jpg', alt: 'Panache de sédiments en mer vu par satellite', legende: 'Panache de sédiments en mer vu par le satellite Sentinel-2B (5 février 2019). ESA, « Contains modified Copernicus Sentinel data (2019), processed by ESA », <a href="https://creativecommons.org/licenses/by-sa/3.0/igo/deed.en">CC BY-SA 3.0 IGO</a>, <a href="https://commons.wikimedia.org/wiki/File:Sediment_plume_at_sea.jpg">via Wikimedia Commons</a> (miniature de 1280 px).' },
       texte: "Un polluant ou une eau chaude est rejeté dans une rivière : le courant l'emporte (advection) pendant qu'il s'étale peu à peu (diffusion). Le nombre de Péclet compare les deux effets.",
       svg: wrap(
         `<rect x="10" y="40" width="360" height="90" fill="var(--blue)" opacity="0.14"/>` +
@@ -39,6 +40,7 @@
     edpc: { texte: "Trois situations, trois types : un équilibre (plaque aux bords à températures imposées), une évolution diffusive (barre qui se refroidit) et une propagation (onde dans un tube).", svg: trois },
     edpb: { texte: "Une plaque en régime permanent, une barre qui diffuse la chaleur, une onde dans un tube : le comportement de la solution et le domaine de dépendance du point P changent avec le type.", svg: trois },
     cl: {
+      photo: { src: 'img/Aqua_Tower_thermal_imaging.jpg', alt: 'Thermographie infrarouge d’une tour', legende: 'Thermographie infrarouge (caméra FLIR b60) d’une tour : la chaleur s’échappe par les dalles de balcons qui traversent l’enveloppe isolée. Jim D’Aloisio, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, <a href="https://commons.wikimedia.org/wiki/File:Aqua_Tower_thermal_imaging.jpg">via Wikimedia Commons</a>.' },
       texte: "Une paroi qui produit de la chaleur (résistance électrique, réaction) : à chaque extrémité on peut imposer la température, le flux, ou un échange convectif avec l'air ambiant.",
       svg: wrap(
         grad('gcl', '--red', '--orange') +
@@ -58,6 +60,7 @@
         t(8, 30, 'T₀ imposée') + t(300, 30, 'T_L imposée') + t(104, 120, 'effet Joule : production q') + t(104, 138, 'nœuds (●) ou cellules'))
     },
     peclet: {
+      photo: { src: 'img/Schlieren-color-candle-plume.jpg', alt: 'Panache thermique d’une bougie par strioscopie', legende: 'Panache thermique d’une bougie visualisé par strioscopie. Settles1, <a href="https://creativecommons.org/licenses/by/3.0/deed.en">CC BY 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Schlieren-color-candle-plume.jpg">via Wikimedia Commons</a>.' },
       texte: "Un fluide s'écoule le long d'une paroi chaude : près de la paroi, la température passe de celle de la paroi à celle du fluide sur une couche mince, d'autant plus mince que Pe est grand. Un schéma centré trop grossier y oscille.",
       svg: wrap(
         `<rect x="10" y="120" width="360" height="24" fill="var(--red)" opacity="0.5" stroke="var(--plot-axis)"/>` + t(14, 160, 'paroi chaude') +

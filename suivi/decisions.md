@@ -129,3 +129,7 @@
 ### 2026-11-03 20:03:01 +01:00 — Mise à jour des calculateurs MFTN (v9)
 - **Instruction** : « on corrige tout selon la règle FIFO » (résidus de la contre-lecture de Codex sur AUD-2026-022 : compétences C2.7 et C3.5 présentées comme approfondissements). Reçu par Code ; publication déjà autorisée.
 - **État** : traité ; preuves dans `suivi/integration_mftn.md`.
+
+### 2026-11-03 20:49:13 +01:00 — Mise à jour des calculateurs MFTN (v10)
+- **Instruction** : « garde les schémas vectoriels et les photos sourcées » ; accord explicite de l'utilisateur au téléchargement de trois images libres de Wikimedia Commons (réponse « Les trois »). Reçu par Code (Claude Code, session MFTN) ; publication déjà autorisée.
+- **État** : traité ; preuves dans `suivi/integration_mftn.md`. Crédits et licences : `Peda_inv/CREDITS.md` du dépôt MFTN et légendes sous chaque photo.

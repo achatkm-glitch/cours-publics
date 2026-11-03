@@ -405,7 +405,8 @@
       const panel = $('p-' + tab); if (!panel || panel.querySelector('.sit2')) return;
       const lead = panel.querySelector('.lead'); if (!lead) return;
       const box = document.createElement('div'); box.className = 'sit2';
-      box.innerHTML = `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}`;
+      const ph = S[tab].photo ? `<figure class="sit-photo"><img src="${S[tab].photo.src}" alt="${S[tab].photo.alt}"><figcaption>${S[tab].photo.legende}</figcaption></figure>` : '';
+      box.innerHTML = `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${ph}`;
       lead.after(box);
     });
   }
