@@ -590,7 +590,6 @@
       const xs = Calc.linspace(-8, 8, 800), times = [0, tp / 4, tp / 2, tp].filter((t, i, a) => a.indexOf(t) === i);
       const S = times.map((t, i) => ({ x: xs, y: Calc.chaleurCompacte({ D, rayon, centres: ctr, t, xs }), color: c[i % 6], width: 2.2, label: `t = ${fmt(t, 3)}` }));
       draw('k-par', 'k-par-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Diffusion d’une bosse à support compact' });
-      draw('k-par2', 'k-par2-leg', S.map(s => Object.assign({}, s)), { logy: true, xlabel: 'x (m)', ylabel: 'u (échelle logarithmique)', title: 'Même courbes, échelle log' });
       const far = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: tp, xs: [5, 0] });
       const far2 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 2, xs: [5] })[0];
       const far8 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 8, xs: [5] })[0];
@@ -664,6 +663,8 @@
     });
     renderEquations();
     renderSituations();
+    // onglets à deux graphiques : commandes en haut, graphiques côte à côte sur toute la largeur
+    document.querySelectorAll('.grid').forEach(g => { if (g.querySelector('.plots2')) g.classList.add('grid2'); });
     window.addEventListener('load', renderEquations);
     renderGuides();
     window.addEventListener('resize', () => safe(current));

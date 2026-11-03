@@ -149,3 +149,7 @@
 ### 2026-11-03 22:30:34 +01:00 — Mise à jour des calculateurs MFTN (v13)
 - **Instruction** : « il faut mettre l'implicite et l'explicite », « il faut aussi ajouter plus de schémas peut-être ». Reçu par Code ; publication déjà autorisée.
 - **État** : traité (lecture : onglets Chaleur 1D et Advection) ; preuves dans `suivi/integration_mftn.md`.
+
+### 2026-11-03 22:36:23 +01:00 — Mise à jour des calculateurs MFTN (v14)
+- **Instruction** : capture du graphique « Même courbes, échelle log » : « inutile » ; « essaye de mettre deux figures sur la même ligne ». Reçu par Code ; publication déjà autorisée.
+- **État** : traité ; preuves dans `suivi/integration_mftn.md`.

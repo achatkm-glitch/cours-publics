@@ -210,3 +210,8 @@
 - **Fichiers** : `mftn/calculateurs/` (7 fichiers), suivis.
 - **Fait** : calculateurs v13 (schémas explicites et implicites).
 - **Prochaine action** : relecture ; verrous libérés.
+
+### 2026-11-03 22:36:23 +01:00 — Code → Mohammed, Codex et prochains intervenants
+- **Fichiers** : `mftn/calculateurs/` (7 fichiers), suivis.
+- **Fait** : calculateurs v14.
+- **Prochaine action** : relecture ; verrous libérés.

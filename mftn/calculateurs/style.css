@@ -122,3 +122,10 @@ details > summary { cursor: pointer; color: var(--blue); margin: 10px 0; }
 .sit-photo { flex: 1 1 100%; margin: 6px 0 0; }
 .sit-photo img { display: block; max-width: 100%; max-height: 340px; width: auto; height: auto; margin: 0 auto; border-radius: 6px; }
 .sit-photo figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 4px; text-align: center; }
+
+/* onglets à deux graphiques : commandes en tête, graphiques côte à côte */
+.grid.grid2 { grid-template-columns: 1fr; }
+.grid.grid2 form.params { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 6px 22px; align-items: end; }
+.grid.grid2 form.params > .checks, .grid.grid2 form.params > .row, .grid.grid2 form.params > .kgroup { grid-column: 1 / -1; }
+.grid.grid2 .kgroup { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 6px 22px; }
+.grid.grid2 .plots2 > div { flex: 1 1 300px; max-width: 520px; }

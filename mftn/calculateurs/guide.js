@@ -925,7 +925,7 @@ window.GUIDE = {
               "parabolique"
             ]
           },
-          "consigne": "Deux bosses cosinus de rayon 0,5 m, centrées en x = ±2 m, diffusent avec D = 0,05 m²/s. Vérifiez d'abord que x = 5 m est hors du support initial. Lisez ensuite u(5) à t = 2 s puis à t = 8 s et comparez les deux graphiques, dont celui en échelle logarithmique.",
+          "consigne": "Deux bosses cosinus de rayon 0,5 m, centrées en x = ±2 m, diffusent avec D = 0,05 m²/s. Vérifiez d'abord que x = 5 m est hors du support initial. Lisez ensuite u(5) à t = 2 s puis à t = 8 s et comparez avec les profils tracés.",
           "question": "La température en x = 5 est-elle nulle au départ ? Que devient-elle dès t > 0 ? Comment évolue-t-elle entre t = 2 et t = 8 ?",
           "main": "Les supports initiaux sont [−2,5 ; −1,5] et [1,5 ; 2,5]. En déduire u(5,0) = 0. Pour l'équation de la chaleur sur la droite réelle, prévoir si u(5,t) reste nul ou devient non nul pour t > 0.",
           "corr": true
