@@ -50,7 +50,10 @@ window.EQUATIONS = {
     {"titre": "Flux imposé et loi de Fourier : la dérivée à discrétiser", "tex": "q_x=-\\lambda\\,T'(x)\\quad\\Longrightarrow\\quad -\\lambda\\,T'(1)=q_L\\quad\\Longrightarrow\\quad T'(1)=-\\frac{q_L}{\\lambda}=g"},
     {"titre": "Fermeture d'ordre 1", "tex": "u_N=u_{N-1}+h\\,g"},
     {"titre": "Fermeture d'ordre 2 : différence régressive à trois points", "tex": "\\frac{3u_N-4u_{N-1}+u_{N-2}}{2h}=g"},
-    {"titre": "Point fantôme : on prolonge le maillage d'un nœud hors du domaine", "tex": "\\frac{u_{N+1}-u_{N-1}}{2h}=g\\ \\Longrightarrow\\ u_{N+1}=u_{N-1}+2h\\,g,\\qquad \\text{équation au nœud }N:\\ -2u_{N-1}+2u_N=h^2f_N+2h\\,g"}
+    {"titre": "Point fantôme : on prolonge le maillage d'un nœud hors du domaine", "tex": "\\frac{u_{N+1}-u_{N-1}}{2h}=g\\ \\Longrightarrow\\ u_{N+1}=u_{N-1}+2h\\,g,\\qquad \\text{équation au nœud }N:\\ -2u_{N-1}+2u_N=h^2f_N+2h\\,g"},
+    {"titre": "Condition de Fourier (Robin, échange convectif) et solution exacte", "tex": "-\\lambda\\,T'(1)=h\\,\\bigl[T(1)-T_\\infty\\bigr]\\ \\Longrightarrow\\ T'(1)+\\kappa\\,T(1)=g_R,\\qquad \\kappa=\\frac h\\lambda,\\qquad g_R=(1-\\sin 1)+\\kappa(\\cos 1+1)"},
+    {"titre": "Fourier : fermetures d'ordre 1 et d'ordre 2", "tex": "\\frac{u_N-u_{N-1}}{h}+\\kappa\\,u_N=g_R,\\qquad \\frac{3u_N-4u_{N-1}+u_{N-2}}{2h}+\\kappa\\,u_N=g_R"},
+    {"titre": "Fourier : point fantôme", "tex": "u_{N+1}=u_{N-1}+2h\\,(g_R-\\kappa\\,u_N)\\ \\Longrightarrow\\ -2u_{N-1}+(2+2h\\kappa)\\,u_N=h^2f_N+2h\\,g_R"}
   ],
   "chaleur": [
     {"titre": "Équation de la chaleur et nombre de Fourier de maille", "tex": "u_t=\\alpha\\,u_{xx},\\qquad \\mathrm{Fo}=\\frac{\\alpha\\,\\Delta t}{h^2}"},

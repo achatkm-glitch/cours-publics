@@ -314,21 +314,30 @@
 
   /* ---------- Chapitre 2 : fermetures de Neumann ---------- */
   function runNeumann() {
-    const c = pal(), Ns = Array.from({ length: Math.round(num('n-k')) }, (_, i) => Math.round(num('n-N0') * Math.pow(2, i))).filter(v => v >= 4 && v <= 400);
-    const rows = Calc.neumannOrdres(Ns), o = (v) => v === undefined ? '' : ` (ordre <b>${fmt(v, 3)}</b>)`;
-    const defs = [['e1', 'p1', 'Fermeture d\u2019ordre 1', c[1]], ['e2', 'p2', 'Fermeture d\u2019ordre 2 (régressive)', c[0]], ['e3', 'p3', 'Point fantôme', c[2]]];
+    const c = pal(), bc = checked('n-bc')[0] || 'neumann', kappa = num('n-kappa'), opts = { bc, kappa };
+    document.querySelectorAll('[data-bc]').forEach(el => { el.style.display = el.dataset.bc === bc ? '' : 'none'; });
+    const nom = bc === 'fourier' ? 'Fourier' : 'Neumann';
+    const Ns = Array.from({ length: Math.round(num('n-k')) }, (_, i) => Math.round(num('n-N0') * Math.pow(2, i))).filter(v => v >= 4 && v <= 400);
+    const rows = Calc.neumannOrdres(Ns, opts);
+    const defs = [['e1', 'p1', `${nom} : fermeture d\u2019ordre 1`, c[1]], ['e2', 'p2', `${nom} : ordre 2 (régressive)`, c[0]], ['e3', 'p3', `${nom} : point fantôme`, c[2]]];
     const lastN = rows[rows.length - 1];
     cards($('n-table'), defs.map(d => ({ color: d[3], title: d[2], lines: [`ordre observé : <b>${lastN[d[1]] === undefined ? '—' : fmt(lastN[d[1]], 3)}</b>`, `erreur pour N = ${lastN.N} : <b>${fmt(lastN[d[0]], 3)}</b>`] })));
     draw('n-plot', 'n-leg', defs.map(d => ({ x: rows.map(r => 1 / r.N), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true })), { logx: true, logy: true, xlabel: 'h = 1/N', ylabel: 'erreur maximale', title: 'Erreur globale selon h (cos x + x)' });
-    const Np = Math.round(num('n-Np')), prof = [1, 2, 3].map(k => Calc.neumann(Np, k));
+    const Np = Math.round(num('n-Np')), prof = [1, 2, 3].map(k => Calc.neumann(Np, k, opts));
     draw('n-plot2', 'n-leg2', defs.map((d, k) => ({ x: prof[k].x, y: prof[k].errs.map(v => Math.max(v, 1e-16)), color: d[3], label: d[2], points: true })), { logy: true, xlabel: 'x', ylabel: 'erreur en chaque nœud', title: `Où l\u2019erreur se forme (N = ${Np})` });
     const lr = rows[rows.length - 1], tx = v => v === undefined ? 'à mesurer avec au moins deux maillages' : `<b>${fmt(v, 3)}</b>`;
-    explain('neumann', [
-      `Fermeture d\u2019ordre 1 (u<sub>N</sub> = u<sub>N−1</sub> + h g) : ordre global observé ${tx(lr.p1)}. Le schéma intérieur est d\u2019ordre 2, mais cette fermeture est d\u2019ordre 1 : l\u2019erreur née au bord se propage dans tout le domaine et limite l\u2019ordre global.`,
-      `Fermeture d\u2019ordre 2 (différence régressive à trois points) : ordre global observé ${tx(lr.p2)}. Elle fait intervenir trois nœuds : la dernière ligne de la matrice sort de la structure tridiagonale.`,
+    const L = bc === 'fourier' ? [
+      `Fourier d\u2019ordre 1 : (u<sub>N</sub> − u<sub>N−1</sub>)/h + κ u<sub>N</sub> = g<sub>R</sub>, ordre global observé ${tx(lr.p1)}. La condition au bord est d\u2019ordre 1 et limite l\u2019ordre global, comme pour Neumann ; ici u<sub>N</sub> reste une inconnue de la dernière ligne (κ = ${fmt(kappa, 3)}).`,
+      `Fourier d\u2019ordre 2 (régressive à trois points) : ordre global observé ${tx(lr.p2)}. La dernière ligne fait intervenir u<sub>N−2</sub>, u<sub>N−1</sub> et u<sub>N</sub> : la matrice sort de la structure tridiagonale.`,
+      `Point fantôme : u<sub>N+1</sub> = u<sub>N−1</sub> + 2h (g<sub>R</sub> − κ u<sub>N</sub>), ordre global observé ${tx(lr.p3)}. La dernière ligne (−2 ; 2 + 2hκ) garde la matrice tridiagonale.`,
+      `À x = 1, N = ${Np} : ordre 1 <b>${fmt(prof[0].errs[Np], 3)}</b>, ordre 2 <b>${fmt(prof[1].errs[Np], 3)}</b>, point fantôme <b>${fmt(prof[2].errs[Np], 3)}</b> : l\u2019erreur se forme au bord.`,
+      'Retenir : la condition de Fourier (Robin) mêle la valeur et la dérivée au bord ; son ordre de discrétisation compte autant que pour Neumann. κ → ∞ redonne une condition de Dirichlet, κ = 0 une condition de Neumann homogène.'] : [
+      `Neumann d\u2019ordre 1 (u<sub>N</sub> = u<sub>N−1</sub> + h g) : ordre global observé ${tx(lr.p1)}. Le schéma intérieur est d\u2019ordre 2, mais cette fermeture est d\u2019ordre 1 : l\u2019erreur née au bord se propage dans tout le domaine et limite l\u2019ordre global.`,
+      `Neumann d\u2019ordre 2 (différence régressive à trois points) : ordre global observé ${tx(lr.p2)}. Elle fait intervenir trois nœuds : la dernière ligne de la matrice sort de la structure tridiagonale.`,
       `Point fantôme (nœud fictif u<sub>N+1</sub> éliminé par la différence centrée en x = 1) : ordre global observé ${tx(lr.p3)}. La matrice reste tridiagonale, avec la dernière ligne (−2 ; 2) : on gagne l\u2019ordre 2 sans changer la structure.`,
       `Sur le profil d\u2019erreur (N = ${Np}), à x = 1 : ordre 1 <b>${fmt(prof[0].errs[Np], 3)}</b>, ordre 2 <b>${fmt(prof[1].errs[Np], 3)}</b>, point fantôme <b>${fmt(prof[2].errs[Np], 3)}</b> : l\u2019erreur se forme près de la frontière et dépend directement de l\u2019ordre de la fermeture.`,
-      'Retenir : l\u2019ordre global est celui du maillon le plus faible, schéma intérieur ou condition aux limites.']);
+      'Retenir : l\u2019ordre global est celui du maillon le plus faible, schéma intérieur ou condition aux limites.'];
+    explain('neumann', L);
   }
 
   /* ---------- Chapitre 3 : chaleur 1D, comparaison de schémas et de pas de temps ---------- */

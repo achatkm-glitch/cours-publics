@@ -318,7 +318,8 @@ window.GUIDE = {
         "ordre global",
         "ordre de la condition aux limites",
         "loi de Fourier",
-        "condition aux limites discrétisée"
+        "condition aux limites discrétisée",
+        "condition de Fourier (Robin)"
       ],
       "exercices": "exercices B, F, H",
       "explorations": [
@@ -352,6 +353,30 @@ window.GUIDE = {
           "consigne": "Avec N du profil d'erreur égal à 20, lisez sur le second graphique où l'erreur est la plus grande, et dans le texte « Que montrent vos réglages ? » sa valeur à x = 1 pour les trois fermetures. Doublez ensuite N du profil (40).",
           "question": "Où l'erreur est-elle la plus grande avec chaque fermeture ? Comment son niveau à x = 1 change-t-il quand N double ?",
           "main": "Prévoyez de quel facteur l'erreur en x = 1 est divisée quand N double, pour la fermeture d'ordre 1 puis pour les deux d'ordre 2."
+        },
+        {
+          "id": "S2-X6",
+          "titre": "Fourier : l'échange convectif au bord",
+          "comp": [
+            "C2.3",
+            "C2.7"
+          ],
+          "reglages": {
+            "n-bc": "fourier",
+            "n-kappa": "2",
+            "n-N0": "10",
+            "n-k": "5",
+            "n-Np": "20"
+          },
+          "checks": {
+            "n-bc": [
+              "fourier"
+            ]
+          },
+          "main": "Pour la condition de Fourier u'(1) + κ u(1) = g_R, écrivez la dernière ligne du système pour la fermeture d'ordre 1, puis pour le point fantôme (κ = 2).",
+          "consigne": "Choisissez la condition de Fourier avec κ = 2, N = 10, 20, 40, 80, 160, et lisez dans les cartes l'ordre observé des trois fermetures.",
+          "question": "Quels ordres obtient-on ? Comment la condition de Fourier se compare-t-elle à celle de Neumann ? Que devient la condition quand κ devient très grand ?",
+          "corr": true
         }
       ]
     },

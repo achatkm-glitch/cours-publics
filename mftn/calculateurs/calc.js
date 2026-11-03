@@ -118,12 +118,24 @@
   /* 4. Fermetures de Neumann : -u''=cos x, u(0)=1, u'(1)=1-sin 1, solution exacte cos x + x.
      ordre 1 : u_N = u_{N-1} + h g ; ordre 2 : différence régressive à trois points ;
      ordre 3 (« fantôme ») : point fantôme u_{N+1} = u_{N-1} + 2 h g, différence centrée en x = 1 (ordre 2). */
-  function neumann(N, ordre) {
+  function neumann(N, ordre, opts) {
     const h = 1 / N, g = 1 - Math.sin(1), ug = 1;
     const x = Array.from({ length: N + 1 }, (_, i) => i * h);
     const f = x.map(Math.cos);
     let full;
-    if (ordre === 1) {
+    if (opts && opts.bc === 'fourier') {
+      /* condition de Fourier (Robin, échange convectif) : u'(1) + kappa u(1) = gR, gR = u'(1) + kappa u(1) de la solution exacte cos x + x ;
+         N inconnues u_1..u_N, la dernière ligne est la condition au bord discrétisée (ordre 1, ordre 2, point fantôme). */
+      const kappa = opts.kappa, gR = g + kappa * (Math.cos(1) + 1), n = N;
+      const A = Array.from({ length: n }, () => new Array(n).fill(0));
+      const d = new Array(n).fill(0);
+      for (let i = 0; i < n - 1; i++) { A[i][i] = 2; if (i > 0) A[i][i - 1] = -1; A[i][i + 1] = -1; d[i] = h * h * f[i + 1]; }
+      d[0] += ug;
+      if (ordre === 1) { A[n - 1][n - 2] = -1; A[n - 1][n - 1] = 1 + kappa * h; d[n - 1] = h * gR; }
+      else if (ordre === 3) { A[n - 1][n - 2] = -2; A[n - 1][n - 1] = 2 + 2 * h * kappa; d[n - 1] = h * h * f[n] + 2 * h * gR; }
+      else { A[n - 1][n - 3] = 1; A[n - 1][n - 2] = -4; A[n - 1][n - 1] = 3 + 2 * h * kappa; d[n - 1] = 2 * h * gR; }
+      full = [ug].concat(gauss(A, d));
+    } else if (ordre === 1) {
       const n = N - 1;
       const a = new Array(n).fill(-1), b = new Array(n).fill(2), c = new Array(n).fill(-1);
       const d = Array.from({ length: n }, (_, i) => h * h * f[i + 1]);
@@ -155,8 +167,8 @@
     const err = full.map((v, i) => Math.abs(v - (Math.cos(x[i]) + x[i])));
     return { N, h, x, u: full, errs: err, err: maxAbs(err) };
   }
-  function neumannOrdres(Ns) {
-    const rows = Ns.map(N => ({ N, e1: neumann(N, 1).err, e2: neumann(N, 2).err, e3: neumann(N, 3).err }));
+  function neumannOrdres(Ns, opts) {
+    const rows = Ns.map(N => ({ N, e1: neumann(N, 1, opts).err, e2: neumann(N, 2, opts).err, e3: neumann(N, 3, opts).err }));
     rows.forEach((r, i) => {
       if (i > 0) { r.p1 = Math.log2(rows[i - 1].e1 / r.e1); r.p2 = Math.log2(rows[i - 1].e2 / r.e2); r.p3 = Math.log2(rows[i - 1].e3 / r.e3); }
     });

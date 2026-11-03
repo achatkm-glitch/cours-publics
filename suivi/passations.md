@@ -215,3 +215,8 @@
 - **Fichiers** : `mftn/calculateurs/` (7 fichiers), suivis.
 - **Fait** : calculateurs v14.
 - **Prochaine action** : relecture ; verrous libérés.
+
+### 2026-11-03 22:41:32 +01:00 — Code → Mohammed, Codex et prochains intervenants
+- **Fichiers** : `mftn/calculateurs/` (7 fichiers), suivis.
+- **Fait** : calculateurs v15 (condition de Fourier).
+- **Prochaine action** : relecture ; verrous libérés.

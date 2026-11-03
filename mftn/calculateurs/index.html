@@ -194,7 +194,7 @@
 
 <!-- Ch.1 : conditions aux limites -->
 <section class="panel" id="p-cl">
-  <h2>Barre : conditions aux limites Dirichlet, Neumann, Robin</h2>
+  <h2>Barre : conditions aux limites Dirichlet, Neumann, Robin (condition de Fourier)</h2>
   <p class="lead">Conduction stationnaire dans une barre avec production, la température étant imposée en x = 0 et trois conditions possibles en x = L. Séance 1, bloc B. Cochez plusieurs conditions pour les comparer ; par défaut, l'exemple de la paroi du polycopié, où elles sont équivalentes.</p>
   <div class="eqs" data-eq="cl"></div>
   <div class="grid">
@@ -340,12 +340,17 @@
 
 <!-- Ch.2 : Neumann -->
 <section class="panel" id="p-neumann">
-  <h2>Conditions aux limites discrétisées : Neumann d'ordre 1, d'ordre 2 et point fantôme</h2>
-  <p class="lead">Problème avec une condition de Dirichlet à gauche et une condition de Neumann à droite, de solution exacte connue. En thermique, un flux imposé q donne, par la loi de Fourier (−λ T′ = q), la dérivée à imposer au bord. Compare trois façons de discrétiser cette condition pour fermer le système : formule d'ordre 1, formule régressive d'ordre 2 et point fantôme. Séance 2, exercices B, F et H.</p>
+  <h2>Conditions aux limites discrétisées : Neumann et Fourier (Robin), ordre 1, ordre 2 et point fantôme</h2>
+  <p class="lead">Problème avec une condition de Dirichlet à gauche et, à droite, une condition de Neumann (flux imposé) ou de Fourier (échange convectif, dite de Robin dans le cours), de solution exacte connue. En thermique, un flux imposé q donne, par la loi de Fourier (−λ T′ = q), la dérivée à imposer au bord. Compare trois façons de discrétiser cette condition pour fermer le système : formule d'ordre 1, formule régressive d'ordre 2 et point fantôme. Séance 2, exercices B, F et H.</p>
   <div class="eqs" data-eq="neumann"></div>
   <div class="grid">
     <div>
       <form class="params">
+        <div class="checks" role="radiogroup" aria-label="Condition au bord">
+          <label><input type="radio" name="n-bc" value="neumann" checked> Neumann (flux imposé)</label>
+          <label><input type="radio" name="n-bc" value="fourier"> Fourier (échange convectif, Robin)</label>
+        </div>
+        <label data-bc="fourier" style="display:none">Coefficient d'échange κ = h/λ<span class="sl"><input type="range" id="n-kappa" min="0.5" max="20" step="0.5" value="2"><output></output></span></label>
         <label>Plus petit N<span class="sl"><input type="range" id="n-N0" min="4" max="40" step="1" value="10"><output></output></span></label>
         <label>Nombre de maillages testés (N₀, 2N₀, 4N₀, …)<span class="sl"><input type="range" id="n-k" min="2" max="6" step="1" value="5"><output></output></span></label>
         <label>N du profil d'erreur<span class="sl"><input type="range" id="n-Np" min="6" max="100" step="2" value="20"><output></output></span></label>
