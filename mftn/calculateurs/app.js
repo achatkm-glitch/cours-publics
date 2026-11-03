@@ -33,7 +33,7 @@
     return 'rgb(' + mix((n >> 16) & 255) + ',' + mix((n >> 8) & 255) + ',' + mix(n & 255) + ')';
   };
   const pal = () => ['--blue', '--orange', '--green', '--red', '--c5', '--c6'].map(css);
-  const SCHEME = { ftcs: 'FTCS', btcs: 'BTCS', cn: 'Crank–Nicolson', amont: 'Amont', lxf: 'Lax–Friedrichs', lw: 'Lax–Wendroff', jacobi: 'Jacobi', gs: 'Gauss–Seidel' };
+  const SCHEME = { ftcs: 'FTCS (explicite)', btcs: 'BTCS (implicite)', cn: 'Crank–Nicolson (θ = 1/2)', df: 'Dufort–Frankel (explicite)', ri: 'Richardson (explicite)', amont: 'Amont (explicite)', lxf: 'Lax–Friedrichs (explicite)', lw: 'Lax–Wendroff (explicite)', bw: 'Beam–Warming (explicite)', cimp: 'Centré implicite', jacobi: 'Jacobi', gs: 'Gauss–Seidel' };
 
   /* ---------- tracé : cadre d'axes carré, axes linéaires ou logarithmiques ---------- */
   function niceTicks(lo, hi, n) {
@@ -339,9 +339,9 @@
     const run = (s, dt) => Calc.chaleur({ alpha, L, h, dt, steps: Math.max(1, Math.round(tf / dt)), scheme: s });
     const first = schemes.map(s => ({ s, r: run(s, dts[0]) }));
     const r0 = first[0].r, mid = Math.floor(r0.u.length / 2);
-    const warn = first.some(o => o.s === 'ftcs' && o.r.Fo > 0.5);
+    const warn = first.some(o => (o.s === 'ftcs' && o.r.Fo > 0.5) || o.s === 'ri');
     $('c-msg').className = warn ? 'msg bad' : 'msg good';
-    $('c-msg').textContent = `Δt = ${fmt(dts[0], 4)} s : Fo = ${fmt(r0.Fo, 4)} ; pas de temps maximal de FTCS = ${fmt(r0.dtMax, 4)} s.` + (warn ? ' Fo > 1/2 : FTCS est instable.' : '');
+    $('c-msg').textContent = `Δt = ${fmt(dts[0], 4)} s : Fo = ${fmt(r0.Fo, 4)} ; pas de temps maximal de FTCS = ${fmt(r0.dtMax, 4)} s.` + (warn ? (first.some(o => o.s === 'ri') ? ' Richardson est instable quel que soit Fo' + (first.some(o => o.s === 'ftcs' && o.r.Fo > 0.5) ? ' ; FTCS aussi, car Fo > 1/2.' : '.') : ' Fo > 1/2 : FTCS est instable.') : '');
     const lim = Math.max(1.2, ...first.flatMap(o => o.r.u.map(Math.abs)).filter(isFinite));
     const S1 = [{ x: r0.x, y: r0.u0, color: c[5], dash: [2, 4], label: 'état initial' },
                 { x: r0.x, y: r0.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution exacte' }]
@@ -349,15 +349,15 @@
     draw('c-plot', 'c-leg', S1, { xlabel: 'x (m)', ylabel: 'u', ylim: lim > 5 ? [-1.5, 1.5] : null, title: `Profils à t ≈ ${fmt(r0.t, 3)} s` });
     const rows = [];
     schemes.forEach((s, i) => dts.forEach(dt => rows.push({ s, i, dt, r: run(s, dt) })));
-    cards($('c-table'), rows.map(o => ({ color: c[o.i], title: `${SCHEME[o.s]} · Δt = ${fmt(o.dt, 4)} s`, lines: [`Fo = <b>${fmt(o.r.Fo, 4)}</b> (${Math.max(1, Math.round(tf / o.dt))} pas)`, `erreur maximale = <b>${fmt(o.r.maxErr, 4)}</b>`, o.r.stable ? 'critère Fo ≤ 1/2 respecté' : '<b>Fo > 1/2 : critère de FTCS non respecté</b>'] })));
+    cards($('c-table'), rows.map(o => ({ color: c[o.i], title: `${SCHEME[o.s]} · Δt = ${fmt(o.dt, 4)} s`, lines: [`Fo = <b>${fmt(o.r.Fo, 4)}</b> (${Math.max(1, Math.round(tf / o.dt))} pas)`, `erreur maximale = <b>${fmt(o.r.maxErr, 4)}</b>`, o.s === 'ri' ? '<b>instable pour tout Fo</b>' : (o.s === 'ftcs' ? (o.r.stable ? 'critère Fo ≤ 1/2 respecté' : '<b>Fo > 1/2 : critère de FTCS non respecté</b>') : (o.s === 'df' ? 'erreur bornée dans ce calcul (stabilité vue au chapitre 4)' : 'stable pour tout Fo'))] })));
     const S2 = schemes.map((s, i) => { const pr = rows.filter(o => o.s === s).sort((p, q) => p.dt - q.dt); return { x: pr.map(o => o.dt), y: pr.map(o => o.r.maxErr), color: c[i], label: SCHEME[s], points: true }; });
     draw('c-plot2', 'c-leg2', S2, { logx: true, logy: true, xlabel: 'Δt (s)', ylabel: 'erreur maximale', title: 'Erreur selon Δt' });
     const Lx = [];
     schemes.forEach(s => { const pr = rows.filter(o => o.s === s).sort((p, q) => q.dt - p.dt), o0 = pr[0];
-      const st = s === 'ftcs' ? (o0.r.stable ? `Fo = ${fmt(o0.r.Fo, 3)} ≤ 1/2 : stable` : `Fo = ${fmt(o0.r.Fo, 3)} > 1/2 : <b>instable</b>, l’erreur explose`) : `inconditionnellement stable (Fo = ${fmt(o0.r.Fo, 3)})`;
+      const st = s === 'ftcs' ? (o0.r.stable ? `Fo = ${fmt(o0.r.Fo, 3)} ≤ 1/2 : stable` : `Fo = ${fmt(o0.r.Fo, 3)} > 1/2 : <b>instable</b>, l’erreur explose`) : (s === 'ri' ? `<b>instable</b> pour tout Fo (Fo = ${fmt(o0.r.Fo, 3)}), l’erreur explose` : (s === 'df' ? `erreur bornée dans ce calcul (Fo = ${fmt(o0.r.Fo, 3)})` : `inconditionnellement stable (Fo = ${fmt(o0.r.Fo, 3)})`));
       const p = pr.length > 1 && pr[0].r.stable && pr[1].r.stable ? ` ; entre Δt = ${fmt(pr[0].dt, 3)} et ${fmt(pr[1].dt, 3)}, pente de l’erreur ${fmt(ord2(pr[0].r.maxErr, pr[1].r.maxErr, pr[0].dt / pr[1].dt), 3)} (inclut aussi l’erreur spatiale)` : '';
       Lx.push(`${SCHEME[s]} : ${st}${p}.`); });
-    Lx.push('Lecture : FTCS est explicite et limité par Fo ≤ 1/2 ; BTCS est implicite et stable pour tout Δt mais d’ordre 1 en temps ; Crank–Nicolson est d’ordre 2 en temps.');
+    Lx.push('Lecture : les schémas explicites calculent chaque valeur à partir des valeurs connues ; FTCS est limité par Fo ≤ 1/2, Dufort–Frankel reste borné dans ces essais (sa consistance dépend du chemin de raffinement), Richardson est instable. Les schémas implicites résolvent un système linéaire à chaque pas : BTCS est stable pour tout Δt, d’ordre 1 en temps ; Crank–Nicolson est d’ordre 2 en temps.');
     explain('chaleur', Lx);
     $('c-mid').textContent = '';
   }

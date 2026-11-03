@@ -422,6 +422,35 @@ window.GUIDE = {
           "question": "Quel ordre en temps lit-on pour FTCS et BTCS ? Pourquoi l'erreur de Crank–Nicolson ne diminue-t-elle plus ? Fo > 1/2 pour FTCS : pourquoi son erreur reste-t-elle pourtant petite ici ?",
           "main": "Avec h = 1 mm, calculez Fo pour Δt = 1 ; 0,5 et 0,25 s. FTCS respecte-t-il Fo ≤ 1/2 ? Prévoyez l'ordre en temps de FTCS, BTCS et Crank–Nicolson.",
           "corr": true
+        },
+        {
+          "id": "S3-X6",
+          "titre": "Explicite ou implicite ?",
+          "comp": [
+            "C3.1",
+            "C3.3"
+          ],
+          "reglages": {
+            "c-alpha": "-5",
+            "c-L": "0.1",
+            "c-h": "5",
+            "c-tf": "200",
+            "c-dt": "2",
+            "c-dtx": ""
+          },
+          "checks": {
+            "c-s": [
+              "ftcs",
+              "btcs",
+              "cn",
+              "df",
+              "ri"
+            ]
+          },
+          "main": "Pour chacun des cinq schémas (FTCS, BTCS, Crank–Nicolson, Dufort–Frankel, Richardson), dites s'il est explicite ou implicite et, pour Fo = 0,8, si le cours annonce une limite sur Fo.",
+          "consigne": "Avec h = 5 mm, un temps final de 200 s et Δt = 2 s (Fo = 0,8), cochez les cinq schémas et relevez dans les cartes l'erreur maximale et l'indication de stabilité de chacun.",
+          "question": "Quels schémas explosent ? Parmi les schémas explicites, lesquels restent bornés ici ? Que résout un schéma implicite à chaque pas, et que gagne-t-on ?",
+          "corr": true
         }
       ]
     },
@@ -521,6 +550,34 @@ window.GUIDE = {
           "consigne": "Prenez Co = 1 et gardez l'amont, Lax–Friedrichs et Lax–Wendroff. Lisez l'erreur maximale.",
           "question": "Pourquoi les trois schémas deviennent-ils exacts ? Que devient l'amont pour Co = 1,2 ?",
           "main": "Pour Co = 1 (a = 1), écrivez la nouvelle valeur du nœud i avec le schéma amont et montrez qu'elle est égale à l'ancienne valeur du nœud i−1. Faites de même pour Lax–Friedrichs et Lax–Wendroff."
+        },
+        {
+          "id": "S3-X7",
+          "titre": "Explicite ou implicite en advection",
+          "comp": [
+            "C3.5"
+          ],
+          "reglages": {
+            "a-a": "1",
+            "a-Co": "1.2",
+            "a-tf": "5",
+            "a-Nx": "100",
+            "a-Nxx": ""
+          },
+          "checks": {
+            "a-s": [
+              "amont",
+              "ftcs",
+              "lxf",
+              "lw",
+              "bw",
+              "cimp"
+            ]
+          },
+          "main": "Pour Co = 1,2, calculez le déplacement du signal par pas, en nombre de mailles, et comparez-le à la largeur du stencil d'un schéma explicite à trois points (une maille de chaque côté).",
+          "consigne": "Prenez Co = 1,2 (a = 1, Nx = 100, temps final 5 s), cochez les six schémas et relevez le maximum et le minimum de chacun dans les cartes.",
+          "question": "Quels schémas explicites explosent ? Lequel reste borné ? Que fait le schéma centré implicite, et quel défaut voit-on sur son profil ?",
+          "corr": true
         }
       ]
     },

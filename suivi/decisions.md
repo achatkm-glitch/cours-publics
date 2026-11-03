@@ -145,3 +145,7 @@
 ### 2026-11-03 22:16:17 +01:00 — Mise à jour des calculateurs MFTN (v12)
 - **Instruction** : « dédoublonne les onglets EDP » ; « le titre Neumann n'est pas le bon : ajouter Fourier, on parle de condition aux limites discrétisée » ; question sur le graphique d'erreur de l'onglet Barre 1D (traitée avant, v11.1). Reçu par Code ; publication déjà autorisée.
 - **État** : traité ; preuves dans `suivi/integration_mftn.md`.
+
+### 2026-11-03 22:30:34 +01:00 — Mise à jour des calculateurs MFTN (v13)
+- **Instruction** : « il faut mettre l'implicite et l'explicite », « il faut aussi ajouter plus de schémas peut-être ». Reçu par Code ; publication déjà autorisée.
+- **État** : traité (lecture : onglets Chaleur 1D et Advection) ; preuves dans `suivi/integration_mftn.md`.

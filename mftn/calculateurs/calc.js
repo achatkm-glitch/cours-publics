@@ -21,6 +21,18 @@
   }
 
   /* Élimination de Gauss avec pivot partiel (système plein, petite taille). */
+  /* Système tridiagonal cyclique (domaine périodique) : a = sous-diagonale (a[0] est le coin de la ligne 0), c = sur-diagonale
+     (c[n-1] est le coin de la dernière ligne) ; formule de Sherman-Morrison. */
+  function thomasCyclique(a, b, c, d) {
+    const n = b.length, alpha = c[n - 1], beta = a[0], gamma = -b[0];
+    const bb = b.slice(); bb[0] = b[0] - gamma; bb[n - 1] = b[n - 1] - alpha * beta / gamma;
+    const x = thomas(a, bb, c, d.slice());
+    const w = new Array(n).fill(0); w[0] = gamma; w[n - 1] = alpha;
+    const z = thomas(a, bb, c, w);
+    const f = (x[0] + beta * x[n - 1] / gamma) / (1 + z[0] + beta * z[n - 1] / gamma);
+    return x.map((xi, i) => xi - f * z[i]);
+  }
+
   function gauss(A, b) {
     const n = b.length;
     const M = A.map((r, i) => r.slice().concat([b[i]]));
@@ -158,8 +170,17 @@
     const x = Array.from({ length: N + 1 }, (_, i) => i * hh);
     let u = x.slice(1, N).map(xi => Math.sin(Math.PI * xi / L));
     const u0 = u.slice();
+    let uprev = null;
     for (let s = 0; s < steps; s++) {
-      if (scheme === 'ftcs') {
+      if (scheme === 'df' || scheme === 'ri') {
+        const Lg = (i) => (i > 0 ? u[i - 1] : 0), Rg = (i) => (i < n - 1 ? u[i + 1] : 0);
+        const nu = uprev === null
+          ? u.map((v, i) => v + Fo * (Rg(i) - 2 * v + Lg(i)))                                   // première étape : FTCS
+          : (scheme === 'df'
+            ? u.map((v, i) => ((1 - 2 * Fo) * uprev[i] + 2 * Fo * (Rg(i) + Lg(i))) / (1 + 2 * Fo)) // Dufort-Frankel
+            : u.map((v, i) => uprev[i] + 2 * Fo * (Rg(i) - 2 * v + Lg(i))));                        // Richardson
+        uprev = u; u = nu;
+      } else if (scheme === 'ftcs') {
         u = u.map((v, i) => v + Fo * ((i < n - 1 ? u[i + 1] : 0) - 2 * v + (i > 0 ? u[i - 1] : 0)));
       } else if (scheme === 'btcs') {
         const a = new Array(n).fill(-Fo), b = new Array(n).fill(1 + 2 * Fo), c = new Array(n).fill(-Fo);
@@ -175,7 +196,7 @@
     const exact = x.slice(1, N).map(xi => Math.sin(Math.PI * xi / L) * decay);
     const err = u.map((v, i) => v - exact[i]);
     return { N, h: hh, Fo, t, x: x.slice(1, N), u, u0, exact, maxErr: maxAbs(err), decay,
-             dtMax: hh * hh / (2 * alpha), stable: scheme !== 'ftcs' || Fo <= 0.5 };
+             dtMax: hh * hh / (2 * alpha), stable: scheme === 'ri' ? false : (scheme !== 'ftcs' || Fo <= 0.5) };
   }
 
   /* 6. Chemin de raffinement dt = c0 h^r : termes décisifs de Dufort-Frankel et de Lax-Friedrichs. */
@@ -202,11 +223,17 @@
     const at = i => u[(i + Nx) % Nx];
     for (let s = 0; s < steps; s++) {
       const old = u;
+      if (scheme === 'cimp') {   // centré implicite : -C/2 u_{i-1} + u_i + C/2 u_{i+1} = u_i^n (domaine périodique)
+        u = thomasCyclique(new Array(Nx).fill(-C / 2), new Array(Nx).fill(1), new Array(Nx).fill(C / 2), old);
+        continue;
+      }
       u = old.map((_, i) => {
-        const um = old[(i - 1 + Nx) % Nx], u0 = old[i], up = old[(i + 1) % Nx];
+        const um = old[(i - 1 + Nx) % Nx], u0 = old[i], up = old[(i + 1) % Nx], umm = old[(i - 2 + Nx) % Nx], upp = old[(i + 2) % Nx];
         if (scheme === 'amont') return C >= 0 ? u0 - C * (u0 - um) : u0 - C * (up - u0); // différence prise du côté amont
         if (scheme === 'ftcs') return u0 - C / 2 * (up - um);
         if (scheme === 'lxf') return 0.5 * (up + um) - C / 2 * (up - um);
+        if (scheme === 'bw') return C >= 0 ? u0 - C / 2 * (3 * u0 - 4 * um + umm) + C * C / 2 * (u0 - 2 * um + umm)   // amont d'ordre 2
+                                           : u0 - C / 2 * (-3 * u0 + 4 * up - upp) + C * C / 2 * (u0 - 2 * up + upp);
         return u0 - C / 2 * (up - um) + C * C / 2 * (up - 2 * u0 + um); // Lax-Wendroff
       });
     }
@@ -379,6 +406,6 @@
     return xs.map(x => 0.5 * (bosseCompacte(x - c * t, centre, rayon) + bosseCompacte(x + c * t, centre, rayon)));
   }
 
-  const API = { thomas, gauss, linspace, maxAbs, barre, jacobiGS, ordreExp, neumann, neumannOrdres, chaleur, chemins, verdictsChemin, advection, sigmaAt, gaussAD, barreCL, barreVF, bilanDF, peclet, signalMixte, advection1d, classifyPDE, laplace2d, bosseCompacte, chaleurCompacte, ondeDAlembert };
+  const API = { thomas, gauss, linspace, maxAbs, barre, jacobiGS, ordreExp, neumann, neumannOrdres, chaleur, chemins, verdictsChemin, advection, sigmaAt, gaussAD, barreCL, barreVF, bilanDF, peclet, signalMixte, advection1d, classifyPDE, thomasCyclique, laplace2d, bosseCompacte, chaleurCompacte, ondeDAlembert };
   if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.Calc = API;
 })(typeof window !== 'undefined' ? window : this);

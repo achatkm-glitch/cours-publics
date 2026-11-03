@@ -366,16 +366,18 @@
 
 <!-- Ch.3 : chaleur -->
 <section class="panel" id="p-chaleur">
-  <h2>Chaleur 1D : FTCS, BTCS, Crank–Nicolson</h2>
-  <p class="lead">Un profil sinusoïdal se refroidit entre deux bords à température nulle. Compare les schémas sur les mêmes graphiques, et plusieurs pas de temps dans les cartes et le second graphique. Séance 3, exercices A et D.</p>
+  <h2>Chaleur 1D : schémas explicites et implicites</h2>
+  <p class="lead">Un profil sinusoïdal se refroidit entre deux bords à température nulle. Compare des schémas explicites (FTCS, Dufort–Frankel, Richardson) et implicites (BTCS, Crank–Nicolson) sur les mêmes graphiques, et plusieurs pas de temps dans les cartes et le second graphique. Séance 3, exercices A et D.</p>
   <div class="eqs" data-eq="chaleur"></div>
   <div class="grid">
     <div>
       <form class="params">
         <div class="checks" role="group" aria-label="Schémas">
-          <label><input type="checkbox" name="c-s" value="ftcs" checked> FTCS</label>
-          <label><input type="checkbox" name="c-s" value="btcs" checked> BTCS</label>
-          <label><input type="checkbox" name="c-s" value="cn" checked> Crank–Nicolson</label>
+          <label><input type="checkbox" name="c-s" value="ftcs" checked> FTCS (explicite)</label>
+          <label><input type="checkbox" name="c-s" value="btcs" checked> BTCS (implicite)</label>
+          <label><input type="checkbox" name="c-s" value="cn" checked> Crank–Nicolson (θ = 1/2)</label>
+          <label><input type="checkbox" name="c-s" value="df"> Dufort–Frankel (explicite)</label>
+          <label><input type="checkbox" name="c-s" value="ri"> Richardson (explicite)</label>
         </div>
         <label>Diffusivité α, en m²/s (échelle logarithmique)<span class="sl"><input type="range" id="c-alpha" min="-7" max="-3" step="0.1" value="-5" data-log="1" data-unit="m²/s"><output></output></span></label>
         <label>Longueur L, en m<span class="sl"><input type="range" id="c-L" min="0.05" max="0.5" step="0.01" value="0.1" data-unit="m"><output></output></span></label>
@@ -425,17 +427,19 @@
 
 <!-- Ch.3 : advection -->
 <section class="panel" id="p-adv">
-  <h2>Advection d'une gaussienne</h2>
-  <p class="lead">Une gaussienne est transportée sur un domaine périodique. Superpose amont, FTCS centré, Lax–Friedrichs et Lax–Wendroff ; les cartes comparent plusieurs maillages. Séance 3, exercice G.</p>
+  <h2>Advection d'une gaussienne : schémas explicites et schéma implicite</h2>
+  <p class="lead">Une gaussienne est transportée sur un domaine périodique. Superpose les schémas explicites (amont, FTCS centré, Lax–Friedrichs, Lax–Wendroff, Beam–Warming) et le schéma centré implicite ; les cartes comparent plusieurs maillages. Séance 3, exercice G.</p>
   <div class="eqs" data-eq="adv"></div>
   <div class="grid">
     <div>
       <form class="params">
         <div class="checks" role="group" aria-label="Schémas">
-          <label><input type="checkbox" name="a-s" value="amont" checked> Amont</label>
-          <label><input type="checkbox" name="a-s" value="ftcs" checked> FTCS centré</label>
-          <label><input type="checkbox" name="a-s" value="lxf" checked> Lax–Friedrichs</label>
-          <label><input type="checkbox" name="a-s" value="lw" checked> Lax–Wendroff</label>
+          <label><input type="checkbox" name="a-s" value="amont" checked> Amont (explicite)</label>
+          <label><input type="checkbox" name="a-s" value="ftcs" checked> FTCS centré (explicite)</label>
+          <label><input type="checkbox" name="a-s" value="lxf" checked> Lax–Friedrichs (explicite)</label>
+          <label><input type="checkbox" name="a-s" value="lw" checked> Lax–Wendroff (explicite)</label>
+          <label><input type="checkbox" name="a-s" value="bw"> Beam–Warming (explicite)</label>
+          <label><input type="checkbox" name="a-s" value="cimp"> Centré implicite</label>
         </div>
         <label>Vitesse a (négative : écoulement vers la gauche)<span class="sl"><input type="range" id="a-a" min="-3" max="3" step="0.1" value="1" data-unit="m/s"><output></output></span></label>
         <label>Nombre de Courant Co<span class="sl"><input type="range" id="a-Co" min="0.05" max="1.2" step="0.05" value="0.4"><output></output></span></label>
