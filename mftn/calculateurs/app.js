@@ -133,7 +133,14 @@
   function explain(tab, lines) {
     const panel = $('p-' + tab); if (!panel) return;
     let box = panel.querySelector('.interp');
-    if (!box) { box = document.createElement('div'); box.className = 'interp'; const g = panel.querySelector('.grid'); if (g) g.after(box); else panel.appendChild(box); }
+    if (!box) {
+      box = document.createElement('div'); box.className = 'interp';
+      const g = panel.querySelector('.grid');
+      const results = g?.children[1];
+      if (results) results.appendChild(box);
+      else if (g) g.appendChild(box);
+      else panel.appendChild(box);
+    }
     box.innerHTML = '<h3>Que montrent vos réglages ?</h3><ul>' + lines.filter(Boolean).map(l => `<li>${l}</li>`).join('') + '</ul>';
   }
   const ord2 = (e1, e2, r) => (isFinite(e1) && isFinite(e2) && e1 > 0 && e2 > 0) ? Math.log(e1 / e2) / Math.log(r) : NaN;
@@ -299,19 +306,19 @@
   /* ---------- Chapitre 2 : ordre de trois différences finies ---------- */
   function runOrdre() {
     const c = pal(), hs = Array.from({ length: Math.round(num('o-k')) }, (_, i) => num('o-h0') / Math.pow(2, i));
-    const rows = Calc.ordreExp(hs), o = (v) => v === undefined ? '' : ` (ordre <b>${fmt(v, 3)}</b>)`;
+    const rows = Calc.ordreSin(hs);
     $('o-msg').textContent = 'L\u2019ordre est lu comme log₂ du rapport des erreurs entre deux pas consécutifs dont le rapport est 2.';
     const defs = [['prog', 'ordreProg', 'Progressive', c[1]], ['centree', 'ordreCentree', 'Centrée', c[0]], ['regr3', 'ordreRegr3', 'Régressive à 3 points', c[2]], ['seconde', 'ordreSeconde', 'Dérivée seconde centrée', c[3]]];
     const last = rows[rows.length - 1];
     cards($('o-table'), defs.map(d => ({ color: d[3], title: d[2], lines: [`ordre observé : <b>${last[d[1]] === undefined ? '—' : fmt(last[d[1]], 3)}</b>`, `erreur pour h = ${fmt(last.h, 4)} : <b>${fmt(last[d[0]], 3)}</b>`] })));
     const S = defs.map(d => ({ x: rows.map(r => r.h), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true }));
-    draw('o-plot', 'o-leg', S, { logx: true, logy: true, xlabel: 'h', ylabel: 'erreur en x = 0', title: 'u = exp(x)' });
+    draw('o-plot', 'o-leg', S, { logx: true, logy: true, xlabel: 'h', ylabel: 'erreur en x = 1', title: 'u = sin(x)' });
     const lr = rows[rows.length - 1], tx = v => v === undefined ? 'à mesurer avec au moins deux pas' : `<b>${fmt(v, 3)}</b>`;
     explain('ordre', [
       `Progressive : ordre observé ${tx(lr.ordreProg)} (attendu 1) : diviser h par 2 divise l\u2019erreur par 2.`,
       `Centrée : ordre observé ${tx(lr.ordreCentree)} (attendu 2) : diviser h par 2 divise l\u2019erreur par 4.`,
       `Régressive à 3 points : ordre observé ${tx(lr.ordreRegr3)} (attendu 2), avec une erreur plus grande que la centrée car son coefficient d\u2019erreur est plus élevé.`,
-      `Dérivée seconde centrée : ordre observé ${tx(lr.ordreSeconde)} (attendu 2), avec une erreur voisine de h²/12 fois la dérivée quatrième (ici égale à 1) ; elle approche u″ et non u′, mais suit la même loi.`,
+      `Dérivée seconde centrée : ordre observé ${tx(lr.ordreSeconde)} (attendu 2) ; elle approche u″ et non u′, mais suit la même loi de raffinement.`,
       'Sur le graphique en échelles logarithmiques, la pente de chaque droite est l\u2019ordre ; l\u2019ordre vient du terme d\u2019erreur de troncature obtenu par Taylor.']);
   }
 
@@ -348,7 +355,7 @@
     const c = pal(), alpha = num('c-alpha'), L = num('c-L'), h = num('c-h'), tf = num('c-tf');
     const dts = vals('c-Fo').filter(v => v > 0).map(F => F * h * h / alpha), schemes = checked('c-s');   // Fo est la variable ; Δt = Fo h²/α
     if (!dts.length || !schemes.length) return;
-    const run = (s, dt) => Calc.chaleur({ alpha, L, h, dt, steps: Math.max(1, Math.round(tf / dt)), scheme: s });
+    const run = (s, dt) => { const steps = Math.max(1, Math.round(tf / dt)); return Calc.chaleur({ alpha, L, h, dt: tf / steps, steps, scheme: s }); };
     const first = schemes.map(s => ({ s, r: run(s, dts[0]) }));
     const r0 = first[0].r, mid = Math.floor(r0.u.length / 2);
     const warn = first.some(o => (o.s === 'ftcs' && o.r.Fo > 0.5) || o.s === 'ri');
@@ -359,9 +366,19 @@
                 { x: r0.x, y: r0.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution exacte' }]
       .concat(first.map((o, i) => ({ x: o.r.x, y: o.r.u, color: c[i], points: true, label: SCHEME[o.s] })));
     draw('c-plot', 'c-leg', S1, { xlabel: 'x (m)', ylabel: 'u', ylim: lim > 5 ? [-1.5, 1.5] : null, title: `Profils à t ≈ ${fmt(r0.t, 3)} s` });
+    const theta = Array.from({ length: 81 }, (_, i) => i * Math.PI / 80);
+    const modal = schemes.map((s, i) => ({ x: theta, y: theta.map(th => Calc.heatAmplification(s, r0.Fo, th)), color: c[i], label: SCHEME[s] }));
+    modal.push({ x: theta, y: theta.map(() => 1), color: css('--plot-axis'), dash: [5, 4], label: 'seuil |G| = 1' });
+    modal.push({ x: theta, y: theta.map(th => Math.exp(-r0.Fo * th * th)), color: css('--muted'), dash: [2, 4], label: 'chaleur continue, même mode' });
+    draw('c-amp', 'c-amp-leg', modal, { xlabel: 'nombre d’onde θ', ylabel: '|G(θ)|', title: `Fo = ${fmt(r0.Fo, 3)}` });
+    const oneLevel = schemes.filter(s => ['ftcs', 'btcs', 'cn'].includes(s));
+    const signed = oneLevel.map((s, i) => ({ x: theta, y: theta.map(th => Calc.heatAmplificationSigned(s, r0.Fo, th)), color: c[schemes.indexOf(s)], label: SCHEME[s] }));
+    signed.push({ x: theta, y: theta.map(() => 1), color: css('--plot-axis'), dash: [5, 4], label: 'G = 1' });
+    signed.push({ x: theta, y: theta.map(() => -1), color: css('--muted'), dash: [2, 4], label: 'G = −1' });
+    draw('c-g-signed', 'c-g-signed-leg', signed, { xlabel: 'nombre d’onde θ', ylabel: 'G(θ)', ylim: [-1.1, 1.1], title: `G signé · Fo = ${fmt(r0.Fo, 3)}` });
     const rows = [];
-    schemes.forEach((s, i) => dts.forEach(dt => rows.push({ s, i, dt, r: run(s, dt) })));
-    cards($('c-table'), rows.map(o => ({ color: c[o.i], title: `${SCHEME[o.s]} · Δt = ${fmt(o.dt, 4)} s`, lines: [`Fo = <b>${fmt(o.r.Fo, 4)}</b> (${Math.max(1, Math.round(tf / o.dt))} pas)`, `erreur maximale = <b>${fmt(o.r.maxErr, 4)}</b>`, o.s === 'ri' ? '<b>instable pour tout Fo</b>' : (o.s === 'ftcs' ? (o.r.stable ? 'critère Fo ≤ 1/2 respecté' : '<b>Fo > 1/2 : critère de FTCS non respecté</b>') : (o.s === 'df' ? 'erreur bornée dans ce calcul (stabilité vue au chapitre 4)' : 'stable pour tout Fo'))] })));
+    schemes.forEach((s, i) => dts.forEach(dt => { const r = run(s, dt); rows.push({ s, i, dt: tf / Math.max(1, Math.round(tf / dt)), r }); }));
+    cards($('c-table'), rows.map(o => ({ color: c[o.i], title: `${SCHEME[o.s]} · Δt = ${fmt(o.dt, 4)} s`, lines: [`Fo = <b>${fmt(o.r.Fo, 4)}</b> (${Math.max(1, Math.round(tf / o.dt))} pas ; temps final = ${fmt(o.r.t, 4)} s)`, `erreur maximale = <b>${fmt(o.r.maxErr, 4)}</b>`, o.s === 'ri' ? '<b>instable pour tout Fo</b>' : (o.s === 'ftcs' ? (o.r.stable ? 'critère Fo ≤ 1/2 respecté' : '<b>Fo > 1/2 : critère de FTCS non respecté</b>') : (o.s === 'df' ? 'erreur bornée dans ce calcul (stabilité vue au chapitre 4)' : 'stable pour tout Fo'))] })));
     const S2 = schemes.map((s, i) => { const pr = rows.filter(o => o.s === s).sort((p, q) => p.dt - q.dt); return { x: pr.map(o => o.dt), y: pr.map(o => o.r.maxErr), color: c[i], label: SCHEME[s], points: true }; });
     draw('c-plot2', 'c-leg2', S2, { logx: true, logy: true, xlabel: 'Δt (s)', ylabel: 'erreur maximale', title: 'Erreur selon Δt' });
     const Lx = [];
@@ -369,16 +386,18 @@
       const st = s === 'ftcs' ? (o0.r.stable ? `Fo = ${fmt(o0.r.Fo, 3)} ≤ 1/2 : stable` : `Fo = ${fmt(o0.r.Fo, 3)} > 1/2 : <b>instable</b>, l’erreur explose`) : (s === 'ri' ? `<b>instable</b> pour tout Fo (Fo = ${fmt(o0.r.Fo, 3)}), l’erreur explose` : (s === 'df' ? `erreur bornée dans ce calcul (Fo = ${fmt(o0.r.Fo, 3)})` : `inconditionnellement stable (Fo = ${fmt(o0.r.Fo, 3)})`));
       const p = pr.length > 1 && pr[0].r.stable && pr[1].r.stable ? ` ; entre Δt = ${fmt(pr[0].dt, 3)} et ${fmt(pr[1].dt, 3)}, pente de l’erreur ${fmt(ord2(pr[0].r.maxErr, pr[1].r.maxErr, pr[0].dt / pr[1].dt), 3)} (inclut aussi l’erreur spatiale)` : '';
       Lx.push(`${SCHEME[s]} : ${st}${p}.`); });
-    Lx.push('Lecture : les schémas explicites calculent chaque valeur à partir des valeurs connues ; FTCS est limité par Fo ≤ 1/2, Dufort–Frankel reste borné dans ces essais (sa consistance dépend du chemin de raffinement), Richardson est instable. Les schémas implicites résolvent un système linéaire à chaque pas : BTCS est stable pour tout Δt, d’ordre 1 en temps ; Crank–Nicolson est d’ordre 2 en temps.');
+    Lx.push('Lecture : comparez |G| au facteur exact exp(−Fo θ²) du même mode pour isoler l’amortissement numérique de l’amortissement physique. Le graphe est une analyse de stabilité modale, pas une mesure d’ordre ; l’erreur selon Δt est tracée à temps final commun, mais inclut l’erreur spatiale. FTCS est stable si Fo ≤ 1/2 ; Dufort–Frankel reste borné dans ces essais, mais sa consistance dépend du chemin de raffinement et son schéma complet inclut une première étape FTCS ; Richardson est instable. BTCS est stable pour tout Δt et d’ordre 1 en temps ; Crank–Nicolson est stable pour tout Δt et d’ordre 2, mais peut changer le signe de G et alterner temporellement lorsque Fo est grand.');
     explain('chaleur', Lx);
     $('c-mid').textContent = '';
   }
 
   /* ---------- Chapitre 3 : chemin de raffinement, comparaison de plusieurs exposants r ---------- */
   function runChemin() {
-    const c = pal(), rs = vals('p-r').slice(0, 6), c0 = num('p-c0'), alpha = num('p-alpha'), hs = Array.from({ length: Math.round(num('p-hk')) }, (_, i) => num('p-h0') / Math.pow(2, i));
-    if (!rs.length) return;
-    const all = rs.map(r => Calc.chemins({ c0, r, alpha, hs }));
+    const c = pal(), rs = vals('p-r').slice(0, 6), coRef = num('p-co'), foRef = num('p-fo'), hRef = 0.1;
+    const alpha = foRef * hRef / coRef, hs = Array.from({ length: Math.round(num('p-hk')) }, (_, i) => num('p-h0') / Math.pow(2, i));
+    if (!rs.length || !(coRef > 0)) return;
+    const c0For = r => coRef * Math.pow(hRef, 1 - r);
+    const all = rs.map(r => Calc.chemins({ c0: c0For(r), r, alpha, hs }));
     cards($('p-summary'), rs.map((r, i) => { const v = Calc.verdictsChemin(r), last = all[i][all[i].length - 1];
       return { color: c[i], title: `r = ${fmt(r, 3)}`, lines: [`Dufort–Frankel : <b>${v.df}</b>`, `Lax–Friedrichs : <b>${v.lxf}</b>`, `pour h = ${fmt(last.h, 4)} : α(Δt/h)² = ${fmt(last.dfTerme, 4)} ; h²/(2Δt) = ${fmt(last.lxfTerme, 4)}`] }; }));
     const S1 = all.map((rows, i) => ({ x: rows.map(r => r.h), y: rows.map(r => r.dfTerme), color: c[i], points: true, label: `r = ${fmt(rs[i], 3)}` }));
@@ -387,6 +406,53 @@
     draw('p-plot2', 'p-leg2', S2, { logx: true, logy: true, xlabel: 'h', ylabel: 'h²/(2Δt)', title: 'Lax–Friedrichs' });
     explain('chemin', [...rs.map(r => { const v = Calc.verdictsChemin(r); return `r = ${fmt(r, 3)} : Dufort–Frankel <b>${v.df}</b> ; Lax–Friedrichs <b>${v.lxf}</b>.`; }),
       'Dufort–Frankel est consistant avec l\u2019équation de la chaleur seulement si α(Δt/h)² tend vers 0 ; Lax–Friedrichs seulement si h²/(2Δt) tend vers 0. Le chemin de raffinement, c\u2019est-à-dire la façon dont Δt décroît avec h, décide donc de la consistance.']);
+
+    // Les profils suivent le chemin actif et les mêmes tailles de maillage que les graphes du défaut local.
+    const profileR = num('p-r'), c0 = c0For(num('p-r')), T = 1, workLimit = 1200000;
+    const profileSteps = h => Math.max(1, Math.round(T / (c0 * Math.pow(h, profileR))));
+    const fitResolution = (targetN, L, minN) => {
+      let N = targetN, h = L / N, steps = profileSteps(h), adjusted = false;
+      while (N > minN && N * steps > workLimit) {
+        N = Math.max(minN, Math.floor(N / 2)); h = L / N; steps = profileSteps(h); adjusted = true;
+      }
+      return { N, h, steps, adjusted };
+    };
+    const dfRows = [], lxfRows = [], adjustedMeshes = [], seenDf = new Set(), seenLxf = new Set();
+    hs.forEach(hTarget => {
+      const heat = fitResolution(Math.max(2, Math.round(1 / hTarget)), 1, 2);
+      if (heat.adjusted) adjustedMeshes.push(`chaleur N≤${heat.N}`);
+      if (!seenDf.has(heat.N)) {
+        seenDf.add(heat.N);
+        const dt = T / heat.steps, result = Calc.chaleur({ alpha, L: 1, h: heat.h, dt, steps: heat.steps, scheme: 'df' });
+        dfRows.push({ N: heat.N, h: result.h, x: [0].concat(result.x, [1]), u: [0].concat(result.u, [0]), err: result.maxErr, coeff: alpha * Math.pow(dt / result.h, 2) });
+      }
+      const adv = fitResolution(Math.max(20, Math.round(10 / hTarget)), 10, 20);
+      if (adv.adjusted) adjustedMeshes.push(`advection N≤${adv.N}`);
+      if (!seenLxf.has(adv.N)) {
+        seenLxf.add(adv.N);
+        const dt = T / adv.steps, result = Calc.advection({ scheme: 'lxf', a: 1, Nx: adv.N, Co: dt / adv.h, tf: T });
+        lxfRows.push({ N: adv.N, h: result.h, x: result.x, u: result.u, err: result.maxErr, coeff: result.h * result.h / (2 * dt) });
+      }
+    });
+    const heatX = Calc.linspace(0, 1, 201);
+    const heatExact = heatX.map(x => Math.sin(Math.PI * x) * Math.exp(-alpha * Math.PI * Math.PI * T));
+    const dfSeries = [{ x: heatX, y: heatExact, color: css('--plot-axis'), dash: [6, 4], label: 'chaleur exacte' }]
+      .concat(dfRows.map((r, i) => ({ x: r.x, y: r.u, color: c[i % c.length], label: `N = ${r.N}` })));
+    draw('p-effect-df', 'p-effect-df-leg', dfSeries, { xlabel: 'x/L', ylabel: 'u', title: `Dufort–Frankel · r = ${fmt(profileR, 2)} · t = 1` });
+    const advX = Calc.linspace(-2, 8, 401);
+    const advExact = advX.map(x => {
+      let d = x - T; d -= 10 * Math.round(d / 10);
+      return Math.exp(-d * d / (2 * 0.15 * 0.15));
+    });
+    const lxfSeries = [{ x: advX, y: advExact, color: css('--plot-axis'), dash: [6, 4], label: 'advection exacte' }]
+      .concat(lxfRows.map((r, i) => ({ x: r.x, y: r.u, color: c[i % c.length], label: `N = ${r.N}` })));
+    draw('p-effect-lxf', 'p-effect-lxf-leg', lxfSeries, { xlabel: 'x (période 10)', ylabel: 'u', title: `Lax–Friedrichs · r = ${fmt(profileR, 2)} · t = 1` });
+    $('p-effects-msg').className = adjustedMeshes.length ? 'msg warn' : 'msg';
+    $('p-effects-msg').textContent = `Calculs adimensionnels au temps final t = 1, avec Co_ref = ${fmt(coRef, 2)}, Fo_ref = ${fmt(foRef, 2)} et r = ${fmt(profileR, 2)}. h_ref = 0,1 et a = 1 ; c₀ et α sont déduits en interne. h₀ et le nombre de maillages modifient les résolutions. ${adjustedMeshes.length ? `Résolution automatiquement réduite pour garder le calcul réactif (N effectif) : ${adjustedMeshes.join(', ')}.` : ''}`;
+    cards($('p-effects-summary'), [
+      { color: c[0], title: `Dufort–Frankel : chaleur, r = ${fmt(profileR, 2)}`, lines: dfRows.map(r => `N = ${r.N} : erreur maximale <b>${fmt(r.err, 4)}</b> (α(Δt/h)² = ${fmt(r.coeff, 3)})`) },
+      { color: c[1], title: `Lax–Friedrichs : advection, r = ${fmt(profileR, 2)}`, lines: lxfRows.map(r => `N = ${r.N} : erreur maximale <b>${fmt(r.err, 4)}</b> (h²/(2Δt) = ${fmt(r.coeff, 3)})`) }
+    ]);
   }
 
   /* ---------- Chapitre 3 : advection, comparaison de schémas et de maillages ---------- */
@@ -399,17 +465,55 @@
     const bad = first.some(o => !isFinite(o.r.max) || Math.abs(o.r.max) > 3 || Math.abs(o.r.min) > 3);
     const r0 = first[0].r;
     $('a-msg').className = bad ? 'msg warn' : 'msg';
-    $('a-msg').textContent = `Nx = ${Nxs[0]} : Δx = ${fmt(r0.h, 5)} ; Δt = ${fmt(r0.dt, 5)} ; ${r0.steps} pas ; t = ${fmt(r0.t, 4)} s.` + (bad ? ' Au moins un schéma est instable : l\u2019échelle verticale est limitée.' : '');
+    $('a-msg').textContent = `Nx = ${Nxs[0]} : Δx = ${fmt(r0.h, 5)} ; Δt = ${fmt(r0.dt, 5)} ; ${r0.steps} pas ; t = ${fmt(r0.t, 4)} s.` + (bad ? ' Au moins un profil dépasse l’échelle ±3 dans cet essai ; observez son facteur modal pour analyser la stabilité.' : '');
     const S = [{ x: r0.x, y: r0.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution exacte' }]
       .concat(first.map((o, i) => ({ x: o.r.x, y: o.r.u, color: c[i], label: SCHEME[o.s] })));
     draw('a-plot', 'a-leg', S, { xlabel: 'x (m)', ylabel: 'u', ylim: bad ? [-1.5, 1.5] : null, title: `Nx = ${Nxs[0]}, Co = ${fmt(Co, 3)}` });
+    const theta = Array.from({ length: 81 }, (_, i) => i * Math.PI / 80), C = Math.sign(a) * Co;
+    const modalAmp = schemes.map((s, i) => ({ x: theta, y: theta.map(th => Calc.advectionAmplification(s, C, th).modulus), color: c[i], label: SCHEME[s] }));
+    modalAmp.push({ x: theta, y: theta.map(() => 1), color: css('--plot-axis'), dash: [5, 4], label: 'seuil |G| = 1' });
+    draw('a-modal-amp', 'a-modal-amp-leg', modalAmp, { xlabel: 'nombre d’onde θ', ylabel: '|G(θ)|', title: `Co signé = ${fmt(C, 3)}` });
+    const modalPhase = schemes.map((s, i) => ({ x: theta, y: theta.map(th => Calc.advectionAmplification(s, C, th).phaseError), color: c[i], label: SCHEME[s] }));
+    modalPhase.push({ x: theta, y: theta.map(() => 0), color: css('--plot-axis'), dash: [5, 4], label: 'phase exacte' });
+    draw('a-modal-phase', 'a-modal-phase-leg', modalPhase, { xlabel: 'nombre d’onde θ', ylabel: 'erreur de phase (rad/pas)', ylim: [-Math.PI, Math.PI], title: 'Erreur de phase modulo 2π' });
+    const Nbase = Math.min(500, Nxs[0]), convNs = [Nbase, 2 * Nbase, 4 * Nbase];
+    const conv = schemes.map((s, i) => {
+      const rows = convNs.map(Nx => {
+        const h = 10 / Nx, steps = Math.max(1, Math.round(tf / (Co * h / Math.abs(a))));
+        const CoFinal = Math.abs(a) * tf / (steps * h);
+        const r = Calc.advection({ scheme: s, a, Nx, Co: CoFinal, tf });
+        return { Nx, h, err: r.maxErr, t: r.t };
+      });
+      const observed = rows.slice(1).map((r, j) => Math.log(rows[j].err / r.err) / Math.log(rows[j].h / r.h));
+      return { s, i, rows, observed };
+    });
+    draw('a-conv', 'a-conv-leg', conv.map(o => ({ x: o.rows.map(r => r.h), y: o.rows.map(r => r.err), color: c[o.i], points: true, label: SCHEME[o.s] })),
+      { xlabel: 'h = 10/Nx (m)', ylabel: 'erreur maximale', title: `Erreur au temps t = ${fmt(tf, 3)} s` });
     const items = [];
     schemes.forEach((s, i) => Nxs.forEach(Nx => { const r = run(s, Nx); items.push({ color: c[i], title: `${SCHEME[s]} · Nx = ${Nx}`, lines: [`max <b>${fmt(r.max, 3)}</b> · min <b>${fmt(r.min, 3)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 3)}</b>`] }); }));
+    conv.forEach(o => items.push({ color: c[o.i], title: `${SCHEME[o.s]} · erreur au raffinement`, lines: [`Nx = ${o.rows.map(r => r.Nx).join(' ; ')}`, `ordres observés : ${o.observed.map(v => `<b>${fmt(v, 3)}</b>`).join(' ; ')}`, `temps finaux vérifiés : ${o.rows.map(r => fmt(r.t, 6)).join(' ; ')} s`] }));
     cards($('a-table'), items);
-    const cmt = o => { const r = o.r; return !isFinite(r.max) || Math.abs(r.max) > 3 || Math.abs(r.min) > 3 ? '<b>instable</b>' : (r.min < -0.02 || r.max > 1.05 ? '<b>oscille</b> (dispersion)' : '<b>lisse</b> la solution (diffusion numérique)'); };
-    explain('adv', [`Co = ${fmt(Co, 3)}, a = ${fmt(a, 3)} : ${Math.abs(Co) > 1 ? 'Co > 1, la condition CFL est violée pour les schémas explicites' : 'Co ≤ 1, la condition CFL est respectée'}.`,
-      ...first.map(o => `${SCHEME[o.s]} : ${cmt(o)} (maximum ${fmt(o.r.max, 3)}, minimum ${fmt(o.r.min, 3)}, erreur max ${fmt(o.r.maxErr, 3)}).`),
-      ]);
+    const hMod = r0.h, dtMod = r0.dt, ca = Math.sign(a) * Co, eq = [];
+    if (schemes.includes('ftcs')) {
+      const D = -a * a * dtMod / 2;
+      eq.push(`<p><b>Euler explicite centré :</b> u<sub>t</sub> + a u<sub>x</sub> = D u<sub>xx</sub> + …, avec D = −a²Δt/2 = <b>${fmt(D, 6)}</b> m²/s. Ce coefficient négatif est anti-dissipatif.</p>`);
+    }
+    if (schemes.includes('lxf')) {
+      const nu = hMod * hMod * (1 - ca * ca) / (2 * dtMod);
+      eq.push(`<p><b>Lax–Friedrichs :</b> u<sub>t</sub> + a u<sub>x</sub> = ν u<sub>xx</sub> + …, avec ν = h²(1 − Co²)/(2Δt) = <b>${fmt(nu, 6)}</b> m²/s. Signe positif : diffusion et lissage ; signe négatif : anti-diffusion.</p>`);
+    }
+    if (schemes.includes('lw')) {
+      const beta = -a * hMod * hMod * (1 - ca * ca) / 6;
+      eq.push(`<p><b>Lax–Wendroff :</b> u<sub>t</sub> + a u<sub>x</sub> = β u<sub>xxx</sub> + …, avec β = −a h²(1 − Co²)/6 = <b>${fmt(beta, 6)}</b> m³/s. Le terme impair agit sur la phase : comparez à la courbe d'erreur de phase et aux oscillations du profil.</p>`);
+    }
+    $('a-modified').innerHTML = `<h3>Équation équivalente : la conséquence du calcul de Taylor</h3><p>Avec a = ${fmt(a, 4)} m/s, Co = ${fmt(ca, 4)}, h = ${fmt(hMod, 5)} m et Δt = ${fmt(dtMod, 6)} s. Ces expressions gardent seulement le terme dominant établi dans le chapitre 4 ; elles ne constituent pas une équation exacte du schéma.</p>${eq.join('') || '<p>Sélectionnez Euler centré, Lax–Friedrichs ou Lax–Wendroff pour afficher le calcul du terme dominant correspondant.</p>'}`;
+    const limits = { amont: '|Co| ≤ 1', lxf: '|Co| ≤ 1', lw: '|Co| ≤ 1', bw: '|Co| ≤ 2', cimp: 'stable pour tout Co', ftcs: 'instable pour tout Co non nul fixé (analyse de von Neumann)' };
+    explain('adv', [
+      'Analyse modale théorique pour le problème linéaire périodique : ' + first.map(o => `${SCHEME[o.s]} : ${limits[o.s]}`).join(' ; ') + '.',
+      'Courbes : |G| > 1 indique un mode amplifié ; |G| < 1 indique un amortissement numérique ; l’erreur de phase décrit le décalage du mode par rapport au transport exact. La stabilité est contrôlée sur tous les nombres d’onde, pas déduite d’un seul profil.',
+      `Convergence numérique : erreur maximale mesurée à temps final commun sur Nx = ${convNs.join(', ')} ; ces pentes observées contrôlent cet essai, tandis que la consistance s'établit séparément par le défaut local de Taylor.`,
+      ...first.map(o => `${SCHEME[o.s]}, profil calculé : maximum ${fmt(o.r.max, 3)}, minimum ${fmt(o.r.min, 3)}, erreur maximale ${fmt(o.r.maxErr, 3)} à t = ${fmt(o.r.t, 4)} s.`)
+    ]);
   }
 
   const RUN = { intro: runIntro, edpc: runEdpc, edpb: runEdpb, transport: runTransport, cl: runCL, barre: runBarre, peclet: runPeclet, jg: runJG, ordre: runOrdre, neumann: runNeumann, chaleur: runChaleur, chemin: runChemin, adv: runAdv };
@@ -423,7 +527,8 @@
       const lead = panel.querySelector('.lead'); if (!lead) return;
       const box = document.createElement('div'); box.className = 'sit2';
       const ph = S[tab].photo ? `<figure class="sit-photo"><img src="${S[tab].photo.src}" alt="${S[tab].photo.alt}"><figcaption>${S[tab].photo.legende}</figcaption></figure>` : '';
-      box.innerHTML = `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${ph}`;
+      const v = S[tab].video ? `<figure class="sit-video"><video controls playsinline preload="metadata" poster="${S[tab].video.poster}" aria-label="${S[tab].video.alt}"><source src="${S[tab].video.src}" type="video/mp4">Votre navigateur ne peut pas lire cette vidéo. <a href="${S[tab].video.src}">Télécharger la vidéo MP4</a>.</video><figcaption>${S[tab].video.legende}</figcaption></figure>` : '';
+      box.innerHTML = `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${ph}${v}`;
       lead.after(box);
     });
   }
@@ -634,9 +739,10 @@
     Object.keys(G.tabs).forEach(tab => {
       const panel = $('p-' + tab); if (!panel) return;
       const t = G.tabs[tab], box = document.createElement('div'); box.className = 'guide';
+      const tabName = document.querySelector('button[data-tab="' + tab + '"]').textContent.trim();
       const comps = t.competences.map(k => `<li><b>${k}</b> ${G.competences[k]}</li>`).join('');
       const notions = t.notions.map(n => `<li>${n}</li>`).join('');
-      const ex = t.explorations.map((e, i) => `<div class="explo"><b>${e.id} · ${e.titre}</b> <span class="codes">(${e.comp.join(', ')})</span>
+      const ex = t.explorations.map((e, i) => `<div class="explo"><p class="repere"><b>Repère avant l’activité :</b> ${G.reperes[e.id].replace(/[.]$/, '')} ; calculateur : onglet « ${tabName} ».</p><b>${e.id} · ${e.titre}</b> <span class="codes">(${e.comp.join(', ')})</span>
         ${e.main ? `<p class="main"><b>D\u2019abord, à la main :</b> ${e.main}</p>` : ''}<p>${e.consigne}</p><p><i>Question :</i> ${e.question}</p><button type="button" class="btn alt" data-explo="${tab}|${i}">Appliquer ces réglages</button></div>`).join('');
       box.innerHTML = `<h3>Pour approfondir : ${t.fiche}</h3>
         <div class="two"><div><h4>Compétences travaillées</h4><ul>${comps}</ul></div>
@@ -648,19 +754,28 @@
     });
   }
 
-  let current = 'intro';
+  let current = 'home';
   function safe(name) {
-    try { RUN[name](); } catch (e) { const p = $('p-' + name).querySelector('.msg'); if (p) { p.className = 'msg bad'; p.textContent = 'Paramètres invalides : ' + e.message; } }
+    try { if (RUN[name]) RUN[name](); } catch (e) { const panel = $('p-' + name); const p = panel && panel.querySelector('.msg'); if (p) { p.className = 'msg bad'; p.textContent = 'Paramètres invalides : ' + e.message; } }
   }
   function show(name) {
     current = name;
     document.querySelectorAll('section.panel').forEach(s => s.classList.toggle('active', s.id === 'p-' + name));
     document.querySelectorAll('nav button[data-tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === name ? 'true' : 'false'));
+    document.querySelectorAll('nav details.session-nav').forEach(group => {
+      group.open = Array.from(group.querySelectorAll('button[data-tab]')).some(b => b.dataset.tab === name);
+    });
     try { history.replaceState(null, '', '#' + name); } catch (e) { /* ignoré */ }
     safe(name);
   }
   function init() {
     document.querySelectorAll('nav button[data-tab]').forEach(b => b.addEventListener('click', () => show(b.dataset.tab)));
+    document.querySelectorAll('[data-go-tab]').forEach(b => b.addEventListener('click', () => {
+      const target = b.dataset.goTab;
+      show(target);
+      const tabButton = document.querySelector(`nav button[data-tab="${target}"]`);
+      if (tabButton) tabButton.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }));
     document.querySelectorAll('section.panel form').forEach(f => {
       f.addEventListener('submit', e => { e.preventDefault(); safe(current); });
       f.addEventListener('input', () => safe(current));
@@ -681,7 +796,7 @@
     renderGuides();
     window.addEventListener('resize', () => safe(current));
     const h = location.hash.replace('#', '');
-    show(RUN[h] ? h : 'intro');
+    show(RUN[h] ? h : 'home');
   }
   document.addEventListener('DOMContentLoaded', init);
 })();

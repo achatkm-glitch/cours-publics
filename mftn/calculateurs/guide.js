@@ -18,7 +18,50 @@ window.GUIDE = {
     "C3.2": "appliquer la condition pratique sur le pas de temps de FTCS et dimensionner un calcul",
     "C3.3": "établir le défaut local de FTCS et analyser ceux de Dufort–Frankel et Lax–Friedrichs selon le chemin de raffinement (Lax–Friedrichs : approfondissement, exercice E)",
     "C3.4": "reconnaître une consistance qui dépend du chemin de raffinement",
-    "C3.5": "(approfondissement) distinguer, pour les schémas d'advection, le comportement observé (diffusion, dispersion, instabilité) de l'analyse de leur ordre"
+    "C3.5": "(approfondissement) distinguer, pour les schémas d'advection, le comportement observé (diffusion, dispersion, instabilité) de l'analyse de leur ordre",
+    "C4.1": "calculer le défaut local par Taylor et en déduire les ordres",
+    "C4.2": "tester la consistance, y compris lorsqu'elle dépend du chemin de raffinement",
+    "C4.3": "calculer un facteur d'amplification et établir une condition de stabilité par Von Neumann",
+    "C4.4": "dériver une équation équivalente et interpréter diffusion et dispersion numériques",
+    "C4.5": "relier consistance, stabilité et convergence dans le cadre du théorème de Lax"
+  },
+  "reperes": {
+    "S1-I1": "Mise en situation : étapes d'une étude CFD ; polycopié, chapitre 1, section 1.7.",
+    "S1-I2": "Mise en situation : coût du calcul et raffinement ; polycopié, chapitre 1, section 1.7.",
+    "S1-I3": "Mise en situation : diagnostic du comportement des schémas ; polycopié, chapitre 1, section 1.7.",
+    "S1-I4": "Mise en situation : nombre de Courant et déplacement du signal ; polycopié, chapitre 1, section 1.7.",
+    "S1-X1": "Transport et étalement d'un signal ; polycopié, chapitre 1, sections 1.3–1.4.",
+    "S1-X2": "Nombres sans dimension en transport ; polycopié, chapitre 1, section 1.4.",
+    "S1-X3": "Condition de Neumann et paroi adiabatique ; polycopié, chapitre 1, section 1.5.",
+    "S1-X4": "Condition d'échange thermique de Robin ; polycopié, chapitre 1, section 1.5.",
+    "S1-X5": "Différences finies pour une barre ; polycopié, chapitre 1, section 1.8.",
+    "S1-X6": "Bilan de cellule en volumes finis ; polycopié, chapitre 1, section 1.8.",
+    "S1-X7": "Convection–diffusion stationnaire et Péclet de maille ; polycopié, chapitre 2, section 2.11.",
+    "S1-X8": "Ordre et erreur en convection–diffusion ; polycopié, chapitre 2, sections 2.11 et 2.12.",
+    "S1-X9": "Monotonie et oscillations en convection–diffusion ; polycopié, chapitre 2, section 2.11.",
+    "S1-D1": "Classification des EDP elliptiques ; polycopié, chapitre 1, section 1.6.",
+    "S1-D2": "Classification des EDP paraboliques ; polycopié, chapitre 1, section 1.6.",
+    "S1-D3": "Classification des EDP hyperboliques ; polycopié, chapitre 1, section 1.6.",
+    "S1-D4": "Classification d'une EDP dont le type varie ; polycopié, chapitre 1, section 1.6.",
+    "S1-K1": "Problème elliptique et influence de la frontière ; polycopié, chapitre 1, section 1.6.",
+    "S1-K2": "Équation de la chaleur et domaine d'influence ; polycopié, chapitre 1, section 1.6.",
+    "S1-K3": "Équation des ondes et domaine de dépendance ; polycopié, chapitre 1, section 1.6.",
+    "S2-X1": "Développements de Taylor et ordre d'une différence ; polycopié, chapitre 2, sections 2.1–2.2 et 2.6.",
+    "S2-X2": "Discrétisation de Neumann et ordre global ; polycopié, chapitre 2, sections 2.3 et 2.6.",
+    "S2-X3": "Erreur au bord et raffinement ; polycopié, chapitre 2, sections 2.3 et 2.6.",
+    "S2-X4": "Résolution itérative du système de Poisson ; polycopié, chapitre 2, section 2.5.",
+    "S2-X5": "Convergence de Jacobi et Gauss–Seidel ; polycopié, chapitre 2, section 2.5.",
+    "S2-X6": "Condition de Fourier (Robin) discrétisée ; polycopié, chapitre 2, section 2.3.",
+    "S3-X1": "Schémas temporels de la chaleur et stabilité FTCS ; polycopié, chapitre 2, section 2.10, et chapitre 4, stabilité.",
+    "S3-X2": "Défaut local et ordre des schémas de chaleur ; polycopié, chapitre 3, sections 3.1 et 3.3.",
+    "S3-X3": "Consistance de Dufort–Frankel selon le raffinement ; polycopié, chapitre 3, section 3.5.",
+    "S3-X4": "Diffusion et dispersion des schémas d'advection ; polycopié, chapitres 2 et 4.",
+    "S3-X5": "Schémas d'advection au nombre de Courant égal à un ; polycopié, chapitre 2, section 2.11.",
+    "S3-X6": "Comparaison des schémas temporels de la chaleur ; polycopié, chapitre 2, section 2.10, et chapitre 4, stabilité.",
+    "S3-X7": "Stabilité modale des schémas d'advection ; polycopié, chapitre 4, méthode de Von Neumann.",
+    "S4-X1": "Consistance des schémas selon le raffinement ; polycopié, chapitre 3, sections 3.1, 3.5 et 3.7.",
+    "S4-X2": "Facteur d'amplification et stabilité de Von Neumann ; polycopié, chapitre 4, sections « Méthode de Von Neumann » et « Application aux schémas de référence ».",
+    "S4-X3": "Développement et interprétation de l'équation équivalente ; polycopié, chapitre 4, sections « Équation équivalente » et « Équations équivalentes des schémas d'advection »."
   },
   "tabs": {
     "transport": {
@@ -182,7 +225,7 @@ window.GUIDE = {
               "fd"
             ]
           },
-          "main": "Pour −λT'' = q avec q constant, T est un polynôme de degré 2. Calculez T'''' et dites ce que devient le terme d'erreur (h²/12) T'''' de la dérivée seconde centrée."
+          "main": "Avec λ = 1, q = 100 W/m³, L = 1 m, T(0) = 300 et T(1) = 400, déterminez T(x) pour −λT'' = q. Pour h = 0,25, calculez T_1 et T_2 puis vérifiez à la main que −λ(T_2 − 2T_1 + T_0)/h² = q. Cet essai exact sur un profil quadratique suffit-il à établir l'ordre général du schéma ?"
         },
         {
           "id": "S1-X6",
@@ -244,7 +287,7 @@ window.GUIDE = {
             ]
           },
           "consigne": "Avec n = 5, f = 1 et k = 20, comparez les deux méthodes dans les cartes de résultats et sur le graphique de convergence.",
-          "question": "Que valent les deux résidus à k = 20 ? À partir de quelle itération le résidu passe-t-il sous 1e-3 pour chaque méthode ?",
+          "question": "Que valent les deux résidus à k = 20 ? À partir de quelle itération le résidu passe-t-il sous 1e-3 pour chaque méthode ? Cette convergence du solveur prouve-t-elle la convergence de la discrétisation vers l'EDP ?",
           "main": "Pour n = 5, f = 1 (h = 1/6, h²f = 1/36), calculez à la main la première itération de Jacobi à partir du vecteur nul."
         },
         {
@@ -265,7 +308,7 @@ window.GUIDE = {
             ]
           },
           "consigne": "Passez à n = 20 nœuds et k = 100 itérations. Lisez dans les cartes (ou sur le graphique logarithmique) l'itération où chaque courbe franchit 1e-3.",
-          "question": "Comment le nombre d'itérations évolue-t-il avec n ? Quel est le rapport entre Jacobi et Gauss–Seidel ?",
+          "question": "Comment le nombre d'itérations évolue-t-il avec n ? Quel est le rapport entre Jacobi et Gauss–Seidel ? Distinguez la décroissance du résidu (solveur) de l'erreur de discrétisation (maillage).",
           "main": "Pour n = 5 puis n = 20, calculez le résidu initial ‖b‖∞ = h²f (vecteur nul) avec h = 1/(n+1)."
         }
       ]
@@ -299,8 +342,8 @@ window.GUIDE = {
             "o-k": "4"
           },
           "consigne": "Gardez h₀ = 0,1 et quatre pas. Lisez dans les cartes l'ordre observé et l'erreur au plus petit pas pour chacune des trois différences de la dérivée première et pour la différence centrée de la dérivée seconde.",
-          "question": "Quels ordres lisez-vous, pour la dérivée première et pour la dérivée seconde ? Pourquoi l'erreur de la régressive à trois points est-elle voisine du double de celle de la centrée ?",
-          "main": "Pour u = exp(x) en x = 0 et h = 0,1, déduisez de Taylor le terme d'erreur dominant de chaque différence de la dérivée première, puis celui de la différence centrée de la dérivée seconde, (u(h) − 2u(0) + u(−h))/h², et calculez leurs valeurs.",
+          "question": "Quels ordres lisez-vous, pour la dérivée première et pour la dérivée seconde ? Pourquoi l'erreur de la régressive à trois points est-elle voisine du double de celle de la centrée ? Ces ordres de consistance suffisent-ils à établir la stabilité d'un schéma d'évolution ?",
+          "main": "Pour la différence centrée, définie par (u(x+h) − u(x−h))/(2h), développez les deux valeurs par Taylor. Donnez l'erreur locale, son terme dominant et l'ordre.",
           "corr": true
         }
       ]
@@ -382,11 +425,12 @@ window.GUIDE = {
     },
     "chaleur": {
       "seance": 3,
-      "fiche": "Séance 3 (instationnaire), exercices A, B, D",
+      "fiche": "Séance 3 (instationnaire) et séance 4 (stabilité)",
       "competences": [
         "C3.1",
         "C3.2",
-        "C3.3"
+        "C3.3",
+        "C4.3"
       ],
       "notions": [
         "nombre de Fourier de maille",
@@ -417,10 +461,20 @@ window.GUIDE = {
               "cn"
             ]
           },
-          "consigne": "Avec h = 5 mm et un temps final de 200 s, réglez Fo = 0,8 (Δt = 2 s), puis Fo = 0,4 (Δt = 1 s). Relevez l'erreur maximale de chaque schéma dans les cartes de résultats.",
-          "question": "Que se passe-t-il pour FTCS quand Fo dépasse 1/2 ? L'ordre de grandeur de l'erreur affichée dépend-il des arrondis ? Les schémas implicites sont-ils concernés ?",
+          "consigne": "Avec h = 5 mm et un temps final de 200 s, réglez Fo = 0,8 (Δt = 2 s), puis Fo = 0,4 (Δt = 1 s). Relevez les erreurs dans les cartes et comparez les facteurs d'amplification |G(θ)| pour tous les nombres d'onde.",
+          "question": "Que révèle |G(θ)| > 1 sur la stabilité, et pourquoi le profil initial peut-il masquer un mode instable ? Que se passe-t-il pour FTCS quand Fo dépasse 1/2 ? Une méthode stable est-elle forcément précise à grand Δt ?",
           "main": "Pour α = 1e-5 m²/s et h = 5 mm, calculez Fo = αΔt/h² pour Δt = 2 s et 1 s, ainsi que le pas de temps maximal de FTCS.",
           "corr": true
+        },
+        {
+          "id": "S4-X2",
+          "titre": "Calculer le gain avant de lire la courbe",
+          "comp": ["C4.3"],
+          "reglages": {"c-alpha": "-5", "c-L": "0.1", "c-h": "5", "c-tf": "200", "c-Fo": "0.6", "c-Fox": ""},
+          "checks": {"c-s": ["ftcs"]},
+          "main": "Pour le mode φ = π et Fo = 0,4 puis 0,6, calculez G = 1 − 4Fo sin²(φ/2), son module et votre prévision après plusieurs pas.",
+          "consigne": "Appliquez les réglages. Comparez le facteur modal au seuil |G| = 1 et au profil calculé ; recommencez avec Fo = 0,4.",
+          "question": "Quelle valeur de Fo rend tous les modes stables selon le chapitre ? Pourquoi un profil particulier peut-il masquer un mode amplifié ?"
         },
         {
           "id": "S3-X2",
@@ -474,17 +528,18 @@ window.GUIDE = {
           },
           "main": "Pour chacun des cinq schémas (FTCS, BTCS, Crank–Nicolson, Dufort–Frankel, Richardson), dites s'il est explicite ou implicite et, pour Fo = 0,8, si le cours annonce une limite sur Fo.",
           "consigne": "Avec h = 5 mm, un temps final de 200 s et Fo = 0,8 (Δt = 2 s), cochez les cinq schémas et relevez dans les cartes l'erreur maximale et l'indication de stabilité de chacun.",
-          "question": "Quels schémas explosent ? Parmi les schémas explicites, lesquels restent bornés ici ? Que résout un schéma implicite à chaque pas, et que gagne-t-on ?",
+          "question": "Quels facteurs |G(θ)| dépassent 1 ? Pourquoi l'essai à Fo = 0,8 ne suffit-il pas à établir la stabilité modale ? Une méthode stable est-elle nécessairement précise à grand pas de temps ?",
           "corr": true
         }
       ]
     },
     "chemin": {
       "seance": 3,
-      "fiche": "Séance 3 (instationnaire), exercices C et E",
+      "fiche": "Séances 3 et 4 : chemin de raffinement et consistance",
       "competences": [
         "C3.3",
-        "C3.4"
+        "C3.4",
+        "C4.2"
       ],
       "notions": [
         "chemin de raffinement",
@@ -502,23 +557,33 @@ window.GUIDE = {
           "reglages": {
             "p-r": "1",
             "p-rx": "1.5 2",
-            "p-c0": "1",
-            "p-alpha": "1",
+            "p-co": "0.8",
+            "p-fo": "8",
             "p-h0": "0.1",
             "p-hk": "4"
           },
-          "consigne": "Comparez les chemins r = 1, 1,5 et 2 avec c₀ = 1 et α = 1. Pour chacun, observez comment les deux termes évoluent quand h diminue.",
-          "question": "Pour quels r chaque schéma (Dufort–Frankel, Lax–Friedrichs) est-il consistant ? Que vaut chaque terme quand il ne tend pas vers zéro ?",
-          "main": "Pour α = c₀ = 1, calculez, en fonction de h, les termes α(Δt/h)² et h²/(2Δt) avec Δt = c₀ fois h puissance r, pour r = 1, 1,5 et 2."
+          "consigne": "Après le calcul à la main des deux termes, comparez r = 1, 1,5 et 2 avec Co_ref = 0,8 et Fo_ref = 8 (h_ref = 0,1). Dans le bloc « Conséquence sur les solutions », réglez successivement r = 1, 1,5 et 2 pour observer les profils numériques et l'erreur par rapport à la solution exacte.",
+          "question": "Pour quels r chaque schéma (Dufort–Frankel, Lax–Friedrichs) est-il consistant ? Dans les deux exemples non consistants, l'erreur vers la solution de l'équation cible diminue-t-elle ? Quelle équation modifiée suggère le terme qui reste ?",
+          "main": "Avec h_ref = 0,1, Co_ref = 0,8, Fo_ref = 8 et a = 1, déduisez c0 en multipliant Co_ref par h_ref à la puissance 1 moins r, puis alpha en multipliant Fo_ref par h_ref et en divisant par Co_ref. Pour r = 1, 1,5 et 2, exprimez ensuite en fonction de h le terme alpha fois (delta_t/h) au carré et le terme h au carré divisé par 2 delta_t, avec delta_t = c0 fois h à la puissance r."
+        },
+        {
+          "id": "S4-X1",
+          "titre": "Consistance : quel terme disparaît au raffinement ?",
+          "comp": ["C4.2"],
+          "reglages": {"p-r": "1", "p-rx": "1.5 2", "p-co": "0.8", "p-fo": "8", "p-h0": "0.1", "p-hk": "4"},
+          "main": "Pour Δt = c₀hʳ, réécrivez α(Δt/h)² et h²/(2Δt) en puissances de h. Classez les deux schémas pour r = 1, 1,5 et 2.",
+          "consigne": "Appliquez les réglages et comparez d'abord les graphes des termes du défaut, puis les profils de solution aux mêmes exposants r.",
+          "question": "Pour quels chemins les termes décisifs tendent-ils vers zéro ? Que montrent les profils pour les chemins non consistants, et pourquoi l'observation numérique ne remplace-t-elle pas le critère limite ?"
         }
       ]
     },
     "adv": {
       "seance": 3,
-      "fiche": "Séance 3 (instationnaire), exercices E et G",
+      "fiche": "Séances 3 et 4 : advection, stabilité et équation équivalente",
       "competences": [
         "C3.4",
-        "C3.5"
+        "C3.5",
+        "C4.4"
       ],
       "notions": [
         "nombre de Courant",
@@ -545,12 +610,14 @@ window.GUIDE = {
               "amont",
               "ftcs",
               "lxf",
-              "lw"
+              "lw",
+              "bw",
+              "cimp"
             ]
           },
-          "consigne": "Avec Co = 0,4 et Nx = 100, superposez les quatre schémas. Lisez le maximum et le minimum indiqués dans chaque carte.",
-          "question": "Classez chaque schéma : instable, diffusion numérique ou dispersion ?",
-          "main": "Avant de lancer le calcul, prévoyez pour chaque schéma (FTCS centré, amont, Lax–Friedrichs, Lax–Wendroff) s'il sera instable, diffusif ou dispersif, d'après ce que dit le polycopié."
+          "consigne": "Avec Co = 0,4 et Nx = 100, superposez les six schémas. Comparez les profils, |G(θ)| et l'erreur de phase sur toute la plage des nombres d'onde.",
+          "question": "Quels schémas amplifient au moins un mode ? Lesquels amortissent les modes ou produisent une erreur de phase ? Pourquoi une oscillation près d'un front ne suffit-elle pas à conclure à une instabilité ? Quelles courbes étudient la stabilité et la dispersion, et quelle vérification distincte établit consistance puis convergence ?",
+          "main": "Avant de lancer le calcul, prévoyez pour chacun des six schémas (FTCS centré, amont, Lax–Friedrichs, Lax–Wendroff, Beam–Warming, centré implicite) une condition de stabilité et son effet sur l'amplitude ou la phase. Indiquez aussi ce que les courbes modales ne permettent pas de conclure : consistance par Taylor, convergence par l'erreur au raffinement à temps final commun."
         },
         {
           "id": "S3-X5",
@@ -599,10 +666,20 @@ window.GUIDE = {
               "cimp"
             ]
           },
-          "main": "Pour Co = 1,2, calculez le déplacement du signal par pas, en nombre de mailles, et comparez-le à la largeur du stencil d'un schéma explicite à trois points (une maille de chaque côté).",
-          "consigne": "Prenez Co = 1,2 (a = 1, Nx = 100, temps final 5 s), cochez les six schémas et relevez le maximum et le minimum de chacun dans les cartes.",
-          "question": "Quels schémas explicites explosent ? Lequel reste borné ? Que fait le schéma centré implicite, et quel défaut voit-on sur son profil ?",
+          "main": "Pour Co = 1,2, calculez le déplacement du signal par pas, en nombre de mailles. Comparez-le à la portée de chaque stencil, notamment aux deux nœuds amont de Beam–Warming ; ne déduisez pas la stabilité de cette seule comparaison géométrique.",
+          "consigne": "Prenez Co = 1,2 (a = 1, Nx = 100, temps final 5 s), cochez les six schémas et relevez le maximum et le minimum de chacun dans les cartes. Puis recommencez à Co = 2,1 et comparez les courbes |G(θ)|.",
+          "question": "Quels facteurs |G(θ)| dépassent 1 ? Pourquoi Beam–Warming reste-t-il stable à Co = 1,2 alors que les stencils explicites de rayon 1 ne le sont plus ? Le profil borné du centré implicite prouve-t-il sa précision ?",
           "corr": true
+        },
+        {
+          "id": "S4-X3",
+          "titre": "Du développement de Taylor à l'effet sur le profil",
+          "comp": ["C4.4"],
+          "reglages": {"a-a": "1", "a-Co": "0.5", "a-tf": "5", "a-Nx": "100", "a-Nxx": "200"},
+          "checks": {"a-s": ["ftcs", "lxf", "lw"]},
+          "main": "À la main, dérivez u_tt = a²u_xx pour l'advection, puis remplacez u_tt dans l'erreur de Taylor. Prévoir le signe du coefficient de u_xx pour Euler centré.",
+          "consigne": "Appliquez les réglages. Lisez l'équation équivalente calculée pour Euler centré, Lax–Friedrichs et Lax–Wendroff ; confrontez les coefficients aux courbes d'amplification, de phase et aux profils.",
+          "question": "Quel terme explique l'amortissement ou l'amplification ? Quel terme explique l'erreur de phase ? Les observations concordent-elles avec les coefficients dérivés ?"
         }
       ]
     },
@@ -639,7 +716,7 @@ window.GUIDE = {
             ]
           },
           "consigne": "Gardez seulement le schéma centré, avec Pe = 50. Superposez N = 10, 20, 24, 25 et 26 et lisez dans les cartes le nombre de Péclet de maille et la présence d'oscillations (voir aussi la jauge).",
-          "question": "À partir de quel N les oscillations disparaissent-elles ? Que vaut alors Pe_h ? Quel lien avec le signe du coefficient du voisin aval ?",
+          "question": "À partir de quel N les oscillations disparaissent-elles ? Que vaut alors Pe_h ? Quel lien avec le signe du coefficient du voisin aval ? Dans ce problème stationnaire, s'agit-il de stabilité temporelle ou de monotonie spatiale ?",
           "main": "Pour Pe = 50, calculez le nombre de Péclet de maille Pe_h = Pe/N pour N = 10, 20, 24, 25 et 26, et comparez à 2."
         },
         {

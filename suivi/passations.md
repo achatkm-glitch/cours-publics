@@ -225,3 +225,9 @@
 - **Fichiers** : `mftn/calculateurs/` (7 fichiers), suivis.
 - **Fait** : calculateurs v16 (couleurs distinctes).
 - **Prochaine action** : relecture ; verrous libérés.
+
+### 2026-11-04 22:30:41 +01:00 — Prise FIFO — synchronisation du calculateur MFTN — Codex
+- Source : C:\Latex\MFTN\Peda_inv\site\ (version locale à quatre séances, QR intégré) ; destination mftn/calculateurs/ sur le site public.
+- Périmètre : publier les fichiers d'exécution et assets référencés ; mettre à jour la carte d'accueil racine ; consigner empreintes, commit et déploiement.
+- Contrôles initiaux : branche main, HEAD e33c1a7 aligné avec origin/main, arbre propre ; table des verrous sans verrou actif au démarrage. Dernière activité MFTN vérifiée : tâche 103 libérée à 22:22:53 +01:00.
+- Prochaine action : synchroniser les ressources publiables, vérifier les références, pousser et contrôler GitHub Pages.

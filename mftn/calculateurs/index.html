@@ -3,42 +3,56 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Calculateurs MFTN</title>
-<meta name="description" content="Calculateurs de simulation pour les séances d'introduction du cours MFTN : transport, conditions aux limites, barre 1D, Jacobi et Gauss–Seidel, ordre des schémas, chaleur 1D, advection. Comparaison de plusieurs cas et barres glissantes.">
+<title>Calculateurs MFTN — par séance</title>
+<meta name="description" content="Calculateurs et parcours des quatre séances MFTN : modèle et transport, stationnaire, instationnaire et performance des schémas.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
-  <p style="margin:0 0 6px"><a href="../../#mftn">← Cours publics · MFTN</a></p>
   <h1>Calculateurs MFTN</h1>
   <p>Outils de simulation pour les séances en pédagogie inversée. Aucune installation : tout s'exécute dans votre navigateur. Déplacez les curseurs et superposez plusieurs cas pour comparer.</p>
+  <aside class="phone-access" aria-label="Accès au site sur téléphone">
+    <img src="img/calculateurs_qr.png" alt="QR code vers le site public des calculateurs MFTN">
+    <div class="phone-access__copy">
+      <strong>Ouvrir le site sur téléphone</strong>
+      <p>Scannez ce QR code avec l’appareil photo de votre téléphone.</p>
+      <a href="https://achatkm-glitch.github.io/cours-publics/mftn/calculateurs/" target="_blank" rel="noopener">Ouvrir le site public</a>
+    </div>
+  </aside>
 </header>
-<nav aria-label="Calculateurs">
-  <span class="grp">Chapitre 1</span>
-  <button data-tab="intro" aria-selected="true">Introduction</button>
-  <button data-tab="transport">Transport</button>
-  <button data-tab="edpc">EDP : classer</button>
-  <button data-tab="edpb">EDP : comportement</button>
-  <button data-tab="cl">Conditions aux limites</button>
-  <button data-tab="barre">Barre 1D</button>
-  <button data-tab="peclet">Péclet</button>
-  <span class="brk"></span>
-  <span class="grp">Chapitre 2</span>
-  <button data-tab="ordre">Ordre d'une différence</button>
-  <button data-tab="neumann">Conditions aux limites discrétisées</button>
-  <button data-tab="jg">Jacobi / Gauss–Seidel</button>
-  <span class="brk"></span>
-  <span class="grp">Chapitre 3</span>
-  <button data-tab="chaleur">Chaleur 1D</button>
-  <button data-tab="chemin">Chemin de raffinement</button>
-  <button data-tab="adv">Advection</button>
+<nav aria-label="Navigation par séance">
+  <button data-tab="home" aria-selected="true">Accueil · 4 séances</button>
+  <details class="session-nav"><summary>Séance 1 · Modèle et transport</summary><div class="session-links">
+    <button data-tab="intro">Introduction</button><button data-tab="transport">Transport</button><button data-tab="edpc">EDP : classer</button><button data-tab="edpb">EDP : comportement</button><button data-tab="cl">Conditions aux limites</button><button data-tab="barre">Barre 1D</button><button data-tab="peclet">Péclet</button>
+  </div></details>
+  <details class="session-nav"><summary>Séance 2 · Stationnaire</summary><div class="session-links">
+    <button data-tab="ordre">Ordre d'une différence</button><button data-tab="neumann">Conditions aux limites discrétisées</button><button data-tab="jg">Jacobi / Gauss–Seidel</button>
+  </div></details>
+  <details class="session-nav"><summary>Séance 3 · Instationnaire</summary><div class="session-links">
+    <button data-tab="chaleur">Chaleur 1D · construire un pas</button><button data-tab="chemin">Chemin de raffinement · première étude</button><button data-tab="adv">Advection · schémas temporels</button>
+  </div></details>
+  <details class="session-nav"><summary>Séance 4 · Performance</summary><div class="session-links">
+    <button data-tab="chemin">1 · Chemin de raffinement</button><button data-tab="chaleur">2 · Chaleur 1D — stabilité</button><button data-tab="adv">3 · Advection — équation équivalente</button>
+  </div></details>
   <button class="theme" id="theme" aria-label="Changer de thème">Clair / sombre</button>
 </nav>
 <main>
 
+<section class="panel active" id="p-home">
+  <h2>Le cours, organisé en quatre séances</h2>
+  <p class="lead">Choisissez la séance en cours. Les calculateurs servent pendant les activités : commencez par le problème et les calculs à la main, puis ouvrez l’onglet indiqué dans votre fiche. Le polycopié se consulte en salle, au fil des notions nécessaires.</p>
+  <div class="session-grid">
+    <article class="session-card"><p class="session-kicker">Séance 1 · Chapitre 1</p><h3>Modèle et transport</h3><p>Poser le problème, reconnaître les équations et leurs comportements, puis examiner les conditions et les modèles stationnaires.</p><p class="session-tools">Introduction · Transport · Classer une EDP · Comportement · Conditions aux limites · Barre 1D · Péclet</p><button class="btn" type="button" data-go-tab="intro">Commencer la séance 1</button></article>
+    <article class="session-card"><p class="session-kicker">Séance 2 · Stationnaire</p><h3>Discrétiser en espace</h3><p>Construire les différences, traiter les frontières, puis résoudre le système stationnaire.</p><p class="session-tools">Ordre d’une différence · Conditions discrétisées · Jacobi / Gauss–Seidel</p><button class="btn" type="button" data-go-tab="ordre">Commencer la séance 2</button></article>
+    <article class="session-card"><p class="session-kicker">Séance 3 · Instationnaire</p><h3>Construire les schémas en temps</h3><p>Établir et mettre en œuvre les schémas d’évolution pour la chaleur et l’advection.</p><p class="session-tools">Chaleur 1D · Chemin de raffinement · Advection</p><button class="btn" type="button" data-go-tab="chaleur">Commencer la séance 3</button></article>
+    <article class="session-card"><p class="session-kicker">Séance 4 · Performance</p><h3>Évaluer les schémas</h3><p>Suivre le parcours : consistance selon le raffinement, stabilité, puis effets de l’équation équivalente.</p><p class="session-tools">Chemin de raffinement → Chaleur 1D → Advection</p><button class="btn" type="button" data-go-tab="chemin">Commencer la séance 4</button></article>
+  </div>
+  <p class="shared-note"><b>Onglets réutilisés :</b> « Chemin de raffinement », « Chaleur 1D » et « Advection » servent en séances 3 et 4 ; la fiche précise l’activité et la question à traiter dans chaque séance.</p>
+</section>
+
 <!-- Introduction -->
-<section class="panel active" id="p-intro">
+<section class="panel" id="p-intro">
   <h2>Introduction : pourquoi le choix du schéma compte</h2>
   <p class="lead">Pourquoi un cours de méthodes numériques ? Pour une même équation, on peut écrire de nombreux schémas de calcul, et ils ne se valent pas : selon le schéma, la solution calculée présente des comportements non voulus. Ici, un signal (une bosse lisse et un créneau) est transporté à vitesse constante sur un domaine périodique : après un tour entier, la solution exacte est identique au signal initial. Cinq schémas, notés A à E (leurs formules et leurs noms seront vus plus tard dans le cours), essaient de la reproduire. Observez ce que chacun fait du signal. Test inspiré de la figure 6.1 de LeVeque (2002) ; les paramètres sont ceux de ce site. Introduction du cours, séance 1.</p>
   <p class="repere"><b>Comment travailler :</b> commencez par une prévision ou une première explication sans ouvrir le cours. Si une notion vous manque, consultez le passage indiqué dans la fiche de séance, puis revenez à l'exploration pour vérifier et expliquer votre réponse. Le cours se lit en salle, au fil des questions ; aucune lecture préalable à domicile n'est demandée.</p>
@@ -282,6 +296,9 @@
         <div><canvas id="e-plot" aria-label="Solution"></canvas><div class="legend" id="e-leg"></div></div>
         <div><canvas id="e-plot2" aria-label="Erreur par rapport à la solution analytique"></canvas><div class="legend" id="e-leg2"></div></div>
       </div>
+      <h3>Erreur globale et raffinement</h3>
+      <p class="repere">Dans ce problème stationnaire, comparez l'erreur maximale à h = 1/N et l'ordre observé. L'oscillation du schéma centré est un défaut de monotonie quand Pe<sub>h</sub> &gt; 2, pas une instabilité temporelle.</p>
+      <canvas id="e-conv" aria-label="Erreur maximale de convection-diffusion stationnaire selon la taille de maille"></canvas><div class="legend" id="e-conv-leg"></div>
       <div class="gauge" id="e-gauge"></div>
       <div class="cards" id="e-table"></div>
     </div>
@@ -319,7 +336,7 @@
 <!-- Ch.2 : ordre -->
 <section class="panel" id="p-ordre">
   <h2>Ordre d'une différence finie : dérivées première et seconde</h2>
-  <p class="lead">Erreur en x = 0 de trois différences finies de la dérivée première et de la différence centrée de la dérivée seconde, pour la fonction exponentielle et une suite de pas. Séance 2, exercices D et E.</p>
+  <p class="lead">Erreur des différences finies des dérivées première et seconde sur le mode sinusoïdal u(x) = sin(x), en x = 1, pour une suite de pas. La fiche demande en plus de dériver à la main l'erreur d'un schéma donné puis de construire un stencil par la méthode des poids, présentée au chapitre 2. Séance 2, exercices D et E.</p>
   <div class="eqs" data-eq="ordre"></div>
   <div class="grid">
     <div>
@@ -328,7 +345,7 @@
         <label>Nombre de pas testés (h₀, h₀/2, h₀/4, …)<span class="sl"><input type="range" id="o-k" min="2" max="8" step="1" value="4"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> progressive, 5,171×10⁻² puis 2,542×10⁻² (rapport 2) ; centrée, 1,667×10⁻³ puis 4,167×10⁻⁴ (rapport 4) ; dérivée seconde centrée, 8,34×10⁻⁴ puis 2,08×10⁻⁴ (rapport 4, ordre 2).</p>
+      <p class="repere"><b>Repère :</b> les erreurs doivent décroître quand h diminue ; le rapport des erreurs successives tend vers 2 pour un schéma d'ordre 1 et vers 4 pour un schéma d'ordre 2. Le calcul à la main établit le terme dominant par Taylor ; les poids se déterminent en imposant la dérivation exacte des polynômes de degré requis.</p>
     </div>
     <div>
       <div class="msg" id="o-msg"></div>
@@ -367,8 +384,8 @@
 
 <!-- Ch.3 : chaleur -->
 <section class="panel" id="p-chaleur">
-  <h2>Chaleur 1D : schémas explicites et implicites</h2>
-  <p class="lead">Un profil sinusoïdal se refroidit entre deux bords à température nulle. Compare des schémas explicites (FTCS, Dufort–Frankel, Richardson) et implicites (BTCS, Crank–Nicolson) sur les mêmes graphiques, et plusieurs pas de temps dans les cartes et le second graphique. Séance 3, exercices A et D.</p>
+  <h2>Séances 3 et 4 · Chaleur 1D</h2>
+  <p class="lead">En séance 3, construisez et mettez en œuvre les schémas d’évolution. En séance 4, après le calcul de consistance, vérifiez si les perturbations sont amplifiées : calculez le facteur d’amplification à la main, puis confrontez-le à la courbe pour tous les nombres d’onde.</p>
   <div class="eqs" data-eq="chaleur"></div>
   <div class="grid">
     <div>
@@ -393,6 +410,12 @@
       <div class="msg" id="c-msg" aria-live="polite"></div>
       <p id="c-mid"></p>
       <div class="plots2"><div><canvas id="c-plot" aria-label="Profils de température"></canvas><div class="legend" id="c-leg"></div></div><div><canvas id="c-plot2" aria-label="Erreur selon le pas de temps" style="margin-top:12px"></canvas><div class="legend" id="c-leg2"></div></div></div>
+        <h3>Stabilité modale pour le Fo choisi</h3>
+        <p class="repere">Chaque mode sinusoïdal de nombre d'onde θ est multiplié à chaque pas par un facteur d'amplification. |G| &gt; 1 : croissance ; |G| ≤ 1 pour tous les modes : stabilité de von Neumann dans ce cadre périodique. La courbe « chaleur continue » donne l'amortissement physique exact du même mode ; l'écart indique l'amortissement numérique en plus ou en moins. Pour Dufort–Frankel et Richardson, on trace le module maximal des deux racines : cela vérifie le critère modal mais ne montre ni la nature de chaque racine ni l'effet de l'initialisation, ici faite par FTCS. Pour FTCS, BTCS et Crank–Nicolson, le graphe signé révèle aussi les changements de signe de G : ils peuvent produire une alternance temporelle sans croissance si |G| ≤ 1.</p>
+        <div class="plots2"><div><canvas id="c-amp" aria-label="Module du facteur d’amplification en fonction du nombre d’onde"></canvas><div class="legend" id="c-amp-leg"></div></div><div><canvas id="c-g-signed" aria-label="Facteur d’amplification signé des schémas à un niveau"></canvas><div class="legend" id="c-g-signed-leg"></div></div></div>
+      <h3>Convergence conjointe à temps final commun</h3>
+      <p class="repere">Les maillages sont raffinés avec Fo approximativement constant (Δt proportionnel à h²). Les erreurs sont comparées au même temps final ; les ordres observés décrivent ce chemin et cette solution test, et ne remplacent pas le critère de stabilité ni la consistance.</p>
+      <canvas id="c-refine" aria-label="Erreur maximale des schémas de chaleur selon le maillage à temps final commun"></canvas><div class="legend" id="c-refine-leg"></div>
       <div class="cards" id="c-table"></div>
     </div>
   </div>
@@ -400,34 +423,46 @@
 
 <!-- Ch.3 : chemin -->
 <section class="panel" id="p-chemin">
-  <h2>Chemin de raffinement Δt = c₀ hʳ</h2>
-  <p class="lead">Évalue le terme décisif du défaut local de Dufort–Frankel et de Lax–Friedrichs le long de plusieurs chemins de raffinement. Séance 3, exercices C et E. Le champ sous le curseur de r accepte d'autres exposants pour les comparer.</p>
+  <h2>Séances 3 et 4 · Chemin de raffinement</h2>
+  <p class="lead">En séance 3, utilisez les profils pour examiner ce que produit le raffinement. En séance 4, calculez à la main les termes décisifs des défauts de Dufort–Frankel et de Lax–Friedrichs, puis faites varier r dans Δt = c₀ hʳ : les courbes indiquent si le terme tend vers zéro et les profils montrent les conséquences pour les réglages choisis.</p>
+  <div class="s4-path" aria-label="Parcours de la séance 4">
+    <h2>Parcours de la séance 4</h2>
+    <ol>
+      <li><button type="button" data-go-tab="chemin"><b>1 · Consistance</b><span>Calcul à la main et chemin de raffinement.</span></button></li>
+      <li><button type="button" data-go-tab="chaleur"><b>2 · Stabilité</b><span>Facteur d’amplification et courbes modales.</span></button></li>
+      <li><button type="button" data-go-tab="adv"><b>3 · Équation équivalente</b><span>Coefficients, profils, amplitude et phase.</span></button></li>
+    </ol>
+  </div>
   <div class="eqs" data-eq="chemin"></div>
-  <div class="grid">
+  <div class="grid chemin-grid">
     <div>
-      <form class="params">
+      <form class="params chemin-controls">
         <label>Exposant r<span class="sl"><input type="range" id="p-r" min="0.5" max="3" step="0.1" value="1"><output></output></span><input id="p-rx" value="1.5 2" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
-        <label>Coefficient c₀ (unités adaptées)<span class="sl"><input type="range" id="p-c0" min="0.1" max="5" step="0.1" value="1"><output></output></span></label>
-        <label>Diffusivité α<span class="sl"><input type="range" id="p-alpha" min="0.1" max="5" step="0.1" value="1"><output></output></span></label>
-        <label>Plus grand pas h₀<span class="sl"><input type="range" id="p-h0" min="0.02" max="0.5" step="0.01" value="0.1"><output></output></span></label>
-        <label>Nombre de pas testés (h₀, h₀/2, …)<span class="sl"><input type="range" id="p-hk" min="3" max="8" step="1" value="4"><output></output></span></label>
+        <label><span>Courant de référence Co<sub>ref</sub> (h<sub>ref</sub> = 0,1)</span><span class="sl"><input type="range" id="p-co" min="0.1" max="1.5" step="0.1" value="0.8"><output></output></span></label>
+        <label><span>Fourier de référence Fo<sub>ref</sub> (h<sub>ref</sub> = 0,1)</span><span class="sl"><input type="range" id="p-fo" min="0.5" max="20" step="0.5" value="8"><output></output></span></label>
+        <label><span>Plus grand pas adimensionnel h₀</span><span class="sl"><input type="range" id="p-h0" min="0.02" max="0.5" step="0.01" value="0.1"><output></output></span></label>
+        <label><span>Nombre de pas testés (h₀, h₀/2, …)</span><span class="sl"><input type="range" id="p-hk" min="3" max="8" step="1" value="4"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> Dufort–Frankel est consistant avec la diffusion si Δt/h → 0, soit r &gt; 1 ; Lax–Friedrichs est consistant avec l'advection si et seulement si 0 &lt; r &lt; 2. Pour r = 2, le terme de Lax–Friedrichs reste constant et le schéma approche u_t + a u_x = u_xx/(2c₀).</p>
+      <p class="repere"><b>Repère :</b> variables adimensionnelles avec a = 1 et h<sub>ref</sub> = 0,1. Co<sub>ref</sub> = Δt<sub>ref</sub>/h<sub>ref</sub> et Fo<sub>ref</sub> = α Δt<sub>ref</sub>/h<sub>ref</sub>² ; les coefficients calculés en interne sont α = Fo<sub>ref</sub>h<sub>ref</sub>/Co<sub>ref</sub> et c₀ = Co<sub>ref</sub>h<sub>ref</sub><sup>1−r</sup>. Dufort–Frankel est consistant avec la diffusion si Δt/h → 0, soit r &gt; 1 ; Lax–Friedrichs est consistant avec l'advection si et seulement si 0 &lt; r &lt; 2. Pour r = 1, la limite formelle de Dufort–Frankel est u<sub>t</sub> − αu<sub>xx</sub> + αc₀²u<sub>tt</sub> = 0 ; pour r = 2, Lax–Friedrichs approche u<sub>t</sub> + a u<sub>x</sub> = u<sub>xx</sub>/(2c₀). Une courbe bornée ne suffit donc pas à conclure à la convergence vers l'équation cible.</p>
     </div>
     <div>
       <div class="msg" id="p-msg">Un terme qui ne tend pas vers zéro quand h diminue signale une consistance perdue sur ce chemin.</div>
       <div class="cards" id="p-summary"></div>
       <div class="plots2"><div><canvas id="p-plot" aria-label="Terme de Dufort–Frankel"></canvas><div class="legend" id="p-leg"></div></div><div><canvas id="p-plot2" aria-label="Terme de Lax–Friedrichs" style="margin-top:12px"></canvas><div class="legend" id="p-leg2"></div></div></div>
-
+      <h3>Conséquence sur les solutions, pour le chemin sélectionné</h3>
+      <p class="repere">Les profils suivent l'exposant r, le nombre de Courant Co<sub>ref</sub>, le nombre de Fourier Fo<sub>ref</sub> et les maillages réglés avec h₀. Fo<sub>ref</sub> agit sur le profil de chaleur ; Co<sub>ref</sub> règle le pas de temps des deux calculs. Les autres exposants du champ de comparaison restent visibles dans les graphes du défaut local.</p>
+      <div class="msg" id="p-effects-msg" aria-live="polite"></div>
+      <div class="plots2"><div><canvas id="p-effect-df" aria-label="Solutions Dufort–Frankel pour le chemin de raffinement sélectionné"></canvas><div class="legend" id="p-effect-df-leg"></div></div><div><canvas id="p-effect-lxf" aria-label="Solutions Lax–Friedrichs pour le chemin de raffinement sélectionné"></canvas><div class="legend" id="p-effect-lxf-leg"></div></div></div>
+      <div class="cards" id="p-effects-summary"></div>
     </div>
   </div>
 </section>
 
 <!-- Ch.3 : advection -->
 <section class="panel" id="p-adv">
-  <h2>Advection d'une gaussienne : schémas explicites et schéma implicite</h2>
-  <p class="lead">Une gaussienne est transportée sur un domaine périodique. Superpose les schémas explicites (amont, FTCS centré, Lax–Friedrichs, Lax–Wendroff, Beam–Warming) et le schéma centré implicite ; les cartes comparent plusieurs maillages. Séance 3, exercice G.</p>
+  <h2>Séances 3 et 4 · Advection</h2>
+  <p class="lead">En séance 3, explorez les schémas d’advection et leurs calculs en temps. En séance 4, dérivez l’équation équivalente à la main à partir du développement de Taylor et de l’équation d’advection, puis comparez ses coefficients avec les courbes d’amplification, l’erreur de phase et les profils.</p>
   <div class="eqs" data-eq="adv"></div>
   <div class="grid">
     <div>
@@ -441,16 +476,22 @@
           <label><input type="checkbox" name="a-s" value="cimp"> Centré implicite</label>
         </div>
         <label>Vitesse a (négative : écoulement vers la gauche)<span class="sl"><input type="range" id="a-a" min="-3" max="3" step="0.1" value="1" data-unit="m/s"><output></output></span></label>
-        <label>Nombre de Courant Co<span class="sl"><input type="range" id="a-Co" min="0.05" max="1.2" step="0.05" value="0.4"><output></output></span></label>
+          <label>Nombre de Courant Co<span class="sl"><input type="range" id="a-Co" min="0.05" max="2.5" step="0.05" value="0.4"><output></output></span></label>
         <label>Temps final<span class="sl"><input type="range" id="a-tf" min="0.5" max="10" step="0.5" value="5" data-unit="s"><output></output></span></label>
         <label>Nombre de points Nx (sert au profil)<span class="sl"><input type="range" id="a-Nx" min="50" max="400" step="10" value="100"><output></output></span><input id="a-Nxx" value="200" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> avec Co = 0,4 et Nx = 100 ou 200, FTCS centré est instable (amplitude croissante), l'amont et Lax–Friedrichs lissent le profil (diffusion numérique), Lax–Wendroff produit des oscillations (dispersion). Avec Co &gt; 1, l'amont devient instable à son tour. La vitesse a doit être non nulle ; pour a &lt; 0 le schéma amont prend la différence du côté opposé.</p>
+      <p class="repere"><b>Repère :</b> pour le schéma FTCS, l'analyse de von Neumann à Courant non nul fixé donne un mode amplifié ; le comportement sur un temps physique fini dépend aussi du chemin suivi lorsque h et Δt tendent vers zéro. Amont, Lax–Friedrichs et Lax–Wendroff sont stables si |Co| ≤ 1 ; Beam–Warming si |Co| ≤ 2 ; le centré implicite est stable pour tout Co. Le tracé de |G(θ)| vérifie la croissance/amortissement de chaque mode, tandis que l'erreur de phase distingue la dispersion. Les profils illustrent ces effets pour un signal donné sans, à eux seuls, prouver la stabilité ni la convergence. La vitesse a doit être non nulle ; pour a &lt; 0 le schéma amont prend la différence du côté opposé.</p>
     </div>
     <div>
       <div class="msg" id="a-msg" aria-live="polite"></div>
+      <div class="modified-equation" id="a-modified" aria-live="polite"></div>
       <canvas id="a-plot" aria-label="Profil advecté"></canvas><div class="legend" id="a-leg"></div>
+        <h3>Stabilité et dispersion modale</h3>
+        <p class="repere">Pour l'advection périodique, |G(θ)| mesure l'amplification d'un mode et l'erreur de phase mesure son décalage par rapport au transport exact. Une courbe bornée d'un profil particulier n'établit pas, à elle seule, la stabilité ni la convergence du schéma. La courbe de convergence compare l'erreur maximale sur trois maillages, à temps final commun ; son ordre mesuré reste propre à ce problème, au profil et au chemin choisi.</p>
+        <div class="plots2"><div><canvas id="a-modal-amp" aria-label="Module du facteur d’amplification des schémas d’advection"></canvas><div class="legend" id="a-modal-amp-leg"></div></div><div><canvas id="a-modal-phase" aria-label="Erreur de phase des schémas d’advection"></canvas><div class="legend" id="a-modal-phase-leg"></div></div></div>
+        <h3>Erreur au raffinement (temps final commun)</h3>
+        <canvas id="a-conv" aria-label="Erreur maximale selon la taille de maille pour plusieurs schémas d’advection"></canvas><div class="legend" id="a-conv-leg"></div>
       <div class="cards" id="a-table"></div>
     </div>
   </div>

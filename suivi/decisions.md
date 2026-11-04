@@ -161,3 +161,6 @@
 ### 2026-11-03 22:53:26 +01:00 — Mise à jour des calculateurs MFTN (v16)
 - **Instruction** : « évite d'avoir deux courbes de même couleur », « sur un même graphique bien sûr ». Reçu par Code ; publication déjà autorisée.
 - **État** : traité ; preuves dans `suivi/integration_mftn.md`.
+
+### 2026-11-04 22:30:28 +01:00 — Synchronisation du site MFTN sur GitHub — Codex
+Instruction utilisateur : « il faut synchroniser le github », après intégration locale du QR pointant vers la page publique. Interprétation : publier la version locale actuelle à quatre séances du calculateur vers cours-publics/mftn/calculateurs/ et mettre à jour sa carte d'accueil. Reçu par Codex. Prise en charge immédiate ; aucun verrou concurrent actif au démarrage.

@@ -94,15 +94,15 @@
     return u.map((_, i) => rhs - (2 * u[i] - (i > 0 ? u[i - 1] : 0) - (i < n - 1 ? u[i + 1] : 0)));
   }
 
-  /* 3. Ordre d'une différence finie : erreur en x=0 pour u=exp(x). */
-  function ordreExp(hs) {
+  /* 3. Ordre d'une différence finie sur le mode sinusoïdal u(x)=sin(x), en x=1. */
+  function ordreSin(hs) {
+    const x = 1, u = Math.sin, ux = Math.cos(x), uxx = -Math.sin(x);
     const rows = hs.map(h => ({
       h,
-      prog: Math.abs((Math.exp(h) - 1) / h - 1),
-      centree: Math.abs((Math.exp(h) - Math.exp(-h)) / (2 * h) - 1),
-      regr3: Math.abs((3 - 4 * Math.exp(-h) + Math.exp(-2 * h)) / (2 * h) - 1),
-      /* dérivée seconde centrée en x = 0 (u'' = 1) : (e^h - 2 + e^-h)/h^2 = (2 sinh(h/2)/h)^2, forme sans annulation */
-      seconde: Math.abs(Math.pow(2 * Math.sinh(h / 2) / h, 2) - 1)
+      prog: Math.abs((u(x + h) - u(x)) / h - ux),
+      centree: Math.abs((u(x + h) - u(x - h)) / (2 * h) - ux),
+      regr3: Math.abs((3 * u(x) - 4 * u(x - h) + u(x - 2 * h)) / (2 * h) - ux),
+      seconde: Math.abs((u(x + h) - 2 * u(x) + u(x - h)) / (h * h) - uxx)
     }));
     rows.forEach((r, i) => {
       if (i > 0) {
@@ -226,6 +226,52 @@
   }
 
   /* 7. Advection périodique d'une gaussienne, domaine [-2, 8], u_t + a u_x = 0, a non nul (a < 0 : écoulement vers la gauche). */
+  function heatAmplification(scheme, Fo, theta) {
+    const s2 = Math.sin(theta / 2) ** 2;
+    if (scheme === 'ftcs') return Math.abs(1 - 4 * Fo * s2);
+    if (scheme === 'btcs') return 1 / (1 + 4 * Fo * s2);
+    if (scheme === 'cn') return Math.abs((1 - 2 * Fo * s2) / (1 + 2 * Fo * s2));
+    if (scheme === 'ri') {
+      const b = 8 * Fo * s2;
+      return Math.max(Math.abs((-b + Math.sqrt(b * b + 4)) / 2), Math.abs((-b - Math.sqrt(b * b + 4)) / 2));
+    }
+    if (scheme === 'df') {
+      const a = 1 + 2 * Fo, b = -4 * Fo * Math.cos(theta), c = 2 * Fo - 1;
+      const disc = b * b - 4 * a * c;
+      if (disc < 0) return Math.sqrt(Math.abs(c / a));
+      return Math.max(Math.abs((-b + Math.sqrt(disc)) / (2 * a)), Math.abs((-b - Math.sqrt(disc)) / (2 * a)));
+    }
+    throw new Error(`schéma chaleur inconnu : ${scheme}`);
+  }
+
+  function heatAmplificationSigned(scheme, Fo, theta) {
+    const s2 = Math.sin(theta / 2) ** 2;
+    if (scheme === 'ftcs') return 1 - 4 * Fo * s2;
+    if (scheme === 'btcs') return 1 / (1 + 4 * Fo * s2);
+    if (scheme === 'cn') return (1 - 2 * Fo * s2) / (1 + 2 * Fo * s2);
+    throw new Error(`facteur signé non défini pour le schéma à plusieurs niveaux : ${scheme}`);
+  }
+
+  function advectionAmplification(scheme, C, theta) {
+    const s = Math.sin(theta), co = Math.cos(theta), c = Math.abs(C), sign = C < 0 ? -1 : 1;
+    let re, im;
+    if (scheme === 'amont') { re = 1 - c + c * co; im = -C * s; }
+    else if (scheme === 'ftcs') { re = 1; im = -C * s; }
+    else if (scheme === 'lxf') { re = co; im = -C * s; }
+    else if (scheme === 'lw') { re = 1 + C * C * (co - 1); im = -C * s; }
+    else if (scheme === 'bw') {
+      const zr = co, zi = -sign * s, z2r = Math.cos(2 * theta), z2i = -sign * Math.sin(2 * theta);
+      const b1r = 3 - 4 * zr + z2r, b1i = -4 * zi + z2i;
+      const b2r = 1 - 2 * zr + z2r, b2i = -2 * zi + z2i;
+      re = 1 - c * b1r / 2 + c * c * b2r / 2;
+      im = -c * b1i / 2 + c * c * b2i / 2;
+    } else if (scheme === 'cimp') { re = 1 / (1 + C * C * s * s); im = -C * s / (1 + C * C * s * s); }
+    else throw new Error(`schéma advection inconnu : ${scheme}`);
+    const phase = Math.atan2(im, re), raw = phase + C * theta;
+    const phaseError = Math.hypot(re, im) < 1e-12 ? NaN : Math.atan2(Math.sin(raw), Math.cos(raw));
+    return { re, im, modulus: Math.hypot(re, im), phaseError };
+  }
+
   function advection({ scheme, a = 1, Nx, Co, tf, sigma0 = 0.15, U0 = 1 }) {
     if (!(Math.abs(a) > 1e-9)) throw new Error('la vitesse a doit être non nulle');
     const Lx = 10, h = Lx / Nx, dt = Co * h / Math.abs(a);
@@ -338,10 +384,10 @@
     const g = Math.exp(-200 * Math.pow(x - 0.3, 2));
     return g + (x > 0.6 + 1e-9 && x < 0.8 - 1e-9 ? 1 : 0); // bords exclus, avec tolérance d'arrondi
   }
-  function advection1d({ scheme, Nx, Co, t }) {
+  function advection1d({ scheme, Nx, Co, t, initial = signalMixte }) {
     const h = 1 / Nx, dt = Co * h, steps = Math.max(1, Math.round(t / dt)), tt = steps * dt, C = Co;
     const x = Array.from({ length: Nx }, (_, i) => i * h);
-    let u = x.map(signalMixte);
+    let u = x.map(initial);
     for (let s = 0; s < steps; s++) {
       const o = u;
       u = o.map((_, i) => {
@@ -354,7 +400,7 @@
       });
     }
     const wrap = (v) => v - Math.floor(v);
-    const exact = x.map(xi => signalMixte(wrap(xi - tt)));
+    const exact = x.map(xi => initial(wrap(xi - tt)));
     const err = u.map((v, i) => v - exact[i]);
     const centre = wrap(0.3 + tt);
     let bump = -Infinity;
@@ -418,6 +464,6 @@
     return xs.map(x => 0.5 * (bosseCompacte(x - c * t, centre, rayon) + bosseCompacte(x + c * t, centre, rayon)));
   }
 
-  const API = { thomas, gauss, linspace, maxAbs, barre, jacobiGS, ordreExp, neumann, neumannOrdres, chaleur, chemins, verdictsChemin, advection, sigmaAt, gaussAD, barreCL, barreVF, bilanDF, peclet, signalMixte, advection1d, classifyPDE, thomasCyclique, laplace2d, bosseCompacte, chaleurCompacte, ondeDAlembert };
+  const API = { thomas, gauss, linspace, maxAbs, barre, jacobiGS, ordreSin, neumann, neumannOrdres, chaleur, heatAmplification, heatAmplificationSigned, chemins, verdictsChemin, advection, advectionAmplification, sigmaAt, gaussAD, barreCL, barreVF, bilanDF, peclet, signalMixte, advection1d, classifyPDE, thomasCyclique, laplace2d, bosseCompacte, chaleurCompacte, ondeDAlembert };
   if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.Calc = API;
 })(typeof window !== 'undefined' ? window : this);
