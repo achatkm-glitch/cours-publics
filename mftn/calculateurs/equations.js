@@ -6,8 +6,8 @@ window.EQUATIONS = {
   ],
   "transport": [
     {"titre": "Équation de transport (advection et diffusion)", "tex": "\\frac{\\partial c}{\\partial t}+a\\,\\frac{\\partial c}{\\partial x}=D\\,\\frac{\\partial^2 c}{\\partial x^2}"},
-    {"titre": "Solution exacte pour une gaussienne initiale", "tex": "c(x,t)=\\frac{\\sigma_0}{\\sigma(t)}\\,\\exp\\!\\left[-\\frac{(x-at)^2}{2\\,\\sigma(t)^2}\\right],\\qquad \\sigma(t)=\\sqrt{\\sigma_0^2+2Dt}"},
-    {"titre": "Nombre de Péclet", "tex": "\\mathrm{Pe}=\\frac{|a|\\,\\sigma_0}{D}=\\frac{\\text{temps de diffusion}}{\\text{temps d'advection}}"}
+    {"titre": "Solution exacte écrite avec le Péclet du profil", "tex": "\\begin{gathered}\\xi=\\frac{x-at}{\\sigma_0},\\quad t^*=\\frac{|a|t}{\\sigma_0},\\quad \\mathrm{Pe}_{\\sigma_0}=\\frac{|a|\\sigma_0}{D}\\quad (|a|>0,\\ D>0),\\\\\\frac{c(x,t)}{U_0}=\\frac{1}{\\sqrt{1+2t^*/\\mathrm{Pe}_{\\sigma_0}}}\\exp\\!\\left[-\\frac{\\xi^2}{2(1+2t^*/\\mathrm{Pe}_{\\sigma_0})}\\right]\\end{gathered}"},
+    {"titre": "Interprétation du nombre de Péclet", "tex": "\\mathrm{Pe}_{\\sigma_0}=\\frac{t_{\\mathrm{diff}}}{t_{\\mathrm{adv}}}\\qquad (|a|>0,\\ D>0)"}
   ],
   "edpc": [
     {"titre": "EDP quasi linéaire d'ordre 2 à deux variables", "tex": "A\\,u_{xx}+2B\\,u_{xy}+C\\,u_{yy}+F(x,y,u,u_x,u_y)=0"}

@@ -193,3 +193,8 @@ Le commit b9936047ff0383fe6be7d80e288d635386ebf9f8 portant la source locale et l
 - La version publique utilise les scripts avec cache-buster 20261104-107d ; commit cours-publics e7141ed090e2910fe653bf981eef3d9331e7e34d, Pages run 41927003845 réussi.
 - Inspection de la page publiée : photographie ESA et crédits, lien USGS et limite d’interprétation, mise en problème, schéma simplifié ; équations et calculateur toujours présents.
 - Source MFTN synchronisée séparément ; aucun PDF ni calcul modifié. Verrous de cette passe libérés.
+
+### 2026-11-04 23:59:13 +01:00 — Écriture adimensionnée de la solution gaussienne avec Péclet — Codex
+- **Instruction reçue** : « y a-t-il une façon de l’écrire avec Pe ? si oui préfère cette écriture et mets-la aussi dans l’autre document », en référence à la formule du site local.
+- **Prise FIFO** : tâche 108 par Codex. Le polycopié §9.5 contient déjà l’écriture avec $Pe_{\sigma_0}$ ; l’équation est ajoutée au site et au support projeté C2.
+- **Périmètre public réservé** : mftn/calculateurs/equations.js, mftn/calculateurs/index.html et registres de tâche ; le rendu public et GitHub Pages seront contrôlés avant libération.

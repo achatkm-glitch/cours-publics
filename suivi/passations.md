@@ -280,3 +280,9 @@ La source locale passe à 20261104-107d dans les références à app.js et situa
 
 ### 2026-11-04 23:40:32 +01:00 — Clôture tâche 107 — Codex
 Le run GitHub Pages 41927003845 est terminé avec succès. Inspection navigateur de la page publique avec le cache-buster 107d : photo ESA, vidéo USGS liée à la demande, mise en situation puis schéma de principe ; équations et calculateur accessibles. Commit miroir e7141ed090e2910fe653bf981eef3d9331e7e34d confirmé sur origin/main. Verrous de tâche libérés.
+
+### 2026-11-04 23:59:13 +01:00 — Prise tâche 108 — formule gaussienne avec Péclet — Codex
+- Instruction utilisateur : préférer l’écriture de la solution gaussienne en fonction de Pe et la mettre dans l’autre document ; Codex prend la tâche FIFO.
+- Réservation : mftn/calculateurs/equations.js et index.html pour le cache-buster ; les registres de publication sont inclus.
+- Le dépôt public était propre, main au commit 8fc1e72 ; aucun verrou actif avant cette prise.
+- Prochaine étape : copier equations.js depuis MFTN, versionner son URL dans index.html, publier et contrôler la formule accessible.

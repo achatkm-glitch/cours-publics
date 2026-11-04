@@ -6,7 +6,7 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| — | Aucun verrou actif | tâche 107 clôturée le 2026-11-04 23:40 +01:00 |
+| mftn/calculateurs/equations.js, mftn/calculateurs/index.html, suivi/decisions.md, suivi/passations.md, suivi/verrous.md | Codex, tâche 108 — formule gaussienne avec Péclet et publication | 2026-11-04 23:59:13 +01:00 |
 
 ## Règles
 
