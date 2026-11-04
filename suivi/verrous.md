@@ -6,7 +6,7 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| mftn/calculateurs/**, index.html, suivi/decisions.md, suivi/passations.md, suivi/verrous.md, suivi/integration_mftn.md | Codex — synchronisation utilisateur | 2026-11-04 22:30:28 +01:00 |
+| — | aucun verrou actif (libéré par Codex 2026-11-04 22:39:11 +01:00) | — |
 
 
 ## Format d'un verrou

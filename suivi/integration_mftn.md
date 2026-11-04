@@ -149,3 +149,9 @@ Empreintes SHA-256 source et destination identiques :
 - SHA-256 des assets : Aqua Tower 82baa972f246801af833e4bc3c52dde85ecb3826d3ba7e4613bc7bea56b0028b ; QR 40537a326a4f58f4817ad78d5e6393de2d9fd544d8d6d793d346e8d16ba89cff ; Schlieren 65025bfff13d445aab0a12c1681e016c84395def0aa10d128f7da5a690499892 ; Sediment 1ce0355d66d5595be13278613eb79816c8c0f681bbc1b77bcac0f3b940bfd37b ; poster 68583b811f2ccbe2180d7ab6f2cc62bfc743cc845d29e39c6e82400713afe5d9 ; vidéo 1442a84e395f33ebf79bef3238c054088916af99ebe76b841929522a49a920c9. Empreintes des 13 ressources publiables identiques à la source locale.
 - Contrôle avant publication : git diff --check propre ; navigation quatre séances présente dans le HTML ; QR et médias référencés sur les chemins copiés. Aucun test automatisé lancé et aucun PDF modifié.
 - À compléter : hash du commit/push, empreinte de la carte d'accueil et confirmation du déploiement par lecture de l'URL publique.
+
+### Vérification de déploiement — 2026-11-04 22:39:11 +01:00 — Codex
+- Commit de publication c880bf4a67b10547c377563db92ff4c484aff112 ; git ls-remote confirme origin/main.
+- URL calculateurs : https://achatkm-glitch.github.io/cours-publics/mftn/calculateurs/ ; HTTP 200 après propagation. Navigateur : « Accueil · 4 séances », les quatre sections S1–S4, le QR et son lien de secours visibles.
+- Page d'accueil : https://achatkm-glitch.github.io/cours-publics/ ; carte MFTN vérifiée, libellé « QUATRE SÉANCES » et lien actif. Date de version ajustée du 3 au 4 novembre 2026.
+- SHA-256 identiques entre les 13 ressources locales publiées et leurs copies dans le dépôt. Pas de contrôle scientifique nouveau ni de compilation PDF.

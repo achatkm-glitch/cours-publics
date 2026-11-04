@@ -231,3 +231,11 @@
 - Périmètre : publier les fichiers d'exécution et assets référencés ; mettre à jour la carte d'accueil racine ; consigner empreintes, commit et déploiement.
 - Contrôles initiaux : branche main, HEAD e33c1a7 aligné avec origin/main, arbre propre ; table des verrous sans verrou actif au démarrage. Dernière activité MFTN vérifiée : tâche 103 libérée à 22:22:53 +01:00.
 - Prochaine action : synchroniser les ressources publiables, vérifier les références, pousser et contrôler GitHub Pages.
+
+### 2026-11-04 22:39:11 +01:00 — Clôture — publication du calculateur MFTN — Codex
+- Fait : le calculateur local organisé en quatre séances, le QR, les trois images et les médias vidéo sont synchronisés dans mftn/calculateurs/ ; la carte racine précise quatre séances et sa date de version est le 4 novembre 2026.
+- Publication : commit c880bf4a67b10547c377563db92ff4c484aff112 poussé sur origin/main ; git ls-remote confirme exactement le même hash. GitHub Pages sert le nouvel index (HTTP 200, 51 874 octets avec paramètre de cache distinct).
+- Contrôle navigateur : page publique rendue ; navigation « Séance 1 » à « Séance 4 », accueil quatre séances, panneau QR et lien vers la page publique présents dans l'arbre d'accessibilité. Page d'accueil racine : carte « QUATRE SÉANCES » et lien calculateurs vérifiés.
+- Contrôles de ressources : SHA-256 des 13 fichiers publiables identique à Peda_inv/site ; chemins QR et vidéo présents. Les autres fichiers de développement ne sont pas publiés. Aucun PDF touché, aucun test automatisé exécuté.
+- Limites : pas de relecture scientifique nouvelle ; le contenu publié est identique au site local, la vérification porte sur l'intégrité et la disponibilité technique.
+- Prochaine étape : relecture de contenu selon le FIFO du cours ; publication achevée, tous les verrous Codex libérés.

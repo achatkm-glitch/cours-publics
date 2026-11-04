@@ -164,3 +164,6 @@
 
 ### 2026-11-04 22:30:28 +01:00 — Synchronisation du site MFTN sur GitHub — Codex
 Instruction utilisateur : « il faut synchroniser le github », après intégration locale du QR pointant vers la page publique. Interprétation : publier la version locale actuelle à quatre séances du calculateur vers cours-publics/mftn/calculateurs/ et mettre à jour sa carte d'accueil. Reçu par Codex. Prise en charge immédiate ; aucun verrou concurrent actif au démarrage.
+
+### 2026-11-04 22:39:11 +01:00 — Publication GitHub Pages achevée — Codex
+La version locale à quatre séances est publiée sur main. Le commit c880bf4 est confirmé par git ls-remote. La page publique a été chargée dans le navigateur : navigation S1–S4, accueil à quatre séances et QR visibles. Les contrôles HTTP confirment la version courante ; les empreintes du site et de ses assets correspondent à la source. La date de la carte d'accueil a été actualisée au 4 novembre 2026. Verrous libérés à la clôture.
