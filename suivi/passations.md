@@ -315,3 +315,9 @@ Les scripts, styles et index du site public ont été recopiés depuis MFTN ; em
 
 #### Contrôle local — 2026-11-05 00:32:10 +01:00
 Dans le navigateur local (127.0.0.1:8766/#chemin), clic sur un point du graphe Dufort–Frankel : l’infobulle expose le cas, h et la valeur α(Δt/h)² ; flèche droite au clavier : la valeur suit le point parcouru. L’aperçu montre aussi les pentes observées dans les légendes. La publication et son contrôle restent à faire.
+
+### 2026-11-05 00:33:56 +01:00 — Clôture tâche 110 — Codex
+- Source et miroir présentent le même index, script et style (SHA-256 identiques) ; `node --check` et `git diff --check` passent.
+- Commit de contenu public `4f30255a1c3f5a071f4272ba78f9c33ff773b8a3` confirmé sur `origin/main` ; GitHub Pages run `41932101445` réussi.
+- Page publique contrôlée dans le navigateur après rechargement : pente observée affichée dans les deux légendes ; clic sur la courbe Dufort–Frankel affiche le cas, h et α(Δt/h)² ; une valeur a été parcourue au clavier en contrôle local.
+- Verrous publics libérés. Aucune donnée ou source scientifique nouvelle ; pentes désignées comme mesures de la plage affichée.
