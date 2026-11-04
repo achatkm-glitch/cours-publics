@@ -260,3 +260,16 @@
 - Verrous public index.html, style.css et suivis libérés. La copie locale Peda_inv reste la source.
 ### 2026-11-04 23:00:04 +01:00 — Addendum — synchronisation de la source MFTN — Codex
 La source Peda_inv/site/index.html, style.css et les registres de tâche ont été poussés dans le dépôt MFTN par le commit b9936047ff0383fe6be7d80e288d635386ebf9f8 ; git ls-remote confirme origin/main. Seules les modifications préexistantes aux audits et à repo_index ont été laissées hors commit.
+### 2026-11-04 23:05:45 +01:00 — Prise tâche 107 — bloc Transport MFTN — Codex
+- Dépôt : C:\Latex\cours-publics, main propre au départ, aligné sur origin/main ; la source éditable reste dans C:\Latex\MFTN\Peda_inv\site.
+- Fichiers réservés : mftn/calculateurs/situations.js et registres de suivi concernés ; ne pas remplacer les fichiers non concernés.
+- Source USGS contrôlée : page de la vidéo confirme durée 1:42 et domaine public ; étude de traceur Rhodamine WT et ressource vidéo documentées par l’USGS. Le MP4 de 212 MB sera lié en externe, pas ajouté au dépôt.
+- Prochaine action : mettre le média réaliste avant la figure de principe, vérifier rendu local, synchroniser le miroir public, contrôler en ligne puis libérer.
+#### Précision du verrou — 2026-11-04 23:09:40 +01:00
+mftn/calculateurs/app.js ajouté au périmètre réservé : il doit réordonner l’affichage des médias du bloc Transport avant le schéma. Aucun fichier public n’est encore modifié.
+#### Précision des fichiers réservés — 2026-11-04 23:10:54 +01:00
+Ajout de mftn/calculateurs/index.html au verrou pour versionner les URL de pp.js et situations.js et éviter un rendu hybride depuis le cache.
+### 2026-11-04 23:14:45 +01:00 — Contenu prêt à synchroniser — tâche 107 — Codex
+Le miroir index.html, pp.js, situations.js est identique à la source MFTN (SHA-256 concordants). Verrous sur ces trois fichiers libérés avant le commit et le push ; les registres de clôture restent réservés jusqu’à la vérification GitHub Pages.
+### 2026-11-04 23:17:11 +01:00 — Cache en propagation — tâche 107 — Codex
+Après le push 4c7560e, le navigateur ouvert immédiatement a rendu le contenu précédent ; la vérification HTTP sans cache retrouvait déjà le code nouveau. Les scripts sont maintenant référencés par l’identifiant 20261104-107c. Index source et miroir identiques ; publication et relecture navigateur à refaire.
