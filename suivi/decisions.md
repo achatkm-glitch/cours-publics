@@ -194,6 +194,11 @@ Le commit b9936047ff0383fe6be7d80e288d635386ebf9f8 portant la source locale et l
 - **Portée** : texte d’accueil uniquement, site local MFTN et miroir public.
 - **Responsable** : Codex, tâche 109.
 
+### 2026-11-05 00:17:49 +01:00 — Pentes et interactions des figures
+- **Instruction utilisateur** : afficher une valeur de pente quand elle est utile et rendre les figures du site aussi interactives que possible, avec infobulles ou interactions.
+- **Choix de mise en œuvre** : pente de régression sur les points positifs affichés, uniquement sur les courbes log-log de raffinement/erreur ; valeur explicitement nommée « pente observée ». Les graphes de séries donnent accès aux coordonnées au survol, au toucher et au clavier.
+- **Responsable** : Codex, tâche 110.
+
 ### 2026-11-04 23:40:32 +01:00 — Clôture de la publication Transport — Codex
 - La version publique utilise les scripts avec cache-buster 20261104-107d ; commit cours-publics e7141ed090e2910fe653bf981eef3d9331e7e34d, Pages run 41927003845 réussi.
 - Inspection de la page publiée : photographie ESA et crédits, lien USGS et limite d’interprétation, mise en problème, schéma simplifié ; équations et calculateur toujours présents.

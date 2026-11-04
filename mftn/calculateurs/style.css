@@ -77,6 +77,14 @@ th, td { border-bottom: 1px solid var(--line); padding: 4px 8px; text-align: rig
 th:first-child, td:first-child { text-align: left; }
 th { color: var(--muted); font-weight: 600; }
 canvas { width: 100%; max-width: 460px; aspect-ratio: 1 / 1; display: block; background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
+.interactive-plot-wrap { position: relative; width: 100%; }
+.interactive-plot-wrap canvas:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.plot-tooltip { position: absolute; z-index: 5; max-width: min(260px, 90%); padding: 6px 9px; border: 1px solid var(--blue); border-radius: 6px; background: var(--card); color: var(--ink); box-shadow: 0 3px 12px #0005; font-size: .8rem; font-variant-numeric: tabular-nums; pointer-events: none; }
+.plot-tooltip[hidden] { display: none; }
+.plot-marker { position: absolute; z-index: 4; width: 10px; height: 10px; box-sizing: border-box; border: 2px solid var(--card); border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 1px var(--ink); pointer-events: none; }
+.plot-marker[hidden] { display: none; }
+.legend .slope-help { cursor: help; text-decoration: underline dotted; text-underline-offset: 3px; }
+.interactive-hint { margin: 5px 0 0; color: var(--muted); font-size: .82rem; }
 .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); margin: 6px 0; }
 .legend i { display: inline-block; width: 22px; height: 0; border-top: 3px solid; vertical-align: middle; margin-right: 5px; }
 footer { max-width: 1100px; margin: 0 auto 30px; padding: 0 16px; color: var(--muted); font-size: 0.85rem; }

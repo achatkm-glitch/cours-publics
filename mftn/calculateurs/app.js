@@ -43,6 +43,68 @@
     for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-12 * step; v += step) t.push(Math.abs(v) < 1e-12 * step ? 0 : v);
     return t;
   }
+  function observedLogSlope(s) {
+    const p = s.x.map((x, i) => [x, s.y[i]]).filter(([x, y]) => isFinite(x) && isFinite(y) && x > 0 && y > 0).map(([x, y]) => [Math.log(x), Math.log(y)]);
+    if (p.length < 2) return NaN;
+    const mx = p.reduce((a, v) => a + v[0], 0) / p.length, my = p.reduce((a, v) => a + v[1], 0) / p.length;
+    const den = p.reduce((a, v) => a + (v[0] - mx) ** 2, 0);
+    return den > 0 ? p.reduce((a, v) => a + (v[0] - mx) * (v[1] - my), 0) / den : NaN;
+  }
+  function attachPlotInteraction(canvas, points, area, labels) {
+    let wrap = canvas.parentElement;
+    if (!wrap.classList.contains('interactive-plot-wrap')) {
+      const next = document.createElement('div'); next.className = 'interactive-plot-wrap';
+      canvas.parentNode.insertBefore(next, canvas); next.appendChild(canvas); wrap = next;
+    }
+    let state = canvas._plotInteraction;
+    if (!state) {
+      const tip = document.createElement('div'); tip.id = canvas.id + '-tooltip'; tip.className = 'plot-tooltip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true;
+      const marker = document.createElement('span'); marker.className = 'plot-marker'; marker.setAttribute('aria-hidden', 'true'); marker.hidden = true;
+      wrap.appendChild(tip);
+      wrap.appendChild(marker);
+      canvas.tabIndex = canvas.tabIndex < 0 ? 0 : canvas.tabIndex;
+      canvas.setAttribute('aria-describedby', tip.id);
+      canvas._plotInteraction = state = { tip, marker, points: [], area: null, labels: {}, pinned: false, keyboardIndex: -1 };
+      const show = (p, px, py) => {
+        if (!p) { state.tip.hidden = true; state.marker.hidden = true; return; }
+        state.tip.textContent = `${p.label} · ${state.labels.x} = ${fmt(p.x, 5)} · ${state.labels.y} = ${fmt(p.y, 5)}`;
+        state.tip.hidden = false;
+        const wr = wrap.getBoundingClientRect(), cr = canvas.getBoundingClientRect();
+        state.marker.hidden = false;
+        state.marker.style.left = (cr.left - wr.left + p.px - 5) + 'px';
+        state.marker.style.top = (cr.top - wr.top + p.py - 5) + 'px';
+        const left = cr.left - wr.left + px + 10, top = cr.top - wr.top + py + 10;
+        state.tip.style.left = Math.max(2, Math.min(left, Math.max(2, wrap.clientWidth - state.tip.offsetWidth - 2))) + 'px';
+        state.tip.style.top = Math.max(2, Math.min(top, Math.max(2, cr.height - state.tip.offsetHeight - 2))) + 'px';
+      };
+      const nearest = (x, y) => {
+        const a = state.area; if (!a || x < a.l || x > a.r || y < a.t || y > a.b) return null;
+        let best = null, d2 = 22 * 22;
+        state.points.forEach(p => { const dx = p.px - x, dy = p.py - y, d = dx * dx + dy * dy; if (d < d2) { best = p; d2 = d; } });
+        return best;
+      };
+      canvas.addEventListener('pointermove', e => {
+        const r = canvas.getBoundingClientRect(), sx = canvas.clientWidth / r.width, sy = canvas.clientHeight / r.height;
+        const x = (e.clientX - r.left) * sx, y = (e.clientY - r.top) * sy;
+        const p = nearest(x, y); if (e.pointerType === 'touch' && p) state.pinned = true;
+        if (!state.pinned || e.pointerType === 'touch') show(p, x, y);
+      });
+      canvas.addEventListener('pointerleave', () => { if (!state.pinned) { state.tip.hidden = true; state.marker.hidden = true; } });
+      canvas.addEventListener('click', e => {
+        const r = canvas.getBoundingClientRect(), sx = canvas.clientWidth / r.width, sy = canvas.clientHeight / r.height;
+        const x = (e.clientX - r.left) * sx, y = (e.clientY - r.top) * sy, p = nearest(x, y);
+        state.pinned = !!p; show(p, x, y);
+      });
+      canvas.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { state.pinned = false; state.tip.hidden = true; state.marker.hidden = true; return; }
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault(); if (!state.points.length) return;
+        state.keyboardIndex = (state.keyboardIndex + (e.key === 'ArrowRight' ? 1 : -1) + state.points.length) % state.points.length;
+        const p = state.points[state.keyboardIndex]; show(p, p.px, p.py); state.pinned = true;
+      });
+    }
+    state.points = points; state.area = area; state.labels = labels; state.pinned = false; state.tip.hidden = true; state.marker.hidden = true;
+  }
   function plot(canvas, series, o) {
     o = o || {};
     (window.__plotLog = window.__plotLog || {})[canvas.id] = (series || []).map(s => s.color); // contrôle des couleurs en double
@@ -65,6 +127,11 @@
     if (y1 === y0) { y0 -= 1; y1 += 1; }
     const padY = o.ylim ? 0 : 0.06 * (y1 - y0); y0 -= padY; y1 += padY;
     const X = v => L + (tx(v) - x0) / (x1 - x0) * pw, Y = v => T + ph - (ty(v) - y0) / (y1 - y0) * ph;
+    const hitPoints = [];
+    series.forEach(s => s.x.forEach((v, i) => {
+      const y = s.y[i]; if (!isFinite(v) || !isFinite(y) || (o.logx && v <= 0) || (o.logy && y <= 0)) return;
+      hitPoints.push({ px: X(v), py: Y(y), x: v, y, label: s.label || 'Courbe' });
+    }));
     const grid = css('--plot-grid'), axis = css('--plot-axis'), muted = css('--muted');
     g.font = '12px system-ui, sans-serif'; g.lineWidth = 1;
     const ticksOf = (a, b, log) => {
@@ -108,11 +175,17 @@
     if (o.xlabel) g.fillText(o.xlabel, L + pw / 2, W - 8);
     if (o.ylabel) { g.save(); g.translate(14, T + ph / 2); g.rotate(-Math.PI / 2); g.fillText(o.ylabel, 0, 0); g.restore(); }
     if (o.title) { g.fillStyle = axis; g.textAlign = 'left'; g.fillText(o.title, L, 16); }
+    attachPlotInteraction(canvas, hitPoints, { l: L, r: L + pw, t: T, b: T + ph }, { x: o.xlabel || 'x', y: o.ylabel || 'y' });
   }
-  function legend(el, items) {
-    el.innerHTML = items.map(s => `<span><i style="border-color:${s.color};border-top-style:${s.dash ? 'dashed' : 'solid'}"></i>${s.label}</span>`).join('');
+  function legend(el, items, o) {
+    el.innerHTML = items.map(s => {
+      const m = o && o.showSlope ? observedLogSlope(s) : NaN;
+      const slope = isFinite(m) ? ` · pente observée ≈ ${fmt(m, 2)}` : '';
+      const help = isFinite(m) ? `Pente de régression des points affichés : ${fmt(m, 3)}. Elle décrit cet essai et cette plage de maillages.` : '';
+      return `<span${help ? ` class="slope-help" title="${help}"` : ''}><i style="border-color:${s.color};border-top-style:${s.dash ? 'dashed' : 'solid'}"></i>${s.label}${slope}</span>`;
+    }).join('');
   }
-  const draw = (canvasId, legId, series, opts) => { plot($(canvasId), series, opts); legend($(legId), series); };
+  const draw = (canvasId, legId, series, opts) => { plot($(canvasId), series, opts); legend($(legId), series, opts); };
 
   /* ---------- résultats : cartes colorées (pas de tableaux) et jauge du nombre de Péclet ---------- */
   function cards(el, items) {
@@ -312,7 +385,7 @@
     const last = rows[rows.length - 1];
     cards($('o-table'), defs.map(d => ({ color: d[3], title: d[2], lines: [`ordre observé : <b>${last[d[1]] === undefined ? '—' : fmt(last[d[1]], 3)}</b>`, `erreur pour h = ${fmt(last.h, 4)} : <b>${fmt(last[d[0]], 3)}</b>`] })));
     const S = defs.map(d => ({ x: rows.map(r => r.h), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true }));
-    draw('o-plot', 'o-leg', S, { logx: true, logy: true, xlabel: 'h', ylabel: 'erreur en x = 1', title: 'u = sin(x)' });
+    draw('o-plot', 'o-leg', S, { logx: true, logy: true, showSlope: true, xlabel: 'h', ylabel: 'erreur en x = 1', title: 'u = sin(x)' });
     const lr = rows[rows.length - 1], tx = v => v === undefined ? 'à mesurer avec au moins deux pas' : `<b>${fmt(v, 3)}</b>`;
     explain('ordre', [
       `Progressive : ordre observé ${tx(lr.ordreProg)} (attendu 1) : diviser h par 2 divise l\u2019erreur par 2.`,
@@ -332,7 +405,7 @@
     const defs = [['e1', 'p1', `${nom} : fermeture d\u2019ordre 1`, c[1]], ['e2', 'p2', `${nom} : ordre 2 (régressive)`, c[0]], ['e3', 'p3', `${nom} : point fantôme`, c[2]]];
     const lastN = rows[rows.length - 1];
     cards($('n-table'), defs.map(d => ({ color: d[3], title: d[2], lines: [`ordre observé : <b>${lastN[d[1]] === undefined ? '—' : fmt(lastN[d[1]], 3)}</b>`, `erreur pour N = ${lastN.N} : <b>${fmt(lastN[d[0]], 3)}</b>`] })));
-    draw('n-plot', 'n-leg', defs.map(d => ({ x: rows.map(r => 1 / r.N), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true })), { logx: true, logy: true, xlabel: 'h = 1/N', ylabel: 'erreur maximale', title: 'Erreur globale selon h (cos x + x)' });
+    draw('n-plot', 'n-leg', defs.map(d => ({ x: rows.map(r => 1 / r.N), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true })), { logx: true, logy: true, showSlope: true, xlabel: 'h = 1/N', ylabel: 'erreur maximale', title: 'Erreur globale selon h (cos x + x)' });
     const Np = Math.round(num('n-Np')), prof = [1, 2, 3].map(k => Calc.neumann(Np, k, opts));
     draw('n-plot2', 'n-leg2', defs.map((d, k) => ({ x: prof[k].x, y: prof[k].errs.map(v => Math.max(v, 1e-16)), color: d[3], label: d[2], points: true })), { logy: true, xlabel: 'x', ylabel: 'erreur en chaque nœud', title: `Où l\u2019erreur se forme (N = ${Np})` });
     const lr = rows[rows.length - 1], tx = v => v === undefined ? 'à mesurer avec au moins deux maillages' : `<b>${fmt(v, 3)}</b>`;
@@ -380,7 +453,7 @@
     schemes.forEach((s, i) => dts.forEach(dt => { const r = run(s, dt); rows.push({ s, i, dt: tf / Math.max(1, Math.round(tf / dt)), r }); }));
     cards($('c-table'), rows.map(o => ({ color: c[o.i], title: `${SCHEME[o.s]} · Δt = ${fmt(o.dt, 4)} s`, lines: [`Fo = <b>${fmt(o.r.Fo, 4)}</b> (${Math.max(1, Math.round(tf / o.dt))} pas ; temps final = ${fmt(o.r.t, 4)} s)`, `erreur maximale = <b>${fmt(o.r.maxErr, 4)}</b>`, o.s === 'ri' ? '<b>instable pour tout Fo</b>' : (o.s === 'ftcs' ? (o.r.stable ? 'critère Fo ≤ 1/2 respecté' : '<b>Fo > 1/2 : critère de FTCS non respecté</b>') : (o.s === 'df' ? 'erreur bornée dans ce calcul (stabilité vue au chapitre 4)' : 'stable pour tout Fo'))] })));
     const S2 = schemes.map((s, i) => { const pr = rows.filter(o => o.s === s).sort((p, q) => p.dt - q.dt); return { x: pr.map(o => o.dt), y: pr.map(o => o.r.maxErr), color: c[i], label: SCHEME[s], points: true }; });
-    draw('c-plot2', 'c-leg2', S2, { logx: true, logy: true, xlabel: 'Δt (s)', ylabel: 'erreur maximale', title: 'Erreur selon Δt' });
+    draw('c-plot2', 'c-leg2', S2, { logx: true, logy: true, showSlope: true, xlabel: 'Δt (s)', ylabel: 'erreur maximale', title: 'Erreur selon Δt' });
     const Lx = [];
     schemes.forEach(s => { const pr = rows.filter(o => o.s === s).sort((p, q) => q.dt - p.dt), o0 = pr[0];
       const st = s === 'ftcs' ? (o0.r.stable ? `Fo = ${fmt(o0.r.Fo, 3)} ≤ 1/2 : stable` : `Fo = ${fmt(o0.r.Fo, 3)} > 1/2 : <b>instable</b>, l’erreur explose`) : (s === 'ri' ? `<b>instable</b> pour tout Fo (Fo = ${fmt(o0.r.Fo, 3)}), l’erreur explose` : (s === 'df' ? `erreur bornée dans ce calcul (Fo = ${fmt(o0.r.Fo, 3)})` : `inconditionnellement stable (Fo = ${fmt(o0.r.Fo, 3)})`));
@@ -402,8 +475,8 @@
       return { color: c[i], title: `r = ${fmt(r, 3)}`, lines: [`Dufort–Frankel : <b>${v.df}</b>`, `Lax–Friedrichs : <b>${v.lxf}</b>`, `pour h = ${fmt(last.h, 4)} : α(Δt/h)² = ${fmt(last.dfTerme, 4)} ; h²/(2Δt) = ${fmt(last.lxfTerme, 4)}`] }; }));
     const S1 = all.map((rows, i) => ({ x: rows.map(r => r.h), y: rows.map(r => r.dfTerme), color: c[i], points: true, label: `r = ${fmt(rs[i], 3)}` }));
     const S2 = all.map((rows, i) => ({ x: rows.map(r => r.h), y: rows.map(r => r.lxfTerme), color: c[i], points: true, label: `r = ${fmt(rs[i], 3)}` }));
-    draw('p-plot', 'p-leg', S1, { logx: true, logy: true, xlabel: 'h', ylabel: 'α(Δt/h)²', title: 'Dufort–Frankel' });
-    draw('p-plot2', 'p-leg2', S2, { logx: true, logy: true, xlabel: 'h', ylabel: 'h²/(2Δt)', title: 'Lax–Friedrichs' });
+    draw('p-plot', 'p-leg', S1, { logx: true, logy: true, showSlope: true, xlabel: 'h', ylabel: 'α(Δt/h)²', title: 'Dufort–Frankel' });
+    draw('p-plot2', 'p-leg2', S2, { logx: true, logy: true, showSlope: true, xlabel: 'h', ylabel: 'h²/(2Δt)', title: 'Lax–Friedrichs' });
     explain('chemin', [...rs.map(r => { const v = Calc.verdictsChemin(r); return `r = ${fmt(r, 3)} : Dufort–Frankel <b>${v.df}</b> ; Lax–Friedrichs <b>${v.lxf}</b>.`; }),
       'Dufort–Frankel est consistant avec l\u2019équation de la chaleur seulement si α(Δt/h)² tend vers 0 ; Lax–Friedrichs seulement si h²/(2Δt) tend vers 0. Le chemin de raffinement, c\u2019est-à-dire la façon dont Δt décroît avec h, décide donc de la consistance.']);
 
@@ -488,7 +561,7 @@
       return { s, i, rows, observed };
     });
     draw('a-conv', 'a-conv-leg', conv.map(o => ({ x: o.rows.map(r => r.h), y: o.rows.map(r => r.err), color: c[o.i], points: true, label: SCHEME[o.s] })),
-      { xlabel: 'h = 10/Nx (m)', ylabel: 'erreur maximale', title: `Erreur au temps t = ${fmt(tf, 3)} s` });
+      { logx: true, logy: true, showSlope: true, xlabel: 'h = 10/Nx (m)', ylabel: 'erreur maximale', title: `Erreur au temps t = ${fmt(tf, 3)} s` });
     const items = [];
     schemes.forEach((s, i) => Nxs.forEach(Nx => { const r = run(s, Nx); items.push({ color: c[i], title: `${SCHEME[s]} · Nx = ${Nx}`, lines: [`max <b>${fmt(r.max, 3)}</b> · min <b>${fmt(r.min, 3)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 3)}</b>`] }); }));
     conv.forEach(o => items.push({ color: c[o.i], title: `${SCHEME[o.s]} · erreur au raffinement`, lines: [`Nx = ${o.rows.map(r => r.Nx).join(' ; ')}`, `ordres observés : ${o.observed.map(v => `<b>${fmt(v, 3)}</b>`).join(' ; ')}`, `temps finaux vérifiés : ${o.rows.map(r => fmt(r.t, 6)).join(' ; ')} s`] }));

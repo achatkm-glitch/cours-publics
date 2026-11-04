@@ -6,7 +6,7 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| — | Aucun verrou actif | tâche 109 clôturée le 2026-11-05 00:13:38 +01:00 |
+| `mftn/calculateurs/app.js`, `mftn/calculateurs/style.css`, `mftn/calculateurs/index.html`, registres de tâche | ACTIF — Codex, tâche 110 | 2026-11-05 00:17:49 +01:00 |
 
 ## Règles
 

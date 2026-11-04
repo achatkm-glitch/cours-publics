@@ -303,3 +303,15 @@ Le miroir equations.js est identique à Peda_inv/site/equations.js (SHA-256 A46C
 - Commit de contenu `fa6a8c355661861a1458d47215a9cdf2a5a9e587` confirmé sur `origin/main`.
 - GitHub Pages run `41931889921` terminé avec succès ; requête HTTP 200 avec cache évité, paragraphe public attendu vérifié.
 - Verrous de la tâche libérés ; aucun autre contenu modifié.
+
+### 2026-11-05 00:17:49 +01:00 — Prise tâche 110 — interactivité des graphiques — Codex
+- Instruction utilisateur : rendre les figures plus interactives, montrer une pente lorsqu’elle est utile et ajouter des infobulles.
+- Prise FIFO Codex. Dépôt public `main`, propre avant prise ; le miroir réservé est `mftn/calculateurs/app.js`, `style.css`, `index.html` et ces registres.
+- Choix de portée : pentes empiriques seulement sur les graphes log-log d’erreur/raffinement, libellées comme observées ; interaction coordonnées x/y au survol et au toucher pour les graphes de séries.
+- Prochaine action : modifier le site source et le miroir à l’identique, vérifier les graphes en navigateur puis publier.
+
+#### Avancement — 2026-11-05 00:29:14 +01:00
+Les scripts, styles et index du site public ont été recopiés depuis MFTN ; empreintes SHA-256 source/miroir identiques. Le JavaScript passe `node --check`; aperçu Edge headless du chemin de raffinement : pente mesurée dans les légendes, graphe lisible. Le contrôle fin du survol/toucher reste à faire après publication ; aucun verrou libéré.
+
+#### Contrôle local — 2026-11-05 00:32:10 +01:00
+Dans le navigateur local (127.0.0.1:8766/#chemin), clic sur un point du graphe Dufort–Frankel : l’infobulle expose le cas, h et la valeur α(Δt/h)² ; flèche droite au clavier : la valeur suit le point parcouru. L’aperçu montre aussi les pentes observées dans les légendes. La publication et son contrôle restent à faire.
