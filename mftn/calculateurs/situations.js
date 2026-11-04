@@ -27,8 +27,9 @@
 
   const S = {
     transport: {
+      video: { page: 'https://www.usgs.gov/media/videos/usgs-missouri-river-dye-tracing-assessment', legende: 'Exemple réel : un colorant traceur est transporté et dispersé dans le Missouri. Cette observation à l’échelle du fleuve ne mesure pas la diffusivité D du modèle. U.S. Geological Survey, 5 mai 2021, 1 min 42, domaine public.' },
       photo: { src: 'img/Sediment_plume_at_sea_1280px.jpg', alt: 'Panache de sédiments en mer vu par satellite', legende: 'Panache de sédiments en mer vu par le satellite Sentinel-2B (5 février 2019). ESA, « Contains modified Copernicus Sentinel data (2019), processed by ESA », <a href="https://creativecommons.org/licenses/by-sa/3.0/igo/deed.en">CC BY-SA 3.0 IGO</a>, <a href="https://commons.wikimedia.org/wiki/File:Sediment_plume_at_sea.jpg">via Wikimedia Commons</a> (miniature de 1280 px).' },
-      texte: "Un polluant ou une eau chaude est rejeté dans une rivière : le courant l'emporte (advection) pendant qu'il s'étale peu à peu (diffusion). Le nombre de Péclet compare les deux effets.",
+      texte: "Mise en problème simplifiée. Un polluant ou une eau chaude est rejeté dans un courant uniforme. Où le signal est-il transporté ? Comment s'étale-t-il ? Le nombre de Péclet compare advection et diffusion dans le modèle.",
       svg: wrap(
         `<rect x="10" y="40" width="360" height="90" fill="var(--blue)" opacity="0.14"/>` +
         `<path d="M10 40 H370 M10 130 H370" stroke="var(--blue)" stroke-width="2.2"/>` +

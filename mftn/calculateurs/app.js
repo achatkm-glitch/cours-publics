@@ -527,8 +527,12 @@
       const lead = panel.querySelector('.lead'); if (!lead) return;
       const box = document.createElement('div'); box.className = 'sit2';
       const ph = S[tab].photo ? `<figure class="sit-photo"><img src="${S[tab].photo.src}" alt="${S[tab].photo.alt}"><figcaption>${S[tab].photo.legende}</figcaption></figure>` : '';
-      const v = S[tab].video ? `<figure class="sit-video"><video controls playsinline preload="metadata" poster="${S[tab].video.poster}" aria-label="${S[tab].video.alt}"><source src="${S[tab].video.src}" type="video/mp4">Votre navigateur ne peut pas lire cette vidéo. <a href="${S[tab].video.src}">Télécharger la vidéo MP4</a>.</video><figcaption>${S[tab].video.legende}</figcaption></figure>` : '';
-      box.innerHTML = `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${ph}${v}`;
+      const v = S[tab].video ? (tab === 'transport'
+        ? `<figure class="sit-video"><a class="btn alt" href="${S[tab].video.page}" target="_blank" rel="noopener">Voir la vidéo USGS sur le traçage au colorant (1 min 42)</a><figcaption>${S[tab].video.legende} <a href="${S[tab].video.page}" target="_blank" rel="noopener">Page et crédits USGS</a>.</figcaption></figure>`
+        : `<figure class="sit-video"><video controls playsinline preload="metadata" poster="${S[tab].video.poster}" aria-label="${S[tab].video.alt}"><source src="${S[tab].video.src}" type="video/mp4">Votre navigateur ne peut pas lire cette vidéo. <a href="${S[tab].video.src}">Télécharger la vidéo MP4</a>.</video><figcaption>${S[tab].video.legende}</figcaption></figure>`) : '';
+      box.innerHTML = tab === 'transport'
+        ? `${ph}${v}<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}`
+        : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${ph}${v}`;
       lead.after(box);
     });
   }
