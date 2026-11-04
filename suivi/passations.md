@@ -297,3 +297,9 @@ Le miroir equations.js est identique à Peda_inv/site/equations.js (SHA-256 A46C
 - Demande utilisateur : remplacer « séances en pédagogie inversée » par « séances de cours ».
 - Le dépôt public `cours-publics` est sur `main`, propre, sans verrou actif ; le fichier réservé est `mftn/calculateurs/index.html` avec les registres de tâche.
 - Prochaine action : modifier le paragraphe d’accueil, comparer le texte public/local, publier puis vérifier le déploiement.
+
+### 2026-11-05 00:13:38 +01:00 — Clôture tâche 109 — Codex
+- `mftn/calculateurs/index.html` reprend le libellé « Outils de simulation pour les séances de cours » ; il est identique au fichier source MFTN.
+- Commit de contenu `fa6a8c355661861a1458d47215a9cdf2a5a9e587` confirmé sur `origin/main`.
+- GitHub Pages run `41931889921` terminé avec succès ; requête HTTP 200 avec cache évité, paragraphe public attendu vérifié.
+- Verrous de la tâche libérés ; aucun autre contenu modifié.
