@@ -198,3 +198,8 @@ Le commit b9936047ff0383fe6be7d80e288d635386ebf9f8 portant la source locale et l
 - **Instruction reçue** : « y a-t-il une façon de l’écrire avec Pe ? si oui préfère cette écriture et mets-la aussi dans l’autre document », en référence à la formule du site local.
 - **Prise FIFO** : tâche 108 par Codex. Le polycopié §9.5 contient déjà l’écriture avec $Pe_{\sigma_0}$ ; l’équation est ajoutée au site et au support projeté C2.
 - **Périmètre public réservé** : mftn/calculateurs/equations.js, mftn/calculateurs/index.html et registres de tâche ; le rendu public et GitHub Pages seront contrôlés avant libération.
+
+### 2026-11-05 00:04:45 +01:00 — Clôture de la publication du Pe — Codex
+- Commits publics 71e222e5199d11b33ceddf7ed988ee94a7fb811a (formule) et d628eaac7e942a9ae33f55670a88351a799fc500 (passation/cache) confirmés sur origin/main ; Pages runs 41930186960 et 41930626952 réussis.
+- La page publique avec cache-buster 20261104-108 rend l’écriture normalisée avec ξ, t* et Pe_{σ0}. Le polycopié contient déjà la même forme ; l’équation est aussi dans les diapositives C2 et leur PDF.
+- Les verrous de publication sont libérés.

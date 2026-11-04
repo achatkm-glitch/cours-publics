@@ -6,7 +6,7 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| mftn/calculateurs/equations.js, mftn/calculateurs/index.html, suivi/decisions.md, suivi/passations.md, suivi/verrous.md | Codex, tâche 108 — formule gaussienne avec Péclet et publication | 2026-11-04 23:59:13 +01:00 |
+| — | Aucun verrou actif | tâche 108 clôturée le 2026-11-05 00:04:45 +01:00 |
 
 ## Règles
 

@@ -285,7 +285,10 @@ Le run GitHub Pages 41927003845 est terminé avec succès. Inspection navigateur
 - Instruction utilisateur : préférer l’écriture de la solution gaussienne en fonction de Pe et la mettre dans l’autre document ; Codex prend la tâche FIFO.
 - Réservation : mftn/calculateurs/equations.js et index.html pour le cache-buster ; les registres de publication sont inclus.
 - Le dépôt public était propre, main au commit 8fc1e72 ; aucun verrou actif avant cette prise.
-- Prochaine étape : copier equations.js depuis MFTN, versionner son URL dans index.html, publier et contrôler la formule accessible.
+- Source equations.js copiée depuis MFTN, SHA-256 identique : A46C4E2C4CBDE078A0D5DCDBA48C83DF24322A3206325CC2D81EA3745C8BFC8C. L’index public utilise equations.js?v=20261104-108.
+- Commits publics 71e222e5199d11b33ceddf7ed988ee94a7fb811a et d628eaac7e942a9ae33f55670a88351a799fc500 confirmés par git ls-remote.
+- GitHub Pages runs 41930186960 et 41930626952 réussis ; la page publique a été contrôlée dans un navigateur avec la formule Pe_{σ0} visible.
+- Verrous publics libérés ; aucune modification de PDF dans ce dépôt.
 
 #### Addendum — 2026-11-05 00:03:10 +01:00
 Le miroir equations.js est identique à Peda_inv/site/equations.js (SHA-256 A46C4E2C4CBDE078A0D5DCDBA48C83DF24322A3206325CC2D81EA3745C8BFC8C). L’index public a été remplacé par la copie source MFTN afin de garantir le même cache-buster equations.js?v=20261104-108. Le premier déploiement du commit 71e222e / run 41930186960 est réussi et a été vérifié dans le navigateur ; le nouvel index modifié déclenchera un déploiement complémentaire, à contrôler avant de libérer les verrous.
