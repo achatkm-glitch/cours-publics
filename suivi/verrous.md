@@ -6,7 +6,7 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| — | Aucun verrou actif | tâche 108 clôturée le 2026-11-05 00:04:45 +01:00 |
+| `mftn/calculateurs/index.html`, `suivi/passations.md`, `suivi/decisions.md`, `suivi/verrous.md` | ACTIF — Codex, tâche 109 | 2026-11-05 00:11:18 +01:00 |
 
 ## Règles
 

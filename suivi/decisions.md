@@ -189,6 +189,11 @@ Le commit b9936047ff0383fe6be7d80e288d635386ebf9f8 portant la source locale et l
 - **Preuve** : HEAD HTTP du média (212 142 895 octets) ; page officielle https://www.usgs.gov/media/videos/usgs-missouri-river-dye-tracing-assessment.
 - **Responsable** : Codex, tâche 107.
 
+### 2026-11-05 00:11:18 +01:00 — Libellé du site
+- **Décision utilisateur** : désigner les séances simplement comme des « séances de cours » dans le paragraphe d’accueil ; retirer la mention « pédagogie inversée ».
+- **Portée** : texte d’accueil uniquement, site local MFTN et miroir public.
+- **Responsable** : Codex, tâche 109.
+
 ### 2026-11-04 23:40:32 +01:00 — Clôture de la publication Transport — Codex
 - La version publique utilise les scripts avec cache-buster 20261104-107d ; commit cours-publics e7141ed090e2910fe653bf981eef3d9331e7e34d, Pages run 41927003845 réussi.
 - Inspection de la page publiée : photographie ESA et crédits, lien USGS et limite d’interprétation, mise en problème, schéma simplifié ; équations et calculateur toujours présents.

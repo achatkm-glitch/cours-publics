@@ -292,3 +292,8 @@ Le run GitHub Pages 41927003845 est terminé avec succès. Inspection navigateur
 
 #### Addendum — 2026-11-05 00:03:10 +01:00
 Le miroir equations.js est identique à Peda_inv/site/equations.js (SHA-256 A46C4E2C4CBDE078A0D5DCDBA48C83DF24322A3206325CC2D81EA3745C8BFC8C). L’index public a été remplacé par la copie source MFTN afin de garantir le même cache-buster equations.js?v=20261104-108. Le premier déploiement du commit 71e222e / run 41930186960 est réussi et a été vérifié dans le navigateur ; le nouvel index modifié déclenchera un déploiement complémentaire, à contrôler avant de libérer les verrous.
+
+### 2026-11-05 00:11:18 +01:00 — Prise tâche 109 — libellé d’accueil — Codex
+- Demande utilisateur : remplacer « séances en pédagogie inversée » par « séances de cours ».
+- Le dépôt public `cours-publics` est sur `main`, propre, sans verrou actif ; le fichier réservé est `mftn/calculateurs/index.html` avec les registres de tâche.
+- Prochaine action : modifier le paragraphe d’accueil, comparer le texte public/local, publier puis vérifier le déploiement.
