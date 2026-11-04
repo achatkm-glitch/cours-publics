@@ -239,3 +239,15 @@
 - Contrôles de ressources : SHA-256 des 13 fichiers publiables identique à Peda_inv/site ; chemins QR et vidéo présents. Les autres fichiers de développement ne sont pas publiés. Aucun PDF touché, aucun test automatisé exécuté.
 - Limites : pas de relecture scientifique nouvelle ; le contenu publié est identique au site local, la vérification porte sur l'intégrité et la disponibilité technique.
 - Prochaine étape : relecture de contenu selon le FIFO du cours ; publication achevée, tous les verrous Codex libérés.
+
+### 2026-11-04 22:46:06 +01:00 — Prise FIFO — précision du bloc Transport MFTN — Codex
+- Demande : le titre du transport/advection et diffusion semble présenter la gaussienne comme nécessaire ; préciser le domaine de validité et le cas simulé.
+- Fichiers réservés : mftn/calculateurs/index.html et suivis associés. La source locale MFTN Peda_inv/site/index.html doit rester identique.
+- État initial : dépôt main, HEAD ebac62f confirmé sur origin/main, arbre propre ; aucun verrou actif.
+- Prochaine action : nommer le principe général et préciser que le calculateur choisit ici une gaussienne initiale ; publier et vérifier le rendu.
+
+### 2026-11-04 22:48:50 +01:00 — Prise parallèle — compacité des curseurs MFTN — Codex
+- Demande : les contrôles range de l'onglet EDP semblent trop imposants par rapport à la page.
+- Périmètre : mftn/calculateurs/style.css (tous les onglets utilisant les curseurs) ; la source Peda_inv/site/style.css dans MFTN reste identique.
+- État initial : main, HEAD ebac62f ; tâche 105 possède le verrou distinct sur mftn/calculateurs/index.html ; aucun chevauchement de fichier.
+- Prochaine action : réduire l'étendue visuelle des curseurs, conserver des cibles tactiles accessibles et contrôler l'onglet EDP en navigateur.

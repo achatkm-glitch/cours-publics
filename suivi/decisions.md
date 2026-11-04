@@ -167,3 +167,9 @@ Instruction utilisateur : « il faut synchroniser le github », après intégrat
 
 ### 2026-11-04 22:39:11 +01:00 — Publication GitHub Pages achevée — Codex
 La version locale à quatre séances est publiée sur main. Le commit c880bf4 est confirmé par git ls-remote. La page publique a été chargée dans le navigateur : navigation S1–S4, accueil à quatre séances et QR visibles. Les contrôles HTTP confirment la version courante ; les empreintes du site et de ses assets correspondent à la source. La date de la carte d'accueil a été actualisée au 4 novembre 2026. Verrous libérés à la clôture.
+
+### 2026-11-04 22:46:06 +01:00 — Précision de la description du calculateur Transport — Codex
+Instruction utilisateur reçue par commentaire de navigateur sur le site local : « pas nécessairement une gaussienne il me semble. soit plus précis ». Prise FIFO par Codex : distinguer l'advection–diffusion valable pour un profil général du cas particulier d'une condition initiale gaussienne effectivement calculé et représenté. Synchronisation du miroir GitHub Pages comprise dans cette correction ; aucun changement aux équations ou calculs.
+
+### 2026-11-04 22:48:50 +01:00 — Compacité des curseurs du calculateur MFTN — Codex
+Instruction utilisateur reçue sur la capture de l'onglet EDP : « je les trouve très imposant la taille est grande comparer à la page ». Prise parallèle par Codex : ajuster la taille visuelle des curseurs sans réduire leur zone tactile ; modification CSS locale et miroir public, vérification visuelle.

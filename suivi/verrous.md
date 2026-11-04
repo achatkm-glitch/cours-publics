@@ -6,7 +6,7 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| — | aucun verrou actif (libéré par Codex 2026-11-04 22:39:11 +01:00) | — |
+| mftn/calculateurs/index.html et style.css, suivi/decisions.md, suivi/passations.md, suivi/verrous.md, suivi/integration_mftn.md | Codex — tâches 105–106 | 2026-11-04 22:48:50 +01:00 |
 
 
 ## Format d'un verrou

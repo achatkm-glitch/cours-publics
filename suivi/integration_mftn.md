@@ -155,3 +155,9 @@ Empreintes SHA-256 source et destination identiques :
 - URL calculateurs : https://achatkm-glitch.github.io/cours-publics/mftn/calculateurs/ ; HTTP 200 après propagation. Navigateur : « Accueil · 4 séances », les quatre sections S1–S4, le QR et son lien de secours visibles.
 - Page d'accueil : https://achatkm-glitch.github.io/cours-publics/ ; carte MFTN vérifiée, libellé « QUATRE SÉANCES » et lien actif. Date de version ajustée du 3 au 4 novembre 2026.
 - SHA-256 identiques entre les 13 ressources locales publiées et leurs copies dans le dépôt. Pas de contrôle scientifique nouveau ni de compilation PDF.
+
+## Précision du bloc Transport et compacité des curseurs — 2026-11-04 22:54:27 +01:00 — Codex
+- Le titre du bloc est désormais général (« advection et diffusion d’un profil initial ») ; le texte précise que le calculateur étudie le cas gaussien exact et que l’équation d’advection-diffusion n’impose pas en général cette forme. Le panneau d’équations conserve l’intitulé exact « solution exacte pour une gaussienne initiale ».
+- Pour les vues ≤ 600 px, longueur maximale des rails de curseurs : 230 px ; espacement vertical de formulaire : 7 px ; cible tactile range conservée à 28 px. Ajustement CSS responsive commun à tous les curseurs.
+- SHA-256 identiques à la source locale MFTN : index.html 58e92f54c7e1149f4438b2267df0d17f7a6500e68f6c33525cc57b100268ddad ; style.css 3ad46e1b2c5c7348f294a3611bd31888a2ab8a98c9a56a779c6046d8ea098876.
+- Aperçu local navigateur : texte mis à jour, formule particulière, curseurs et résultats présents. Aucun calcul, PDF ou document scientifique modifié ; aucune source ajoutée. Déploiement public et inspection après propagation à consigner en clôture.

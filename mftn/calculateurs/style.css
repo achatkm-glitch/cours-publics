@@ -85,6 +85,7 @@ footer { max-width: 1100px; margin: 0 auto 30px; padding: 0 16px; color: var(--m
 .sl { display: flex; gap: 10px; align-items: center; }
 .sl { min-width: 0; }
 .sl input[type=range] { flex: 1 1 0; width: auto; min-width: 0; padding: 0; accent-color: var(--blue); height: 28px; }
+@media (max-width: 600px) { .sl input[type=range] { max-width: 230px; } form.params { gap: 7px; } }
 .sl output { flex: 0 0 auto; min-width: 84px; text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
 .checks { display: flex; gap: 12px; flex-wrap: wrap; }
 .checks label { display: flex; align-items: center; gap: 6px; color: var(--ink); }
