@@ -268,8 +268,15 @@ La source Peda_inv/site/index.html, style.css et les registres de tâche ont ét
 #### Précision du verrou — 2026-11-04 23:09:40 +01:00
 mftn/calculateurs/app.js ajouté au périmètre réservé : il doit réordonner l’affichage des médias du bloc Transport avant le schéma. Aucun fichier public n’est encore modifié.
 #### Précision des fichiers réservés — 2026-11-04 23:10:54 +01:00
-Ajout de mftn/calculateurs/index.html au verrou pour versionner les URL de pp.js et situations.js et éviter un rendu hybride depuis le cache.
+Ajout de mftn/calculateurs/index.html au verrou pour versionner les URL de app.js et situations.js et éviter un rendu hybride depuis le cache.
 ### 2026-11-04 23:14:45 +01:00 — Contenu prêt à synchroniser — tâche 107 — Codex
-Le miroir index.html, pp.js, situations.js est identique à la source MFTN (SHA-256 concordants). Verrous sur ces trois fichiers libérés avant le commit et le push ; les registres de clôture restent réservés jusqu’à la vérification GitHub Pages.
+Le miroir index.html, app.js, situations.js est identique à la source MFTN (SHA-256 concordants). Verrous sur ces trois fichiers libérés avant le commit et le push ; les registres de clôture restent réservés jusqu’à la vérification GitHub Pages.
 ### 2026-11-04 23:17:11 +01:00 — Cache en propagation — tâche 107 — Codex
 Après le push 4c7560e, le navigateur ouvert immédiatement a rendu le contenu précédent ; la vérification HTTP sans cache retrouvait déjà le code nouveau. Les scripts sont maintenant référencés par l’identifiant 20261104-107c. Index source et miroir identiques ; publication et relecture navigateur à refaire.
+### 2026-11-04 23:36 — Révision du cache et relance de Pages — tâche 107 — Codex
+Le run 41923999350 apparaît comme terminé à l’annulation mais reste « queued » dans gh run list; la page Pages demeure errored. La source MFTN change uniquement les deux query-string d’index de 20261104-107c à 20261104-107d, puis est recopiée à l’identique. Cette modification vise un nouveau run automatique de publication ; aucune autre source ni aucun calcul ne change.
+### 2026-11-04 23:37:21 +01:00 — Cache 107d, miroir prêt au commit — tâche 107 — Codex
+La source locale passe à 20261104-107d dans les références à app.js et situations.js. Le miroir public index.html a été recopié à l’identique ; le fichier est libre pour commit. Les registres de tâche restent réservés par Codex.
+
+### 2026-11-04 23:40:32 +01:00 — Clôture tâche 107 — Codex
+Le run GitHub Pages 41927003845 est terminé avec succès. Inspection navigateur de la page publique avec le cache-buster 107d : photo ESA, vidéo USGS liée à la demande, mise en situation puis schéma de principe ; équations et calculateur accessibles. Commit miroir e7141ed090e2910fe653bf981eef3d9331e7e34d confirmé sur origin/main. Verrous de tâche libérés.

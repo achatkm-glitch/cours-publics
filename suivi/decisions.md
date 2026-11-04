@@ -178,3 +178,18 @@ Instruction utilisateur reçue sur la capture de l'onglet EDP : « je les trouve
 Le commit 020fc06 est confirmé sur origin/main. La page publique affiche le libellé général, explique le cas gaussien particulier, et sert la règle responsive des curseurs. Le navigateur confirme la page Transport et l'onglet EDP. Les verrous 105–106 sont libérés.
 ### 2026-11-04 23:00:04 +01:00 — Synchronisation du dépôt source MFTN vérifiée — Codex
 Le commit b9936047ff0383fe6be7d80e288d635386ebf9f8 portant la source locale et la traçabilité des corrections est confirmé sur origin/main. Les modifications préexistantes des audits et de repo_index restent hors commit.
+### 2026-11-04 23:05:45 +01:00 — Séquence visuelle du bloc Transport MFTN
+- **Demande** : placer des exemples réalistes (photo, vidéo réelle si adaptée) avant le schéma simplifié de mise en problème.
+- **Reçu par** : Codex ; **prise** : tâche 107, après vérification FIFO des tâches antérieures clôturées.
+- **Source vidéo vérifiée** : USGS, « USGS Missouri River Dye Tracing Assessment », 1 min 42, domaine public ; vidéo distante 212 142 895 octets, non copiée au dépôt.
+- **Portée prévue** : lien vers la vidéo USGS, photo existante, texte qui distingue transport et dispersion réels de la diffusion moléculaire idéalisée, schéma simplifié en dernier.
+### 2026-11-04 23:13:03 +01:00 — Choix de diffusion pour la vidéo USGS
+- **Décision** : garder le MP4 de 212 Mo hébergé par l’USGS et proposer le lien officiel à la demande ; ne pas dupliquer la vidéo dans le dépôt GitHub Pages.
+- **Raison** : la page USGS confirme les droits domaine public, mais une copie de cette taille alourdirait fortement le dépôt et le site.
+- **Preuve** : HEAD HTTP du média (212 142 895 octets) ; page officielle https://www.usgs.gov/media/videos/usgs-missouri-river-dye-tracing-assessment.
+- **Responsable** : Codex, tâche 107.
+
+### 2026-11-04 23:40:32 +01:00 — Clôture de la publication Transport — Codex
+- La version publique utilise les scripts avec cache-buster 20261104-107d ; commit cours-publics e7141ed090e2910fe653bf981eef3d9331e7e34d, Pages run 41927003845 réussi.
+- Inspection de la page publiée : photographie ESA et crédits, lien USGS et limite d’interprétation, mise en problème, schéma simplifié ; équations et calculateur toujours présents.
+- Source MFTN synchronisée séparément ; aucun PDF ni calcul modifié. Verrous de cette passe libérés.

@@ -6,7 +6,7 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| mftn/calculateurs/index.html, suivi/decisions.md, suivi/passations.md, suivi/verrous.md, suivi/integration_mftn.md | Codex, tâche 107 — invalidation du cache et clôture publique | 2026-11-04 23:17:11 +01:00 |
+| — | Aucun verrou actif | tâche 107 clôturée le 2026-11-04 23:40 +01:00 |
 
 ## Règles
 

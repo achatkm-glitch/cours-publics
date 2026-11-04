@@ -167,3 +167,10 @@ Empreintes SHA-256 source et destination identiques :
 - CSS téléchargé depuis Pages : présence vérifiée de max-width: 230px et du resserrement form.params à 7 px. Sources locales/public index.html (58e92f54c7e1149f4438b2267df0d17f7a6500e68f6c33525cc57b100268ddad) et style.css (3ad46e1b2c5c7348f294a3611bd31888a2ab8a98c9a56a779c6046d8ea098876) identiques. Aucun PDF ni calcul modifié.
 ### Addendum de traçabilité — 2026-11-04 23:00:04 +01:00 — Codex
 Source MFTN synchronisée dans son dépôt : commit b9936047ff0383fe6be7d80e288d635386ebf9f8 confirmé par git ls-remote origin refs/heads/main. Aucun autre fichier MFTN préexistant n'a été inclus.
+### 2026-11-04 23:13:03 +01:00 — Fin de la tâche 107 — ordre visuel Transport
+- Source locale : photo satellite de panache puis lien vers la vidéo officielle USGS, ensuite énoncé simplifié et schéma de principe.
+- La fiche USGS confirme 1 min 42 et le domaine public. Le MP4 distant fait 212 142 895 octets ; il n’est pas téléchargé. Le lien ouvre la page officielle et le chargement reste à la demande.
+- Légende : le colorant traceur illustre transport et dispersion dans le fleuve ; l’observation ne mesure pas la diffusivité D du modèle. Les crédits ESA de la photo existante sont conservés.
+- Aperçu local #transport contrôlé : ordre du contenu, légendes, lien externe, équations et calculateur présents ; index actualisé pour éviter le cache des scripts.
+- Fichiers du miroir mis à l’identique : index.html, app.js, situations.js ; SHA-256 identiques à Peda_inv/site. Aucune modification de calculs ou de PDF.
+- Commit public e7141ed090e2910fe653bf981eef3d9331e7e34d poussé et vérifié sur origin/main. GitHub Pages run 41927003845 terminé avec succès ; page publique ouverte avec le cache-buster 107d et l’ordre média → mise en problème → schéma contrôlé. Aucune modification du calcul ou d’un PDF. Verrous libérés.
