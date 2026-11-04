@@ -161,3 +161,9 @@ Empreintes SHA-256 source et destination identiques :
 - Pour les vues ≤ 600 px, longueur maximale des rails de curseurs : 230 px ; espacement vertical de formulaire : 7 px ; cible tactile range conservée à 28 px. Ajustement CSS responsive commun à tous les curseurs.
 - SHA-256 identiques à la source locale MFTN : index.html 58e92f54c7e1149f4438b2267df0d17f7a6500e68f6c33525cc57b100268ddad ; style.css 3ad46e1b2c5c7348f294a3611bd31888a2ab8a98c9a56a779c6046d8ea098876.
 - Aperçu local navigateur : texte mis à jour, formule particulière, curseurs et résultats présents. Aucun calcul, PDF ou document scientifique modifié ; aucune source ajoutée. Déploiement public et inspection après propagation à consigner en clôture.
+### Vérification en ligne et clôture — 2026-11-04 22:58:56 +01:00 — Codex
+- Commit public 020fc06b7c78f908448b18a9d5b97e707cc8f825 confirmé par git ls-remote origin refs/heads/main ; dépôt cours-publics propre après publication.
+- GitHub Pages ouvert dans le navigateur sur #transport : titre général, distinction explicite du cas gaussien calculé et formule exacte pour ce cas ; #edpb : cinq curseurs et sorties accessibles.
+- CSS téléchargé depuis Pages : présence vérifiée de max-width: 230px et du resserrement form.params à 7 px. Sources locales/public index.html (58e92f54c7e1149f4438b2267df0d17f7a6500e68f6c33525cc57b100268ddad) et style.css (3ad46e1b2c5c7348f294a3611bd31888a2ab8a98c9a56a779c6046d8ea098876) identiques. Aucun PDF ni calcul modifié.
+### Addendum de traçabilité — 2026-11-04 23:00:04 +01:00 — Codex
+Source MFTN synchronisée dans son dépôt : commit b9936047ff0383fe6be7d80e288d635386ebf9f8 confirmé par git ls-remote origin refs/heads/main. Aucun autre fichier MFTN préexistant n'a été inclus.

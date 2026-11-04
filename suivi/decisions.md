@@ -173,3 +173,8 @@ Instruction utilisateur reçue par commentaire de navigateur sur le site local :
 
 ### 2026-11-04 22:48:50 +01:00 — Compacité des curseurs du calculateur MFTN — Codex
 Instruction utilisateur reçue sur la capture de l'onglet EDP : « je les trouve très imposant la taille est grande comparer à la page ». Prise parallèle par Codex : ajuster la taille visuelle des curseurs sans réduire leur zone tactile ; modification CSS locale et miroir public, vérification visuelle.
+
+### 2026-11-04 22:58:56 +01:00 — Publication vérifiée des corrections Transport et des curseurs — Codex
+Le commit 020fc06 est confirmé sur origin/main. La page publique affiche le libellé général, explique le cas gaussien particulier, et sert la règle responsive des curseurs. Le navigateur confirme la page Transport et l'onglet EDP. Les verrous 105–106 sont libérés.
+### 2026-11-04 23:00:04 +01:00 — Synchronisation du dépôt source MFTN vérifiée — Codex
+Le commit b9936047ff0383fe6be7d80e288d635386ebf9f8 portant la source locale et la traçabilité des corrections est confirmé sur origin/main. Les modifications préexistantes des audits et de repo_index restent hors commit.

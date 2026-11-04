@@ -251,3 +251,12 @@
 - Périmètre : mftn/calculateurs/style.css (tous les onglets utilisant les curseurs) ; la source Peda_inv/site/style.css dans MFTN reste identique.
 - État initial : main, HEAD ebac62f ; tâche 105 possède le verrou distinct sur mftn/calculateurs/index.html ; aucun chevauchement de fichier.
 - Prochaine action : réduire l'étendue visuelle des curseurs, conserver des cibles tactiles accessibles et contrôler l'onglet EDP en navigateur.
+
+### 2026-11-04 22:58:56 +01:00 — Clôture — tâches 105–106, site MFTN — Codex
+- Fait : titre et texte de Transport distinguent le phénomène général du cas gaussien exact ; les curseurs sont visuellement plus compacts sur les vues ≤ 600 px, sans réduction de la hauteur de manipulation.
+- Commit public 020fc06b7c78f908448b18a9d5b97e707cc8f825 poussé sur origin/main ; hash distant confirmé.
+- Contrôle en ligne : navigateur a chargé le bloc Transport avec la nouvelle formulation et l’équation explicitement gaussienne ; l’onglet EDP conserve ses cinq contrôles et leurs valeurs. Le CSS public contient max-width: 230px et le gap de 7 px.
+- Limites : contrôle visuel ciblé, aucune relecture scientifique indépendante ; pas de calcul, PDF, source ni test automatisé modifié/exécuté.
+- Verrous public index.html, style.css et suivis libérés. La copie locale Peda_inv reste la source.
+### 2026-11-04 23:00:04 +01:00 — Addendum — synchronisation de la source MFTN — Codex
+La source Peda_inv/site/index.html, style.css et les registres de tâche ont été poussés dans le dépôt MFTN par le commit b9936047ff0383fe6be7d80e288d635386ebf9f8 ; git ls-remote confirme origin/main. Seules les modifications préexistantes aux audits et à repo_index ont été laissées hors commit.
