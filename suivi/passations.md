@@ -403,3 +403,5 @@ Source MFTN et miroir cours-publics sont synchronisés. Pages run 42003125602 r�
 
 ### Prise en charge tâche 120 — 2026-11-05 11:07:29 Europe/Paris (UTC+01:00) — Codex
 Demande reçue : harmoniser la notation du calculateur Transport avec le chapitre 2 du poly. Référence vérifiée : section 2.9 dans le dépôt MFTN, Pe_sigma0, xi, t*. Le miroir cours-publics était propre et synchronisé avec origin/main au HEAD 3fb6dc26f05fa4ede46b3d6acc5ccc5aad8a8117. Aucune réservation active sur les calculateurs. Source de référence MFTN ; copie du miroir après validation. Vérifier l’affichage publié puis libérer le verrou.
+### Clôture tâche 120 — 2026-11-05 11:13:32 Europe/Paris (UTC+01:00) — Codex
+Miroir du calculateur Transport aligné sur le poly : retrait de la notation supplémentaire tc, td, Fo_sigma0 et des rapports normalisés centre/largeur ; conservation de Pe_sigma0, xi et t* déjà utilisés par le chapitre 2 §2.9. Source et miroir synchronisés, syntaxe JavaScript vérifiée. Pages run 42008673233 réussi et page publique contrôlée. Commit miroir beb3b56a7052a25182ac939dbed7a91a86d5037a confirmé sur origin/main. Verrou libéré.

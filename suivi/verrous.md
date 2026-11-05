@@ -32,3 +32,4 @@
 | MFTN Peda_inv/site/app.js, style.css, index.html et miroir mftn/calculateurs/app.js, style.css, index.html, registres tâche 119 | LIBRE — Codex | 2026-11-05 10:37:17 Europe/Paris (UTC+01:00) — Pages run 42003125602 réussi ; test interactif N=100 puis N=200 terminé |
 
 | mftn/calculateurs/index.html, app.js, equations.js et registres tâche 120 | ACTIF — Codex | 2026-11-05 11:07:29 +01:00 |
+| mftn/calculateurs/index.html, app.js, equations.js et registres tâche 120 | LIBRE — Codex | 2026-11-05 11:13:32 — Pages run 42008673233 réussi, inspection publique terminée |
