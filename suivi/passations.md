@@ -564,3 +564,6 @@ La photo remplacée est visible en ligne après le déploiement Pages `420653799
 
 ### Prise FIFO — tâche miroir 134 — 2026-11-05 17:43:55 +01:00 — Codex
 Dépôt cours-publics main, HEAD initial 42955bc, arbre propre et origin/main synchronisé. Tâche miroir de MFTN 144. Source de référence : C:\Latex\MFTN\Peda_inv\site. Réserver mftn/calculateurs/app.js et CSS de palette si requis, ainsi que suivi/{decisions,passations,verrous}.md. Corriger le rendu des couleurs de toutes les séries partageant un même canvas ; préserver les formes de marqueur, pointillés et légendes. Contrôler le screenshot Barre et les autres panneaux avec superpositions, puis publier et vérifier Pages.
+
+### Clôture tâche miroir 134 — 2026-11-05 17:52:27 +01:00 — Codex
+MFTN source et miroir poussés : `eb57fb5` / `fc63d29`, références distantes vérifiées. GitHub Pages run `42068718634` réussi. Page `#barre` et script `app.js?v=20261105-144a` répondent HTTP 200. Le moteur `plot()` garantit une couleur normalisée distincte par série dès qu’un doublon est présent. `node --check` et `git diff --check` réussis. Pas de changement de calcul, PDF ou source. Visuel public chargé ; capture pixel à pixel non conservée. Verrous libérés après publication.

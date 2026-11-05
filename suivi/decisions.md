@@ -336,3 +336,6 @@ Miroir tâche 133 — image de la section Conditions aux limites remplacée par 
 - Raison : le graphe Barre 1D montrait des courbes de différences finies et volumes finis avec la même couleur ; seuls les marqueurs différaient.
 - Preuve : capture utilisateur du graphe solution et erreur/solution analytique.
 - Responsable : Codex, prise FIFO après clôture de la tâche miroir 133.
+
+### Rectification de date — tâche miroir 134 — 2026-11-05 17:52:27 +01:00
+L’horodatage de la décision précédente est mal formé (date répétée). Heure réelle de la prise FIFO consignée dans `suivi/passations.md` : 2026-11-05 17:43:55 +01:00. La décision reste inchangée.
