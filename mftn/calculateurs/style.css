@@ -79,7 +79,7 @@ th { color: var(--muted); font-weight: 600; }
 canvas { width: 100%; max-width: 460px; aspect-ratio: 1 / 1; display: block; background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
 .interactive-plot-wrap { position: relative; width: 100%; }
 .interactive-plot-wrap canvas:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-.plot-tooltip { position: absolute; z-index: 5; max-width: min(260px, 90%); padding: 6px 9px; border: 1px solid var(--blue); border-radius: 6px; background: var(--card); color: var(--ink); box-shadow: 0 3px 12px #0005; font-size: .8rem; font-variant-numeric: tabular-nums; pointer-events: none; }
+.plot-tooltip { position: absolute; z-index: 5; max-width: min(300px, 92%); padding: 7px 9px; border: 1px solid var(--blue); border-radius: 6px; background: var(--card); color: var(--ink); box-shadow: 0 3px 12px #0005; font-size: .78rem; line-height: 1.35; white-space: pre-line; font-variant-numeric: tabular-nums; pointer-events: none; }
 .plot-tooltip[hidden] { display: none; }
 .plot-marker { position: absolute; z-index: 4; width: 10px; height: 10px; box-sizing: border-box; border: 2px solid var(--card); border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 1px var(--ink); pointer-events: none; }
 .plot-marker[hidden] { display: none; }

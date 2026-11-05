@@ -394,3 +394,6 @@ Source de référence MFTN `Peda_inv/site/` réservée pour harmoniser les ongle
 
 ### Clôture tâche 118 — 2026-11-05 10:18:49 +01:00 Europe/Paris
 Code harmonisé et synchronisé depuis MFTN ; commit miroir `fde3a18bb9eaddf7a0ca2fe25ebf8d737abd8bb8`, origin/main confirmé. SHA-256 identiques pour index.html, app.js, equations.js et guide.js. Pages run 42001173087 réussi ; inspection navigateur des sections publiques #transport et #peclet : objectif, équations, notation d’échelle, Pe signé stationnaire, légendes/explications et exercices cohérents. Syntaxe Node et diff contrôlés. Aucun PDF. Verrous libérés.
+
+### Prise en charge tâche 119 — 2026-11-05 10:26:11 +01:00 Europe/Paris — Codex
+Ajout réservé au graphe d’introduction : garder les coordonnées dans la bulle et y présenter une lecture adaptée à la série exacte ou numérique, au point survolé et aux entrées courantes N, C et t. Vérifier puis copier dans `mftn/calculateurs/`, publier et inspecter les deux états. Dépôt miroir propre avant prise, HEAD `a163790ce11254ef3262ca8b3541bf4c13313436`.

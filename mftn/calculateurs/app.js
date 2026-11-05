@@ -89,7 +89,8 @@
       canvas._plotInteraction = state = { tip, marker, points: [], area: null, labels: {}, pinned: false, keyboardIndex: -1 };
       const show = (p, px, py) => {
         if (!p) { state.tip.hidden = true; state.marker.hidden = true; return; }
-        state.tip.textContent = `${p.label} · ${state.labels.x} = ${fmt(p.x, 5)} · ${state.labels.y} = ${fmt(p.y, 5)}`;
+        const note = typeof p.commentAt === 'function' ? p.commentAt(p) : p.commentAt;
+        state.tip.textContent = `${p.label} · ${state.labels.x} = ${fmt(p.x, 5)} · ${state.labels.y} = ${fmt(p.y, 5)}${note ? `\n${note}` : ''}`;
         state.tip.hidden = false;
         const wr = wrap.getBoundingClientRect(), cr = canvas.getBoundingClientRect();
         state.marker.hidden = false;
@@ -152,7 +153,7 @@
     const hitPoints = [];
     series.forEach(s => s.x.forEach((v, i) => {
       const y = s.y[i]; if (!isFinite(v) || !isFinite(y) || (o.logx && v <= 0) || (o.logy && y <= 0)) return;
-      hitPoints.push({ px: X(v), py: Y(y), x: v, y, label: s.label || 'Courbe' });
+      hitPoints.push({ px: X(v), py: Y(y), x: v, y, label: s.label || 'Courbe', commentAt: s.commentAt || null });
     }));
     const grid = css('--plot-grid'), axis = css('--plot-axis'), muted = css('--muted');
     g.font = '12px system-ui, sans-serif'; g.lineWidth = 1;
@@ -698,8 +699,19 @@
       const r = Calc.advection1d({ scheme: s, Nx: N, Co, t });
       const unstable = !isFinite(r.max) || Math.abs(r.max) > 3 || Math.abs(r.min) > 3; bad = bad || unstable;
       const comp = unstable ? 'instable' : (r.maxErr < 1e-9 ? 'exact (décalage d\u2019une maille par pas)' : (r.min < -0.02 || r.max > 1.05 ? 'oscillations (dispersion)' : 'lissage (diffusion numérique)'));
-      plot($(`i-c-${s}-${k}`), [{ x: r.x.concat([1]), y: r.exact.concat([r.exact[0]]), color: css('--plot-axis'), width: 1.4, label: 'exacte' },
-        { x: r.x, y: r.u, color: c[si % 6], noline: true, points: true, label: INTRO[s] }], { xlabel: 'x', ylabel: 'u', ylim: [-0.5, 1.5], title: `${INTRO[s]} à t = ${fmt(t, 3)}` });
+      const chartInputs = `Réglages : N = ${N}, C = ${fmt(Co, 3)}, t = ${fmt(r.t, 3)} tour(s).`;
+      const exactComment = () => `Physique — référence exacte : le signal est transporté sans se déformer et revient après un tour. ${chartInputs}`;
+      const numericComment = p => {
+        const j = ((Math.round(p.x * N) % N) + N) % N, exactAtPoint = r.exact[j], delta = p.y - exactAtPoint;
+        const local = `À ce point, u_num − u_exact = ${fmt(delta, 4)}.`;
+        if (unstable) return `Numérique — instabilité : les valeurs sortent de l’échelle. ${chartInputs}`;
+        if (r.min < -0.02 || r.max > 1.05) return `Numérique — dispersion : oscillations et dépassements autour du front ; la concentration peut devenir non physique. ${local} ${chartInputs}`;
+        if (r.bump < 0.9) return `Numérique — diffusion : la bosse est atténuée et étalée. ${local} ${chartInputs}`;
+        if (Math.abs(delta) < 0.02) return `Numérique — ici, la valeur reste proche de la référence exacte. ${local} ${chartInputs}`;
+        return `Numérique — écart local à la référence exacte. ${local} ${chartInputs}`;
+      };
+      plot($(`i-c-${s}-${k}`), [{ x: r.x.concat([1]), y: r.exact.concat([r.exact[0]]), color: css('--plot-axis'), width: 1.4, label: 'exacte', commentAt: exactComment },
+        { x: r.x, y: r.u, color: c[si % 6], noline: true, points: true, label: INTRO[s], commentAt: numericComment }], { xlabel: 'x', ylabel: 'u', ylim: [-0.5, 1.5], title: `${INTRO[s]} à t = ${fmt(t, 3)}` });
       items.push({ color: c[si % 6], title: `${INTRO[s]} · t = ${fmt(t, 3)}`, lines: [unstable ? 'valeurs hors échelle' : `pic <b>${fmt(r.bump, 3)}</b> (exact 1) · minimum <b>${fmt(r.min, 3)}</b>`, `<b>${comp}</b>`] });
     }));
     $('i-msg').className = bad ? 'msg warn' : 'msg';

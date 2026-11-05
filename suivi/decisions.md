@@ -273,3 +273,8 @@ Harmoniser Transport et Péclet, sans fusionner les onglets : notation commune a
 
 ### Clôture — tâche 118 — 2026-11-05 10:18:49 +01:00 — Codex
 Miroir `index.html`, `app.js`, `equations.js`, `guide.js` commité (`fde3a18bb9eaddf7a0ca2fe25ebf8d737abd8bb8`) et confirmé sur origin/main. SHA source/miroir identiques. GitHub Pages run 42001173087 réussi ; onglets Transport et Péclet contrôlés au navigateur. Verrou libéré.
+
+### Instruction utilisateur / prise FIFO — tâche 119 — 2026-11-05 10:26:11 +01:00 Europe/Paris
+Sur le graphe d’introduction, garder la bulle de coordonnées et y ajouter une lecture contextuelle qui varie selon la série exacte ou numérique, la valeur survolée et les réglages actifs. Codex prend la tâche ; réserver `mftn/calculateurs/app.js`, `style.css`, `index.html` et les registres.
+
+État : implémentation en cours ; l’infobulle ajoute maintenant une interprétation contextualisée à la série, l’écart local, N, C et t. Les sources MFTN ont été copiées dans le miroir avec des SHA-256 identiques. À terminer : publier, inspecter le texte au survol sur la page HTTPS, puis libérer le verrou.
