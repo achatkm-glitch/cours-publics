@@ -671,9 +671,25 @@
     const situation = document.querySelector('#p-edpb .sit-txt');
     if (situation) {
       const gap = num('k-gap');
+      const profileSvg = document.querySelector('#p-edpb .sit2 svg[data-kt="parabolique"]');
+      if (profileSvg) {
+        const hotLeft = profileSvg.querySelector('#k-sit-hot-left'), hotRight = profileSvg.querySelector('#k-sit-hot-right');
+        const profile = profileSvg.querySelector('#k-sit-profile'), caption = profileSvg.querySelector('#k-sit-caption');
+        const xLeft = 190 - 16.25 * gap, xRight = 190 + 16.25 * gap;
+        if (hotLeft) hotLeft.setAttribute('x', String(Math.max(60, Math.min(284, xLeft - 16))));
+        if (hotRight) { hotRight.style.display = gap === 0 ? 'none' : ''; hotRight.setAttribute('x', String(Math.max(60, Math.min(284, xRight - 16)))); }
+        if (profile) profile.setAttribute('d', gap === 0
+          ? 'M60 130 C135 130 152 98 190 98 C228 98 245 130 320 130'
+          : `M60 130 C${xLeft - 26} 130 ${xLeft - 16} 98 ${xLeft} 98 C${xLeft + 16} 98 ${xLeft + 26} 130 190 130 C${xRight - 26} 130 ${xRight - 16} 98 ${xRight} 98 C${xRight + 16} 98 ${xRight + 26} 130 320 130`);
+        if (caption) caption.textContent = gap === 0 ? 'profil initial t = 0 : un pic' : gap < 1 ? 'profil initial t = 0 : bosses rapprochées' : 'profil initial t = 0 : deux pics';
+      }
       const texts = {
         elliptique: '<b>Situation physique.</b> La plaque est à l’équilibre : on impose sa température sur les bords, puis on observe le champ intérieur. Il n’y a pas de profil initial à faire évoluer.',
-        parabolique: `<b>Situation physique.</b> Au départ, on prescrit la température le long de la barre : deux zones chaudes en forme de bosse cosinus, de rayon 0,5 m, séparées de ${fmt(gap, 1)} m (écart réglable ci-dessous). La courbe « Profil initial » à t = 0 montre donc deux pics, un par zone chaude. Les courbes suivantes montrent leur évolution : la diffusion élargit et abaisse les pics. Ici, on ne prescrit pas une température à l’entrée de la barre.`,
+        parabolique: gap === 0
+          ? '<b>Situation physique.</b> Au départ, on prescrit la température le long de la barre : une zone chaude en forme de bosse cosinus, de rayon 0,5 m. La courbe « Profil initial » à t = 0 montre ce pic ; la diffusion l’élargit et l’abaisse. Ici, on ne prescrit pas une température à l’entrée de la barre.'
+          : gap < 1
+            ? `<b>Situation physique.</b> Au départ, on prescrit la température le long de la barre : deux bosses cosinus de rayon 0,5 m, séparées de ${fmt(gap, 1)} m. Elles se recouvrent ; le profil initial est leur somme, et ses sommets peuvent se confondre. Les courbes suivantes montrent la diffusion de ce profil. Ici, on ne prescrit pas une température à l’entrée de la barre.`
+            : `<b>Situation physique.</b> Au départ, on prescrit la température le long de la barre : deux zones chaudes en forme de bosse cosinus, de rayon 0,5 m, séparées de ${fmt(gap, 1)} m (écart réglable ci-dessous). La courbe « Profil initial » à t = 0 montre donc deux pics, un par zone chaude. Les courbes suivantes montrent leur évolution : la diffusion élargit et abaisse les pics. Ici, on ne prescrit pas une température à l’entrée de la barre.`,
         hyperbolique: '<b>Situation physique.</b> Au départ, une seule bosse est présente dans le tube et sa vitesse initiale est nulle. La courbe initiale a un seul pic ; l’équation des ondes la partage ensuite en deux bosses qui partent en sens opposés.'
       };
       situation.innerHTML = texts[type];
