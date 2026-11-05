@@ -48,7 +48,7 @@
       ].map(q => `<svg class="sit-svg" data-kt="${q[0]}" viewBox="0 0 380 170" role="img" aria-hidden="true">${q[1]}</svg>`).join('')
     },
     cl: {
-      photo: { src: 'img/Aqua_Tower_thermal_imaging.jpg', alt: 'Thermographie infrarouge d’une tour', legende: 'Thermographie infrarouge (caméra FLIR b60) d’une tour : la chaleur s’échappe par les dalles de balcons qui traversent l’enveloppe isolée. Jim D’Aloisio, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, <a href="https://commons.wikimedia.org/wiki/File:Aqua_Tower_thermal_imaging.jpg">via Wikimedia Commons</a>.' },
+      photo: { src: 'img/FensterIR_Blower_Door.jpg', alt: 'Thermogramme d’une fenêtre de toit pendant un essai de dépression : fuite d’air visible autour de la fenêtre', legende: 'Thermogramme d’une fenêtre de toit pendant un essai de dépression : la fuite d’air autour de l’ouvrant apparaît dans l’image. Cet exemple réel illustre un échange avec l’extérieur ; le schéma ci-dessus présente séparément les modèles de condition au bord. Sönke Krüll, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:FensterIR_Blower_Door.jpg">Wikimedia Commons</a>.' },
       texte: "Une paroi qui produit de la chaleur (résistance électrique, réaction) : à chaque extrémité on peut imposer la température, le flux, ou un échange convectif avec l'air ambiant.",
       svg: wrap(
         grad('gcl', '--red', '--orange') +

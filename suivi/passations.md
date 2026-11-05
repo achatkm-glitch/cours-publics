@@ -549,3 +549,11 @@ Le code miroir est poussé sur `main` (commit `d9dcef1a27b652a852fe87772d7bbd820
 - Pages run `42062434043` réussi (build et déploiement) sur le commit miroir `709dfa7`. Le run `42061088298` avait échoué en HTTP 502 ; ce nouveau push a déclenché et rétabli la publication.
 - Page publique ouverte sur `#barre` : formules du problème et de l’exercice rendues en typographie mathématique, avec indices et exposants. Inspection locale couvrant les 16 sections et les messages après changement de curseur ; aucune erreur de console. SHA-256 source/miroir identiques consignés dans le dépôt MFTN.
 - Aucun calcul ni contenu scientifique modifié. Aucun essai sur appareil mobile physique. Code et registres **LIBRES**.
+
+### Prise FIFO — tâche miroir 133 — 2026-11-05 17:26:51 +01:00 — Codex
+Tâche miroir de MFTN 143. Dépôt cours-publics branche main, HEAD initial 5ebe24b, arbre propre ; tâche 132 libre. Source de référence : C:\Latex\MFTN\Peda_inv\site. Périmètre réservé : mftn/calculateurs/situations.js, index.html, img/FensterIR_Blower_Door.jpg et suivi/{decisions,passations,verrous}.md. Contrôle de source/licence et légende selon passation MFTN.
+
+### Avancement tâche miroir 133 — 2026-11-05 17:29:45 +01:00
+L’image nouvelle et les fichiers du site sont synchronisés depuis MFTN. SHA-256 source/miroir identiques : situations.js $(Get-FileHash Peda_inv/site/situations.js -Algorithm SHA256 | ForEach-Object Hash), index.html $(Get-FileHash Peda_inv/site/index.html -Algorithm SHA256 | ForEach-Object Hash), image E7C139D0677C7DA62B27C46D0F43E015705046C4ECE4C6E721970506CAE965EB. Rendu vérifié dans le navigateur local ; publication et contrôle HTTPS à suivre.
+### Clôture locale tâche miroir 133 — 2026-11-05 17:31:38 +01:00 — Codex
+La thermographie est synchronisée depuis MFTN. La légende crédite Sönke Krüll et CC BY 3.0 et distingue la fuite visible des trois modèles idéalisés. Contrôle local visible terminé, node --check et diff --check terminés. Source MFTN commit 3a83e84 poussé ; déploiement Pages du miroir à vérifier.
