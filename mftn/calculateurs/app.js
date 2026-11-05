@@ -659,10 +659,27 @@
       });
     });
   }
+  let renderedEdpbType = null;
   function renderSelectedEdpbEquation(type) {
     const equation = (window.EQUATIONS.edpb || []).find(e => e.type === type);
     renderEquationEntry($('k-equation'), equation);
     document.querySelectorAll('.edp-type-option').forEach(option => option.classList.toggle('selected', option.querySelector('input:checked') !== null));
+    const readings = {
+      elliptique: { title: 'Équilibre spatial', text: 'Pas d’évolution temporelle dans ce modèle : les conditions imposées sur la frontière déterminent le champ à l’intérieur.' },
+      parabolique: { title: 'Diffusion au cours du temps', text: 'Le profil évolue depuis son état initial et s’étale. Dans le modèle continu de la chaleur sur la droite, l’influence devient non nulle à toute distance dès t > 0.' },
+      hyperbolique: { title: 'Propagation à vitesse finie', text: 'L’information avance dans un domaine de dépendance délimité par les fronts : hors de ce domaine, elle n’est pas encore arrivée.' }
+    };
+    const reading = readings[type], changed = renderedEdpbType !== type, panel = $('k-type-dynamic');
+    panel.dataset.type = type;
+    panel.innerHTML = `<strong>${reading.title}</strong><span>${reading.text}</span>`;
+    if (changed) {
+      [$('k-equation'), panel].forEach(el => {
+        el.classList.remove('edp-dynamic-enter');
+        void el.offsetWidth;
+        el.classList.add('edp-dynamic-enter');
+      });
+      renderedEdpbType = type;
+    }
   }
 
   /* ---------- Introduction : le même signal, plusieurs schémas ---------- */

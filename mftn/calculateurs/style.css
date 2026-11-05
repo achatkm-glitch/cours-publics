@@ -112,6 +112,14 @@ footer { max-width: 1100px; margin: 0 auto 30px; padding: 0 16px; color: var(--m
 .edp-selected-equation { margin: 0 0 16px; padding: 10px 14px 12px; border: 1px solid var(--blue); border-left: 6px solid var(--blue); border-radius: 10px; background: var(--blue-soft); }
 .edp-selected-equation .eq-label { color: var(--ink); font-weight: 700; font-size: .9rem; }
 .edp-selected-equation .eq-math { color: var(--ink); font-size: 1.22rem; }
+.edp-type-dynamic { display: grid; gap: 4px; margin: -6px 0 16px; padding: 11px 14px; border: 1px solid var(--line); border-left: 5px solid var(--blue); border-radius: 9px; background: var(--card); color: var(--ink); }
+.edp-type-dynamic[data-type="parabolique"] { border-left-color: var(--green); }
+.edp-type-dynamic[data-type="hyperbolique"] { border-left-color: var(--orange); }
+.edp-type-dynamic strong { font-size: .95rem; }
+.edp-type-dynamic span { color: var(--muted); line-height: 1.45; }
+.edp-dynamic-enter { animation: edp-type-enter .3s ease-out both; }
+@keyframes edp-type-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .edp-dynamic-enter { animation: none; } }
 @media (max-width: 560px) { .edp-type-selector { grid-template-columns: 1fr; } .edp-type-option { padding: 9px 11px; } }
 nav .theme { margin-left: auto; }
 h3 { margin: 14px 0 4px; font-size: 1rem; color: var(--muted); }

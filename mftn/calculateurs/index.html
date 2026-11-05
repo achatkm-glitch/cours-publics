@@ -6,7 +6,7 @@
 <title>Calculateurs MFTN — par séance</title>
 <meta name="description" content="Calculateurs et parcours des quatre séances MFTN : modèle et transport, stationnaire, instationnaire et performance des schémas.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261105-113b">
+<link rel="stylesheet" href="style.css?v=20261105-114a">
 </head>
 <body>
 <header>
@@ -169,6 +169,7 @@
     <label class="edp-type-option"><input type="radio" name="k-type" value="hyperbolique"><span><strong>Hyperbolique</strong><small>propagation à vitesse finie</small></span></label>
   </fieldset>
   <div class="edp-selected-equation" id="k-equation" aria-live="polite" aria-atomic="true"></div>
+  <div class="edp-type-dynamic" id="k-type-dynamic" role="status" aria-live="polite" aria-atomic="true"></div>
   <div class="grid">
     <div>
       <form class="params">
@@ -529,10 +530,10 @@
   Premier jet : vérification technique seulement. Les valeurs de repère proviennent du polycopié MFTN, sauf les itérations de Jacobi et de Gauss–Seidel, les ordres globaux de Neumann, le pas FTCS, l'exemple de la gaussienne, les volumes finis de la barre et la convection–diffusion, calculés par le rédacteur et contrôlés par les tests (<code>test_calc.js</code>).
 </footer>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<script src="calc.js?v=20261105-113b"></script>
-<script src="equations.js?v=20261105-113b"></script>
-<script src="situations.js?v=20261105-113b"></script>
-<script src="guide.js?v=20261105-113b"></script>
-<script src="app.js?v=20261105-113b"></script>
+<script src="calc.js?v=20261105-114a"></script>
+<script src="equations.js?v=20261105-114a"></script>
+<script src="situations.js?v=20261105-114a"></script>
+<script src="guide.js?v=20261105-114a"></script>
+<script src="app.js?v=20261105-114a"></script>
 </body>
 </html>
