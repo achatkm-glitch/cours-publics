@@ -848,6 +848,14 @@
       const xs = Calc.linspace(-8, 8, 800), times = [0, tp / 4, tp / 2, tp].filter((t, i, a) => a.indexOf(t) === i);
       const S = times.map((t, i) => ({ x: xs, y: Calc.chaleurCompacte({ D, rayon, centres: ctr, t, xs }), color: c[i % 6], width: 2.2, label: `t = ${fmt(t, 3)}` }));
       draw('k-par', 'k-par-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Diffusion d’une bosse à support compact' });
+      const lecture = $('k-par-curve-explanation');
+      const cle = times.map((t, i) => `<span class="curve-time"><i style="--curve-color:${c[i % 6]}"></i>${t === 0 ? 'Profil initial' : `Profil à t = ${fmt(t, 3)} s`}</span>`).join('');
+      const situation = gap === 0
+        ? 'À t = 0, une bosse est centrée en x = 0.'
+        : gap < 2 * rayon
+          ? `À t = 0, les deux bosses centrées en x = ±${fmt(gap / 2, 3)} m se recouvrent déjà : le profil initial est leur somme.`
+          : `À t = 0, les deux bosses sont distinctes, centrées en x = ±${fmt(gap / 2, 3)} m.`;
+      lecture.innerHTML = `<strong>Lire les courbes</strong><div class="curve-times">${cle}</div><p>${situation} Quand le temps augmente, la diffusion étale chaque bosse : elle s’élargit et son maximum diminue. À temps égal, augmenter D accentue cet étalement.</p><p>La symétrie par rapport à x = 0 est conservée. Si les sources sont proches ou si la diffusion agit longtemps, leurs profils peuvent se rejoindre.</p><p>Seule la courbe initiale est exactement nulle hors de ses supports. Pour tout t &gt; 0, la solution continue idéale de l’équation de la chaleur est très faible mais non nulle à toute distance ; l’échelle du graphe peut la faire paraître nulle.</p>`;
       const far = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: tp, xs: [5, 0] });
       const far2 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 2, xs: [5] })[0];
       const far8 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 8, xs: [5] })[0];
