@@ -397,3 +397,6 @@ Code harmonisé et synchronisé depuis MFTN ; commit miroir `fde3a18bb9eaddf7a0c
 
 ### Prise en charge tâche 119 — 2026-11-05 10:26:11 +01:00 Europe/Paris — Codex
 Ajout réservé au graphe d’introduction : garder les coordonnées dans la bulle et y présenter une lecture adaptée à la série exacte ou numérique, au point survolé et aux entrées courantes N, C et t. Vérifier puis copier dans `mftn/calculateurs/`, publier et inspecter les deux états. Dépôt miroir propre avant prise, HEAD `a163790ce11254ef3262ca8b3541bf4c13313436`.
+
+### Clôture tâche 119 — 2026-11-05 10:37:17 Europe/Paris (UTC+01:00) — Codex
+Source MFTN et miroir cours-publics sont synchronisés. Pages run 42003125602 réussi. Inspection de la page HTTPS : la bulle distingue l’exacte et le schéma numérique ; l’interprétation, l’écart ponctuel et les valeurs de sélecteur suivent le point et le changement de N de 100 à 200. Commits poussés et hashes distants confirmés. Verrous libérés.

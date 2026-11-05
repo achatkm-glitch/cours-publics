@@ -278,3 +278,6 @@ Miroir `index.html`, `app.js`, `equations.js`, `guide.js` commité (`fde3a18bb9e
 Sur le graphe d’introduction, garder la bulle de coordonnées et y ajouter une lecture contextuelle qui varie selon la série exacte ou numérique, la valeur survolée et les réglages actifs. Codex prend la tâche ; réserver `mftn/calculateurs/app.js`, `style.css`, `index.html` et les registres.
 
 État : implémentation en cours ; l’infobulle ajoute maintenant une interprétation contextualisée à la série, l’écart local, N, C et t. Les sources MFTN ont été copiées dans le miroir avec des SHA-256 identiques. À terminer : publier, inspecter le texte au survol sur la page HTTPS, puis libérer le verrou.
+
+### Clôture tâche 119 — 2026-11-05 10:37:17 Europe/Paris (UTC+01:00) — Codex
+Les fichiers du miroir reflètent la source MFTN (SHA-256 identiques). Le commentaire exact identifie le transport sans déformation ; le commentaire numérique classe l’effet observé et indique l’écart local, N, C et t. Vérification sur la page publiée : points du graphe parcourus au clavier, puis contrôle avec N=200 confirmant la mise à jour dynamique. Pages run 42003125602 réussi ; miroir origin/main 530e5e506f50ac0274d7e3e4a03dc8327552f77e. Aucun calcul du moteur modifié.
