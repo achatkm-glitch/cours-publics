@@ -321,3 +321,9 @@ Dans le navigateur local (127.0.0.1:8766/#chemin), clic sur un point du graphe D
 - Commit de contenu public `4f30255a1c3f5a071f4272ba78f9c33ff773b8a3` confirmé sur `origin/main` ; GitHub Pages run `41932101445` réussi.
 - Page publique contrôlée dans le navigateur après rechargement : pente observée affichée dans les deux légendes ; clic sur la courbe Dufort–Frankel affiche le cas, h et α(Δt/h)² ; une valeur a été parcourue au clavier en contrôle local.
 - Verrous publics libérés. Aucune donnée ou source scientifique nouvelle ; pentes désignées comme mesures de la plage affichée.
+
+
+### Clôture tâche 111 — 2026-11-05 01:01:09 Europe/Paris (UTC+01:00) — Codex
+- Sept fichiers source/miroir identiques ; `node --check` réussi pour les scripts et aperçu local contrôlé.
+- Formules alignées sur le chapitre 2 du polycopié. Ordres mesurés sur la plage affichée : centrée proche de 2, unilatérales proches de 1.
+- Push public et contrôle GitHub Pages à confirmer ; aucun PDF produit. Validation scientifique indépendante à faire. Verrous libérés.

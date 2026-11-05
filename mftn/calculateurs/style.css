@@ -132,6 +132,13 @@ details > summary { cursor: pointer; color: var(--blue); margin: 10px 0; }
 .gtext { font-size: 0.9rem; color: var(--muted); margin-top: 2px; }
 
 .eqs { display: grid; gap: 6px; margin: 4px 0 16px; padding: 10px 14px; border: 1px solid var(--line); border-left: 5px solid var(--blue); border-radius: 10px; background: var(--bg); }
+.operator-columns { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin: 14px 0 20px; }
+.operator-family { min-width: 0; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+.operator-family h3, .order-result h3 { margin: 0 0 8px; color: var(--blue); }
+.operator-family .eqs { margin-bottom: 8px; }
+.operator-family .repere { margin: 8px 2px 2px; }
+.order-result { margin: 18px 0 24px; }
+.family-note { margin: 8px 0 12px; padding: 9px 12px; border-left: 3px solid var(--green); background: var(--card); line-height: 1.45; }
 .eq-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
 .eq-math { overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; font-size: 1.05rem; }
 .eq-math.plain { font-family: ui-monospace, Consolas, monospace; font-size: 0.85rem; white-space: pre-wrap; }

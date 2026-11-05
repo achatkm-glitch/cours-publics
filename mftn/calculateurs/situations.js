@@ -78,7 +78,7 @@
         t(230, 74, 'couche limite (Pe petit)', 'fill="var(--orange)"') + t(214, 100, 'couche plus mince (Pe grand)', 'fill="var(--green)"'))
     },
     ordre: {
-      texte: "On mesure (ou on calcule) la température en des points régulièrement espacés de h dans une paroi et l'on estime le gradient. Le choix de la formule (progressive, centrée, régressive) fixe la précision.",
+      texte: "Dans une paroi, les températures aux nœuds permettent d’estimer la pente T′ ou la courbure T″ du profil. À l’intérieur, on dispose de points de chaque côté ; au bord, on construit une formule avec le nœud de bord et les nœuds intérieurs, sans point extérieur.",
       svg: wrap(
         grad('go', '--red', '--blue') +
         `<rect x="20" y="50" width="340" height="50" rx="3" fill="url(#go)" opacity="0.45" stroke="var(--plot-axis)"/>` +

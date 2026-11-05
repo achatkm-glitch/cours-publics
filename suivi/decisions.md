@@ -213,3 +213,7 @@ Le commit b9936047ff0383fe6be7d80e288d635386ebf9f8 portant la source locale et l
 - Commits publics 71e222e5199d11b33ceddf7ed988ee94a7fb811a (formule) et d628eaac7e942a9ae33f55670a88351a799fc500 (passation/cache) confirmés sur origin/main ; Pages runs 41930186960 et 41930626952 réussis.
 - La page publique avec cache-buster 20261104-108 rend l’écriture normalisée avec ξ, t* et Pe_{σ0}. Le polycopié contient déjà la même forme ; l’équation est aussi dans les diapositives C2 et leur PDF.
 - Les verrous de publication sont libérés.
+
+
+### Clôture tâche 111 — 2026-11-05 01:01:09 Europe/Paris (UTC+01:00) — Codex
+La page Ordre sépare les familles de dérivées et présente les stencils seconde du polycopié, y compris les formules unilatérales et non uniforme. Le miroir est synchronisé sous cache-buster 20261105-111c. Contrôle technique local réussi ; contrôle Pages après push à terminer. Verrous libérés.

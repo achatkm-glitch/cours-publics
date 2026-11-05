@@ -325,7 +325,9 @@ window.GUIDE = {
         "erreur de troncature",
         "ordre formel d'un schéma",
         "défaut local",
-        "dérivée seconde centrée"
+        "dérivée seconde centrée",
+        "schéma unilatéral au bord",
+        "maillage non uniforme"
       ],
       "exercices": "exercices A, D, E",
       "explorations": [
@@ -341,9 +343,9 @@ window.GUIDE = {
             "o-h0": "0.1",
             "o-k": "4"
           },
-          "consigne": "Gardez h₀ = 0,1 et quatre pas. Lisez dans les cartes l'ordre observé et l'erreur au plus petit pas pour chacune des trois différences de la dérivée première et pour la différence centrée de la dérivée seconde.",
-          "question": "Quels ordres lisez-vous, pour la dérivée première et pour la dérivée seconde ? Pourquoi l'erreur de la régressive à trois points est-elle voisine du double de celle de la centrée ? Ces ordres de consistance suffisent-ils à établir la stabilité d'un schéma d'évolution ?",
-          "main": "Pour la différence centrée, définie par (u(x+h) − u(x−h))/(2h), développez les deux valeurs par Taylor. Donnez l'erreur locale, son terme dominant et l'ordre.",
+          "consigne": "Gardez h₀ = 0,1 et quatre pas. Comparez séparément les courbes de dérivée première et de dérivée seconde. Lisez les pentes observées et les erreurs au plus petit pas ; confrontez-les aux ordres inscrits au-dessus des formules. Repérez les deux formules de dérivée seconde utilisables au bord et le cas non uniforme.",
+          "question": "Quelles pentes observez-vous pour les différences centrées et unilatérales ? Pourquoi les formules unilatérales de dérivée seconde sont-elles utiles au bord ? Sur le maillage non uniforme, que devient le terme en u‴ lorsque h₊ = h₋ ? Ces ordres de consistance suffisent-ils à établir la stabilité d’un schéma d’évolution ?",
+          "main": "Pour la dérivée première centrée, développez u(x+h) et u(x−h) par Taylor et identifiez les termes qui s’annulent. Au bord gauche, faites de même avec u₀, u₁ et u₂ : cherchez une combinaison qui annule la valeur et la dérivée première, puis donnez le premier terme d’erreur et l’ordre.",
           "corr": true
         }
       ]

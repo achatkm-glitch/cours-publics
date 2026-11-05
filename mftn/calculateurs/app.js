@@ -380,19 +380,19 @@
   function runOrdre() {
     const c = pal(), hs = Array.from({ length: Math.round(num('o-k')) }, (_, i) => num('o-h0') / Math.pow(2, i));
     const rows = Calc.ordreSin(hs);
-    $('o-msg').textContent = 'L\u2019ordre est lu comme log₂ du rapport des erreurs entre deux pas consécutifs dont le rapport est 2.';
-    const defs = [['prog', 'ordreProg', 'Progressive', c[1]], ['centree', 'ordreCentree', 'Centrée', c[0]], ['regr3', 'ordreRegr3', 'Régressive à 3 points', c[2]], ['seconde', 'ordreSeconde', 'Dérivée seconde centrée', c[3]]];
+    $('o-msg').textContent = 'La pente observée sur chaque courbe log-log estime l’ordre dans la plage de pas affichée.';
     const last = rows[rows.length - 1];
-    cards($('o-table'), defs.map(d => ({ color: d[3], title: d[2], lines: [`ordre observé : <b>${last[d[1]] === undefined ? '—' : fmt(last[d[1]], 3)}</b>`, `erreur pour h = ${fmt(last.h, 4)} : <b>${fmt(last[d[0]], 3)}</b>`] })));
-    const S = defs.map(d => ({ x: rows.map(r => r.h), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true }));
-    draw('o-plot', 'o-leg', S, { logx: true, logy: true, showSlope: true, xlabel: 'h', ylabel: 'erreur en x = 1', title: 'u = sin(x)' });
-    const lr = rows[rows.length - 1], tx = v => v === undefined ? 'à mesurer avec au moins deux pas' : `<b>${fmt(v, 3)}</b>`;
-    explain('ordre', [
-      `Progressive : ordre observé ${tx(lr.ordreProg)} (attendu 1) : diviser h par 2 divise l\u2019erreur par 2.`,
-      `Centrée : ordre observé ${tx(lr.ordreCentree)} (attendu 2) : diviser h par 2 divise l\u2019erreur par 4.`,
-      `Régressive à 3 points : ordre observé ${tx(lr.ordreRegr3)} (attendu 2), avec une erreur plus grande que la centrée car son coefficient d\u2019erreur est plus élevé.`,
-      `Dérivée seconde centrée : ordre observé ${tx(lr.ordreSeconde)} (attendu 2) ; elle approche u″ et non u′, mais suit la même loi de raffinement.`,
-      'Sur le graphique en échelles logarithmiques, la pente de chaque droite est l\u2019ordre ; l\u2019ordre vient du terme d\u2019erreur de troncature obtenu par Taylor.']);
+    const first = [['prog', 'ordreProg', 'Progressive (2 points)', c[1]], ['centree', 'ordreCentree', 'Centrée (2 points)', c[0]], ['regr3', 'ordreRegr3', 'Régressive (3 points)', c[2]]];
+    const second = [['seconde', 'ordreSeconde', 'Centrée, ordre 2', c[3]], ['secondeProg', 'ordreSecondeProg', 'Progressive (3 points), ordre 1', c[4]], ['secondeRegr', 'ordreSecondeRegr', 'Régressive (3 points), ordre 1', c[5]]];
+    const updateFamily = (defs, prefix) => {
+      cards($(prefix + '-table'), defs.map(d => ({ color: d[3], title: d[2], lines: [`ordre observé : <b>${last[d[1]] === undefined ? '—' : fmt(last[d[1]], 3)}</b>`, `erreur pour h = ${fmt(last.h, 4)} : <b>${fmt(last[d[0]], 3)}</b>`] })));
+      const series = defs.map(d => ({ x: rows.map(r => r.h), y: rows.map(r => r[d[0]]), color: d[3], label: d[2], points: true }));
+      draw(prefix + '-plot', prefix + '-leg', series, { logx: true, logy: true, showSlope: true, xlabel: 'h', ylabel: 'erreur en x = 1', title: 'u = sin(x)' });
+    };
+    updateFamily(first, 'o-first'); updateFamily(second, 'o-second');
+    const order = v => v === undefined ? 'à estimer avec au moins deux pas' : fmt(v, 3);
+    $('o-first-note').textContent = `Ordres observés : progressive ${order(last.ordreProg)} ; centrée ${order(last.ordreCentree)} ; régressive à trois points ${order(last.ordreRegr3)}.`;
+    $('o-second-note').textContent = `Ordres observés : centrée ${order(last.ordreSeconde)} ; unilatérale progressive ${order(last.ordreSecondeProg)} ; unilatérale régressive ${order(last.ordreSecondeRegr)}. Attendus du polycopié : 2 pour la formule centrée uniforme, 1 pour les formules unilatérales à trois points.`;
   }
 
   /* ---------- Chapitre 2 : fermetures de Neumann ---------- */

@@ -102,7 +102,9 @@
       prog: Math.abs((u(x + h) - u(x)) / h - ux),
       centree: Math.abs((u(x + h) - u(x - h)) / (2 * h) - ux),
       regr3: Math.abs((3 * u(x) - 4 * u(x - h) + u(x - 2 * h)) / (2 * h) - ux),
-      seconde: Math.abs((u(x + h) - 2 * u(x) + u(x - h)) / (h * h) - uxx)
+      seconde: Math.abs((u(x + h) - 2 * u(x) + u(x - h)) / (h * h) - uxx),
+      secondeProg: Math.abs((u(x) - 2 * u(x + h) + u(x + 2 * h)) / (h * h) - uxx),
+      secondeRegr: Math.abs((u(x) - 2 * u(x - h) + u(x - 2 * h)) / (h * h) - uxx)
     }));
     rows.forEach((r, i) => {
       if (i > 0) {
@@ -110,6 +112,8 @@
         r.ordreCentree = Math.log2(rows[i - 1].centree / r.centree);
         r.ordreRegr3 = Math.log2(rows[i - 1].regr3 / r.regr3);
         r.ordreSeconde = Math.log2(rows[i - 1].seconde / r.seconde);
+        r.ordreSecondeProg = Math.log2(rows[i - 1].secondeProg / r.secondeProg);
+        r.ordreSecondeRegr = Math.log2(rows[i - 1].secondeRegr / r.secondeRegr);
       }
     });
     return rows;

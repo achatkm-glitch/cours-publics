@@ -6,7 +6,7 @@
 <title>Calculateurs MFTN — par séance</title>
 <meta name="description" content="Calculateurs et parcours des quatre séances MFTN : modèle et transport, stationnaire, instationnaire et performance des schémas.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261105-110">
+<link rel="stylesheet" href="style.css?v=20261105-111c">
 </head>
 <body>
 <header>
@@ -337,8 +337,18 @@
 <!-- Ch.2 : ordre -->
 <section class="panel" id="p-ordre">
   <h2>Ordre d'une différence finie : dérivées première et seconde</h2>
-  <p class="lead">Erreur des différences finies des dérivées première et seconde sur le mode sinusoïdal u(x) = sin(x), en x = 1, pour une suite de pas. La fiche demande en plus de dériver à la main l'erreur d'un schéma donné puis de construire un stencil par la méthode des poids, présentée au chapitre 2. Séance 2, exercices D et E.</p>
-  <div class="eqs" data-eq="ordre"></div>
+  <p class="lead">Comparez séparément les approximations des dérivées première et seconde de u(x) = sin(x), en x = 1, quand le pas h diminue. Les stencils et leurs ordres sont ceux du chapitre 2 ; le cas non uniforme précise pourquoi la géométrie du maillage compte. Séance 2, exercices D et E.</p>
+  <div class="operator-columns">
+    <section class="operator-family" aria-labelledby="o-first-title">
+      <h3 id="o-first-title">Dérivée première u′</h3>
+      <div class="eqs" data-eq="ordre1"></div>
+    </section>
+    <section class="operator-family" aria-labelledby="o-second-title">
+      <h3 id="o-second-title">Dérivée seconde u″</h3>
+      <div class="eqs" data-eq="ordre2"></div>
+      <p class="repere"><b>Maillage non uniforme :</b> h₋ = xᵢ − xᵢ₋₁ et h₊ = xᵢ₊₁ − xᵢ. Si h₊ − h₋ est de l’ordre de h, le terme en u‴ peut limiter l’approximation à l’ordre 1. Sur un maillage uniforme, h₊ = h₋ et ce terme s’annule : on retrouve l’ordre 2.</p>
+    </section>
+  </div>
   <div class="grid">
     <div>
       <form class="params">
@@ -349,9 +359,21 @@
       <p class="repere"><b>Repère :</b> les erreurs doivent décroître quand h diminue ; le rapport des erreurs successives tend vers 2 pour un schéma d'ordre 1 et vers 4 pour un schéma d'ordre 2. Le calcul à la main établit le terme dominant par Taylor ; les poids se déterminent en imposant la dérivation exacte des polynômes de degré requis.</p>
     </div>
     <div>
-      <div class="msg" id="o-msg"></div>
-      <canvas id="o-plot" aria-label="Erreurs en échelle logarithmique"></canvas><div class="legend" id="o-leg"></div>
-      <div class="cards" id="o-table"></div>
+      <p class="msg" id="o-msg"></p>
+      <section class="order-result" aria-labelledby="o-first-plot-title">
+        <h3 id="o-first-plot-title">Erreur sur la dérivée première</h3>
+        <canvas id="o-first-plot" aria-label="Erreurs des schémas de dérivée première en échelle logarithmique"></canvas>
+        <div class="legend" id="o-first-leg"></div>
+        <div class="cards" id="o-first-table"></div>
+        <p class="family-note" id="o-first-note"></p>
+      </section>
+      <section class="order-result" aria-labelledby="o-second-plot-title">
+        <h3 id="o-second-plot-title">Erreur sur la dérivée seconde</h3>
+        <canvas id="o-second-plot" aria-label="Erreurs des schémas de dérivée seconde en échelle logarithmique"></canvas>
+        <div class="legend" id="o-second-leg"></div>
+        <div class="cards" id="o-second-table"></div>
+        <p class="family-note" id="o-second-note"></p>
+      </section>
     </div>
   </div>
 </section>
@@ -503,10 +525,10 @@
   Premier jet : vérification technique seulement. Les valeurs de repère proviennent du polycopié MFTN, sauf les itérations de Jacobi et de Gauss–Seidel, les ordres globaux de Neumann, le pas FTCS, l'exemple de la gaussienne, les volumes finis de la barre et la convection–diffusion, calculés par le rédacteur et contrôlés par les tests (<code>test_calc.js</code>).
 </footer>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<script src="calc.js"></script>
-<script src="equations.js?v=20261104-108"></script>
-<script src="situations.js?v=20261104-107d"></script>
-<script src="guide.js"></script>
-<script src="app.js?v=20261105-110"></script>
+<script src="calc.js?v=20261105-111c"></script>
+<script src="equations.js?v=20261105-111c"></script>
+<script src="situations.js?v=20261105-111c"></script>
+<script src="guide.js?v=20261105-111c"></script>
+<script src="app.js?v=20261105-111c"></script>
 </body>
 </html>
