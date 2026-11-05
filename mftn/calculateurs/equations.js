@@ -5,8 +5,9 @@ window.EQUATIONS = {
     {"titre": "Signal initial : bosse lisse et créneau", "tex": "u(x,0)=e^{-200\\,(x-0{,}3)^2}+\\mathbf 1_{]0{,}6\\,;\\,0{,}8[}(x)"}
   ],
   "transport": [
-    {"titre": "Équation de transport (advection et diffusion)", "tex": "\\frac{\\partial c}{\\partial t}+a\\,\\frac{\\partial c}{\\partial x}=D\\,\\frac{\\partial^2 c}{\\partial x^2}"},
-    {"titre": "Solution exacte écrite avec le Péclet du profil", "tex": "\\begin{gathered}\\xi=\\frac{x-at}{\\sigma_0},\\quad t^*=\\frac{|a|t}{\\sigma_0},\\quad \\mathrm{Pe}_{\\sigma_0}=\\frac{|a|\\sigma_0}{D}\\quad (|a|>0,\\ D>0),\\\\\\frac{c(x,t)}{U_0}=\\frac{1}{\\sqrt{1+2t^*/\\mathrm{Pe}_{\\sigma_0}}}\\exp\\!\\left[-\\frac{\\xi^2}{2(1+2t^*/\\mathrm{Pe}_{\\sigma_0})}\\right]\\end{gathered}"},
+    {"titre": "Variable transportée φ (a : vitesse, D : diffusivité)", "tex": "\\frac{\\partial \\phi}{\\partial t}+a\\,\\frac{\\partial \\phi}{\\partial x}=D\\,\\frac{\\partial^2 \\phi}{\\partial x^2}"},
+    {"titre": "Péclet : même définition, échelle différente", "tex": "\\boxed{\\mathrm{Pe}_{\\ell}=\\frac{|a|\\ell}{D}},\\quad \\ell=L\\ (\\text{domaine}),\\ \\sigma_0\\ (\\text{largeur}),\\ h\\ (\\text{maille})"},
+    {"titre": "Solution exacte gaussienne avec le Péclet de la largeur σ₀", "tex": "\\begin{gathered}\\xi=\\frac{x-at}{\\sigma_0},\\quad t^*=\\frac{|a|t}{\\sigma_0},\\quad \\mathrm{Pe}_{\\sigma_0}=\\frac{|a|\\sigma_0}{D}\\quad (|a|>0,\\ D>0),\\\\\\frac{\\phi(x,t)}{U_0}=\\frac{1}{\\sqrt{1+2t^*/\\mathrm{Pe}_{\\sigma_0}}}\\exp\\!\\left[-\\frac{\\xi^2}{2(1+2t^*/\\mathrm{Pe}_{\\sigma_0})}\\right]\\end{gathered}"},
     {"titre": "Nombres sans dimension à l’échelle initiale σ₀", "tex": "\\begin{gathered}t_c=\\frac{\\sigma_0}{|a|},\\quad t_d=\\frac{\\sigma_0^2}{D},\\quad \\mathrm{Pe}_{\\sigma_0}=\\frac{t_d}{t_c}=\\frac{|a|\\sigma_0}{D}\\quad (|a|>0,\\ D>0),\\\\\\mathrm{Fo}_{\\sigma_0}(t)=\\frac{Dt}{\\sigma_0^2},\\quad \\frac{x_c(t)}{\\sigma_0}=\\operatorname{sgn}(a)\\,\\mathrm{Pe}_{\\sigma_0}\\mathrm{Fo}_{\\sigma_0},\\quad \\frac{\\sigma(t)}{\\sigma_0}=\\sqrt{1+2\\mathrm{Fo}_{\\sigma_0}}\\end{gathered}"}
   ],
   "edpc": [
@@ -28,10 +29,10 @@ window.EQUATIONS = {
     {"titre": "Bilan global de flux", "tex": "\\dot q_{0,\\text{sortant}}+\\dot q_{L,\\text{sortant}}=q\\,L"}
   ],
   "peclet": [
-    {"titre": "Convection–diffusion stationnaire", "tex": "\\rho u\\,\\varphi'=\\Gamma\\,\\varphi'',\\qquad \\varphi(0)=0,\\quad\\varphi(1)=1\\ \\Longrightarrow\\ \\varphi(x)=\\frac{e^{\\mathrm{Pe}\\,x}-1}{e^{\\mathrm{Pe}}-1}"},
-    {"titre": "Nombres de Péclet global et de maille", "tex": "\\mathrm{Pe}=\\frac{\\rho u\\,L}{\\Gamma},\\qquad \\mathrm{Pe}_h=\\frac{\\rho u\\,\\Delta x}{\\Gamma}=\\frac{\\mathrm{Pe}}{N}"},
-    {"titre": "Reconstruction centrée de la valeur convectée à la face est", "tex": "\\varphi_e=\\frac{\\varphi_P+\\varphi_E}{2}\\ \\Longrightarrow\\ \\text{coefficient du voisin aval : }\\frac{\\Gamma}{\\Delta x}-\\frac{\\rho u}{2}\\ \\ge0\\iff\\mathrm{Pe}_h\\le2"},
-    {"titre": "Reconstruction amont", "tex": "\\varphi_e=\\varphi_P\\quad(\\rho u>0)"}
+    {"titre": "Modèle stationnaire de convection–diffusion", "tex": "a\\,\\frac{d\\phi}{dx}=D\\,\\frac{d^2\\phi}{dx^2},\\quad \\phi(0)=0,\\quad\\phi(L)=1\\quad\\Longrightarrow\\quad \\phi(x)=\\frac{e^{\\mathrm{Pe}^{\\mathrm{s}}_L x/L}-1}{e^{\\mathrm{Pe}^{\\mathrm{s}}_L}-1}"},
+    {"titre": "Définition commune et Péclet signé du cas stationnaire", "tex": "\\boxed{\\mathrm{Pe}_{\\ell}=\\frac{|a|\\ell}{D}},\\quad \\ell=L,\\sigma_0,h\\qquad\\begin{gathered}\\mathrm{Pe}^{\\mathrm{s}}_L=\\frac{aL}{D},\\quad \\mathrm{Pe}^{\\mathrm{s}}_h=\\frac{ah}{D}=\\frac{\\mathrm{Pe}^{\\mathrm{s}}_L}{N}\\quad (h=L/N)\\end{gathered}"},
+    {"titre": "Centré : le signe de Pe intervient dans le coefficient aval", "tex": "\\phi_e=\\frac{\\phi_P+\\phi_E}{2}\\Longrightarrow a_{aval}=\\frac{D}{h}-\\frac{a}{2}=\\frac{D}{h}\\left(1-\\frac{\\mathrm{Pe}^{\\mathrm{s}}_h}{2}\\right)\\ge0\\iff\\mathrm{Pe}^{\\mathrm{s}}_h\\le2\\quad(a>0)"},
+    {"titre": "Reconstruction amont (courant vers x croissants)", "tex": "\\phi_e=\\phi_P\\quad(a>0)"}
   ],
   "jg": [
     {"titre": "Système tridiagonal de la diffusion 1D", "tex": "A\\,\\boldsymbol u=\\boldsymbol b,\\qquad A=\\operatorname{tridiag}(-1,2,-1)"},

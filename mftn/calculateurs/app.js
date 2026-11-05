@@ -255,16 +255,16 @@
     const xs = Calc.linspace(lo, hi, 400);
     const S = use.map((k, i) => ({ x: xs, y: Calc.gaussAD({ a: k.a, D: k.D, sigma0: s0, U0, t: k.t, xs }), color: c[i % 6], width: 2.4,
       label: `a = ${fmt(k.a, 3)}, D = ${fmt(k.D, 3)}, t = ${fmt(k.t, 3)}` }));
-    draw('t-plot', 't-leg', S, { xlabel: 'x', ylabel: 'c', title: 'Advection–diffusion' });
+    draw('t-plot', 't-leg', S, { xlabel: 'x', ylabel: 'φ', title: 'Advection–diffusion' });
     cards($('t-table'), use.map((k, i) => { const s = Calc.sigmaAt(s0, k.D, k.t);
       return { color: c[i % 6], title: `a = ${fmt(k.a, 3)} · D = ${fmt(k.D, 3)} · t = ${fmt(k.t, 3)}`, lines: [`centre a·t = <b>${fmt(k.a * k.t, 3)}</b>`, `largeur σ(t) = <b>${fmt(s, 4)}</b>`, `pic = <b>${fmt(U0 * s0 / s, 4)}</b>`] }; }));
     // Jauge du nombre de Péclet : un repère par couple (a, D).
     const pairs = []; A.forEach(a => Ds.forEach(D => { if (D > 0) pairs.push({ a, D, Pe: Math.abs(a) * s0 / D }); }));
     const mk = pairs.filter(p => p.Pe > 0).slice(0, 6).map((p, i) => ({ v: p.Pe, color: c[i % 6], label: `a = ${fmt(p.a, 3)}, D = ${fmt(p.D, 3)}` }));
     const P0 = pairs.length ? pairs[0].Pe : NaN;
-    const meaning = !isFinite(P0) ? 'Pe n’est pas défini pour D = 0.' : P0 === 0 ? 'Pe = 0 : a = 0, il n’y a pas d’advection ; le profil diffuse sans se déplacer.' : P0 > 1 ? 'Pe > 1 : t_d > t_c ; à l’échelle σ₀, le transport par advection est plus rapide que la diffusion.' : P0 < 1 ? 'Pe < 1 : t_d < t_c ; à l’échelle σ₀, la diffusion agit plus vite que le transport par advection.' : 'Pe = 1 : les temps caractéristiques t_d et t_c sont égaux.';
-    gauge($('t-gauge'), { min: 0.1, max: 100, title: `Nombre de Péclet du profil Peσ₀ = |a|σ₀/D = ${pairs.length ? pairs.slice(0, 6).map(p => fmt(p.Pe, 3)).join(' ; ') : '—'}`,
-      zones: [{ from: 0.1, to: 0.9, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'Pe < 1' }, { from: 0.9, to: 1.1, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'Pe ≈ 1' }, { from: 1.1, to: 100, color: 'color-mix(in srgb, var(--blue) 35%, transparent)', label: 'Pe > 1' }],
+    const meaning = !isFinite(P0) ? 'Peσ₀ n’est pas défini pour D = 0.' : P0 === 0 ? 'Peσ₀ = 0 : a = 0, il n’y a pas d’advection ; le profil diffuse sans se déplacer.' : P0 > 1 ? 'Peσ₀ > 1 : t_d > t_c ; à l’échelle σ₀, le transport par advection est plus rapide que la diffusion.' : P0 < 1 ? 'Peσ₀ < 1 : t_d < t_c ; à l’échelle σ₀, la diffusion agit plus vite que le transport par advection.' : 'Peσ₀ = 1 : les temps caractéristiques t_d et t_c sont égaux.';
+    gauge($('t-gauge'), { min: 0.1, max: 100, title: `Péclet du profil Peσ₀ = |a|σ₀/D = ${pairs.length ? pairs.slice(0, 6).map(p => fmt(p.Pe, 3)).join(' ; ') : '—'}`,
+      zones: [{ from: 0.1, to: 0.9, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'Peσ₀ < 1' }, { from: 0.9, to: 1.1, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'Peσ₀ ≈ 1' }, { from: 1.1, to: 100, color: 'color-mix(in srgb, var(--blue) 35%, transparent)', label: 'Peσ₀ > 1' }],
       marks: mk, text: meaning });
     const k0 = { a: A[0], D: Ds[0], t: num('t-t') }, sg0 = Calc.sigmaAt(s0, k0.D, k0.t);
     const fo0 = k0.D > 0 ? k0.D * k0.t / (s0 * s0) : 0;
@@ -358,20 +358,20 @@
       S1.push(Object.assign({ x: r.x, y: r.phi, color: col, label: `${names[s]}, N = ${N}` }, sty));
       S2.push(Object.assign({ x: r.x, y: r.err, color: col, label: `${names[s]}, N = ${N}` }, sty));
       rec.push({ N, s, PeH: r.PeH, osc: r.oscille, err: r.maxErr });
-      items.push({ color: col, title: `${names[s]} · N = ${N}`, lines: [`Pe de maille = <b>${fmt(r.PeH, 3)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 4)}</b>`, r.oscille ? `<b>oscille</b> (φ min = ${fmt(r.min, 3)})` : 'monotone'] });
+      items.push({ color: col, title: `${names[s]} · N = ${N}`, lines: [`Pe_h signé (a > 0) = <b>${fmt(r.PeH, 3)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 4)}</b>`, r.oscille ? `<b>oscille</b> (φ min = ${fmt(r.min, 3)})` : 'monotone'] });
     }));
     const bad = schemes.includes('centre') && Ns.some(N => PeL / N > 2);
     $('e-msg').className = bad ? 'msg warn' : 'msg';
-    $('e-msg').textContent = 'Cercles : centré ; carrés : amont ; une couleur par courbe (quatre maillages au plus). ' +
-      (bad ? 'Pe de maille > 2 : le coefficient du voisin aval du schéma centré devient négatif, les oscillations sont possibles.' : 'Pe de maille ≤ 2 : les coefficients du schéma centré restent positifs.');
+    $('e-msg').textContent = 'Courant a > 0 : Pe_L signé = aL/D > 0. Cercles : centré ; carrés : amont ; une couleur par courbe (quatre maillages au plus). ' +
+      (bad ? 'Pe_h signé > 2 : le coefficient du voisin aval du schéma centré devient négatif, les oscillations sont possibles.' : 'Pe_h signé ≤ 2 : les coefficients du schéma centré restent positifs.');
     draw('e-plot', 'e-leg', S1, { xlabel: 'x', ylabel: 'φ', title: 'Solution' });
     draw('e-plot2', 'e-leg2', S2, { xlabel: 'x', ylabel: 'erreur', title: 'Erreur / solution analytique' });
     cards($('e-table'), items);
-    gauge($('e-gauge'), { min: 0.1, max: 100, title: `Nombre de Péclet de maille Pe_h = Pe/N = ${Ns.map(N => fmt(PeL / N, 3)).join(' ; ')}`,
+    gauge($('e-gauge'), { min: 0.1, max: 100, title: `Péclet de maille signé Pe_h = Pe_L/N = ${Ns.map(N => fmt(PeL / N, 3)).join(' ; ')}`,
       zones: [{ from: 0.1, to: 2, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'Pe_h ≤ 2 : centré monotone' }, { from: 2, to: 100, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'Pe_h > 2 : oscillations possibles' }],
       marks: Ns.map((N, i) => ({ v: PeL / N, color: c[(schemes.length * i) % 8], label: `N = ${N}` })), text: 'Les repères indiquent Pe_h de chaque maillage ; la limite 2 sépare coefficients positifs et négatifs du schéma centré.' });
     const cen = rec.filter(o => o.s === 'centre'), amo = rec.filter(o => o.s === 'amont'), lst = arr => arr.map(o => o.N).join(', ');
-    const L = [`Pe = ${fmt(PeL, 3)} : la solution exacte a une couche limite près de x = 1.`];
+    const L = [`Pe_L signé = ${fmt(PeL, 3)} : la solution exacte a une couche limite près de x = L.`];
     if (cen.length) { const os = cen.filter(o => o.osc), mo = cen.filter(o => !o.osc); L.push(`Centré : ${os.length ? 'oscille pour N = ' + lst(os) + ' (Pe_h > 2 : un coefficient devient négatif)' : ''}${os.length && mo.length ? ' ; ' : ''}${mo.length ? 'monotone pour N = ' + lst(mo) + ' (Pe_h ≤ 2)' : ''}.`); }
     if (amo.length) L.push(`Amont : ${amo.every(o => !o.osc) ? 'monotone pour tous les N' : 'oscille pour N = ' + lst(amo.filter(o => o.osc))}, mais il étale davantage la couche limite.`);
     explain('peclet', L);

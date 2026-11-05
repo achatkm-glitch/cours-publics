@@ -388,3 +388,6 @@ Réservation de mftn/calculateurs/index.html, app.js, style.css et registres. Aj
 
 ### Clôture tâche 117 — 2026-11-05 02:30:00 +01:00 — Codex
 Page publique contrôlée avec l’option parabolique : chaque courbe est associée à son instant ; l’explication précise élargissement, baisse du maximum, symétrie et non-nullité de la solution continue. Pages run 41948746050 réussi ; source publique dc583fb. Validation scientifique indépendante non effectuée.
+
+### Prise en charge tâche 118 — 2026-11-05 10:04:35 +01:00 — Codex
+Source de référence MFTN `Peda_inv/site/` réservée pour harmoniser les onglets Transport et Péclet ; le miroir `mftn/calculateurs/` sera mis à jour après contrôle. Les fichiers source et miroir avaient les mêmes SHA-256 ; branche main du miroir et origin/main vérifiées à `3e26f817d331cdf2f6c5cab4b911ad9aac26bb87`. Verrou déclaré dans `suivi/verrous.md`. Garder les deux calculateurs distincts.

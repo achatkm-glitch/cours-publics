@@ -267,3 +267,9 @@ Expliquer le graphe parabolique qui superpose les courbes t=0, 0,500, 1,000 et 2
 
 ### Publication tâche 117 — 2026-11-05 02:30:00 +01:00
 Explication publiée dans le miroir du calculateur, visible lorsque le type parabolique est sélectionné. Pages run 41948746050 réussi pour le commit dc583fb8161631ab4bb7a7f04c3563dbbaf77e34. Contrôle navigateur effectué aux valeurs par défaut ; contrôle technique réussi. Le rendu couvre couleur/temps, étalement et aplatissement, effet de D, symétrie et queues non nulles du modèle continu. Cas de sources rapprochées relu dans le code, mais non manipulé dans le navigateur. Validation scientifique indépendante non réalisée.
+
+### Instruction utilisateur / prise FIFO — tâche 118 — 2026-11-05 10:04:35 +01:00 — Codex
+Harmoniser Transport et Péclet, sans fusionner les onglets : notation commune a vitesse, D diffusivité, φ variable transportée ; définition de Pe aux échelles L, σ₀ et h ; garder le signe de Pe dans les coefficients stationnaires ; distinguer objectif physique et objectif numérique. Référence de coordination MFTN : instruction 64, tâche 124.
+
+### Réalisation en cours — tâche 118 — 2026-11-05 10:12:41 +01:00 — Codex
+Source MFTN et miroir synchronisés pour `index.html`, `app.js`, `equations.js`, `guide.js` (empreintes identiques). Notation harmonisée dans les deux onglets et le guide ; contrôles techniques et publication Pages à achever avant libération.

@@ -108,7 +108,7 @@
 <!-- Ch.1 : transport -->
 <section class="panel" id="p-transport">
   <h2>Transport : advection et diffusion d’un profil initial</h2>
-    <p class="lead">L’advection déplace le profil ; la diffusion l’étale. Le curseur de Péclet compare ces effets à l’échelle initiale σ₀ : il ajuste D en gardant la formule Pe = |a|σ₀/D. Le nombre de Fourier Fo décrit l’avancement de la diffusion à l’instant choisi. Le calculateur montre la solution exacte pour un profil initial gaussien, un cas particulier de l’équation d’advection-diffusion. Séance 1, bloc A. Les champs de comparaison permettent de superposer jusqu’à six courbes.</p>
+    <p class="lead"><b>Objectif :</b> comprendre le transport physique. Que font l’advection et la diffusion au profil transporté φ ? Le curseur règle Pe<sub>σ₀</sub> = |a|σ₀/D et la lecture dynamique compare les temps caractéristiques. Dans l’exemple d’un rejet, φ peut représenter la concentration c. Le calculateur suit un profil gaussien et permet de superposer jusqu’à six cas. Séance 1, bloc A.</p>
   <div class="eqs" data-eq="transport"></div>
   <div class="grid">
     <div>
@@ -127,7 +127,7 @@
       <div class="msg" id="t-msg" aria-live="polite"></div>
       <div class="gauge" id="t-gauge"></div>
       <div class="msg dimensionless-reading" id="t-dynamic" role="status" aria-live="polite" aria-atomic="true"></div>
-      <canvas id="t-plot" aria-label="Profils de concentration"></canvas><div class="legend" id="t-leg"></div>
+      <canvas id="t-plot" aria-label="Profil de la variable transportée phi"></canvas><div class="legend" id="t-leg"></div>
       <div class="cards" id="t-table"></div>
     </div>
   </div>
@@ -283,7 +283,7 @@
 <!-- Ch.1 : Péclet -->
 <section class="panel" id="p-peclet">
   <h2>Péclet : convection–diffusion en volumes finis</h2>
-  <p class="lead">Convection–diffusion stationnaire entre deux valeurs imposées, résolue en volumes finis sur N cellules avec deux reconstructions de la valeur convectée aux faces : centrée et amont. Pe est le nombre de Péclet global et Pe_h celui de la maille. Séance 1, bloc A. Comparez les schémas et superposez plusieurs maillages.</p>
+  <p class="lead"><b>Objectif :</b> étudier l’effet du schéma numérique. Comment les choix centré et amont modifient-ils la solution et ses oscillations ? Le calculateur compare les deux reconstructions sur plusieurs maillages. Pour cette démonstration, le courant va de x = 0 vers x = L (a &gt; 0) ; le Péclet signé est alors positif. Séance 1, bloc A.</p>
   <div class="eqs" data-eq="peclet"></div>
   <div class="grid">
     <div>
@@ -292,11 +292,11 @@
           <label><input type="checkbox" name="e-s" value="centre" checked> Centré</label>
           <label><input type="checkbox" name="e-s" value="amont" checked> Amont</label>
         </div>
-        <label>Nombre de Péclet global Pe<span class="sl"><input type="range" id="e-PeL" min="1" max="200" step="1" value="50"><output></output></span></label>
+        <label>Péclet global signé Pe<sub>L</sub> (a &gt; 0 ici)<span class="sl"><input type="range" id="e-PeL" min="1" max="200" step="1" value="50"><output></output></span></label>
         <label>Nombre de cellules N<span class="sl"><input type="range" id="e-N" min="4" max="200" step="1" value="10"><output></output></span><input id="e-Nx" value="" placeholder="autres N à comparer (jusqu'à 5 valeurs au total)" aria-label="Autres valeurs à comparer"></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> avec Pe = 50 et N = 10 (Pe_h = 5), le schéma centré oscille (minimum −1,50) alors que l'amont reste monotone (erreur 0,20). Le centré cesse d'osciller à partir de N = 25 (Pe_h ≤ 2). Pour N = 100, le centré (erreur 0,029) est plus précis que l'amont (0,069).</p>
+      <p class="repere"><b>Repère :</b> avec Pe<sub>L</sub> = 50 et N = 10 (Pe<sub>h</sub> = 5), le schéma centré oscille (minimum −1,50) alors que l'amont reste monotone (erreur 0,20). Le centré cesse d'osciller à partir de N = 25 (Pe<sub>h</sub> ≤ 2). Pour N = 100, le centré (erreur 0,029) est plus précis que l'amont (0,069).</p>
     </div>
     <div>
       <div class="msg" id="e-msg" aria-live="polite"></div>
@@ -532,10 +532,10 @@
   Premier jet : vérification technique seulement. Les valeurs de repère proviennent du polycopié MFTN, sauf les itérations de Jacobi et de Gauss–Seidel, les ordres globaux de Neumann, le pas FTCS, l'exemple de la gaussienne, les volumes finis de la barre et la convection–diffusion, calculés par le rédacteur et contrôlés par les tests (<code>test_calc.js</code>).
 </footer>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<script src="calc.js?v=20261105-117a"></script>
-<script src="equations.js?v=20261105-117a"></script>
-<script src="situations.js?v=20261105-117a"></script>
-<script src="guide.js?v=20261105-117a"></script>
-<script src="app.js?v=20261105-117a"></script>
+<script src="calc.js?v=20261105-124a"></script>
+<script src="equations.js?v=20261105-124a"></script>
+<script src="situations.js?v=20261105-124a"></script>
+<script src="guide.js?v=20261105-124a"></script>
+<script src="app.js?v=20261105-124a"></script>
 </body>
 </html>

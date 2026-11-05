@@ -94,9 +94,9 @@ window.GUIDE = {
             "t-tx": "",
             "t-s0": "0.15"
           },
-          "consigne": "Les deux courbes ont la même vitesse a = 1 et le même instant t = 4, mais des diffusivités D = 0,01 et D = 0,05. Relevez dans les cartes de résultats le centre, la largeur σ(t) et le pic de chacune, et repérez leur nombre de Péclet sur la jauge.",
+          "consigne": "Les deux courbes ont la même vitesse a = 1 et le même instant t = 4, mais des diffusivités D = 0,01 et D = 0,05. Relevez dans les cartes de résultats le centre, la largeur σ(t) et le pic de chacune, et repérez Peσ₀ sur la jauge.",
           "question": "Quel mécanisme fixe la position du centre ? Lequel fixe la largeur ? Que devient le pic quand D augmente, et pourquoi ?",
-          "main": "Avec σ₀ = 0,15 et t = 4, calculez le centre a·t, la largeur σ(t) = √(σ₀² + 2Dt) pour D = 0,01 puis 0,05, et le nombre de Péclet Pe = |a|σ₀/D."
+          "main": "Avec σ₀ = 0,15 et t = 4, calculez le centre a·t, la largeur σ(t) = √(σ₀² + 2Dt) pour D = 0,01 puis 0,05, et le nombre de Péclet du profil Peσ₀ = |a|σ₀/D."
         },
         {
           "id": "S1-X2",
@@ -113,8 +113,8 @@ window.GUIDE = {
             "t-s0": "0.15"
           },
           "consigne": "Avec D = 0,15, le nombre de Péclet |a|σ₀/D vaut 1. Relevez σ(4) et le pic, et comparez la courbe à t = 4 à celle de t = 0.",
-          "question": "Que compare Pe = 1 à l'échelle initiale ? Que montrent séparément le déplacement du centre et l'élargissement à t = 4 ?",
-          "main": "Avec D = 0,15, calculez Pe, σ(4) et le pic σ₀/σ.",
+          "question": "Que compare Peσ₀ = 1 à l'échelle initiale ? Que montrent séparément le déplacement du centre et l'élargissement à t = 4 ?",
+          "main": "Avec D = 0,15, calculez Peσ₀, σ(4) et le pic σ₀/σ.",
           "corr": true
         }
       ]
@@ -717,9 +717,9 @@ window.GUIDE = {
               "centre"
             ]
           },
-          "consigne": "Gardez seulement le schéma centré, avec Pe = 50. Superposez N = 10, 20, 24, 25 et 26 et lisez dans les cartes le nombre de Péclet de maille et la présence d'oscillations (voir aussi la jauge).",
-          "question": "À partir de quel N les oscillations disparaissent-elles ? Que vaut alors Pe_h ? Quel lien avec le signe du coefficient du voisin aval ? Dans ce problème stationnaire, s'agit-il de stabilité temporelle ou de monotonie spatiale ?",
-          "main": "Pour Pe = 50, calculez le nombre de Péclet de maille Pe_h = Pe/N pour N = 10, 20, 24, 25 et 26, et comparez à 2."
+          "consigne": "Gardez seulement le schéma centré, avec Pe_L signé = 50 (a > 0). Superposez N = 10, 20, 24, 25 et 26 et lisez dans les cartes Pe_h signé et la présence d'oscillations (voir aussi la jauge).",
+          "question": "À partir de quel N les oscillations disparaissent-elles ? Que vaut alors Pe_h signé ? Quel lien avec le signe du coefficient du voisin aval ? Dans ce problème stationnaire, s'agit-il de stabilité temporelle ou de monotonie spatiale ?",
+          "main": "Pour Pe_L signé = 50, calculez Pe_h signé = Pe_L/N pour N = 10, 20, 24, 25 et 26, et comparez à 2."
         },
         {
           "id": "S1-X8",
@@ -739,9 +739,9 @@ window.GUIDE = {
               "amont"
             ]
           },
-          "consigne": "Gardez les deux schémas et prenez N = 100 puis 200 (Pe_h = 0,5 puis 0,25). Lisez les erreurs maximales dans les cartes de résultats.",
+          "consigne": "Gardez les deux schémas et prenez N = 100 puis 200 (Pe_L signé = 50, donc Pe_h signé = 0,5 puis 0,25). Lisez les erreurs maximales dans les cartes de résultats.",
           "question": "Quel schéma est le plus précis ? Comment l'erreur de chacun évolue-t-elle quand N double ?",
-          "main": "Calculez Pe_h pour N = 100 et 200 (Pe = 50) et prévoyez de quel facteur l'erreur de chaque schéma est divisée quand N double (centré d'ordre 2, amont d'ordre 1)."
+          "main": "Calculez Pe_h signé pour N = 100 et 200 (Pe_L signé = 50) et prévoyez de quel facteur l'erreur de chaque schéma est divisée quand N double (centré d'ordre 2, amont d'ordre 1)."
         },
         {
           "id": "S1-X9",
@@ -760,9 +760,9 @@ window.GUIDE = {
               "amont"
             ]
           },
-          "consigne": "Avec Pe = 50 et N = 10 (Pe_h = 5), comparez les deux schémas sur les deux graphiques.",
+          "consigne": "Avec Pe_L signé = 50 et N = 10 (Pe_h signé = 5), comparez les deux schémas sur les deux graphiques.",
           "question": "Que fait chaque schéma près de la paroi x = 1 ? Quel prix paie l'amont pour éviter les oscillations ?",
-          "main": "Pour Pe_h = 5, calculez le coefficient du voisin aval du schéma centré, D(1 − Pe_h/2), et donnez son signe."
+          "main": "Pour Pe_h signé = 5, calculez le coefficient du voisin aval du schéma centré, (D/h)(1 − Pe_h signé/2), et donnez son signe."
         }
       ]
     },
