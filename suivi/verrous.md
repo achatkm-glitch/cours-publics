@@ -33,3 +33,4 @@
 
 | mftn/calculateurs/index.html, app.js, equations.js et registres tâche 120 | ACTIF — Codex | 2026-11-05 11:07:29 +01:00 |
 | mftn/calculateurs/index.html, app.js, equations.js et registres tâche 120 | LIBRE — Codex | 2026-11-05 11:13:32 — Pages run 42008673233 réussi, inspection publique terminée |
+| mftn/calculateurs/app.js, situations.js et registres tâche 121 | ACTIF — Codex | 2026-11-05 11:21:55 +01:00 |

@@ -668,6 +668,16 @@
     const equation = (window.EQUATIONS.edpb || []).find(e => e.type === type);
     renderEquationEntry($('k-equation'), equation);
     document.querySelectorAll('.edp-type-option').forEach(option => option.classList.toggle('selected', option.querySelector('input:checked') !== null));
+    const situation = document.querySelector('#p-edpb .sit-txt');
+    if (situation) {
+      const gap = num('k-gap');
+      const texts = {
+        elliptique: '<b>Situation physique.</b> La plaque est à l’équilibre : on impose sa température sur les bords, puis on observe le champ intérieur. Il n’y a pas de profil initial à faire évoluer.',
+        parabolique: `<b>Situation physique.</b> Au départ, on prescrit la température le long de la barre : deux zones chaudes en forme de bosse cosinus, de rayon 0,5 m, séparées de ${fmt(gap, 1)} m (écart réglable ci-dessous). La courbe « Profil initial » à t = 0 montre donc deux pics, un par zone chaude. Les courbes suivantes montrent leur évolution : la diffusion élargit et abaisse les pics. Ici, on ne prescrit pas une température à l’entrée de la barre.`,
+        hyperbolique: '<b>Situation physique.</b> Au départ, une seule bosse est présente dans le tube et sa vitesse initiale est nulle. La courbe initiale a un seul pic ; l’équation des ondes la partage ensuite en deux bosses qui partent en sens opposés.'
+      };
+      situation.innerHTML = texts[type];
+    }
     const readings = {
       elliptique: { title: 'Équilibre spatial', text: 'Pas d’évolution temporelle dans ce modèle : les conditions imposées sur la frontière déterminent le champ à l’intérieur.' },
       parabolique: { title: 'Diffusion au cours du temps', text: 'Le profil évolue depuis son état initial et s’étale. Dans le modèle continu de la chaleur sur la droite, l’influence devient non nulle à toute distance dès t > 0.' },
