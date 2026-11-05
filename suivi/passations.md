@@ -456,3 +456,9 @@ Synchronisation des trois fichiers source MFTN vers mftn/calculateurs effectuée
 
 ### Clôture tâche miroir 127 — 2026-11-05 15:08:21 Europe/Paris (UTC+01:00) — Codex
 Miroir publié et contrôlé en HTTPS : page, app.js?v=20261105-137a et style.css répondent 200 ; les deux options radio sont accessibles, avec première dérivée sélectionnée et affichée par défaut. GitHub Pages run 42041756935 réussi sur le commit miroir f186186318b41080232c6438f1ed3bf3a55d7499, confirmé par ls-remote. SHA-256 des trois fichiers identiques à MFTN : index.html 98B7058825FE76D37865868F0FEA5FA467D115E038551430BF276C343D08D335 ; app.js 91907216E90D0B6528934F1B868A2CFA1BABE02BAC1F72DB0C4E77F7C0C9D758 ; style.css 73984123B6567AC6FC77014E4901F1BB09E41B34A609FE676EF9A05641E71C6A. Test de syntaxe JS réussi. Bascule au pointeur non exercée ; verrou libéré.
+
+### Prise en charge tâche miroir 128 — 2026-11-05 15:11:33 Europe/Paris (UTC+01:00) — Codex
+Tâche utilisateur 138 prise après clôture et libération de la tâche miroir 127. Réservation de mftn/calculateurs/index.html, style.css, app.js, calc.js et guide.js, avec suivi/decisions.md, passations.md et verrous.md. Source de référence : dépôt MFTN, tâches 138. Audit et changements attendus : usage sur téléphone/tablette, valeurs initiales pertinentes, boutons de préréglage des explorations guidées. Le miroir est à synchroniser après contrôle local.
+
+### Avancement tâche miroir 128 — 2026-11-05 15:23:18 Europe/Paris (UTC+01:00) — Codex
+Synchronisation depuis `C:\Latex\MFTN\Peda_inv\site` : `index.html` et `style.css`, SHA-256 identiques source/miroir (index `898C93C940049A82608708AC1A3894319B5F3C4A175CE32AE3F7C070E2362AF3`, style `2C6368A6D01E8D296582592BE5FD7F90E7B9C6E30F958F5D34653E51C7E7CF29`). L'audit couvre 13 calculateurs, 58 curseurs et 78 préréglages ; tests `test_calc.js` réussis. Restent le commit/push et le contrôle du déploiement Pages. Pas d'essai sur appareil tactile dans cette passe.
