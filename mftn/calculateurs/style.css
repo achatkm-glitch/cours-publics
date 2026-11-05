@@ -282,3 +282,14 @@ details > summary { cursor: pointer; color: var(--blue); margin: 10px 0; }
   .grid.chaleur-grid .checks label { align-items: flex-start; font-size: .88rem; line-height: 1.3; }
   .grid.chaleur-grid form.params > label { min-width: 0; font-size: .9rem; }
 }
+
+/* Advection : réglages compacts, flottants et accessibles sans scrollbar imbriquée. */
+@media (min-width: 801px) {
+  .grid.adv-grid > div:first-child { max-height: none; overflow: visible; }
+  .grid.adv-grid form.params { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; }
+  .grid.adv-grid form.params > .checks,
+  .grid.adv-grid form.params > .row { grid-column: 1 / -1; }
+  .grid.adv-grid .checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 8px; }
+  .grid.adv-grid .checks label { align-items: flex-start; font-size: .88rem; line-height: 1.3; }
+  .grid.adv-grid form.params > label { min-width: 0; font-size: .9rem; }
+}
