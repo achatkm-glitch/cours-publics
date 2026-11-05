@@ -37,3 +37,5 @@
 Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur libres ; Pages run 42012043991 réussi et empreintes source/miroir identiques.
 | MFTN `Peda_inv/site/app.js`, `index.html` et miroir `mftn/calculateurs/app.js`, `index.html` — tâche 122 | ACTIF — Codex | 2026-11-05 11:45:20 +01:00 — infobulle explicative par courbe de diffusion, sans coordonnées |
 | MFTN `Peda_inv/site/app.js`, `index.html` et miroir `mftn/calculateurs/app.js`, `index.html` — tâche 122 | LIBRE — Codex | 2026-11-05 11:51:24 +01:00 — Pages run 42013908439 réussi ; script et page publics répondent 200 |
+
+| mftn/calculateurs/app.js, equations.js, guide.js, index.html et suivi/decisions.md, passations.md, verrous.md — tâche 123 | LIBRE — Codex | 2026-11-05 13:16:02 Europe/Paris (UTC+01:00) | Pages run 42025432138 réussi ; commit f6cca4b confirmé sur origin/main |

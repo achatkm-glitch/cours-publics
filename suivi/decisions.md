@@ -295,3 +295,7 @@ Sur le graphe parabolique, conserver t=0 comme repère et remplacer les coordonn
 
 ### Clôture tâche 122 — 2026-11-05 11:51:24 +01:00 — Codex
 Publié : l’infobulle du graphe parabolique conserve l’instant et présente une explication du profil initial ou de la diffusion, sans x/u. Page et script HTTPS répondent 200 ; Pages run 42013908439 réussi. Vérification visuelle au pointeur non réalisée (API CUA indisponible). Commits MFTN 9572351, cours-publics d8d7fe3 ; empreintes dans version_traceability.md du dépôt MFTN. Verrou libéré.
+
+| 123 | 2026-11-05 12:55:12 +01:00 | Utilisateur | Dans « EDP : classer », remplacer les curseurs des coefficients A, B, C par un réglage du discriminant Δ et mieux expliquer la valeur u dans le cas non linéaire. | Codex | terminée, publiée et contrôlée | Pages run 42025432138 ; miroir commit f6cca4b, clôture dans suivi/passations.md |
+### 2026-11-05 13:16:02 Europe/Paris (UTC+01:00) — tâche miroir 123
+Dans « EDP : classer », les curseurs de coefficients sont remplacés par Δ direct ; l’exemple non linéaire explique u(P), la valeur de l’inconnue en un point, et le discriminant local. Source de référence : `C:\Latex\MFTN\chapters\chapter01.tex` (formule et exercice déjà présents). Aucun contenu nouveau ni PDF.

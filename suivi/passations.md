@@ -418,3 +418,11 @@ Miroir synchronisé ; le survol du graphe parabolique affiche l’instant et une
 ### Prise en charge tâche 122 — 2026-11-05 11:45:20 +01:00 — Codex
 Miroir `mftn/calculateurs/app.js` et `index.html` réservé pour refléter MFTN. Le graphe parabolique gardera l’instant dans l’infobulle et affichera une lecture physique de la série survolée, au lieu de x et u. Après synchronisation : vérifier syntaxe, empreintes, publication Pages et rendu public.
 
+
+### Prise en charge tâche 123 — 2026-11-05 12:55:12 Europe/Paris (UTC+01:00) — Codex
+La demande utilisateur sur « EDP : classer » est prise après vérification de la libération de la tâche 122. Le miroir cours-publics était propre, HEAD `e24a65e`, sans verrou actif sur mftn/calculateurs. Réservation du miroir mftn/calculateurs/app.js, `equations.js`, index.html et du registre suivi/; source de référence MFTN. Travail : remplacer A/B/C par Δ, conserver une conique repère liée au discriminant, expliciter que u est la valeur locale de l’inconnue dans le cas quasi linéaire. Après la source, synchroniser, contrôler GitHub Pages et libérer.
+
+### Addendum de correction — tâche 123 — 2026-11-05 12:56:07 Europe/Paris (UTC+01:00) — Codex
+Correction de mise en forme de la prise précédente : les caractères de contrôle insérés avant `equations.js` et le hash du miroir provenaient des délimiteurs de code Markdown interprétés par le shell. Les chemins corrects sont `mftn/calculateurs/app.js`, `mftn/calculateurs/equations.js`, `mftn/calculateurs/index.html`, et le HEAD vérifié est `e24a65e`. Le verrou est pris par Codex à 2026-11-05 12:56:07 ; la source MFTN est la référence.
+### Clôture tâche 123 — 2026-11-05 13:16:02 Europe/Paris (UTC+01:00) — Codex
+Miroir `mftn/calculateurs` synchronisé à la source MFTN ; hashes identiques pour index.html, app.js, equations.js et guide.js. Contrôles Node/diff-check effectués, rendu local inspecté et interaction Δ=−4/0/3 puis u(P)=1,5 vérifiée. GitHub Pages run 42025432138 réussi ; page et ressources répondent HTTP 200. Commit miroir `f6cca4b5e732e3abc8eb8ff95e0653df826938be` vérifié sur origin/main. Verrou libéré.
