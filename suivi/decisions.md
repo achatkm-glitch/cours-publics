@@ -217,3 +217,7 @@ Le commit b9936047ff0383fe6be7d80e288d635386ebf9f8 portant la source locale et l
 
 ### Clôture tâche 111 — 2026-11-05 01:01:09 Europe/Paris (UTC+01:00) — Codex
 La page Ordre sépare les familles de dérivées et présente les stencils seconde du polycopié, y compris les formules unilatérales et non uniforme. Le miroir est synchronisé sous cache-buster 20261105-111c. Contrôle technique local réussi ; contrôle Pages après push à terminer. Verrous libérés.
+
+
+#### Rectificatif de clôture tâche 111 — 2026-11-05 01:06:13 Europe/Paris (UTC+01:00)
+La publication est achevée : commit cdd12b354f749c190026e14312d106f77aff5286 poussé sur origin/main ; GitHub Pages run 41938241979 terminé avec succès ; page Ordre vérifiée en ligne.

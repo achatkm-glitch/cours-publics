@@ -327,3 +327,7 @@ Dans le navigateur local (127.0.0.1:8766/#chemin), clic sur un point du graphe D
 - Sept fichiers source/miroir identiques ; `node --check` réussi pour les scripts et aperçu local contrôlé.
 - Formules alignées sur le chapitre 2 du polycopié. Ordres mesurés sur la plage affichée : centrée proche de 2, unilatérales proches de 1.
 - Push public et contrôle GitHub Pages à confirmer ; aucun PDF produit. Validation scientifique indépendante à faire. Verrous libérés.
+
+
+#### Addendum de publication tâche 111 — 2026-11-05 01:06:13 Europe/Paris (UTC+01:00)
+Rectification : le commit cdd12b354f749c190026e14312d106f77aff5286 est sur origin/main ; run Pages 41938241979 réussi ; page Ordre publique vérifiée avec familles séparées et stencils supplémentaires. Aucun verrou actif.
