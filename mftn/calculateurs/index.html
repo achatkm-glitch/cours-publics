@@ -6,7 +6,7 @@
 <title>Calculateurs MFTN — par séance</title>
 <meta name="description" content="Calculateurs et parcours des quatre séances MFTN : modèle et transport, stationnaire, instationnaire et performance des schémas.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261105-117a">
+<link rel="stylesheet" href="style.css?v=20261105-133a">
 </head>
 <body>
 <header>
@@ -14,7 +14,7 @@
   <p>Outils de simulation pour les séances de cours. Aucune installation : tout s'exécute dans votre navigateur. Déplacez les curseurs et superposez plusieurs cas pour comparer.</p>
   <p class="interactive-hint">Astuce : survolez ou touchez une courbe pour lire ses coordonnées ; utilisez les flèches du clavier sur un graphique pour parcourir ses points. Les graphes de raffinement indiquent une pente observée sur les points affichés.</p>
   <aside class="phone-access" aria-label="Accès au site sur téléphone">
-    <img src="img/calculateurs_qr.png" alt="QR code vers le site public des calculateurs MFTN">
+    <img src="img/calculateurs_qr.png" alt="QR code vers le site public des calculateurs MFTN" title="Scannez pour ouvrir le calculateur sur téléphone.">
     <div class="phone-access__copy">
       <strong>Ouvrir le site sur téléphone</strong>
       <p>Scannez ce QR code avec l’appareil photo de votre téléphone.</p>
@@ -58,7 +58,7 @@
   <p class="lead">Pourquoi un cours de méthodes numériques ? Pour une même équation, on peut écrire de nombreux schémas de calcul, et ils ne se valent pas : selon le schéma, la solution calculée présente des comportements non voulus. Ici, un signal (une bosse lisse et un créneau) est transporté à vitesse constante sur un domaine périodique : après un tour entier, la solution exacte est identique au signal initial. Cinq schémas, notés A à E (leurs formules et leurs noms seront vus plus tard dans le cours), essaient de la reproduire. Observez ce que chacun fait du signal. Test inspiré de la figure 6.1 de LeVeque (2002) ; les paramètres sont ceux de ce site. Introduction du cours, séance 1.</p>
   <p class="repere"><b>Comment travailler :</b> commencez par une prévision ou une première explication sans ouvrir le cours. Si une notion vous manque, consultez le passage indiqué dans la fiche de séance, puis revenez à l'exploration pour vérifier et expliquer votre réponse. Le cours se lit en salle, au fil des questions ; aucune lecture préalable à domicile n'est demandée.</p>
   <div class="situation"><b>Mise en situation.</b> Un rejet polluant, une bouffée lisse suivie d'un front brusque, est entraîné par un courant uniforme dans un canal. On veut prévoir par le calcul, sans mesure, la forme du rejet un peu plus loin en aval : où arrive-t-il, avec quelle concentration maximale, et la concentration peut-elle devenir négative ou exploser ? Le signal du calculateur (une bosse et un créneau, sans unité) représente cette concentration ; après un tour, un courant parfait la ramène à l'identique. Les schémas A à E sont cinq façons de faire ce calcul : tous ne donnent pas un résultat exploitable.
-  <svg class="sit-fig" viewBox="0 0 640 250" role="img" aria-label="Schéma : un rejet polluant, une bosse lisse et un front brusque, entraîné par le courant dans un canal">
+  <svg class="sit-fig" viewBox="0 0 640 250" role="img" aria-label="Schéma : un rejet polluant, une bosse lisse et un front brusque, entraîné par le courant dans un canal" title="Schéma du signal transporté dans un canal périodique.">
     <rect x="50" y="170" width="540" height="50" fill="var(--blue)" opacity="0.15"/>
     <line x1="50" y1="170" x2="590" y2="170" stroke="var(--blue)" stroke-width="2"/>
     <line x1="50" y1="220" x2="590" y2="220" stroke="var(--blue)" stroke-width="2"/>
@@ -536,6 +536,6 @@
 <script src="equations.js?v=20261105-132a"></script>
 <script src="situations.js?v=20261105-129d"></script>
 <script src="guide.js?v=20261105-132a"></script>
-<script src="app.js?v=20261105-132a"></script>
+<script src="app.js?v=20261105-133a"></script>
 </body>
 </html>

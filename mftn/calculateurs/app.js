@@ -72,6 +72,45 @@
     const den = p.reduce((a, v) => a + (v[0] - mx) ** 2, 0);
     return den > 0 ? p.reduce((a, v) => a + (v[0] - mx) * (v[1] - my), 0) / den : NaN;
   }
+  /* Repères de lecture au survol : décrire les axes et l'objet du graphe sans conclure à la place de l'étudiant. */
+  const FIGURE_NOTES = {
+    't-plot': 'Profil transporté : x est la position et φ la variable représentée. Comparez les instants affichés.',
+    'd-plot': 'Coniques associées à l’équation affichée. Repérez leur forme et leur orientation pour les comparer au curseur Δ.',
+    'd-dep': 'Schéma dans le plan (x,t) autour du point P. Suivez les zones tracées et les axes pour lire le domaine représenté.',
+    'k-heat': 'Carte de température dans la plaque : x et y donnent la position ; la couleur et l’échelle indiquent T.',
+    'k-line': 'Température le long de la ligne médiane de la plaque ; x repère la position sur cette ligne.',
+    'k-par': 'Profils de température selon le temps : x est la position et u la valeur du profil. La légende associe chaque courbe à son instant.',
+    'k-hyp': 'Profils de u en fonction de x. La légende distingue l’état initial et l’instant sélectionné.',
+    'l-plot': 'Température le long de la barre avec production. x repère la position et T la température.',
+    'b-plot': 'Solution calculée et référence en fonction de x. La légende identifie chaque méthode et le maillage.',
+    'b-plot2': 'Écart à la solution analytique selon x. Comparez les méthodes et les maillages sans déduire une tendance d’un seul point.',
+    'e-plot': 'Profil de la solution stationnaire selon x. La légende précise la méthode et le maillage.',
+    'e-plot2': 'Écart à la solution analytique selon x ; les valeurs négatives et positives gardent leur signe.',
+    'e-conv': 'Erreur maximale en fonction du pas spatial h pour les cas affichés.',
+    'j-plot': 'Valeurs des itérés selon x ; la légende permet de suivre les étapes et de les comparer à la référence.',
+    'j-plot2': 'Résidu en fonction du numéro d’itération k. L’axe vertical logarithmique facilite la lecture des ordres de grandeur.',
+    'o-first-plot': 'Erreur des approximations de dérivée première en fonction du pas h. Chaque série correspond à une formule.',
+    'o-second-plot': 'Erreur des approximations de dérivée seconde en fonction du pas h. Chaque série correspond à une formule.',
+    'n-plot': 'Erreur maximale selon h pour les formules de bord sélectionnées. Les deux axes sont logarithmiques.',
+    'n-plot2': 'Répartition de l’erreur le long du domaine pour le maillage indiqué.',
+    'c-plot': 'Profils calculés de température au temps indiqué ; x est la position et u la température normalisée.',
+    'c-amp': 'Module du facteur d’amplification selon le nombre d’onde θ. Comparez les courbes sur l’intervalle tracé.',
+    'c-g-signed': 'Facteur d’amplification signé selon θ ; le signe conserve l’information sur l’alternance du mode.',
+    'c-plot2': 'Erreur maximale selon le pas de temps Δt pour les schémas affichés.',
+    'c-refine': 'Erreur maximale au même temps final selon le maillage. La légende distingue les schémas.',
+    'p-plot': 'Valeur du terme associé à Dufort–Frankel selon h, pour les chemins de raffinement affichés.',
+    'p-plot2': 'Valeur du terme associé à Lax–Friedrichs selon h, pour les chemins de raffinement affichés.',
+    'p-effect-df': 'Profils calculés par Dufort–Frankel selon le maillage ; la légende indique les valeurs de r.',
+    'p-effect-lxf': 'Profils calculés par Lax–Friedrichs selon le maillage ; la légende indique les valeurs de r.',
+    'a-plot': 'Profils calculés d’advection selon x. La légende distingue les schémas et les maillages.',
+    'a-modal-amp': 'Module du facteur d’amplification selon θ pour les modes affichés.',
+    'a-modal-phase': 'Erreur de phase par pas selon θ ; l’axe vertical est exprimé en radians.',
+    'a-conv': 'Erreur maximale à temps final commun selon h pour les schémas affichés.'
+  };
+  function figureNote(canvas, title) {
+    const note = FIGURE_NOTES[canvas.id] || (title ? `Graphe « ${title} » : lisez les axes et la légende, puis comparez les courbes affichées.` : 'Lisez les axes et la légende pour identifier les grandeurs représentées.');
+    return note;
+  }
   function attachPlotInteraction(canvas, points, area, labels) {
     let wrap = canvas.parentElement;
     if (!wrap.classList.contains('interactive-plot-wrap')) {
@@ -88,7 +127,17 @@
       canvas.setAttribute('aria-describedby', tip.id);
       canvas._plotInteraction = state = { tip, marker, points: [], area: null, labels: {}, pinned: false, keyboardIndex: -1 };
       const show = (p, px, py) => {
-        if (!p) { state.tip.hidden = true; state.marker.hidden = true; return; }
+        if (!p) {
+          state.marker.hidden = true;
+          if (isFinite(px) && isFinite(py) && state.area && px >= state.area.l && px <= state.area.r && py >= state.area.t && py <= state.area.b) {
+            state.tip.textContent = state.labels.note;
+            state.tip.hidden = false;
+            const wr = wrap.getBoundingClientRect(), cr = canvas.getBoundingClientRect();
+            state.tip.style.left = Math.max(2, Math.min(cr.left - wr.left + px + 10, Math.max(2, wrap.clientWidth - state.tip.offsetWidth - 2))) + 'px';
+            state.tip.style.top = Math.max(2, Math.min(cr.top - wr.top + py + 10, Math.max(2, cr.height - state.tip.offsetHeight - 2))) + 'px';
+          } else state.tip.hidden = true;
+          return;
+        }
         const note = typeof p.commentAt === 'function' ? p.commentAt(p) : p.commentAt;
         state.tip.textContent = p.tooltipTextOnly
           ? `${p.label}${note ? `\n${note}` : ''}`
@@ -130,6 +179,25 @@
     }
     state.points = points; state.area = area; state.labels = labels; state.pinned = false; state.tip.hidden = true; state.marker.hidden = true;
   }
+  function attachFigureNote(canvas, note) {
+    if (!canvas) return;
+    let wrap = canvas.parentElement;
+    if (!wrap.classList.contains('interactive-plot-wrap')) {
+      const next = document.createElement('div'); next.className = 'interactive-plot-wrap';
+      canvas.parentNode.insertBefore(next, canvas); next.appendChild(canvas); wrap = next;
+    }
+    let tip = wrap.querySelector('.figure-note-tooltip');
+    if (!tip) {
+      tip = document.createElement('div'); tip.className = 'plot-tooltip figure-note-tooltip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true; wrap.appendChild(tip);
+      canvas.tabIndex = canvas.tabIndex < 0 ? 0 : canvas.tabIndex;
+      canvas.addEventListener('pointerenter', () => { tip.hidden = false; });
+      canvas.addEventListener('pointerleave', () => { tip.hidden = true; });
+      canvas.addEventListener('focus', () => { tip.hidden = false; });
+      canvas.addEventListener('blur', () => { tip.hidden = true; });
+      canvas.setAttribute('aria-describedby', canvas.id + '-figure-note'); tip.id = canvas.id + '-figure-note';
+    }
+    tip.textContent = note;
+  }
   function plot(canvas, series, o) {
     o = o || {};
     (window.__plotLog = window.__plotLog || {})[canvas.id] = (series || []).map(s => s.color); // contrôle des couleurs en double
@@ -155,7 +223,7 @@
     const hitPoints = [];
     series.forEach(s => s.x.forEach((v, i) => {
       const y = s.y[i]; if (!isFinite(v) || !isFinite(y) || (o.logx && v <= 0) || (o.logy && y <= 0)) return;
-      hitPoints.push({ px: X(v), py: Y(y), x: v, y, label: s.label || 'Courbe', commentAt: s.commentAt || null, tooltipTextOnly: !!s.tooltipTextOnly });
+      hitPoints.push({ px: X(v), py: Y(y), x: v, y, label: s.label || 'Courbe', commentAt: s.commentAt || figureNote(canvas, o.title), tooltipTextOnly: !!s.tooltipTextOnly });
     }));
     const grid = css('--plot-grid'), axis = css('--plot-axis'), muted = css('--muted');
     g.font = '12px system-ui, sans-serif'; g.lineWidth = 1;
@@ -200,7 +268,7 @@
     if (o.xlabel) g.fillText(o.xlabel, L + pw / 2, W - 8);
     if (o.ylabel) { g.save(); g.translate(14, T + ph / 2); g.rotate(-Math.PI / 2); g.fillText(o.ylabel, 0, 0); g.restore(); }
     if (o.title) { g.fillStyle = axis; g.textAlign = 'left'; g.fillText(o.title, L, 16); }
-    attachPlotInteraction(canvas, hitPoints, { l: L, r: L + pw, t: T, b: T + ph }, { x: o.xlabel || 'x', y: o.ylabel || 'y' });
+    attachPlotInteraction(canvas, hitPoints, { l: L, r: L + pw, t: T, b: T + ph }, { x: o.xlabel || 'x', y: o.ylabel || 'y', note: figureNote(canvas, o.title) });
   }
   function legend(el, items, o) {
     el.innerHTML = items.map(s => {
@@ -625,6 +693,20 @@
   /* ---------- Situations physiques (schémas illustratifs) ---------- */
   function renderSituations() {
     const S = window.SITUATIONS || {};
+    const notes = {
+      transport: 'Illustration d’un rejet dans un courant, avec transport et étalement.',
+      edpc: 'Trois pictogrammes de situations modèles à comparer.',
+      edpb: 'Pictogramme de la situation physique sélectionnée.',
+      cl: 'Paroi, source thermique et conditions aux limites.',
+      barre: 'Barre chauffée entre deux températures imposées, avec son maillage.',
+      peclet: 'Écoulement le long d’une paroi chaude ; la couche limite est schématisée.',
+      ordre: 'Points d’un maillage et pas h pour construire une différence.',
+      neumann: 'Flux thermique représenté au bord de la paroi.',
+      jg: 'Nœuds d’une barre et mise à jour par itérations.',
+      chaleur: 'Profils schématiques de température à plusieurs instants.',
+      chemin: 'Comparaison de maillages et diminution des pas.',
+      adv: 'Paquet de fluide chaud et front dans une conduite.'
+    };
     Object.keys(S).forEach(tab => {
       const panel = $('p-' + tab); if (!panel || panel.querySelector('.sit2')) return;
       const lead = panel.querySelector('.lead'); if (!lead) return;
@@ -636,6 +718,12 @@
       box.innerHTML = tab === 'transport'
         ? `${ph}${v}<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}`
         : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${ph}${v}`;
+      box.querySelectorAll('.sit-svg').forEach(svg => {
+        svg.setAttribute('title', notes[tab] || 'Schéma de la situation physique associée à cet onglet.');
+        svg.setAttribute('aria-label', notes[tab] || 'Schéma de la situation physique associée à cet onglet.');
+      });
+      box.querySelectorAll('.sit-photo img').forEach(img => { img.title = img.alt + '. La légende précise le contexte et la source.'; });
+      box.querySelectorAll('.sit-video video').forEach(video => { video.title = video.getAttribute('aria-label') || 'Vidéo illustrative ; la légende précise le contexte et la source.'; });
       if (tab === 'edpb') {
         const selector = panel.querySelector('.edp-type-selector');
         const situation = box.querySelector('.sit-txt');
@@ -725,17 +813,8 @@
       const r = Calc.advection1d({ scheme: s, Nx: N, Co, t });
       const unstable = !isFinite(r.max) || Math.abs(r.max) > 3 || Math.abs(r.min) > 3; bad = bad || unstable;
       const comp = unstable ? 'instable' : (r.maxErr < 1e-9 ? 'exact (décalage d\u2019une maille par pas)' : (r.min < -0.02 || r.max > 1.05 ? 'oscillations (dispersion)' : 'lissage (diffusion numérique)'));
-      const chartInputs = `Réglages : N = ${N}, C = ${fmt(Co, 3)}, t = ${fmt(r.t, 3)} tour(s).`;
-      const exactComment = () => `Physique — référence exacte : le signal est transporté sans se déformer et revient après un tour. ${chartInputs}`;
-      const numericComment = p => {
-        const j = ((Math.round(p.x * N) % N) + N) % N, exactAtPoint = r.exact[j], delta = p.y - exactAtPoint;
-        const local = `À ce point, u_num − u_exact = ${fmt(delta, 4)}.`;
-        if (unstable) return `Numérique — instabilité : les valeurs sortent de l’échelle. ${chartInputs}`;
-        if (r.min < -0.02 || r.max > 1.05) return `Numérique — dispersion : oscillations et dépassements autour du front ; la concentration peut devenir non physique. ${local} ${chartInputs}`;
-        if (r.bump < 0.9) return `Numérique — diffusion : la bosse est atténuée et étalée. ${local} ${chartInputs}`;
-        if (Math.abs(delta) < 0.02) return `Numérique — ici, la valeur reste proche de la référence exacte. ${local} ${chartInputs}`;
-        return `Numérique — écart local à la référence exacte. ${local} ${chartInputs}`;
-      };
+      const exactComment = 'Référence du problème : utilisez cette courbe pour comparer les profils calculés.';
+      const numericComment = `Profil calculé avec ${INTRO[s]} ; les réglages N = ${N}, C = ${fmt(Co, 3)} et t = ${fmt(r.t, 3)} sont actifs. Comparez sa forme à la référence.`;
       plot($(`i-c-${s}-${k}`), [{ x: r.x.concat([1]), y: r.exact.concat([r.exact[0]]), color: css('--plot-axis'), width: 1.4, label: 'exacte', commentAt: exactComment },
         { x: r.x, y: r.u, color: c[si % 6], noline: true, points: true, label: INTRO[s], commentAt: numericComment }], { xlabel: 'x', ylabel: 'u', ylim: [-0.5, 1.5], title: `${INTRO[s]} à t = ${fmt(t, 3)}` });
       items.push({ color: c[si % 6], title: `${INTRO[s]} · t = ${fmt(t, 3)}`, lines: [unstable ? 'valeurs hors échelle' : `pic <b>${fmt(r.bump, 3)}</b> (exact 1) · minimum <b>${fmt(r.min, 3)}</b>`, `<b>${comp}</b>`] });
@@ -778,11 +857,12 @@
     g.restore();
     g.fillStyle = muted; g.font = '12px system-ui, sans-serif'; g.textAlign = 'center'; g.fillText('x', X(R) - 8, Y(0) - 6); g.fillText('y', X(0) + 10, Y(R) + 12);
     g.fillStyle = axis; g.textAlign = 'left'; g.fillText('Conique repère x² − Δ y² = ±1', m, 18);
+    attachFigureNote(canvas, figureNote(canvas, 'conique associée à Δ'));
   }
   /* Domaine de dépendance du point P selon le type (notion du cours : poly 1.6, diapositive « Domaine de dépendance »). */
   function drawDep(canvas, type) {
-    if (type === 'parabolique') return drawXT(canvas, 0, 0, 3, true);
-    if (type === 'hyperbolique') return drawXT(canvas, 1, 0, 3, false);
+    if (type === 'parabolique') { drawXT(canvas, 0, 0, 3, true); attachFigureNote(canvas, figureNote(canvas)); return; }
+    if (type === 'hyperbolique') { drawXT(canvas, 1, 0, 3, false); attachFigureNote(canvas, figureNote(canvas)); return; }
     const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
     canvas.width = W * dpr; canvas.height = W * dpr;
     const g = canvas.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
@@ -799,6 +879,7 @@
     g.fillStyle = axis; g.font = 'bold 13px system-ui, sans-serif'; g.textAlign = 'left'; g.fillText('P', cx + 10, cy - 8);
     g.fillStyle = muted; g.font = '12px system-ui, sans-serif'; g.fillText('x', m + S + 6, m + S / 2 + 4); g.fillText('y', m + S / 2 + 6, m - 8);
     g.fillStyle = axis; g.fillText('Domaine de dépendance de P : toute la frontière', m, 20);
+    attachFigureNote(canvas, figureNote(canvas));
   }
   function runEdpc() {
     const delta = num('d-delta'), u = num('d-u'), c = pal();
@@ -839,6 +920,7 @@
     g.fillText(fmt(vmax, 3), L + S + 30, T + 10); g.fillText(fmt(vmin, 3), L + S + 30, T + S);
     g.textAlign = 'center'; g.fillText('x', L + S / 2, T + S + 16); g.fillText('y', L - 14, T + S / 2);
     g.fillStyle = axis; g.textAlign = 'left'; g.fillText('Température (°C)', L, 16);
+    attachFigureNote(canvas, figureNote(canvas));
   }
   function drawXT(canvas, c, xp, tp, par) {
     const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
@@ -886,17 +968,12 @@
     } else if (type === 'parabolique') {
       const D = num('k-D'), tp = num('k-tp'), gap = num('k-gap'), rayon = 0.5, ctr = gap === 0 ? [0] : [-gap / 2, gap / 2];
       const xs = Calc.linspace(-8, 8, 800), times = [0, tp / 4, tp / 2, tp].filter((t, i, a) => a.indexOf(t) === i);
-      const initialNote = gap === 0
-        ? 'Profil initial : une bosse chaude centrée en x = 0, présente dès le départ.'
-        : gap < 2 * rayon
-          ? 'Profil initial : deux bosses chaudes déjà partiellement recouvertes. Les deux pics viennent des données de départ.'
-          : 'Profil initial : deux bosses chaudes distinctes. Les deux pics viennent des données de départ, avant toute diffusion.';
       const S = times.map((t, i) => ({
         x: xs, y: Calc.chaleurCompacte({ D, rayon, centres: ctr, t, xs }), color: c[i % 6], width: 2.2,
         label: `t = ${fmt(t, 3)}${t === 0 ? '' : ' s'}`, tooltipTextOnly: true,
         commentAt: t === 0
-          ? initialNote
-          : `La diffusion a lissé et élargi le profil depuis t = 0 ; son maximum diminue. Plus D ou le temps augmente, plus l’étalement est marqué. Dans le modèle continu, la solution est déjà très faible mais non nulle à toute distance.`
+          ? 'Profil initial fourni au calcul. Observez sa forme avant de la comparer aux autres instants.'
+          : `Profil calculé à t = ${fmt(t, 3)} s avec D = ${fmt(D, 3)} m²/s. Comparez sa forme au profil initial et aux autres instants.`
       }));
       draw('k-par', 'k-par-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Diffusion d’une bosse à support compact' });
       const lecture = $('k-par-curve-explanation');
