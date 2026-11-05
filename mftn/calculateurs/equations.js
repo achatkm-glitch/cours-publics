@@ -7,7 +7,7 @@ window.EQUATIONS = {
   "transport": [
     {"titre": "Équation de transport (advection et diffusion)", "tex": "\\frac{\\partial c}{\\partial t}+a\\,\\frac{\\partial c}{\\partial x}=D\\,\\frac{\\partial^2 c}{\\partial x^2}"},
     {"titre": "Solution exacte écrite avec le Péclet du profil", "tex": "\\begin{gathered}\\xi=\\frac{x-at}{\\sigma_0},\\quad t^*=\\frac{|a|t}{\\sigma_0},\\quad \\mathrm{Pe}_{\\sigma_0}=\\frac{|a|\\sigma_0}{D}\\quad (|a|>0,\\ D>0),\\\\\\frac{c(x,t)}{U_0}=\\frac{1}{\\sqrt{1+2t^*/\\mathrm{Pe}_{\\sigma_0}}}\\exp\\!\\left[-\\frac{\\xi^2}{2(1+2t^*/\\mathrm{Pe}_{\\sigma_0})}\\right]\\end{gathered}"},
-    {"titre": "Interprétation du nombre de Péclet", "tex": "\\mathrm{Pe}_{\\sigma_0}=\\frac{t_{\\mathrm{diff}}}{t_{\\mathrm{adv}}}\\qquad (|a|>0,\\ D>0)"}
+    {"titre": "Nombres sans dimension à l’échelle initiale σ₀", "tex": "\\begin{gathered}t_c=\\frac{\\sigma_0}{|a|},\\quad t_d=\\frac{\\sigma_0^2}{D},\\quad \\mathrm{Pe}_{\\sigma_0}=\\frac{t_d}{t_c}=\\frac{|a|\\sigma_0}{D}\\quad (|a|>0,\\ D>0),\\\\\\mathrm{Fo}_{\\sigma_0}(t)=\\frac{Dt}{\\sigma_0^2},\\quad \\frac{x_c(t)}{\\sigma_0}=\\operatorname{sgn}(a)\\,\\mathrm{Pe}_{\\sigma_0}\\mathrm{Fo}_{\\sigma_0},\\quad \\frac{\\sigma(t)}{\\sigma_0}=\\sqrt{1+2\\mathrm{Fo}_{\\sigma_0}}\\end{gathered}"}
   ],
   "edpc": [
     {"titre": "EDP quasi linéaire d'ordre 2 à deux variables", "tex": "A\\,u_{xx}+2B\\,u_{xy}+C\\,u_{yy}+F(x,y,u,u_x,u_y)=0"}

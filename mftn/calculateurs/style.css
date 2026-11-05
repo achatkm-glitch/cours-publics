@@ -138,6 +138,7 @@ details > summary { cursor: pointer; color: var(--blue); margin: 10px 0; }
 .rcard span { color: var(--muted); font-variant-numeric: tabular-nums; }
 .rcard span b { color: var(--ink); }
 .gauge { margin: 10px 0 14px; }
+.dimensionless-reading { border-left: 4px solid var(--blue); font-variant-numeric: tabular-nums; }
 .gtitle { font-weight: 600; margin-bottom: 6px; }
 .gbar { position: relative; height: 18px; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--bg); }
 .gbar .zone { position: absolute; top: 0; bottom: 0; }

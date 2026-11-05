@@ -6,7 +6,7 @@
 <title>Calculateurs MFTN — par séance</title>
 <meta name="description" content="Calculateurs et parcours des quatre séances MFTN : modèle et transport, stationnaire, instationnaire et performance des schémas.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261105-112a">
+<link rel="stylesheet" href="style.css?v=20261105-113b">
 </head>
 <body>
 <header>
@@ -108,22 +108,25 @@
 <!-- Ch.1 : transport -->
 <section class="panel" id="p-transport">
   <h2>Transport : advection et diffusion d’un profil initial</h2>
-  <p class="lead">L’advection déplace un profil à la vitesse a ; la diffusion l’étale. Ici, le calculateur part d’un profil initial gaussien et en affiche la solution exacte. C’est un cas particulier : les équations d’advection-diffusion ne supposent pas en général une forme gaussienne. Les courbes montrent le déplacement du centre, l’élargissement du profil et la conservation de son aire. La jauge indique le nombre de Péclet, qui compare les deux effets. Séance 1, bloc A. Les champs sous les curseurs acceptent plusieurs valeurs séparées par des espaces pour superposer jusqu’à six courbes.</p>
+    <p class="lead">L’advection déplace le profil ; la diffusion l’étale. Le curseur de Péclet compare ces effets à l’échelle initiale σ₀ : il ajuste D en gardant la formule Pe = |a|σ₀/D. Le nombre de Fourier Fo décrit l’avancement de la diffusion à l’instant choisi. Le calculateur montre la solution exacte pour un profil initial gaussien, un cas particulier de l’équation d’advection-diffusion. Séance 1, bloc A. Les champs de comparaison permettent de superposer jusqu’à six courbes.</p>
   <div class="eqs" data-eq="transport"></div>
   <div class="grid">
     <div>
       <form class="params">
         <label>Vitesse a, en m/s<span class="sl"><input type="range" id="t-a" min="-3" max="3" step="0.1" value="1" data-unit="m/s"><output></output></span><input id="t-ax" value="" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
-        <label>Diffusivité D, en m²/s<span class="sl"><input type="range" id="t-D" min="0.01" max="1" step="0.01" value="0.05" data-unit="m²/s"><output></output></span><input id="t-Dx" value="" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
+        <label>Nombre de Péclet du profil Pe<sub>σ₀</sub><span class="sl"><input type="range" id="t-Pe" min="0.1" max="20" step="0.1" value="3" data-digits="2"><output></output></span></label>
+        <p class="repere" id="t-D-derived" aria-live="polite"></p>
+        <input type="hidden" id="t-D" value="0.05">
+        <label for="t-Dx">Autres valeurs de D (m²/s) à comparer, séparées par des espaces</label><input id="t-Dx" value="" placeholder="ex. 0,02 0,05 0,1" aria-label="Autres valeurs de diffusivité D à comparer">
         <label>Instant t, en s<span class="sl"><input type="range" id="t-t" min="0" max="10" step="0.5" value="4" data-unit="s"><output></output></span><input id="t-tx" value="0 2" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
         <label>Largeur initiale σ₀, en m<span class="sl"><input type="range" id="t-s0" min="0.05" max="1" step="0.05" value="0.15" data-unit="m"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> avec a = 1, D = 0,05 et σ₀ = 0,15, à t = 4 : centre 4, σ = 0,65, pic 0,2308 ; nombre de Péclet |a|σ₀/D = 3.</p>
     </div>
     <div>
       <div class="msg" id="t-msg" aria-live="polite"></div>
       <div class="gauge" id="t-gauge"></div>
+      <div class="msg dimensionless-reading" id="t-dynamic" role="status" aria-live="polite" aria-atomic="true"></div>
       <canvas id="t-plot" aria-label="Profils de concentration"></canvas><div class="legend" id="t-leg"></div>
       <div class="cards" id="t-table"></div>
     </div>
@@ -526,10 +529,10 @@
   Premier jet : vérification technique seulement. Les valeurs de repère proviennent du polycopié MFTN, sauf les itérations de Jacobi et de Gauss–Seidel, les ordres globaux de Neumann, le pas FTCS, l'exemple de la gaussienne, les volumes finis de la barre et la convection–diffusion, calculés par le rédacteur et contrôlés par les tests (<code>test_calc.js</code>).
 </footer>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<script src="calc.js?v=20261105-112a"></script>
-<script src="equations.js?v=20261105-112a"></script>
-<script src="situations.js?v=20261105-112a"></script>
-<script src="guide.js?v=20261105-112a"></script>
-<script src="app.js?v=20261105-112a"></script>
+<script src="calc.js?v=20261105-113b"></script>
+<script src="equations.js?v=20261105-113b"></script>
+<script src="situations.js?v=20261105-113b"></script>
+<script src="guide.js?v=20261105-113b"></script>
+<script src="app.js?v=20261105-113b"></script>
 </body>
 </html>

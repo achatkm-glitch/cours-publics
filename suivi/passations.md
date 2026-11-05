@@ -341,3 +341,14 @@ Rectification : le commit cdd12b354f749c190026e14312d106f77aff5286 est sur origi
 
 ### Clôture tâche 112 — 2026-11-05 01:19:33 +01:00 Europe/Paris (UTC+01:00) — Codex
 Miroir mftn/calculateurs synchronisé avec MFTN. Commit du site 4f572acf7d8806415050c1ac2602b840de5a6b7e poussé sur origin/main et confirmé ; GitHub Pages run 41940350980 réussi. Page publique HTTP 200 et sélection elliptique/parabolique/hyperbolique contrôlée dans le navigateur. Quatre empreintes identiques à celles de MFTN. Verrous libérés.
+
+### Prise en charge tâche 113 — 2026-11-05 01:28:11 +01:00 Europe/Paris (UTC+01:00) — Codex
+- Demande : curseur Pe, nombres adimensionnels et commentaire dynamique de la courbe en relation avec le temps d’advection et le temps de diffusion.
+- Périmètre réservé : mftn/calculateurs/index.html, app.js, equations.js, style.css et suivis de tâche.
+- Sources internes repérées : MFTN, chapitre 1, §1.4 ; définition du Pe de profil déjà présente dans le calculateur.
+- État : prise FIFO, fichiers libres avant réservation. Prochaine action : synchroniser Pe et D, afficher Fo à l’instant choisi et une comparaison vérifiable des échelles ; publier après contrôle.
+
+### Clôture tâche 113 — 2026-11-05 01:38:36 +01:00 — Codex
+- Curseur Pe du profil lié à la diffusivité D ; affichage des temps caractéristiques t_c et t_d, du rapport Peσ₀=t_d/t_c, du nombre de Fourier Foσ₀(t), du déplacement adimensionnel du centre et de l’élargissement normalisé.
+- Contrôlé localement : Pe=1 donne t_d=t_c ; Pe=10 donne t_d>t_c ; a=0 affiche Pe=0 et le cas de diffusion seule. Les commandes et l’interprétation sont recalculées avec les courbes.
+- Fichiers du miroir identiques aux sources MFTN (SHA-256 consignés dans version_traceability.md du dépôt MFTN). Aucun PDF modifié ; aucune nouvelle source externe. Validation scientifique indépendante non réalisée.

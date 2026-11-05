@@ -233,3 +233,9 @@ La publication est achevée : commit cdd12b354f749c190026e14312d106f77aff5286 po
 - Les trois choix EDP ont été vérifiés en ligne après déploiement ; l’équation et les réglages changent avec la sélection.
 - Miroir public à l’identique de MFTN pour les quatre fichiers concernés. Commit de contenu 4f572acf7d8806415050c1ac2602b840de5a6b7e ; Pages run 41940350980 réussi.
 - Verrou libéré. Vérification technique terminée ; validation scientifique indépendante et approbation utilisateur non effectuées.
+
+### Instruction utilisateur / prise FIFO — tâche 113 — 2026-11-05 01:28:11 +01:00 Europe/Paris (UTC+01:00) — Codex
+Ajouter un curseur pour Pe et faire réagir l’interprétation de la courbe du calculateur de transport. Pe doit rester cohérent avec a, D et σ₀ ; afficher un repère adimensionnel lié à l’instant courant. Source de définition à vérifier dans le chapitre 1, §1.4. Responsable : Codex, tâche FIFO 113.
+
+### Clôture tâche 113 — 2026-11-05 01:38:36 +01:00 — Codex
+Le curseur Pe actualise D et les courbes du profil de transport ; la jauge et le commentaire dynamique distinguent Pe<1, Pe=1 et Pe>1 par comparaison de t_d et t_c. Foσ₀(t), le déplacement du centre et la largeur normalisée sont également affichés. Essais locaux réalisés pour Pe=1, Pe=10 et a=0. Copie vérifiée identique à MFTN ; publication Pages à confirmer. Aucun PDF modifié. Validation scientifique indépendante non réalisée.

@@ -6,10 +6,12 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| — | Aucun verrou actif | tâche 112 clôturée le 2026-11-05 01:19:42 +01:00 |
+| mftn/calculateurs/index.html, app.js, equations.js, style.css et registres tâche 113 | ACTIF — Codex | 2026-11-05 01:28:11 +01:00 |
 
 ## Règles
 
 - Poser le verrou avant de modifier un fichier.
 - Libérer le verrou à la fin de la session.
 - En cas de conflit, Mohammed Khalij tranche.
+
+| mftn/calculateurs/index.html, app.js, equations.js, style.css et registres tâche 113 | LIBRE | Codex — passe terminée, publication Pages à confirmer |

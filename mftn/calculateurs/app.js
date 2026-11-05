@@ -12,8 +12,30 @@
     document.querySelectorAll('input[type="range"]').forEach(r => {
       const o = r.parentElement.querySelector('output'); if (!o) return;
       const v = parseFloat(r.value), unit = r.dataset.unit ? ' ' + r.dataset.unit : '';
-      o.textContent = (r.dataset.log ? '1e' + (Math.round(v * 10) / 10) : String(v).replace('.', ',')) + unit;
+      const value = r.dataset.log ? '1e' + (Math.round(v * 10) / 10) : r.dataset.digits ? v.toFixed(Number(r.dataset.digits)).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1').replace('.', ',') : String(v).replace('.', ',');
+      o.textContent = value + unit;
     });
+  }
+  function updateTransportPe(source) {
+    const pe = $('t-Pe'), D = $('t-D'), speed = Math.abs(num('t-a')), sigma0 = num('t-s0');
+    if (!pe || !D) return;
+    if (source === 't-Pe') {
+      if (speed > 0) {
+        const value = Number(pe.value);
+        if (value > 0) { D.value = String(speed * sigma0 / value); pe.dataset.lastNonzero = String(value); }
+      }
+      return;
+    }
+    if (speed === 0) {
+      if (Number(pe.value) > 0) pe.dataset.lastNonzero = pe.value;
+      pe.value = '0'; pe.disabled = true;
+      return;
+    }
+    pe.disabled = false;
+    const value = Number(pe.value) > 0 ? Number(pe.value) : Number(pe.dataset.lastNonzero) || 3;
+    pe.value = String(value);
+    pe.dataset.lastNonzero = String(value);
+    D.value = String(speed * sigma0 / value);
   }
   const list = (id) => String($(id).value).split(/[;\s]+/).map(s => parseFloat(s.replace(',', '.'))).filter(v => isFinite(v));
   /* Valeur du curseur, suivie des valeurs supplémentaires du champ « id + x » (comparaison). */
@@ -221,6 +243,7 @@
   /* ---------- Chapitre 1 : transport (advection-diffusion d'une gaussienne) ---------- */
   function runTransport() {
     const c = pal(), A = vals('t-a'), Ds = vals('t-D'), Ts = vals('t-t').sort((p, q) => p - q), s0 = num('t-s0'), U0 = 1;
+    $('t-D-derived').textContent = `Pour le cas principal, Peσ₀ = |a|σ₀/D impose D = ${fmt(num('t-D'), 4)} m²/s. Les autres valeurs de D saisies servent uniquement de courbes de comparaison.`;
     const combos = [];
     A.forEach(a => Ds.forEach(D => Ts.forEach(t => combos.push({ a, D, t }))));
     const use = combos.slice(0, 6);
@@ -235,15 +258,21 @@
     draw('t-plot', 't-leg', S, { xlabel: 'x', ylabel: 'c', title: 'Advection–diffusion' });
     cards($('t-table'), use.map((k, i) => { const s = Calc.sigmaAt(s0, k.D, k.t);
       return { color: c[i % 6], title: `a = ${fmt(k.a, 3)} · D = ${fmt(k.D, 3)} · t = ${fmt(k.t, 3)}`, lines: [`centre a·t = <b>${fmt(k.a * k.t, 3)}</b>`, `largeur σ(t) = <b>${fmt(s, 4)}</b>`, `pic = <b>${fmt(U0 * s0 / s, 4)}</b>`] }; }));
-    // jauge du nombre de Péclet : un repère par couple (a, D)
-    const pairs = []; A.forEach(a => Ds.forEach(D => { if (D > 0 && a !== 0) pairs.push({ a, D, Pe: Math.abs(a) * s0 / D }); }));
-    const mk = pairs.slice(0, 6).map((p, i) => ({ v: p.Pe, color: c[i % 6], label: `a = ${fmt(p.a, 3)}, D = ${fmt(p.D, 3)}` }));
+    // Jauge du nombre de Péclet : un repère par couple (a, D).
+    const pairs = []; A.forEach(a => Ds.forEach(D => { if (D > 0) pairs.push({ a, D, Pe: Math.abs(a) * s0 / D }); }));
+    const mk = pairs.filter(p => p.Pe > 0).slice(0, 6).map((p, i) => ({ v: p.Pe, color: c[i % 6], label: `a = ${fmt(p.a, 3)}, D = ${fmt(p.D, 3)}` }));
     const P0 = pairs.length ? pairs[0].Pe : NaN;
-    const meaning = !isFinite(P0) ? 'Pe n\u2019est pas défini (vitesse ou diffusivité nulle).' : P0 > 2 ? 'Pe > 2 : l\u2019advection domine, le profil est surtout transporté.' : P0 < 0.5 ? 'Pe < 0,5 : la diffusion domine, le profil est surtout étalé.' : 'Pe voisin de 1 : advection et diffusion sont comparables.';
-    gauge($('t-gauge'), { min: 0.1, max: 100, title: `Nombre de Péclet Pe = |a|σ₀/D = ${pairs.length ? pairs.slice(0, 6).map(p => fmt(p.Pe, 3)).join(' ; ') : '—'}`,
-      zones: [{ from: 0.1, to: 0.5, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'diffusion' }, { from: 0.5, to: 2, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'comparables' }, { from: 2, to: 100, color: 'color-mix(in srgb, var(--blue) 35%, transparent)', label: 'advection' }],
+    const meaning = !isFinite(P0) ? 'Pe n’est pas défini pour D = 0.' : P0 === 0 ? 'Pe = 0 : a = 0, il n’y a pas d’advection ; le profil diffuse sans se déplacer.' : P0 > 1 ? 'Pe > 1 : t_d > t_c ; à l’échelle σ₀, le transport par advection est plus rapide que la diffusion.' : P0 < 1 ? 'Pe < 1 : t_d < t_c ; à l’échelle σ₀, la diffusion agit plus vite que le transport par advection.' : 'Pe = 1 : les temps caractéristiques t_d et t_c sont égaux.';
+    gauge($('t-gauge'), { min: 0.1, max: 100, title: `Nombre de Péclet du profil Peσ₀ = |a|σ₀/D = ${pairs.length ? pairs.slice(0, 6).map(p => fmt(p.Pe, 3)).join(' ; ') : '—'}`,
+      zones: [{ from: 0.1, to: 0.9, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'Pe < 1' }, { from: 0.9, to: 1.1, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'Pe ≈ 1' }, { from: 1.1, to: 100, color: 'color-mix(in srgb, var(--blue) 35%, transparent)', label: 'Pe > 1' }],
       marks: mk, text: meaning });
-    const k0 = use[0], sg0 = Calc.sigmaAt(s0, k0.D, k0.t);
+    const k0 = { a: A[0], D: Ds[0], t: num('t-t') }, sg0 = Calc.sigmaAt(s0, k0.D, k0.t);
+    const fo0 = k0.D > 0 ? k0.D * k0.t / (s0 * s0) : 0;
+    const pe0 = k0.D > 0 ? Math.abs(k0.a) * s0 / k0.D : k0.a === 0 ? NaN : Infinity;
+    const tc0 = k0.a !== 0 ? s0 / Math.abs(k0.a) : Infinity, td0 = k0.D > 0 ? s0 * s0 / k0.D : Infinity;
+    const timescale = k0.D === 0 ? 'D = 0 : aucune diffusion ; la largeur reste constante.' : k0.a === 0 ? `a = 0 : Peσ₀ = 0 et t_c = ∞ ; seul le profil s’étale (t_d = ${fmt(td0, 3)} s).` : pe0 > 1 ? `t_d = ${fmt(td0, 3)} s > t_c = ${fmt(tc0, 3)} s : à l’échelle σ₀, le centre est transporté d’une largeur initiale avant que la diffusion n’agisse sur cette même échelle.` : pe0 < 1 ? `t_d = ${fmt(td0, 3)} s < t_c = ${fmt(tc0, 3)} s : à l’échelle σ₀, la diffusion agit avant que le centre soit transporté d’une largeur initiale.` : `t_d = t_c = ${fmt(tc0, 3)} s : les deux effets ont le même temps caractéristique à l’échelle σ₀.`;
+    const peText = k0.D > 0 ? fmt(pe0, 3) : k0.a === 0 ? 'indéfini' : '∞';
+    $('t-dynamic').textContent = `Lecture de la courbe principale — Peσ₀ = ${peText} = t_d/t_c. ${timescale} À t = ${fmt(k0.t, 3)} s : Foσ₀ = Dt/σ₀² = ${fmt(fo0, 3)} ; centre x_c/σ₀ = ${fmt(k0.a * k0.t / s0, 3)} (${fmt(k0.a * k0.t, 3)} m) ; largeur σ/σ₀ = ${fmt(sg0 / s0, 3)} (${fmt(sg0, 3)} m).`;
     explain('transport', [
       `Premier cas (a = ${fmt(k0.a, 3)}, D = ${fmt(k0.D, 3)}, t = ${fmt(k0.t, 3)}) : le centre s\u2019est déplacé de a·t = <b>${fmt(k0.a * k0.t, 3)}</b> (advection) ; la largeur est passée de σ₀ = ${fmt(s0, 3)} à <b>${fmt(sg0, 4)}</b> et le pic est à <b>${fmt(100 * s0 / sg0, 3)} %</b> de sa valeur initiale (diffusion).`,
       k0.D === 0 ? 'D = 0 : pas de diffusion, le profil est transporté sans se déformer.' : (k0.a === 0 ? 'a = 0 : pas de transport, le profil reste centré et s\u2019étale seulement.' : 'L\u2019aire sous la courbe ne change pas : la diffusion abaisse le pic mais conserve la quantité transportée.'),
@@ -859,6 +888,10 @@
     safe(name);
   }
   function init() {
+    const transportForm = document.querySelector('#p-transport form.params');
+    if (transportForm) transportForm.addEventListener('input', e => {
+      if (['t-Pe', 't-a', 't-s0'].includes(e.target.id)) { updateTransportPe(e.target.id); syncSliders(); }
+    }, true);
     document.querySelectorAll('nav button[data-tab]').forEach(b => b.addEventListener('click', () => show(b.dataset.tab)));
     document.querySelectorAll('[data-go-tab]').forEach(b => b.addEventListener('click', () => {
       const target = b.dataset.goTab;
@@ -871,7 +904,7 @@
       f.addEventListener('input', () => safe(current));
       f.addEventListener('change', () => safe(current));
     });
-    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } syncSliders(); safe(current); }));
+    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncSliders(); safe(current); }));
     document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => safe('edpb')));
     document.querySelectorAll('input[type="range"]').forEach(r => r.addEventListener('input', syncSliders));
     syncSliders();
