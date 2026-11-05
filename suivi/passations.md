@@ -514,3 +514,23 @@ Miroir poussé et confirmé : `cca3bcbb246a4dfaea0f05397040da9be48854a2`, Pages 
 |---|---|
 | mftn/calculateurs/situations.js, app.js, index.html | LIBRE — commit `cca3bcb` publié |
 | suivi/decisions.md, passations.md, verrous.md | LIBRE — publication et contrôles consignés |
+### Prise FIFO — tâche miroir 131 — 2026-11-05 16:25:01 Europe/Paris (UTC+01:00) — Codex
+Tâche liée à MFTN 141. HEAD miroir `bcd8daf`, arbre propre, verrous tâche miroir 130 libres. Réservation de `mftn/calculateurs/situations.js`, `app.js`, `index.html`, `style.css` et registres `suivi/decisions.md`, `passations.md`, `verrous.md`. Source de référence `C:\Latex\MFTN\Peda_inv\site`. Synchroniser après contrôle local et vérifier la publication Pages.
+
+### VERROUS ACTIFS — tâche miroir 131 — 2026-11-05 16:25:01 Europe/Paris (UTC+01:00) — Codex
+| Fichier / périmètre | État | Prochaine action |
+|---|---|---|
+| mftn/calculateurs/situations.js, app.js, index.html, style.css | ACTIF — Codex | synchroniser le schéma animé et le texte validés |
+| suivi/decisions.md, passations.md, verrous.md | ACTIF — Codex | consigner contrôles et publication |
+### 2026-11-05 16:32:40 Europe/Paris (UTC+01:00) — tâche miroir 131
+- **Fait** : le miroir `mftn/calculateurs/{app.js,index.html,situations.js,style.css}` est synchronisé avec `C:\Latex\MFTN\Peda_inv\site` pour l’animation du profil diffusif et le schéma des zones chaudes.
+- **Contrôlé** : Edge en aperçu local ; animation interrompue à t=1 s, terminée à t=2 s, courbe/temps et positions d’entrée; `node --check` des deux scripts et `git diff --check` réussis; SHA source/miroir identiques pour les quatre fichiers.
+- **Limites** : publication distante et son contrôle en attente; pas d’essai sur téléphone physique.
+- **Prochaine étape** : pousser les fichiers web, attendre la génération Pages, vérifier page et ressources publiques, consigner les identifiants réels.
+- **Verrous** : code libéré pour synchronisation Git; registres gardés par Codex jusqu’à clôture.
+
+### Clôture tâche miroir 131 — 2026-11-05 16:36:54 Europe/Paris (UTC+01:00) — Codex
+- Miroir `cours-publics/mftn/calculateurs` poussé sur `main`, commit `273a0758a725f62a8dc6ee5efc0af201d5e3dd01` vérifié par `git ls-remote`; Pages run `42056402012` succès sur ce HEAD.
+- Page, app.js, situations.js et style.css avec le cache-buster `20261105-141a` répondent HTTP 200 et exposent le bouton, la géométrie corrigée et le profil dynamique.
+- SHA-256 source/miroir identiques consignés dans `C:\Latex\MFTN\version_traceability.md`. Contrôle visuel local interactif réussi, pas d’essai sur appareil mobile physique.
+- Verrous du code et des trois registres LIBRES.

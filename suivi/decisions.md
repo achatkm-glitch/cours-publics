@@ -313,3 +313,8 @@ Dans « EDP : classer », les curseurs de coefficients sont remplacés par Δ di
 - **Raison** : rendre lisible l’origine des deux bosses représentées dans le calculateur.
 - **Preuve** : commentaire navigateur utilisateur du 2026-11-05, onglet `#edpb`.
 - **Responsable** : Codex, tâche miroir 130.
+### 2026-11-05 — Animation du schéma de diffusion et explication des bosses (tâche miroir 131)
+- **Décision** : relier l’animation du schéma physique aux réglages et au calcul du profil de chaleur ; clarifier qu’une bosse initiale correspond à chaque zone chaude prescrite et corriger la position dessinée selon l’écart réglé.
+- **Raison** : la représentation précédente montrait deux bosses pour deux zones, mais leur distance graphique ne correspondait pas à l’écart indiqué, et le schéma ne suivait pas l’évolution temporelle.
+- **Preuve** : commentaires navigateur utilisateur du 2026-11-05, onglet `#edpb`.
+- **Responsable** : Codex, tâche miroir 131.

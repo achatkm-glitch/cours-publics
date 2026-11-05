@@ -61,3 +61,11 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 | mftn/calculateurs/situations.js, app.js, index.html et registres — tâche 130 | LIBRE — Codex | 2026-11-05 16:14:12 Europe/Paris (UTC+01:00) — vérification locale terminée ; déploiement en cours |
 
 | mftn/calculateurs/situations.js, app.js, index.html et registres — tâche 130 | LIBRE — Codex | 2026-11-05 16:16:46 Europe/Paris (UTC+01:00) — commit cca3bcb publié ; Pages run 42053012938 réussi |
+
+| mftn/calculateurs/situations.js, app.js, index.html, style.css et registres — tâche 131 | ACTIF — Codex | 2026-11-05 16:25:01 Europe/Paris (UTC+01:00) |
+
+| MFTN `Peda_inv/site/situations.js`, `app.js`, `index.html`, `style.css` et miroir `mftn/calculateurs/...` — tâche 141/miroir 131 | LIBRE — Codex | 2026-11-05 16:32:40 Europe/Paris (UTC+01:00) — source et miroir identiques, contrôle local terminé ; synchronisation/push en cours |
+| Registres MFTN et cours-publics tâche 141/miroir 131 | ACTIF — Codex | consigner commits et publication, puis libérer |
+
+| MFTN `Peda_inv/site/situations.js`, `app.js`, `index.html`, `style.css` et miroir `mftn/calculateurs/...` — tâche 141/miroir 131 | LIBRE — Codex | 2026-11-05 16:36:54 Europe/Paris (UTC+01:00) — commits `18aedd7` / `273a075` poussés et vérifiés |
+| Registres MFTN et cours-publics tâche 141/miroir 131 | LIBRE — Codex | 2026-11-05 16:36:54 Europe/Paris (UTC+01:00) — Pages run `42056402012` réussi, ressources publiques HTTP 200 |
