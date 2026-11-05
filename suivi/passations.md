@@ -352,3 +352,6 @@ Miroir mftn/calculateurs synchronisé avec MFTN. Commit du site 4f572acf7d880641
 - Curseur Pe du profil lié à la diffusivité D ; affichage des temps caractéristiques t_c et t_d, du rapport Peσ₀=t_d/t_c, du nombre de Fourier Foσ₀(t), du déplacement adimensionnel du centre et de l’élargissement normalisé.
 - Contrôlé localement : Pe=1 donne t_d=t_c ; Pe=10 donne t_d>t_c ; a=0 affiche Pe=0 et le cas de diffusion seule. Les commandes et l’interprétation sont recalculées avec les courbes.
 - Fichiers du miroir identiques aux sources MFTN (SHA-256 consignés dans version_traceability.md du dépôt MFTN). Aucun PDF modifié ; aucune nouvelle source externe. Validation scientifique indépendante non réalisée.
+
+### Vérification publique finale — tâche 113 — 2026-11-05 01:40:35 +01:00 — Codex
+GitHub Pages run 41942910086 : completed, success, commit 272673297fa07176940abd2e1f4cbbf44fd72d76. Page publique ouverte ; curseur Pe=1 vérifié : D=0,1500 m²/s, t_d=t_c=0,150 s, Foσ₀ et lecture de la courbe se mettent à jour. Verrous libérés.

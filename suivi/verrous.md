@@ -15,3 +15,5 @@
 - En cas de conflit, Mohammed Khalij tranche.
 
 | mftn/calculateurs/index.html, app.js, equations.js, style.css et registres tâche 113 | LIBRE | Codex — passe terminée, publication Pages à confirmer |
+
+| mftn/calculateurs/index.html, app.js, equations.js, style.css et registres tâche 113 | LIBRE | Codex — Pages run 41942910086 réussi, contrôle public effectué |
