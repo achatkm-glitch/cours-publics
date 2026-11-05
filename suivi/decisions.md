@@ -370,3 +370,6 @@ Chaleur (#chaleur) : panneau flottant compact, sans scrollbar interne sur écran
 
 ### Tâche miroir 157 — clôture du lot #edpb — 2026-11-06 00:15:06 +01:00 — Codex
 Livrable ciblé contrôlé : les trois réponses S1-K1 à K3 sont derrière une consultation explicite après le calcul manuscrit ; le modèle elliptique ne propose pas d’animation ; les modèles diffusif et ondulatoire restent animés ; le changement d’onglet arrête bien l’onde. Audit numérique interne des trois modèles et contrôle navigateur local réalisés. La diffusivité de l’exemple parabolique est signalée comme illustrative. Cette clôture ne vaut pas audit complet des quatre séances ni validation scientifique par un relecteur indépendant. Publication Pages à vérifier après commit.
+
+### Tâche miroir 157 — publication vérifiée — 2026-11-06 00:17:21 +01:00 — Codex
+Commit `f15a20f822fe82af118631d1d44b8513327d4c2b` présent sur `origin/main`. GitHub Pages run `42128262801` terminé avec succès. Page et ressources `style.css`, `calc.js`, `app.js` en HTTP 200 ; l’HTML sert le cache-buster `20261106-157a` et le JavaScript public contient les corrections du lot. Verrous libérés. Le niveau technique est atteint pour le lot #edpb ; validation scientifique indépendante non atteinte.

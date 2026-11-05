@@ -641,3 +641,6 @@ Orientation confirmée par l’utilisateur : surveillance active visant des livr
 - Fichiers modifiés : `mftn/calculateurs/{index.html,app.js,calc.js,style.css}` et les registres de suivi.
 - État scientifique : contrôles analytiques et numériques internes effectués pour le périmètre indiqué ; relecteur scientifique indépendant non sollicité, niveau 2 non atteint. Pas de décision d’approbation utilisateur demandée à ce stade.
 - État final des verrous de cette passe : libérés à 2026-11-06 00:15:06 +01:00. Prochaine action : synchronisation Git, puis vérification du déploiement Pages et des ressources publiques.
+
+### Preuve de livraison publique — tâche miroir 157 — 2026-11-06 00:17:21 +01:00 — Codex
+Commit `f15a20f822fe82af118631d1d44b8513327d4c2b` confirmé sur `origin/main`. GitHub Pages run `42128262801` : `completed / success`. Contrôle HTTP public : page principale, `style.css?v=20261106-157a`, `calc.js?v=20261106-157a` et `app.js?v=20261106-157a` renvoient 200 ; le JavaScript déployé contient la mention de diffusivité illustrative et les réponses de guide repliées. Travail local propre après publication.
