@@ -281,3 +281,6 @@ Sur le graphe d’introduction, garder la bulle de coordonnées et y ajouter une
 
 ### Clôture tâche 119 — 2026-11-05 10:37:17 Europe/Paris (UTC+01:00) — Codex
 Les fichiers du miroir reflètent la source MFTN (SHA-256 identiques). Le commentaire exact identifie le transport sans déformation ; le commentaire numérique classe l’effet observé et indique l’écart local, N, C et t. Vérification sur la page publiée : points du graphe parcourus au clavier, puis contrôle avec N=200 confirmant la mise à jour dynamique. Pages run 42003125602 réussi ; miroir origin/main 530e5e506f50ac0274d7e3e4a03dc8327552f77e. Aucun calcul du moteur modifié.
+
+### Instruction utilisateur / prise FIFO — tâche 120 — 2026-11-05 11:07:29 Europe/Paris (UTC+01:00) — Codex
+Ne pas introduire de nouvelle notation dans le calculateur Transport ; rester cohérent avec le polycopié. Le chapitre 2, section 2.9, emploie Pe_sigma0, xi et t* dans la solution exacte normalisée. Codex prend la première tâche disponible et réserve la source MFTN, le miroir et les registres. Retrait prévu des notations tc, td, Fo_sigma0 et des rapports normalisés supplémentaires ; explication conservée en texte courant. Preuve attendue : vérification JavaScript, source/miroir synchrones et affichage public inspecté.

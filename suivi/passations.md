@@ -400,3 +400,6 @@ Ajout réservé au graphe d’introduction : garder les coordonnées dans la bul
 
 ### Clôture tâche 119 — 2026-11-05 10:37:17 Europe/Paris (UTC+01:00) — Codex
 Source MFTN et miroir cours-publics sont synchronisés. Pages run 42003125602 réussi. Inspection de la page HTTPS : la bulle distingue l’exacte et le schéma numérique ; l’interprétation, l’écart ponctuel et les valeurs de sélecteur suivent le point et le changement de N de 100 à 200. Commits poussés et hashes distants confirmés. Verrous libérés.
+
+### Prise en charge tâche 120 — 2026-11-05 11:07:29 Europe/Paris (UTC+01:00) — Codex
+Demande reçue : harmoniser la notation du calculateur Transport avec le chapitre 2 du poly. Référence vérifiée : section 2.9 dans le dépôt MFTN, Pe_sigma0, xi, t*. Le miroir cours-publics était propre et synchronisé avec origin/main au HEAD 3fb6dc26f05fa4ede46b3d6acc5ccc5aad8a8117. Aucune réservation active sur les calculateurs. Source de référence MFTN ; copie du miroir après validation. Vérifier l’affichage publié puis libérer le verrou.
