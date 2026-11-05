@@ -57,18 +57,33 @@
   const linspace = (a, b, n) => Array.from({ length: n }, (_, i) => a + (b - a) * i / (n - 1));
   const maxAbs = v => v.reduce((m, e) => Math.max(m, Math.abs(e)), 0);
 
-  /* 1. Barre 1D : lambda T'' + q = 0, T(0)=T0, T(L)=TL, N intervalles, schéma centré. */
-  function barre({ N, T0, TL, L = 1, lambda = 1, q = 0 }) {
-    const h = L / N, n = N - 1;
-    const a = new Array(n).fill(-1), b = new Array(n).fill(2), c = new Array(n).fill(-1);
-    const d = new Array(n).fill(h * h * q / lambda);
-    d[0] += T0; d[n - 1] += TL;
+  /* 1. Barre 1D : lambda T'' + q = 0, T(0)=T0, T(L)=TL, N intervalles. */
+  function maillageBarre(N, L, mesh) {
+    if (mesh !== 'nonuniforme') return Array.from({ length: N + 1 }, (_, i) => L * i / N);
+    return Array.from({ length: N + 1 }, (_, i) => L * (1 - Math.cos(Math.PI * i / N)) / 2);
+  }
+
+  /* Différences finies centrées sur maillage uniforme ou non uniforme. */
+  function barre({ N, T0, TL, L = 1, lambda = 1, q = 0, mesh = 'uniforme' }) {
+    const x = maillageBarre(N, L, mesh), n = N - 1;
+    const a = [], b = [], c = [], d = [];
+    // Maillage non uniforme : -[(T_{i+1}-T_i)/hp-(T_i-T_{i-1})/hm]/((hm+hp)/2)=q/λ.
+    // La forme tridiagonale est obtenue en multipliant chaque ligne par (hm+hp)/2.
+    for (let j = 0; j < n; j++) {
+      const i = j + 1, hm = x[i] - x[i - 1], hp = x[i + 1] - x[i];
+      a.push(0); b.push(0); c.push(0); d.push(0);
+      a[j] = j === 0 ? 0 : -1 / hm;
+      b[j] = 1 / hm + 1 / hp;
+      c[j] = j === n - 1 ? 0 : -1 / hp;
+      d[j] = q / lambda * (hm + hp) / 2;
+      if (j === 0) d[j] += T0 / hm;
+      if (j === n - 1) d[j] += TL / hp;
+    }
     const Ti = thomas(a, b, c, d);
-    const x = Array.from({ length: N + 1 }, (_, i) => i * h);
     const T = [T0].concat(Ti, [TL]);
     const exact = x.map(xi => T0 + (TL - T0) * xi / L + q / (2 * lambda) * xi * (L - xi));
     const err = T.map((t, i) => t - exact[i]);
-    return { h, x, T, exact, err, maxErr: maxAbs(err) };
+    return { h: L / N, x, T, exact, err, maxErr: maxAbs(err), mesh };
   }
 
   /* 2. Jacobi / Gauss-Seidel pour -u''=f, u(0)=u(1)=0, n nœuds intérieurs. */
@@ -333,27 +348,32 @@
              q0out: lambda * C1, qLout: q * L - lambda * C1 };
   }
 
-  /* 10. Barre 1D en volumes finis (cellules centrées, N cellules de largeur h = L/N) :
-     lambda T'' + q = 0, T(0) = T0, T(L) = TL imposées aux faces (demi-cellule aux bords).
-     Bilan sur la cellule i : lambda[(T_{i+1}-T_i)/h - (T_i-T_{i-1})/h] + q h = 0. */
-  function barreVF({ N, T0, TL, L = 1, lambda = 1, q = 0 }) {
-    const h = L / N, n = N;
-    const a = new Array(n).fill(-1), b = new Array(n).fill(2), c = new Array(n).fill(-1);
-    const d = new Array(n).fill(h * h * q / lambda);
-    b[0] = 3; d[0] += 2 * T0;
-    b[n - 1] = 3; d[n - 1] += 2 * TL;
+  /* 10. Barre 1D en volumes finis sur cellules centrées, uniformes ou non uniformes.
+     T(0)=T0 et T(L)=TL sont imposées aux faces ; les flux emploient les distances réelles,
+     avec une demi-largeur de cellule entre le centre extrême et le bord. */
+  function barreVF({ N, T0, TL, L = 1, lambda = 1, q = 0, mesh = 'uniforme' }) {
+    const faces = maillageBarre(N, L, mesh), n = N;
+    const widths = Array.from({ length: n }, (_, i) => faces[i + 1] - faces[i]);
+    const x = Array.from({ length: n }, (_, i) => (faces[i] + faces[i + 1]) / 2);
+    const a = new Array(n).fill(0), b = new Array(n).fill(0), c = new Array(n).fill(0), d = new Array(n);
+    for (let i = 0; i < n; i++) {
+      const gw = i === 0 ? 1 / (widths[i] / 2) : 1 / ((widths[i - 1] + widths[i]) / 2);
+      const ge = i === n - 1 ? 1 / (widths[i] / 2) : 1 / ((widths[i] + widths[i + 1]) / 2);
+      b[i] = gw + ge; d[i] = q * widths[i] / lambda;
+      if (i === 0) d[i] += gw * T0; else a[i] = -gw;
+      if (i === n - 1) d[i] += ge * TL; else c[i] = -ge;
+    }
     const T = thomas(a, b, c, d);
-    const x = Array.from({ length: n }, (_, i) => (i + 0.5) * h);
     const exact = x.map(xi => T0 + (TL - T0) * xi / L + q / (2 * lambda) * xi * (L - xi));
     const err = T.map((t, i) => t - exact[i]);
     // flux sortants aux deux faces de bord (convention de barreCL : q0out = lambda T'(0), qLout = -lambda T'(L))
-    const q0out = lambda * (T[0] - T0) / (h / 2), qLout = lambda * (T[n - 1] - TL) / (h / 2);
-    return { h, x, T, exact, err, maxErr: maxAbs(err), q0out, qLout, bilan: q0out + qLout - q * L };
+    const q0out = lambda * (T[0] - T0) / (widths[0] / 2), qLout = lambda * (T[n - 1] - TL) / (widths[n - 1] / 2);
+    return { h: L / N, widths, x, T, exact, err, maxErr: maxAbs(err), q0out, qLout, bilan: q0out + qLout - q * L, mesh };
   }
   /* Bilan de flux du schéma aux différences finies (différences d'ordre 1 aux bords). */
-  function bilanDF({ N, T0, TL, L = 1, lambda = 1, q = 0 }) {
-    const r = barre({ N, T0, TL, L, lambda, q }), h = r.h;
-    const q0out = lambda * (r.T[1] - T0) / h, qLout = -lambda * (TL - r.T[N - 1]) / h;
+  function bilanDF({ N, T0, TL, L = 1, lambda = 1, q = 0, mesh = 'uniforme' }) {
+    const r = barre({ N, T0, TL, L, lambda, q, mesh });
+    const q0out = lambda * (r.T[1] - T0) / (r.x[1] - r.x[0]), qLout = -lambda * (TL - r.T[N - 1]) / (r.x[N] - r.x[N - 1]);
     return { q0out, qLout, bilan: q0out + qLout - q * L };
   }
 

@@ -24,9 +24,9 @@ window.EQUATIONS = {
     {"titre": "Trois conditions possibles en x = L", "tex": "\\text{Dirichlet : }T(L)=T_L,\\qquad\\text{Neumann : }-\\lambda T'(L)=q_L,\\qquad\\text{Robin : }-\\lambda T'(L)=h\\,\\bigl[T(L)-T_\\infty\\bigr]"}
   ],
   "barre": [
-    {"titre": "Problème", "tex": "\\lambda\\,T''+q=0,\\qquad T(0)=T_0,\\quad T(L)=T_L"},
-    {"titre": "Différences finies (nœuds)", "tex": "\\frac{T_{i+1}-2T_i+T_{i-1}}{\\Delta x^2}=-\\frac q\\lambda"},
-    {"titre": "Volumes finis (bilan sur la cellule P, flux numériques)", "tex": "F_e-F_w+q\\,\\Delta x=0,\\qquad F_e=\\lambda\\,\\frac{T_E-T_P}{\\Delta x},\\quad F_w=\\lambda\\,\\frac{T_P-T_W}{\\Delta x}"},
+    {"titre": "Problème sur une barre de longueur fixée", "tex": "\\lambda\\,T''+q=0,\\qquad T(0)=T_0,\\quad T(1\\,\\mathrm{m})=T_L"},
+    {"titre": "Différences finies aux nœuds : uniforme ou non uniforme", "tex": "\\begin{gathered}h_-=x_i-x_{i-1},\\quad h_+=x_{i+1}-x_i,\\\\D_{xx}T_i=\\frac{2T_{i-1}}{h_-(h_-+h_+)}-\\frac{2T_i}{h_-h_+}+\\frac{2T_{i+1}}{h_+(h_-+h_+)}=-\\frac q\\lambda\\end{gathered}"},
+    {"titre": "Volumes finis : distances réelles, demi-cellule aux bords", "tex": "F_e-F_w+q\\,\\Delta x_P=0,\\qquad F_e=\\lambda\\,\\frac{T_E-T_P}{d_{PE}},\\quad F_w=\\lambda\\,\\frac{T_P-T_W}{d_{WP}}"},
     {"titre": "Bilan global de flux", "tex": "\\dot q_{0,\\text{sortant}}+\\dot q_{L,\\text{sortant}}=q\\,L"}
   ],
   "peclet": [

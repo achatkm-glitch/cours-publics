@@ -12,7 +12,7 @@
 <header>
   <h1>Calculateurs MFTN</h1>
   <p>Outils de simulation pour les séances de cours. Aucune installation : tout s'exécute dans votre navigateur. Déplacez les curseurs et superposez plusieurs cas pour comparer.</p>
-  <p class="interactive-hint">Astuce : survolez ou touchez une courbe pour lire ses coordonnées ; utilisez les flèches du clavier sur un graphique pour parcourir ses points. Les graphes de raffinement indiquent une pente observée sur les points affichés.</p>
+  <p class="interactive-hint">Astuce : survolez ou touchez une courbe ou un schéma pour son repère de lecture ; les points affichent aussi leurs coordonnées. Clavier : flèches sur un graphique.</p>
   <aside class="phone-access" aria-label="Accès au site sur téléphone">
     <img src="img/calculateurs_qr.png" alt="QR code vers le site public des calculateurs MFTN" title="Scannez pour ouvrir le calculateur sur téléphone.">
     <div class="phone-access__copy">
@@ -250,7 +250,7 @@
 <!-- Ch.1 : barre 1D -->
 <section class="panel" id="p-barre">
   <h2>Barre 1D : différences finies et volumes finis</h2>
-  <p class="lead">Même problème traité par le schéma centré aux nœuds (différences finies) et par un bilan sur N cellules (volumes finis). Séance 1, bloc C. Les deux graphiques montrent la solution et son erreur par rapport à la solution analytique ; le champ sous le curseur de N accepte d'autres valeurs (par exemple 8 16) pour comparer les maillages.</p>
+  <p class="lead">À longueur fixée L = 1 m, comparez la solution et l’erreur obtenues aux nœuds ou aux centres des cellules, avec un maillage uniforme ou non uniforme. Séance 1, bloc C. Le champ sous N accepte d’autres valeurs (par exemple 8 16).</p>
   <div class="eqs" data-eq="barre"></div>
   <div class="grid">
     <div>
@@ -259,15 +259,19 @@
           <label><input type="checkbox" name="b-s" value="fd" checked> Différences finies</label>
           <label><input type="checkbox" name="b-s" value="vf" checked> Volumes finis</label>
         </div>
+        <div class="checks" role="group" aria-label="Maillages à comparer">
+          <label><input type="checkbox" name="b-mesh" value="uniforme" checked> Maillage uniforme</label>
+          <label><input type="checkbox" name="b-mesh" value="nonuniforme" checked> Maillage non uniforme</label>
+        </div>
         <label>Nombre d'intervalles ou de cellules N<span class="sl"><input type="range" id="b-N" min="2" max="64" step="1" value="4"><output></output></span><input id="b-Nx" value="" placeholder="autres N à comparer (par exemple 8 16)" aria-label="Autres valeurs à comparer"></label>
         <label>T(0), en K<span class="sl"><input type="range" id="b-T0" min="250" max="450" step="5" value="300" data-unit="K"><output></output></span></label>
         <label>T(L), en K<span class="sl"><input type="range" id="b-TL" min="250" max="450" step="5" value="400" data-unit="K"><output></output></span></label>
-        <label>Longueur L, en m<span class="sl"><input type="range" id="b-L" min="0.1" max="2" step="0.1" value="1" data-unit="m"><output></output></span></label>
+        <p class="repere"><b>Longueur fixée :</b> L = 1 m.</p>
         <label>Conductivité λ, en W/(m·K)<span class="sl"><input type="range" id="b-lambda" min="1" max="100" step="1" value="1"><output></output></span></label>
-        <label>Production q, en W/m³<span class="sl"><input type="range" id="b-q" min="0" max="1000" step="10" value="0"><output></output></span></label>
+        <label>Production q, en W/m³<span class="sl"><input type="range" id="b-q" min="0" max="1000" step="10" value="100"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> N = 4, T₀ = 300 K, T_L = 400 K, q = 0 : les deux schémas sont exacts (solution affine). Avec q = 100 W/m³ (λ = 1, L = 1) : les différences finies restent exactes (solution quadratique) ; les volumes finis ont une erreur de 0,78 K (N = 4) puis 0,20 K (N = 8), divisée par 4 quand N double (ordre 2). Le bilan de flux est exact en volumes finis (schéma conservatif) et vaut −q·h en différences finies.</p>
+      <p class="repere"><b>Repère :</b> le maillage non uniforme rapproche les points des deux extrémités (distribution cosinus). Au réglage initial q = 100 W/m³, comparez les erreurs sur un profil courbe ; à q = 0, le profil affine est reproduit sur les deux maillages.</p>
     </div>
     <div>
       <div class="msg" id="b-msg" aria-live="polite"></div>
@@ -532,10 +536,10 @@
   Premier jet : vérification technique seulement. Les valeurs de repère proviennent du polycopié MFTN, sauf les itérations de Jacobi et de Gauss–Seidel, les ordres globaux de Neumann, le pas FTCS, l'exemple de la gaussienne, les volumes finis de la barre et la convection–diffusion, calculés par le rédacteur et contrôlés par les tests (<code>test_calc.js</code>).
 </footer>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<script src="calc.js?v=20261105-129d"></script>
-<script src="equations.js?v=20261105-132a"></script>
+<script src="calc.js?v=20261105-135a"></script>
+<script src="equations.js?v=20261105-135a"></script>
 <script src="situations.js?v=20261105-129d"></script>
-<script src="guide.js?v=20261105-132a"></script>
-<script src="app.js?v=20261105-133a"></script>
+<script src="guide.js?v=20261105-135a"></script>
+<script src="app.js?v=20261105-135a"></script>
 </body>
 </html>

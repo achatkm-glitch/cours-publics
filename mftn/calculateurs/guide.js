@@ -205,7 +205,7 @@ window.GUIDE = {
       "explorations": [
         {
           "id": "S1-X5",
-          "titre": "Les différences finies sont-elles exactes ?",
+          "titre": "Comparer les maillages en différences finies",
           "comp": [
             "C1.6"
           ],
@@ -214,16 +214,16 @@ window.GUIDE = {
             "b-Nx": "8 16",
             "b-T0": "300",
             "b-TL": "400",
-            "b-L": "1",
             "b-lambda": "1",
             "b-q": "100"
           },
-          "consigne": "Avec une production q = 100 W/m³ (la solution devient quadratique), ne gardez que les différences finies et superposez N = 4, 8 et 16. Lisez l'erreur sur le graphique de droite et dans le message.",
+          "consigne": "Avec q = 100 W/m³, comparez les différences finies sur maillage uniforme et non uniforme pour N = 4, 8 et 16. Lisez l’erreur sur le graphique de droite et dans le message.",
           "question": "Que valent les erreurs ? Pourquoi ne diminuent-elles pas quand N augmente ?",
           "checks": {
             "b-s": [
               "fd"
-            ]
+            ],
+            "b-mesh": ["uniforme", "nonuniforme"]
           },
           "main": "Avec λ = 1, q = 100 W/m³, L = 1 m, T(0) = 300 et T(1) = 400, déterminez T(x) pour −λT'' = q. Pour h = 0,25, calculez T_1 et T_2 puis vérifiez à la main que −λ(T_2 − 2T_1 + T_0)/h² = q. Cet essai exact sur un profil quadratique suffit-il à établir l'ordre général du schéma ?"
         },
@@ -236,10 +236,9 @@ window.GUIDE = {
           ],
           "reglages": {
             "b-N": "4",
-            "b-Nx": "8 16",
+            "b-Nx": "8",
             "b-T0": "300",
             "b-TL": "400",
-            "b-L": "1",
             "b-lambda": "1",
             "b-q": "100"
           },
@@ -247,9 +246,10 @@ window.GUIDE = {
             "b-s": [
               "fd",
               "vf"
-            ]
+            ],
+            "b-mesh": ["uniforme", "nonuniforme"]
           },
-          "consigne": "Ajoutez les volumes finis (carrés) aux différences finies (cercles). Comparez les deux graphiques d'erreur et lisez les erreurs maximales et les bilans de flux dans le message.",
+          "consigne": "Comparez les différences finies (cercles) et les volumes finis (carrés) sur maillages uniforme et non uniforme, pour N = 4 et 8. Lisez les erreurs et les bilans de flux.",
           "question": "Les volumes finis sont-ils exacts ici ? Comment leur erreur évolue-t-elle quand N double ? Que valent les bilans de flux des deux schémas ?",
           "main": "Avec q = 100 W/m³, λ = 1 W/(m·K) et L = 1 m, calculez q h²/(8λ) pour N = 4, 8, 16 (h = L/N) et prévoyez comment cette quantité évolue quand N double."
         }

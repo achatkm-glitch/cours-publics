@@ -372,44 +372,47 @@
 
   /* ---------- Chapitre 1 : barre 1D (différences finies et volumes finis), comparaison de maillages ---------- */
   function runBarre() {
-    const c = pal(), Ns = vals('b-N').map(Math.round).filter(v => v >= 2 && v <= 2000).slice(0, 4), schemes = checked('b-s');
-    if (!Ns.length || !schemes.length) return;
-    const p = { T0: num('b-T0'), TL: num('b-TL'), L: num('b-L'), lambda: num('b-lambda'), q: num('b-q') };
+    const c = pal(), Ns = vals('b-N').map(Math.round).filter(v => v >= 2 && v <= 2000).slice(0, 4), schemes = checked('b-s'), meshes = checked('b-mesh');
+    if (!Ns.length || !schemes.length || !meshes.length) return;
+    const p = { T0: num('b-T0'), TL: num('b-TL'), L: 1, lambda: num('b-lambda'), q: num('b-q') };
     const fine = Calc.barre(Object.assign({ N: 400 }, p));
     const S1 = [{ x: fine.x, y: fine.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [], er = { fd: {}, vf: {} };
-    let kc = 0;
-    Ns.forEach((N, i) => {
+    const meshNames = { uniforme: 'uniforme', nonuniforme: 'non uniforme' }, meshStyle = { uniforme: [], nonuniforme: [5, 3] };
+    Ns.forEach((N, i) => meshes.forEach(mesh => {
+      const col = c[i % 8], dash = meshStyle[mesh];
       if (schemes.includes('fd')) {
-        const r = Calc.barre(Object.assign({ N }, p)), bl = Calc.bilanDF(Object.assign({ N }, p)), col = c[kc++ % 8];
-        S1.push({ x: r.x, y: r.T, color: col, points: true, label: `DF, N = ${N}` });
-        S2.push({ x: r.x, y: r.err, color: col, points: true, label: `DF, N = ${N}` });
-        er.fd[N] = r.maxErr;
-        items.push({ color: col, title: `Différences finies · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(bl.bilan, 3)} W/m²</b>`] });
+        const r = Calc.barre(Object.assign({ N, mesh }, p)), bl = Calc.bilanDF(Object.assign({ N, mesh }, p));
+        const label = `DF, ${meshNames[mesh]}, N = ${N}`;
+        S1.push({ x: r.x, y: r.T, color: col, points: true, dash, label });
+        S2.push({ x: r.x, y: r.err, color: col, points: true, dash, label });
+        (er.fd[mesh] ||= {})[N] = r.maxErr;
+        items.push({ color: col, title: `Différences finies · ${meshNames[mesh]} · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(bl.bilan, 3)} W/m²</b>`] });
       }
       if (schemes.includes('vf')) {
-        const r = Calc.barreVF(Object.assign({ N }, p)), col = c[kc++ % 8];
-        S1.push({ x: r.x, y: r.T, color: col, points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
-        S2.push({ x: r.x, y: r.err, color: col, points: true, marker: 'square', dash: [3, 3], width: 1.6, label: `VF, N = ${N}` });
-        er.vf[N] = r.maxErr;
-        items.push({ color: col, title: `Volumes finis · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(r.bilan, 3)} W/m²</b>`] });
+        const r = Calc.barreVF(Object.assign({ N, mesh }, p));
+        const label = `VF, ${meshNames[mesh]}, N = ${N}`;
+        S1.push({ x: r.x, y: r.T, color: col, points: true, marker: 'square', dash, width: 1.6, label });
+        S2.push({ x: r.x, y: r.err, color: col, points: true, marker: 'square', dash, width: 1.6, label });
+        (er.vf[mesh] ||= {})[N] = r.maxErr;
+        items.push({ color: col, title: `Volumes finis · ${meshNames[mesh]} · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(r.bilan, 3)} W/m²</b>`] });
       }
-    });
-    $('b-msg').innerHTML = 'Cercles : différences finies (nœuds) ; carrés : volumes finis (centres des cellules). Chaque courbe a sa couleur (quatre maillages au plus). Erreur = solution calculée − solution analytique ; bilan de flux = flux sortants − q·L.';
+    }));
+    $('b-msg').innerHTML = 'Cercles : différences finies aux nœuds ; carrés : volumes finis aux centres des cellules. Trait plein : maillage uniforme ; tirets : non uniforme ; couleur : valeur de N. L = 1 m. Erreur = solution calculée − solution analytique ; bilan de flux = flux sortants − q·L.';
     draw('b-plot', 'b-leg', S1, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Solution' });
     // erreurs de l'ordre de l'arrondi : on fige l'axe pour ne pas amplifier le bruit machine en « courbes » trompeuses
     const eMax = Math.max.apply(null, S2.map(q => Calc.maxAbs(q.y)));
     const arrondi = eMax < 1e-9;
-    if (arrondi) $('b-msg').innerHTML += ' <b>Les erreurs sont inférieures à 10⁻⁹ K : ce n\u2019est que du bruit d\u2019arrondi, les deux schémas sont exacts ici.</b> Les points ne se superposent pas car les nœuds (différences finies) et les centres de cellules (volumes finis) sont à des abscisses différentes.';
+    if (arrondi) $('b-msg').innerHTML += ' <b>Les erreurs sont inférieures à 10⁻⁹ K : les schémas sélectionnés reproduisent ce profil à l’arrondi.</b> Les points peuvent différer en x, car les nœuds de différences finies et les centres de volumes finis ne sont pas aux mêmes positions.';
     draw('b-plot2', 'b-leg2', S2, { xlabel: 'x (m)', ylabel: 'erreur (K)', ylim: arrondi ? [-1e-6, 1e-6] : null, title: 'Erreur / solution analytique' });
     cards($('b-cards'), items);
     const L = [], sorted = Ns.slice().sort((p, q) => p - q);
-    [['fd', 'Différences finies'], ['vf', 'Volumes finis']].filter(m => schemes.includes(m[0])).forEach(m => {
-      const e = er[m[0]], N1 = sorted[sorted.length - 2], N2 = sorted[sorted.length - 1], eN = e[N2];
-      if (eN < 1e-8) L.push(`${m[1]} : l\u2019erreur (${fmt(eN)} K) est de l\u2019ordre de l\u2019arrondi. La solution exacte est un polynôme de degré 2, que ce schéma reproduit exactement : ce n\u2019est pas la preuve que l\u2019ordre est « infini », seulement que le terme d\u2019erreur dominant s\u2019annule ici.`);
-      else if (sorted.length > 1) L.push(`${m[1]} : erreur ${fmt(eN)} K pour N = ${N2} ; entre N = ${N1} et N = ${N2}, ordre observé <b>${fmt(ord2(e[N1], eN, N2 / N1), 3)}</b>.`);
-      else L.push(`${m[1]} : erreur ${fmt(eN)} K pour N = ${N2}. Ajoutez un second maillage pour estimer l\u2019ordre.`);
-    });
-    L.push('Le bilan de flux proche de zéro signifie que la chaleur produite sort bien par les deux bords : le schéma est conservatif.');
+    [['fd', 'Différences finies'], ['vf', 'Volumes finis']].filter(m => schemes.includes(m[0])).forEach(m => meshes.forEach(mesh => {
+      const e = er[m[0]][mesh], N1 = sorted[sorted.length - 2], N2 = sorted[sorted.length - 1], eN = e[N2];
+      if (eN < 1e-8) L.push(`${m[1]} · maillage ${meshNames[mesh]} : erreur ${fmt(eN)} K, de l’ordre de l’arrondi pour ce profil.`);
+      else if (sorted.length > 1) L.push(`${m[1]} · maillage ${meshNames[mesh]} : erreur ${fmt(eN)} K pour N = ${N2} ; entre N = ${N1} et N = ${N2}, ordre observé <b>${fmt(ord2(e[N1], eN, N2 / N1), 3)}</b>.`);
+      else L.push(`${m[1]} · maillage ${meshNames[mesh]} : erreur ${fmt(eN)} K pour N = ${N2}. Ajoutez un second maillage pour estimer l’ordre.`);
+    }));
+    L.push('Le bilan de flux vérifie la différence entre flux sortants et production totale ; pour les volumes finis, il doit être nul à l’arrondi car le bilan cellule par cellule se télescope.');
     explain('barre', L);
   }
 
