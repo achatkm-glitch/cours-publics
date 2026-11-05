@@ -22,8 +22,8 @@
     `<rect x="140" y="52" width="104" height="26" rx="3" fill="url(#g3b)" opacity="0.6" stroke="var(--plot-axis)" stroke-width="1.5"/>` +
     arr(150, 100, 232, 100, 'var(--muted)', 1.6) + t(140, 40, 'barre qui se refroidit', 'font-weight="600"') + t(140, 118, 'évolution diffusive') + t(140, 132, '(parabolique)') +
     `<rect x="270" y="52" width="96" height="26" rx="13" fill="var(--blue)" opacity="0.18" stroke="var(--plot-axis)" stroke-width="1.5"/>` +
-    `<path d="M278 65 q6 -16 12 0 t12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="var(--orange)" stroke-width="2.6"/>` +
-    t(266, 40, 'onde dans un tube', 'font-weight="600"') + t(266, 118, 'propagation à vitesse') + t(266, 132, 'finie (hyperbolique)'));
+    `<path d="M276 65 H286 C291 65 291 56 298 56 C305 56 305 65 310 65 H360" fill="none" stroke="var(--orange)" stroke-width="2.6"/>` +
+    t(266, 40, 'tube : bosse initiale', 'font-weight="600"') + t(266, 118, '1 bosse → 2 bosses') + t(266, 132, 'propagation (± c)'));
 
   const S = {
     transport: {
@@ -38,13 +38,13 @@
         arr(60, 62, 130, 62, 'var(--blue)', 2.4) + arr(60, 112, 130, 112, 'var(--blue)', 2.4) +
         t(150, 150, 'courant : advection') + t(262, 150, 'étalement : diffusion'))
     },
-    edpc: { texte: "Trois situations, trois types : un équilibre (plaque aux bords à températures imposées), une évolution diffusive (barre qui se refroidit) et une propagation (onde dans un tube).", svg: trois },
+    edpc: { texte: "Trois situations, trois types : un équilibre (plaque aux bords à températures imposées), une évolution diffusive (barre qui se refroidit) et une bosse initiale qui se propage dans un tube.", svg: trois },
     edpb: {
-      texte: "Un pictogramme par type : une plaque en régime permanent (elliptique), une barre qui diffuse la chaleur (parabolique), une onde dans un tube (hyperbolique). Le pictogramme affiché suit le type choisi.",
+      texte: "Un pictogramme par type : une plaque en régime permanent (elliptique), une barre qui diffuse la chaleur (parabolique), une bosse initiale dans un tube (hyperbolique). Le pictogramme affiché suit le type choisi.",
       svg: [
         ['elliptique', grad('g3a', '--red', '--blue') + `<rect x="95" y="36" width="190" height="100" rx="3" fill="url(#g3a)" opacity="0.55"/><rect x="95" y="36" width="190" height="100" rx="3" fill="none" stroke="var(--plot-axis)" stroke-width="4"/>` + t(100, 26, 'plaque chauffée, régime permanent', 'font-weight="600"') + t(100, 156, 'chaque côté agit sur toute la plaque')],
         ['parabolique', `<rect x="60" y="64" width="260" height="28" rx="3" fill="var(--blue)" opacity="0.22" stroke="var(--plot-axis)" stroke-width="1.5"/><rect id="k-sit-hot-left" x="109" y="65" width="32" height="26" rx="3" fill="var(--orange)" opacity="0.8"/><rect id="k-sit-hot-right" x="239" y="65" width="32" height="26" rx="3" fill="var(--orange)" opacity="0.8"/><path id="k-sit-profile" d="M60 130 C138 130 158 98 190 98 C222 98 242 130 320 130" fill="none" stroke="var(--orange)" stroke-width="2.5"/><path d="M60 130 H320" stroke="var(--plot-axis)" stroke-width="1" stroke-dasharray="3 3"/>` + t(60, 46, 'barre : zones chaudes initiales', 'font-weight="600"') + `<text id="k-sit-caption" x="60" y="151" fill="var(--ink)" font-size="14">profil initial t = 0</text>`],
-        ['hyperbolique', `<rect x="40" y="62" width="300" height="34" rx="17" fill="var(--blue)" opacity="0.18" stroke="var(--plot-axis)" stroke-width="1.5"/><path d="M52 79 q8 -22 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0" fill="none" stroke="var(--orange)" stroke-width="2.6"/>` + t(40, 46, 'onde dans un tube', 'font-weight="600"') + t(40, 148, 'propagation à vitesse finie')]
+        ['hyperbolique', `<rect x="40" y="62" width="300" height="34" rx="17" fill="var(--blue)" opacity="0.18" stroke="var(--plot-axis)" stroke-width="1.5"/><path d="M52 79 H145 C160 79 160 66 178 66 C196 66 196 79 211 79 H328" fill="none" stroke="var(--orange)" stroke-width="2.6"/>` + arr(190, 111, 118, 111, 'var(--muted)', 1.6) + arr(190, 111, 262, 111, 'var(--muted)', 1.6) + t(40, 46, 'tube : une bosse au départ', 'font-weight="600"') + t(40, 136, 'elle part dans les deux sens (± c)') + t(40, 154, 'comme les deux bosses du graphe')]
       ].map(q => `<svg class="sit-svg" data-kt="${q[0]}" viewBox="0 0 380 170" role="img" aria-hidden="true">${q[1]}</svg>`).join('')
     },
     cl: {

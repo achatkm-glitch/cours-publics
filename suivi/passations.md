@@ -489,3 +489,20 @@ Synchronisation app.js et index.html depuis MFTN terminée ; empreintes source/m
 |---|---|
 | mftn/calculateurs/app.js, index.html, style.css | LIBRE — commit b914185 publié |
 | suivi/decisions.md, passations.md, verrous.md | LIBRE — contrôles et publication consignés |
+
+### Prise FIFO — tâche miroir 130 — 2026-11-05 16:12:07 Europe/Paris (UTC+01:00) — Codex
+Tâche associée à la tâche MFTN 140. HEAD miroir `aaf0545`, arbre propre ; tâche miroir 129 LIBRE depuis 15:56:03. Réservation : `mftn/calculateurs/situations.js`, `app.js`, `index.html` et `suivi/decisions.md`, `passations.md`, `verrous.md`. La source de référence est `C:\Latex\MFTN\Peda_inv\site`. Synchroniser les trois fichiers après contrôles, puis vérifier le déploiement Pages.
+
+### VERROUS ACTIFS — tâche miroir 130 — 2026-11-05 16:12:07 Europe/Paris (UTC+01:00) — Codex
+| Fichier / périmètre | Détenteur et état | Prochaine action |
+|---|---|---|
+| mftn/calculateurs/situations.js, app.js, index.html | Codex — ACTIF | synchroniser après contrôle source |
+| suivi/decisions.md, passations.md, verrous.md | Codex — ACTIF | consigner et libérer après publication |
+### Libération tâche miroir 130 — 2026-11-05 16:14:12 Europe/Paris (UTC+01:00) — Codex
+Sources synchronisées avec MFTN, syntaxe contrôlée et aperçu local inspecté. Réservations de `mftn/calculateurs/situations.js`, `app.js`, `index.html` et des trois registres LIBRES ; publication GitHub Pages en cours.
+
+### VERROUS — clôture des modifications tâche miroir 130 — 2026-11-05 16:14:12 Europe/Paris (UTC+01:00)
+| Périmètre | État |
+|---|---|
+| mftn/calculateurs/situations.js, app.js, index.html | LIBRE — vérifiés identiques à la source MFTN |
+| suivi/decisions.md, passations.md, verrous.md | LIBRE — contrôles consignés, publication en cours |

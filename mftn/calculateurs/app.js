@@ -852,7 +852,7 @@
           : gap < 1
             ? `<b>Situation physique.</b> Au départ, on prescrit la température le long de la barre : deux bosses cosinus de rayon 0,5 m, séparées de ${fmt(gap, 1)} m. Elles se recouvrent ; le profil initial est leur somme, et ses sommets peuvent se confondre. Les courbes suivantes montrent la diffusion de ce profil. Ici, on ne prescrit pas une température à l’entrée de la barre.`
             : `<b>Situation physique.</b> Au départ, on prescrit la température le long de la barre : deux zones chaudes en forme de bosse cosinus, de rayon 0,5 m, séparées de ${fmt(gap, 1)} m (écart réglable ci-dessous). La courbe « Profil initial » à t = 0 montre donc deux pics, un par zone chaude. Les courbes suivantes montrent leur évolution : la diffusion élargit et abaisse les pics. Ici, on ne prescrit pas une température à l’entrée de la barre.`,
-        hyperbolique: '<b>Situation physique.</b> Au départ, une seule bosse est présente dans le tube et sa vitesse initiale est nulle. La courbe initiale a un seul pic ; l’équation des ondes la partage ensuite en deux bosses qui partent en sens opposés.'
+        hyperbolique: '<b>Situation physique.</b> Dans le tube, la bosse dessinée représente le profil initial : c’est la courbe pointillée à t = 0. Comme la vitesse initiale est nulle, ce profil se partage en deux bosses de demi-hauteur qui avancent en sens opposés. La courbe pleine montre ces deux bosses à l’instant t, centrées en x = ±ct.'
       };
       situation.innerHTML = texts[type];
     }

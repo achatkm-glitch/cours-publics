@@ -307,3 +307,9 @@ Dans « EDP : classer », les curseurs de coefficients sont remplacés par Δ di
 | 128 | 2026-11-05 15:11:33 +01:00 | Utilisateur | Le site doit fonctionner sur tablette et téléphone ; choisir des valeurs initiales adaptées aux apprentissages et vérifier les réglages des explorations guidées. | Codex (prise FIFO, miroir) | terminé et publié ; run Pages 42045456301 réussi ; audit et limites consignés | MFTN 91f7e20 ; miroir dc62b7e ; passation MFTN |
 
 | 129 | 2026-11-05 15:41 +01:00 | Utilisateur | Généraliser intelligemment les explications des infobulles sur toutes les figures et tous les graphes du site, selon leur contenu et les réglages, sans livrer les réponses aux exercices. | Codex (prise FIFO, miroir) | terminée et publiée ; mirror commit b914185, Pages run 42049578189 réussi | tâche 139 MFTN, mftn/calculateurs/app.js et index.html |
+
+### 2026-11-05 — Correspondance entre schéma du tube et courbe d’onde (tâche miroir 130)
+- **Décision** : remplacer le train sinusoïdal du pictogramme hyperbolique par une bosse initiale localisée et expliquer son lien avec le profil pointillé à t=0 et les deux bosses de la solution.
+- **Raison** : rendre lisible l’origine des deux bosses représentées dans le calculateur.
+- **Preuve** : commentaire navigateur utilisateur du 2026-11-05, onglet `#edpb`.
+- **Responsable** : Codex, tâche miroir 130.

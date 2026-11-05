@@ -55,3 +55,7 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 
 
 | MFTN Peda_inv/site/app.js, index.html, style.css ; miroir mftn/calculateurs/app.js, index.html, style.css ; registres — tâche 139/miroir 129 | LIBRE — Codex | 2026-11-05 15:56:03 Europe/Paris (UTC+01:00) — commits 401b2e7 / b914185 publiés, Pages run 42049578189 réussi |
+
+| mftn/calculateurs/situations.js, app.js, index.html et suivi/decisions.md, passations.md, verrous.md — tâche 130 | ACTIF — Codex | 2026-11-05 16:12:07 Europe/Paris (UTC+01:00) |
+
+| mftn/calculateurs/situations.js, app.js, index.html et registres — tâche 130 | LIBRE — Codex | 2026-11-05 16:14:12 Europe/Paris (UTC+01:00) — vérification locale terminée ; déploiement en cours |
