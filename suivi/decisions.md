@@ -289,3 +289,6 @@ Clôture tâche 120 — 2026-11-05 11:13:32 Europe/Paris (UTC+01:00) : notation 
 | 121 | 2026-11-05 11:21:55 +01:00 | Utilisateur | Situation EDP comportement : préciser l’état thermique initial et expliquer que les deux pics du graphe parabolique viennent de deux zones chaudes initiales. | Codex (prise FIFO) | en cours ; source principale MFTN puis miroir, contrôle navigateur public requis | MFTN tâche 129 ; mftn/calculateurs/app.js, situations.js |
 
 Clôture tâche 121 — 2026-11-05 11:40:02 +01:00 : situation parabolique et profil initial liés dynamiquement ; cas d’écart 4, 0,5 et 0 m contrôlés ; Pages run 42012043991 réussi ; verrou libéré.
+
+### Instruction utilisateur / prise FIFO — tâche 122 — 2026-11-05 11:45:20 +01:00 — Codex
+Sur le graphe parabolique, conserver t=0 comme repère et remplacer les coordonnées inutiles par une explication propre à chaque courbe de temps. Le code numérique des courbes reste inchangé. Source MFTN ; miroir cours-publics réservé pour synchronisation et publication.

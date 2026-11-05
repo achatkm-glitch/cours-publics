@@ -90,7 +90,9 @@
       const show = (p, px, py) => {
         if (!p) { state.tip.hidden = true; state.marker.hidden = true; return; }
         const note = typeof p.commentAt === 'function' ? p.commentAt(p) : p.commentAt;
-        state.tip.textContent = `${p.label} · ${state.labels.x} = ${fmt(p.x, 5)} · ${state.labels.y} = ${fmt(p.y, 5)}${note ? `\n${note}` : ''}`;
+        state.tip.textContent = p.tooltipTextOnly
+          ? `${p.label}${note ? `\n${note}` : ''}`
+          : `${p.label} · ${state.labels.x} = ${fmt(p.x, 5)} · ${state.labels.y} = ${fmt(p.y, 5)}${note ? `\n${note}` : ''}`;
         state.tip.hidden = false;
         const wr = wrap.getBoundingClientRect(), cr = canvas.getBoundingClientRect();
         state.marker.hidden = false;
@@ -153,7 +155,7 @@
     const hitPoints = [];
     series.forEach(s => s.x.forEach((v, i) => {
       const y = s.y[i]; if (!isFinite(v) || !isFinite(y) || (o.logx && v <= 0) || (o.logy && y <= 0)) return;
-      hitPoints.push({ px: X(v), py: Y(y), x: v, y, label: s.label || 'Courbe', commentAt: s.commentAt || null });
+      hitPoints.push({ px: X(v), py: Y(y), x: v, y, label: s.label || 'Courbe', commentAt: s.commentAt || null, tooltipTextOnly: !!s.tooltipTextOnly });
     }));
     const grid = css('--plot-grid'), axis = css('--plot-axis'), muted = css('--muted');
     g.font = '12px system-ui, sans-serif'; g.lineWidth = 1;
@@ -882,7 +884,18 @@
     } else if (type === 'parabolique') {
       const D = num('k-D'), tp = num('k-tp'), gap = num('k-gap'), rayon = 0.5, ctr = gap === 0 ? [0] : [-gap / 2, gap / 2];
       const xs = Calc.linspace(-8, 8, 800), times = [0, tp / 4, tp / 2, tp].filter((t, i, a) => a.indexOf(t) === i);
-      const S = times.map((t, i) => ({ x: xs, y: Calc.chaleurCompacte({ D, rayon, centres: ctr, t, xs }), color: c[i % 6], width: 2.2, label: `t = ${fmt(t, 3)}` }));
+      const initialNote = gap === 0
+        ? 'Profil initial : une bosse chaude centrée en x = 0, présente dès le départ.'
+        : gap < 2 * rayon
+          ? 'Profil initial : deux bosses chaudes déjà partiellement recouvertes. Les deux pics viennent des données de départ.'
+          : 'Profil initial : deux bosses chaudes distinctes. Les deux pics viennent des données de départ, avant toute diffusion.';
+      const S = times.map((t, i) => ({
+        x: xs, y: Calc.chaleurCompacte({ D, rayon, centres: ctr, t, xs }), color: c[i % 6], width: 2.2,
+        label: `t = ${fmt(t, 3)}${t === 0 ? '' : ' s'}`, tooltipTextOnly: true,
+        commentAt: t === 0
+          ? initialNote
+          : `La diffusion a lissé et élargi le profil depuis t = 0 ; son maximum diminue. Plus D ou le temps augmente, plus l’étalement est marqué. Dans le modèle continu, la solution est déjà très faible mais non nulle à toute distance.`
+      }));
       draw('k-par', 'k-par-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Diffusion d’une bosse à support compact' });
       const lecture = $('k-par-curve-explanation');
       const cle = times.map((t, i) => `<span class="curve-time"><i style="--curve-color:${c[i % 6]}"></i>${t === 0 ? 'Profil initial' : `Profil à t = ${fmt(t, 3)} s`}</span>`).join('');
