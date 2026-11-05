@@ -292,3 +292,6 @@ Clôture tâche 121 — 2026-11-05 11:40:02 +01:00 : situation parabolique et pr
 
 ### Instruction utilisateur / prise FIFO — tâche 122 — 2026-11-05 11:45:20 +01:00 — Codex
 Sur le graphe parabolique, conserver t=0 comme repère et remplacer les coordonnées inutiles par une explication propre à chaque courbe de temps. Le code numérique des courbes reste inchangé. Source MFTN ; miroir cours-publics réservé pour synchronisation et publication.
+
+### Clôture tâche 122 — 2026-11-05 11:51:24 +01:00 — Codex
+Publié : l’infobulle du graphe parabolique conserve l’instant et présente une explication du profil initial ou de la diffusion, sans x/u. Page et script HTTPS répondent 200 ; Pages run 42013908439 réussi. Vérification visuelle au pointeur non réalisée (API CUA indisponible). Commits MFTN 9572351, cours-publics d8d7fe3 ; empreintes dans version_traceability.md du dépôt MFTN. Verrou libéré.

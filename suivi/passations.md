@@ -412,6 +412,9 @@ Miroir cours-publics réservé après vérification de son HEAD cad593e et de l�
 ### Clôture tâche 121 — 2026-11-05 11:40:02 +01:00 — Codex
 Situation, équation et courbe sont cohérentes avec le bouton. Le profil à t=0 contient deux pics au réglage par défaut car les deux bosses initiales sont centrées à ±2 m ; ce sont les données initiales, non un effet créé par la diffusion. Dernière version ?v=20261105-129d, Pages run 42012043991 réussi. SHA source/miroir identiques ; commit final c5dee237195124676d736ff127d5308e793789a6 confirmé sur origin/main. Verrou libéré.
 
+### Clôture tâche 122 — 2026-11-05 11:51:24 +01:00 — Codex
+Miroir synchronisé ; le survol du graphe parabolique affiche l’instant et une explication propre à chaque profil, sans valeurs de coordonnées. GitHub Pages run 42013908439 réussi ; page et script renvoient HTTP 200. Vérification visuelle de l’infobulle impossible cette fois, API navigateur indisponible. Commit miroir d8d7fe3577d8c7bbe86833845146db6e6b031dbe. Verrou libéré.
+
 ### Prise en charge tâche 122 — 2026-11-05 11:45:20 +01:00 — Codex
 Miroir `mftn/calculateurs/app.js` et `index.html` réservé pour refléter MFTN. Le graphe parabolique gardera l’instant dans l’infobulle et affichera une lecture physique de la série survolée, au lieu de x et u. Après synchronisation : vérifier syntaxe, empreintes, publication Pages et rendu public.
 
