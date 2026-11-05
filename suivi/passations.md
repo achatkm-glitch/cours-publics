@@ -435,3 +435,9 @@ Le miroir reprend les trois fichiers validés du dépôt MFTN. Empreintes SHA-25
 
 ### Prise en charge tâche 125 — 2026-11-05 14:16:32 Europe/Paris (UTC+01:00) — Codex
 Nouvelle demande FIFO : dans le calculateur Barre 1D, afficher une longueur fixe L=1 m et ajouter la comparaison des maillages uniforme et non uniforme. Miroir cours-publics main, HEAD 723b5cc, arbre propre. Les dernières lignes de verrou déclarent mftn/calculateurs libre, malgré une ancienne ligne ACTIF de la tâche 124 non consolidée ; la clôture de cette tâche figure au dépôt MFTN et les sources miroir avaient été poussées (à revérifier avant publication). Réservation par Codex de mftn/calculateurs/index.html, calc.js, app.js et suivi/decisions.md, passations.md, verrous.md jusqu’au contrôle et à la publication.
+
+### Clôture tâche miroir 125 — 2026-11-05 14:35:51 Europe/Paris (UTC+01:00) — Codex
+Maillage uniforme/non uniforme publié dans `mftn/calculateurs`; contrôles locaux et réponse HTTPS 200 de la page avec `v=20261105-135a`. Commit `81297665fa84d3f015c1b3328659571a07a574c0` vérifié sur origin/main. Correspondance avec les sources MFTN contrôlée. Verrou libéré.
+
+### Addendum horodatage — tâche miroir 125 — 2026-11-05 14:37:51 Europe/Paris (UTC+01:00) — Codex
+L’heure 14:35:51 de la clôture précédente était le relevé système préalable à sa rédaction. Heure de consignation et de libération corrigée par cet addendum à 14:37:51 ; hashes et état de publication inchangés.

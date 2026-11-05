@@ -301,4 +301,4 @@ Publié : l’infobulle du graphe parabolique conserve l’instant et présente 
 ### 2026-11-05 13:16:02 Europe/Paris (UTC+01:00) — tâche miroir 123
 Dans « EDP : classer », les curseurs de coefficients sont remplacés par Δ direct ; l’exemple non linéaire explique u(P), la valeur de l’inconnue en un point, et le discriminant local. Source de référence : `C:\Latex\MFTN\chapters\chapter01.tex` (formule et exercice déjà présents). Aucun contenu nouveau ni PDF.
 
-| 125 | 2026-11-05 14:16 +01:00 | Utilisateur | Dans le calculateur Barre 1D, fixer L=1 m et comparer maillages uniforme et non uniforme. | Codex (prise FIFO) | en cours, source MFTN puis miroir public | Peda_inv/site, cours-publics/mftn/calculateurs, passations tâche 135 |
+| 125 | 2026-11-05 14:16 +01:00 | Utilisateur | Dans le calculateur Barre 1D, fixer L=1 m et comparer maillages uniforme et non uniforme. | Codex (prise FIFO) | terminée, publiée et vérifiée ; commit miroir 8129766, page HTTP 200 | tâche 135 MFTN ; suivi/passations.md |

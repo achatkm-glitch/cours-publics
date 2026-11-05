@@ -42,4 +42,4 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 | `mftn/calculateurs/app.js`, `style.css`, `index.html` et registres — tâche 124 | ACTIF — Codex | 2026-11-05 13:23:36 Europe/Paris (UTC+01:00) | Auditer tous les survols et éviter les réponses aux questions ; source MFTN tâche 133 |
 | `mftn/calculateurs/app.js`, `style.css`, `index.html` et registres — tâche 124 | LIBRE — Codex | 2026-11-05 13:37:36 Europe/Paris (UTC+01:00) | Sources miroir identiques au MFTN ; synchronisation Git à finaliser |
 
-| MFTN Peda_inv/site/index.html, calc.js, app.js ; miroir mftn/calculateurs/index.html, calc.js, app.js ; registres — tâche 135 | ACTIF — Codex | 2026-11-05 14:16:32 Europe/Paris (UTC+01:00) — fixer L=1 m, adapter DF/VF aux pas non uniformes, contrôler puis publier |
+| MFTN Peda_inv/site/index.html, calc.js, app.js ; miroir mftn/calculateurs/index.html, calc.js, app.js ; registres — tâche 135/miroir 125 | LIBRE — Codex | 2026-11-05 14:35:51 Europe/Paris (UTC+01:00) — commits MFTN 20652ed et miroir 8129766 poussés ; page HTTPS 200 |
