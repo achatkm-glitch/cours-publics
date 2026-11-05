@@ -140,7 +140,7 @@
     'k-hyp': 'Profils de u en fonction de x. La légende distingue l’état initial et l’instant sélectionné.',
     'l-plot': 'Température le long de la barre avec production. x repère la position et T la température.',
     'b-plot': 'Solution calculée et référence en fonction de x. La légende identifie chaque méthode et le maillage.',
-    'b-plot2': 'Le graphe montre l’erreur signée : température calculée moins température exacte. Les fiches de résultat donnent le maximum de sa valeur absolue.',
+    'b-plot2': 'Le graphe montre l’erreur signée : température calculée moins température exacte. Les cartes donnent le maximum de sa valeur absolue.',
     'e-plot': 'Profil de la solution stationnaire selon x. La légende précise la méthode et le maillage.',
     'e-plot2': 'Écart à la solution analytique selon x ; les valeurs négatives et positives gardent leur signe.',
     'e-conv': 'Erreur maximale en fonction du pas spatial h pour les cas affichés.',
@@ -528,7 +528,7 @@
       }
     }));
     const hText = Ns.map(N => `N = ${N} : h = ${fmt(1 / N, 3)} m`).join(' ; ');
-    $('b-msg').innerHTML = `Couleur : une courbe ; cercles : DF ; carrés : VF ; plein : uniforme ; tirets : non uniforme. En uniforme, h = L/N : ${hText}. Erreur tracée = calculée − exacte (signée) ; les cartes donnent son maximum absolu. Intensité cosinus : ${fmt(p.stretch, 2)}. Bilan de flux = flux sortants − q·L.`;
+    $('b-msg').innerHTML = `Une couleur par courbe ; cercles : DF ; carrés : VF ; plein : uniforme ; tirets : non uniforme. En uniforme, h = L/N : ${hText}. Erreur tracée = calculée − exacte (signée) ; les cartes donnent son maximum absolu. Intensité cosinus : ${fmt(p.stretch, 2)}. Bilan de flux = flux sortants − q·L.`;
     draw('b-plot', 'b-leg', S1, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Solution' });
     // erreurs de l'ordre de l'arrondi : on fige l'axe pour ne pas amplifier le bruit machine en « courbes » trompeuses
     const eMax = Math.max.apply(null, S2.map(q => Calc.maxAbs(q.y)));
