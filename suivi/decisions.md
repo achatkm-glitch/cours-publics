@@ -339,3 +339,6 @@ Miroir tâche 133 — image de la section Conditions aux limites remplacée par 
 
 ### Rectification de date — tâche miroir 134 — 2026-11-05 17:52:27 +01:00
 L’horodatage de la décision précédente est mal formé (date répétée). Heure réelle de la prise FIFO consignée dans `suivi/passations.md` : 2026-11-05 17:43:55 +01:00. La décision reste inchangée.
+
+### 2026-11-05 17:57:31 +01:00 — Erreur de la barre et maillage ajustable (tâche miroir 135)
+Décision de présentation : nommer explicitement l’erreur signée du graphe et distinguer la norme maximale en valeur absolue. Ajouter un cas simple comparant DF nodal et VF centré sur un maillage uniforme, puis rendre paramétrable l’étirement du maillage non uniforme sans appeler cela un maillage arbitraire point par point. Auteur : Codex, prise FIFO.

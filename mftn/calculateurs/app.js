@@ -69,6 +69,10 @@
       o.textContent = value + unit;
     });
   }
+  function syncBarreMeshControl() {
+    const stretch = $('b-stretch'), nonuniform = document.querySelector('input[name="b-mesh"][value="nonuniforme"]');
+    if (stretch && nonuniform) stretch.disabled = !nonuniform.checked;
+  }
   function updateTransportPe(source) {
     const pe = $('t-Pe'), D = $('t-D'), speed = Math.abs(num('t-a')), sigma0 = num('t-s0');
     if (!pe || !D) return;
@@ -136,7 +140,7 @@
     'k-hyp': 'Profils de u en fonction de x. La légende distingue l’état initial et l’instant sélectionné.',
     'l-plot': 'Température le long de la barre avec production. x repère la position et T la température.',
     'b-plot': 'Solution calculée et référence en fonction de x. La légende identifie chaque méthode et le maillage.',
-    'b-plot2': 'Écart à la solution analytique selon x. Comparez les méthodes et les maillages sans déduire une tendance d’un seul point.',
+    'b-plot2': 'Le graphe montre l’erreur signée : température calculée moins température exacte. Les fiches de résultat donnent le maximum de sa valeur absolue.',
     'e-plot': 'Profil de la solution stationnaire selon x. La légende précise la méthode et le maillage.',
     'e-plot2': 'Écart à la solution analytique selon x ; les valeurs négatives et positives gardent leur signe.',
     'e-conv': 'Erreur maximale en fonction du pas spatial h pour les cas affichés.',
@@ -500,7 +504,7 @@
   function runBarre() {
     const c = pal(), Ns = vals('b-N').map(Math.round).filter(v => v >= 2 && v <= 2000).slice(0, 4), schemes = checked('b-s'), meshes = checked('b-mesh');
     if (!Ns.length || !schemes.length || !meshes.length) return;
-    const p = { T0: num('b-T0'), TL: num('b-TL'), L: 1, lambda: num('b-lambda'), q: num('b-q') };
+    const p = { T0: num('b-T0'), TL: num('b-TL'), L: 1, lambda: num('b-lambda'), q: num('b-q'), stretch: num('b-stretch') };
     const fine = Calc.barre(Object.assign({ N: 400 }, p));
     const S1 = [{ x: fine.x, y: fine.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [], er = { fd: {}, vf: {} };
     const meshNames = { uniforme: 'uniforme', nonuniforme: 'non uniforme' }, meshStyle = { uniforme: [], nonuniforme: [5, 3] };
@@ -512,7 +516,7 @@
         S1.push({ x: r.x, y: r.T, color: col, points: true, dash, label });
         S2.push({ x: r.x, y: r.err, color: col, points: true, dash, label });
         (er.fd[mesh] ||= {})[N] = r.maxErr;
-        items.push({ color: col, title: `Différences finies · ${meshNames[mesh]} · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(bl.bilan, 3)} W/m²</b>`] });
+        items.push({ color: col, title: `Différences finies · ${meshNames[mesh]} · N = ${N}`, lines: [`erreur maximale absolue = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(bl.bilan, 3)} W/m²</b>`] });
       }
       if (schemes.includes('vf')) {
         const r = Calc.barreVF(Object.assign({ N, mesh }, p));
@@ -520,23 +524,24 @@
         S1.push({ x: r.x, y: r.T, color: col, points: true, marker: 'square', dash, width: 1.6, label });
         S2.push({ x: r.x, y: r.err, color: col, points: true, marker: 'square', dash, width: 1.6, label });
         (er.vf[mesh] ||= {})[N] = r.maxErr;
-        items.push({ color: col, title: `Volumes finis · ${meshNames[mesh]} · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(r.bilan, 3)} W/m²</b>`] });
+        items.push({ color: col, title: `Volumes finis · ${meshNames[mesh]} · N = ${N}`, lines: [`erreur maximale absolue = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(r.bilan, 3)} W/m²</b>`] });
       }
     }));
-    $('b-msg').innerHTML = 'Chaque couleur identifie une courbe ; cercles : différences finies aux nœuds ; carrés : volumes finis aux centres des cellules. Trait plein : maillage uniforme ; tirets : non uniforme. L = 1 m. Erreur = solution calculée − solution analytique ; bilan de flux = flux sortants − q·L.';
+    const hText = Ns.map(N => `N = ${N} : h = ${fmt(1 / N, 3)} m`).join(' ; ');
+    $('b-msg').innerHTML = `Couleur : une courbe ; cercles : DF ; carrés : VF ; plein : uniforme ; tirets : non uniforme. En uniforme, h = L/N : ${hText}. Erreur tracée = calculée − exacte (signée) ; les cartes donnent son maximum absolu. Intensité cosinus : ${fmt(p.stretch, 2)}. Bilan de flux = flux sortants − q·L.`;
     draw('b-plot', 'b-leg', S1, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Solution' });
     // erreurs de l'ordre de l'arrondi : on fige l'axe pour ne pas amplifier le bruit machine en « courbes » trompeuses
     const eMax = Math.max.apply(null, S2.map(q => Calc.maxAbs(q.y)));
     const arrondi = eMax < 1e-9;
     if (arrondi) $('b-msg').innerHTML += ' <b>Les erreurs sont inférieures à 10⁻⁹ K : les schémas sélectionnés reproduisent ce profil à l’arrondi.</b> Les points peuvent différer en x, car les nœuds de différences finies et les centres de volumes finis ne sont pas aux mêmes positions.';
-    draw('b-plot2', 'b-leg2', S2, { xlabel: 'x (m)', ylabel: 'erreur (K)', ylim: arrondi ? [-1e-6, 1e-6] : null, title: 'Erreur / solution analytique' });
+    draw('b-plot2', 'b-leg2', S2, { xlabel: 'x (m)', ylabel: 'erreur signée (K)', ylim: arrondi ? [-1e-6, 1e-6] : null, title: 'Erreur signée : calculée − exacte' });
     cards($('b-cards'), items);
     const L = [], sorted = Ns.slice().sort((p, q) => p - q);
     [['fd', 'Différences finies'], ['vf', 'Volumes finis']].filter(m => schemes.includes(m[0])).forEach(m => meshes.forEach(mesh => {
       const e = er[m[0]][mesh], N1 = sorted[sorted.length - 2], N2 = sorted[sorted.length - 1], eN = e[N2];
-      if (eN < 1e-8) L.push(`${m[1]} · maillage ${meshNames[mesh]} : erreur ${fmt(eN)} K, de l’ordre de l’arrondi pour ce profil.`);
-      else if (sorted.length > 1) L.push(`${m[1]} · maillage ${meshNames[mesh]} : erreur ${fmt(eN)} K pour N = ${N2} ; entre N = ${N1} et N = ${N2}, ordre observé <b>${fmt(ord2(e[N1], eN, N2 / N1), 3)}</b>.`);
-      else L.push(`${m[1]} · maillage ${meshNames[mesh]} : erreur ${fmt(eN)} K pour N = ${N2}. Ajoutez un second maillage pour estimer l’ordre.`);
+      if (eN < 1e-8) L.push(`${m[1]} · maillage ${meshNames[mesh]} : erreur maximale en valeur absolue ${fmt(eN)} K, de l’ordre de l’arrondi pour ce profil.`);
+      else if (sorted.length > 1) L.push(`${m[1]} · maillage ${meshNames[mesh]} : erreur maximale en valeur absolue ${fmt(eN)} K pour N = ${N2} ; entre N = ${N1} et N = ${N2}, ordre observé <b>${fmt(ord2(e[N1], eN, N2 / N1), 3)}</b>.`);
+      else L.push(`${m[1]} · maillage ${meshNames[mesh]} : erreur maximale en valeur absolue ${fmt(eN)} K pour N = ${N2}. Ajoutez un second maillage pour estimer l’ordre.`);
     }));
     L.push('Le bilan de flux vérifie la différence entre flux sortants et production totale ; pour les volumes finis, il doit être nul à l’arrondi car le bilan cellule par cellule se télescope.');
     explain('barre', L);
@@ -1242,10 +1247,12 @@
       f.addEventListener('input', e => { if (edpbAnimationTimer !== null && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
       f.addEventListener('change', e => { if (edpbAnimationTimer !== null && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
     });
-    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncSliders(); safe(current); }));
+    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncBarreMeshControl(); syncSliders(); safe(current); }));
+    document.querySelectorAll('input[name="b-mesh"]').forEach(i => i.addEventListener('change', syncBarreMeshControl));
     document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => { stopEdpbAnimation(''); safe('edpb'); }));
     document.querySelectorAll('input[type="range"]').forEach(r => r.addEventListener('input', syncSliders));
     syncSliders();
+    syncBarreMeshControl();
     $('theme').addEventListener('click', () => {
       const r = document.documentElement, dark = (r.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
       r.dataset.theme = dark ? 'light' : 'dark'; safe(current);

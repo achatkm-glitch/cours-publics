@@ -569,3 +569,6 @@ Dépôt cours-publics main, HEAD initial 42955bc, arbre propre et origin/main sy
 MFTN source et miroir poussés : `eb57fb5` / `fc63d29`, références distantes vérifiées. GitHub Pages run `42068718634` réussi. Page `#barre` et script `app.js?v=20261105-144a` répondent HTTP 200. Le moteur `plot()` garantit une couleur normalisée distincte par série dès qu’un doublon est présent. `node --check` et `git diff --check` réussis. Pas de changement de calcul, PDF ou source. Visuel public chargé ; capture pixel à pixel non conservée. Verrous libérés après publication.
 
 Addendum — 2026-11-05 17:54:49 +01:00 : registres de clôture poussés sous le commit miroir `60ed8d4b3696894726460603cac5e0b0e511bb7c`, HEAD distant vérifié. Pages run `42069181859` réussi sur ce HEAD.
+
+### Prise FIFO — tâche miroir 135 — 2026-11-05 17:57:31 +01:00 — Codex
+Tâche miroir de MFTN 145. Réserver `mftn/calculateurs/{app.js,calc.js,index.html}` et `suivi/{decisions,passations,verrous}.md`. Clarifier erreur signée vs absolue, démontrer l’écart DF/VF sur un cas uniforme, rendre l’intensité du maillage non uniforme réglable ; publier après contrôle syntaxique, numérique manuel recalculé, et vérification visuelle du navigateur.

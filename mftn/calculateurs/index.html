@@ -261,9 +261,10 @@
         </div>
         <div class="checks" role="group" aria-label="Maillages à comparer">
           <label><input type="checkbox" name="b-mesh" value="uniforme" checked> Maillage uniforme</label>
-          <label><input type="checkbox" name="b-mesh" value="nonuniforme" checked> Maillage non uniforme</label>
+          <label><input type="checkbox" name="b-mesh" value="nonuniforme"> Maillage non uniforme</label>
         </div>
         <label>Nombre d'intervalles ou de cellules N<span class="sl"><input type="range" id="b-N" min="2" max="64" step="1" value="4"><output></output></span><input id="b-Nx" value="" placeholder="autres N à comparer (par exemple 8 16)" aria-label="Autres valeurs à comparer"></label>
+        <label>Intensité de déformation du maillage non uniforme<span class="sl"><input type="range" id="b-stretch" min="0.15" max="1" step="0.05" value="1" data-digits="2"><output></output></span></label>
         <label>T(0), en K<span class="sl"><input type="range" id="b-T0" min="250" max="450" step="5" value="300" data-unit="K"><output></output></span></label>
         <label>T(L), en K<span class="sl"><input type="range" id="b-TL" min="250" max="450" step="5" value="400" data-unit="K"><output></output></span></label>
         <p class="repere"><b>Longueur fixée :</b> L = 1 m.</p>
@@ -271,13 +272,14 @@
         <label>Production q, en W/m³<span class="sl"><input type="range" id="b-q" min="0" max="1000" step="10" value="100"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> le maillage non uniforme rapproche les points des deux extrémités (distribution cosinus). Au réglage initial q = 100 W/m³, comparez les erreurs sur un profil courbe ; à q = 0, le profil affine est reproduit sur les deux maillages.</p>
+      <p class="repere"><b>Lire le maillage :</b> uniforme signifie <span class="math">x_i=i h</span> avec <span class="math">h=L/N</span> ; le curseur N change tous les pas ensemble. Pour modifier l’espacement local, cochez « Maillage non uniforme » puis réglez l’intensité : 0,15 donne une faible déformation ; 1 donne la répartition cosinus complète, plus serrée aux extrémités. Les espacements intermédiaires sont mélangés progressivement ; les pas sont liés par cette loi, ils ne se règlent pas indépendamment.</p>
+      <p class="repere"><b>Cas comparatif prêt à lire :</b> les valeurs initiales <span class="math">T(0)=300 K</span>, <span class="math">T(L)=400 K</span>, <span class="math">q=100 W/m³</span>, <span class="math">λ=1 W/(m·K)</span>, <span class="math">L=1 m</span> et <span class="math">N=4</span> affichent le maillage uniforme. Sur le profil quadratique, les différences finies aux nœuds sont exactes à l’arrondi ; les volumes finis aux centres ont une erreur maximale de <span class="math">q h²/(8λ)=0,78125 K</span>.</p>
     </div>
     <div>
       <div class="msg" id="b-msg" aria-live="polite"></div>
       <div class="plots2">
         <div><canvas id="b-plot" aria-label="Solution"></canvas><div class="legend" id="b-leg"></div></div>
-        <div><canvas id="b-plot2" aria-label="Erreur par rapport à la solution analytique"></canvas><div class="legend" id="b-leg2"></div></div>
+        <div><canvas id="b-plot2" aria-label="Erreur signée, solution calculée moins solution analytique"></canvas><div class="legend" id="b-leg2"></div></div>
       </div>
       <div class="cards" id="b-cards"></div>
     </div>
@@ -541,10 +543,10 @@
   Premier jet : vérification technique seulement. Les valeurs de repère proviennent du polycopié MFTN, sauf les itérations de Jacobi et de Gauss–Seidel, les ordres globaux de Neumann, le pas FTCS, l'exemple de la gaussienne, les volumes finis de la barre et la convection–diffusion, calculés par le rédacteur et contrôlés par les tests (<code>test_calc.js</code>).
 </footer>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<script src="calc.js?v=20261105-135a"></script>
+<script src="calc.js?v=20261105-145a"></script>
 <script src="equations.js?v=20261105-135a"></script>
 <script src="situations.js?v=20261105-143a"></script>
 <script src="guide.js?v=20261105-135a"></script>
-<script src="app.js?v=20261105-144a"></script>
+<script src="app.js?v=20261105-145a"></script>
 </body>
 </html>

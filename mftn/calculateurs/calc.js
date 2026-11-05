@@ -58,14 +58,18 @@
   const maxAbs = v => v.reduce((m, e) => Math.max(m, Math.abs(e)), 0);
 
   /* 1. Barre 1D : lambda T'' + q = 0, T(0)=T0, T(L)=TL, N intervalles. */
-  function maillageBarre(N, L, mesh) {
+  function maillageBarre(N, L, mesh, stretch = 1) {
     if (mesh !== 'nonuniforme') return Array.from({ length: N + 1 }, (_, i) => L * i / N);
-    return Array.from({ length: N + 1 }, (_, i) => L * (1 - Math.cos(Math.PI * i / N)) / 2);
+    const s = Math.max(0, Math.min(1, stretch));
+    return Array.from({ length: N + 1 }, (_, i) => {
+      const r = i / N, cosinus = (1 - Math.cos(Math.PI * r)) / 2;
+      return L * ((1 - s) * r + s * cosinus);
+    });
   }
 
   /* Différences finies centrées sur maillage uniforme ou non uniforme. */
-  function barre({ N, T0, TL, L = 1, lambda = 1, q = 0, mesh = 'uniforme' }) {
-    const x = maillageBarre(N, L, mesh), n = N - 1;
+  function barre({ N, T0, TL, L = 1, lambda = 1, q = 0, mesh = 'uniforme', stretch = 1 }) {
+    const x = maillageBarre(N, L, mesh, stretch), n = N - 1;
     const a = [], b = [], c = [], d = [];
     // Maillage non uniforme : -[(T_{i+1}-T_i)/hp-(T_i-T_{i-1})/hm]/((hm+hp)/2)=q/λ.
     // La forme tridiagonale est obtenue en multipliant chaque ligne par (hm+hp)/2.
@@ -351,8 +355,8 @@
   /* 10. Barre 1D en volumes finis sur cellules centrées, uniformes ou non uniformes.
      T(0)=T0 et T(L)=TL sont imposées aux faces ; les flux emploient les distances réelles,
      avec une demi-largeur de cellule entre le centre extrême et le bord. */
-  function barreVF({ N, T0, TL, L = 1, lambda = 1, q = 0, mesh = 'uniforme' }) {
-    const faces = maillageBarre(N, L, mesh), n = N;
+  function barreVF({ N, T0, TL, L = 1, lambda = 1, q = 0, mesh = 'uniforme', stretch = 1 }) {
+    const faces = maillageBarre(N, L, mesh, stretch), n = N;
     const widths = Array.from({ length: n }, (_, i) => faces[i + 1] - faces[i]);
     const x = Array.from({ length: n }, (_, i) => (faces[i] + faces[i + 1]) / 2);
     const a = new Array(n).fill(0), b = new Array(n).fill(0), c = new Array(n).fill(0), d = new Array(n);
@@ -371,8 +375,8 @@
     return { h: L / N, widths, x, T, exact, err, maxErr: maxAbs(err), q0out, qLout, bilan: q0out + qLout - q * L, mesh };
   }
   /* Bilan de flux du schéma aux différences finies (différences d'ordre 1 aux bords). */
-  function bilanDF({ N, T0, TL, L = 1, lambda = 1, q = 0, mesh = 'uniforme' }) {
-    const r = barre({ N, T0, TL, L, lambda, q, mesh });
+  function bilanDF({ N, T0, TL, L = 1, lambda = 1, q = 0, mesh = 'uniforme', stretch = 1 }) {
+    const r = barre({ N, T0, TL, L, lambda, q, mesh, stretch });
     const q0out = lambda * (r.T[1] - T0) / (r.x[1] - r.x[0]), qLout = -lambda * (TL - r.T[N - 1]) / (r.x[N] - r.x[N - 1]);
     return { q0out, qLout, bilan: q0out + qLout - q * L };
   }
