@@ -361,3 +361,6 @@ GitHub Pages run 41942910086 : completed, success, commit 272673297fa07176940abd
 - Périmètre : mftn/calculateurs/index.html, app.js, style.css et registres de suivi ; site source Peda_inv correspondant.
 - Le sélecteur change déjà formule, paramètres, graphe et analyse détaillée. L’amélioration cible une synthèse courte qui suit immédiatement la sélection et une transition visible.
 - Dernier verrou public était libre ; contrôle Git effectué, aucun fichier modifié avant cette prise.
+
+### Clôture tâche 114 — 2026-11-05 01:56:43 +01:00 Europe/Paris — Codex
+La page publique affiche sous l’équation une synthèse différente selon le bouton EDP sélectionné ; le changement est animé avec respect de prefers-reduced-motion. Sources miroir identiques par SHA-256. Pages run 41944835906 réussi sur ae01e43751f83cd95595ce06a972648e2fecccfa. JS syntax check réussi. Aucun PDF. Validation scientifique indépendante non réalisée.

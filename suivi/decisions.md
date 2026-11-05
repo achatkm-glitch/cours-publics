@@ -243,3 +243,6 @@ Le curseur Pe actualise D et les courbes du profil de transport ; la jauge et le
 
 ### Instruction utilisateur / prise FIFO — tâche 114 — 2026-11-05 01:51:30 +01:00 — Codex
 Demande : sur la page EDP : comportement, rendre l’explication dynamique en fonction du bouton Elliptique, Parabolique ou Hyperbolique. Ajout prévu d’une synthèse immédiate du comportement sous l’équation et d’une transition visuelle réduite si l’utilisateur préfère moins d’animation. Responsable Codex ; publication après essais.
+
+### Clôture tâche 114 — 2026-11-05 01:56:43 +01:00 — Codex
+Synthèse dynamique liée au bouton ajoutée et déployée ; Pages run 41944835906 réussi. Contrôle navigateur public chargé ; équation et contrôles du type actif présents. Validation technique faite, relecture scientifique indépendante non réalisée, approbation utilisateur réservée.
