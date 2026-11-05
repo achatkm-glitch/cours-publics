@@ -610,3 +610,9 @@ La source `a8b70599b6aa335a63181cf9f659c5c709090c82` et le miroir `76db73a4225d5
 Réservation de `mftn/calculateurs/{app.js,style.css,index.html}` et registres pour retirer la scrollbar interne de l’onglet Chaleur après analyse du style partagé.
 ### Clôture tâche miroir 152 — 2026-11-05 21:43:34 +01:00 Europe/Paris — Codex
 Commit miroir `7d15bbe6e59854871fcce72c27d849cc3d31cfda` publié ; Pages run `42105651143` réussi ; page et feuille CSS HTTP 200. `chaleur-grid` et la règle sans défilement imbriqué sont présentes dans les ressources servies. Aucun contrôle visuel sur appareil.
+### Prise FIFO tâche miroir 156 — 2026-11-05 21:50:55 +01:00 — Codex
+Réservation de `mftn/calculateurs/{index.html,style.css}` et des registres. Dépend de la correction de la source MFTN ; `calc.js` reste hors périmètre.
+
+
+### Clôture tâche miroir 156 — 2026-11-05 21:57:33 +01:00 — Codex
+Commit miroir `254a46c20545f6cda408c9b85e01769f6b1fa777` confirmé sur `origin/main` ; Pages run `42107725161` réussi. Page/CSS HTTP 200 et règles `adv-grid` servies ; SHA-256 identiques à la source MFTN. Inspection visuelle non réalisée. Verrous libérés.
