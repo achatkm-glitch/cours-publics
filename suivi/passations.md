@@ -572,3 +572,6 @@ Addendum — 2026-11-05 17:54:49 +01:00 : registres de clôture poussés sous le
 
 ### Prise FIFO — tâche miroir 135 — 2026-11-05 17:57:31 +01:00 — Codex
 Tâche miroir de MFTN 145. Réserver `mftn/calculateurs/{app.js,calc.js,index.html}` et `suivi/{decisions,passations,verrous}.md`. Clarifier erreur signée vs absolue, démontrer l’écart DF/VF sur un cas uniforme, rendre l’intensité du maillage non uniforme réglable ; publier après contrôle syntaxique, numérique manuel recalculé, et vérification visuelle du navigateur.
+
+### Clôture tâche miroir 135 — 2026-11-05 18:09:22 +01:00 — Codex
+MFTN commit `c7d064b62108b59f077b7ea13da9b8aa5f0f81ec`, miroir `892752b0dbeecbf667409a8472b9446256379216`, refs `main` vérifiées. Pages run `42071673554` réussi. Empreintes source/miroir de app.js, calc.js et index.html concordent (MFTN `version_traceability.md`). Page publique `#barre` affiche l’erreur signée, le maximum absolu, le cas uniforme DF/VF et le curseur d’étirement cosinus. Contrôles syntaxe, diff et numérique réussis. Aucun PDF ou source externe modifié. Verrous libérés.

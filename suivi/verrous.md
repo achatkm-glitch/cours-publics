@@ -94,3 +94,5 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 | MFTN 144 / miroir 134 — app.js, index.html, registres | LIBRE — Codex | 2026-11-05 17:52:27 +01:00 — commit miroir fc63d29 poussé ; Pages run 42068718634 réussi |
 
 | MFTN 145 / miroir 135 — app.js, calc.js, index.html et registres | ACTIF — Codex | 2026-11-05 17:57:31 +01:00 — clarifier erreurs, différencier DF/VF et rendre le maillage non uniforme ajustable |
+
+| MFTN 145 / miroir 135 — app.js, calc.js, index.html et registres | LIBRE — Codex | 2026-11-05 18:09:22 +01:00 — commits MFTN c7d064b / miroir 892752b poussés ; Pages run 42071673554 réussi |
