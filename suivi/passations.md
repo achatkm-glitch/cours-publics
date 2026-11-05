@@ -543,3 +543,9 @@ Miroir synchronisé à la source MFTN pour app.js, index.html et style.css. Cont
 
 ### Reprise publication tâche 132 — 2026-11-05 17:14:29 Europe/Paris (UTC+01:00) — Codex
 Le code miroir est poussé sur `main` (commit `d9dcef1a27b652a852fe87772d7bbd820a3bc6d9`, référence distante contrôlée). Le build initial a réussi mais la création du déploiement Pages a échoué avec HTTP 502. La relance `42061088298` reste incohérente côté API (toujours `queued`, sans jobs ; le déploiement `7578600868` a un statut `failure`). L’appel de reconstruction Pages n’a retourné aucun JSON exploitable. Je pousse une mise à jour des registres pour déclencher une nouvelle exécution Pages, puis vérifierai son état et l’URL publique. Commit de suivi MFTN `63e9355cc19030753d27df8437bc5c3e0b842345` poussé et référence distante confirmée.
+
+### Clôture tâche miroir 132 — 2026-11-05 17:17:23 Europe/Paris (UTC+01:00) — Codex
+- Commit miroir `709dfa7827af53b1415c9fa4eb57b78275987943` poussé et référence distante `main` vérifiée. Commit MFTN de clôture `7d2a915058f77ca0b05a6f4952248b429d785706`.
+- Pages run `42062434043` réussi (build et déploiement) sur le commit miroir `709dfa7`. Le run `42061088298` avait échoué en HTTP 502 ; ce nouveau push a déclenché et rétabli la publication.
+- Page publique ouverte sur `#barre` : formules du problème et de l’exercice rendues en typographie mathématique, avec indices et exposants. Inspection locale couvrant les 16 sections et les messages après changement de curseur ; aucune erreur de console. SHA-256 source/miroir identiques consignés dans le dépôt MFTN.
+- Aucun calcul ni contenu scientifique modifié. Aucun essai sur appareil mobile physique. Code et registres **LIBRES**.
