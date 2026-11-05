@@ -409,3 +409,6 @@ Miroir du calculateur Transport aligné sur le poly : retrait de la notation sup
 ### Prise en charge tâche 121 — 2026-11-05 11:21:55 +01:00 — Codex
 Miroir cours-publics réservé après vérification de son HEAD cad593e et de l’absence de modifications locales. Source éditée d’abord dans MFTN : explication dynamique de l’état initial et dessin de deux zones chaudes correspondant aux bosses du graphe à t=0 ; le curseur d’écart relie la situation à leur séparation. Publication/inspection après copie.
 
+### Clôture tâche 121 — 2026-11-05 11:40:02 +01:00 — Codex
+Situation, équation et courbe sont cohérentes avec le bouton. Le profil à t=0 contient deux pics au réglage par défaut car les deux bosses initiales sont centrées à ±2 m ; ce sont les données initiales, non un effet créé par la diffusion. Dernière version ?v=20261105-129d, Pages run 42012043991 réussi. SHA source/miroir identiques ; commit final c5dee237195124676d736ff127d5308e793789a6 confirmé sur origin/main. Verrou libéré.
+

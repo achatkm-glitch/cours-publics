@@ -287,3 +287,5 @@ Ne pas introduire de nouvelle notation dans le calculateur Transport ; rester co
 Clôture tâche 120 — 2026-11-05 11:13:32 Europe/Paris (UTC+01:00) : notation Transport alignée sur chap. 2 §2.9 ; scripts contrôlés ; Pages run 42008673233 réussi, page HTTPS inspectée ; commit beb3b56a7052a25182ac939dbed7a91a86d5037a confirmé sur origin/main.
 
 | 121 | 2026-11-05 11:21:55 +01:00 | Utilisateur | Situation EDP comportement : préciser l’état thermique initial et expliquer que les deux pics du graphe parabolique viennent de deux zones chaudes initiales. | Codex (prise FIFO) | en cours ; source principale MFTN puis miroir, contrôle navigateur public requis | MFTN tâche 129 ; mftn/calculateurs/app.js, situations.js |
+
+Clôture tâche 121 — 2026-11-05 11:40:02 +01:00 : situation parabolique et profil initial liés dynamiquement ; cas d’écart 4, 0,5 et 0 m contrôlés ; Pages run 42012043991 réussi ; verrou libéré.
