@@ -252,3 +252,6 @@ Déplacer les boutons Elliptique/Parabolique/Hyperbolique au début du bloc « S
 
 ### État technique tâche 115 — 2026-11-05 02:05:12 +01:00 — Codex
 Sélecteur déplacé dans la situation physique avant le pictogramme. Les gestionnaires existants synchronisent l’équation, l’illustration correspondante et les réglages. Vérification syntaxique et diff terminée ; miroir identique à MFTN. Publication Pages à confirmer.
+
+### Clôture tâche 115 — 2026-11-05 02:07:09 +01:00 — Codex
+Sélecteur placé dans la carte de situation physique. Vérification en ligne des trois choix : équation, pictogramme, réglages et graphes correspondants. Pages run 41946133951 réussi. Aucun PDF modifié.

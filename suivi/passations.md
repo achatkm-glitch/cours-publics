@@ -373,3 +373,6 @@ Périmètre réservé : mftn/calculateurs/index.html, app.js, style.css et regis
 
 ### Clôture technique tâche 115 — 2026-11-05 02:05:12 +01:00 Europe/Paris (UTC+01:00) — Codex
 Le sélecteur est maintenant dans le bloc de situation physique, entre son texte et le pictogramme. Le gestionnaire de choix continue d’appeler runEdpb(), qui synchronise équation, panneaux data-kt et calculs/graphes. SHA-256 source/mirror : index.html 16C57C383B251F37320F375AC6AB8118169CB3059D52619E60F604E513D1E04B ; app.js 9ADD08A4656D02D2DB20F1F0F56157FCE2968CDB9AD666973197F1B34A04D64C ; style.css 4C081EC4C9B4469469C53836A9B8B291EEE512EB1497990B127C31E02DB80733. Syntaxe JS et diff contrôlés. Commit MFTN 0bb180e81f1cd0155f1b1086c38996eeacf09646 poussé. Déploiement public et inspection navigateur restent à confirmer.
+
+### Clôture tâche 115 — 2026-11-05 02:07:09 +01:00 Europe/Paris (UTC+01:00) — Codex
+Le déploiement Pages run 41946133951 a réussi pour ecbae3a671171b06d470e840d2c0069086f07c24. L’onglet EDP comportement a été contrôlé : radios elliptique/parabolique/hyperbolique essayées ; l’équation, le pictogramme, les curseurs et les graphes changent ensemble. Verrou libéré.
