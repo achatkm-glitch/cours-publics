@@ -856,13 +856,18 @@
       cards($('k-cards'), [{ color: c[3], title: `À t = ${fmt(tp, 3)} s`, lines: [`u(5, 0) = <b>0</b> : x = 5 est hors du support initial`, `u(5, ${fmt(tp, 3)}) = <b>${far[0].toExponential(2).replace('.', ',')}</b>`, `u(0, ${fmt(tp, 3)}) = <b>${far[1].toExponential(2).replace('.', ',')}</b>`, `repères : u(5, 2) ≈ ${far2.toExponential(2).replace('.', ',')} ; u(5, 8) ≈ ${far8.toExponential(2).replace('.', ',')}`] }]);
     } else {
       const cc = num('k-c'), th = num('k-th'), rayon = 0.5, xs = Calc.linspace(-8, 8, 800);
-      const S = [{ x: xs, y: Calc.ondeDAlembert({ c: cc, rayon, t: 0, xs }), color: css('--plot-axis'), dash: [6, 4], label: 't = 0' },
-                 { x: xs, y: Calc.ondeDAlembert({ c: cc, rayon, t: th, xs }), color: c[0], width: 2.4, label: `t = ${fmt(th, 3)}` }];
+      const S = [{ x: xs, y: Calc.ondeDAlembert({ c: cc, rayon, t: 0, xs }), color: css('--plot-axis'), dash: [6, 4], label: 'Initiale (t = 0)' },
+                 { x: xs, y: Calc.ondeDAlembert({ c: cc, rayon, t: th, xs }), color: c[0], width: 2.4, label: `Solution (t = ${fmt(th, 3)} s)` }];
       draw('k-hyp', 'k-hyp-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Équation des ondes' });
       const u3 = Calc.ondeDAlembert({ c: cc, rayon, t: th, xs: [3] })[0];
-      $('k-msg').className = 'msg'; $('k-msg').textContent = 'La bosse initiale, exactement nulle hors de [−0,5 ; 0,5], donne deux bosses de demi-amplitude qui se déplacent à la vitesse c. Le support reste borné : l’information ne dépasse pas les fronts de propagation.';
-      explain('edpb', [`Les maxima sont en x = ±c·t = <b>±${fmt(cc * th, 3)}</b> ; chaque bosse garde une demi-largeur ${fmt(rayon, 2)}.`, `En x = 3, u = ${u3 === 0 ? '0 exactement : ce point est hors des supports transportés' : u3.toExponential(2).replace('.', ',')}.`, 'Hors des supports transportés, la solution reste exactement nulle : la propagation a une vitesse finie.']);
-      cards($('k-cards'), [{ color: c[0], title: `À t = ${fmt(th, 3)} s`, lines: [`maxima en x = ± c·t = <b>±${fmt(cc * th, 3)}</b>, amplitude 0,5`, `supports des bosses : ±c·t ± ${fmt(rayon, 2)} m`, `u(x = 3) = <b>${u3 === 0 ? '0' : u3.toExponential(2).replace('.', ',')}</b>`] }]);
+      const centre = cc * th, separees = centre >= rayon;
+      const lecture = $('k-hyp-curve-explanation');
+      lecture.innerHTML = `<strong>Lire les deux courbes</strong><p><span class="curve-key curve-key-dashed">Pointillés — initiale, t = 0.</span> Une bosse centrée en 0, de hauteur 1, nulle hors de [−${fmt(rayon, 2)} ; ${fmt(rayon, 2)}] m.</p><p><span class="curve-key curve-key-solid">Trait plein — solution à t = ${fmt(th, 3)} s.</span> La formule de d’Alembert partage l’état initial en deux copies décalées :</p><div class="curve-formula">u(x,t) = ½ f(x − ct) + ½ f(x + ct)</div><p>Leurs centres sont en x = ±ct = ±${fmt(centre, 3)} m ; les supports sont [${fmt(-centre - rayon, 3)} ; ${fmt(-centre + rayon, 3)}] et [${fmt(centre - rayon, 3)} ; ${fmt(centre + rayon, 3)}] m. ${separees ? `Ici, ct ≥ rayon : les deux bosses sont séparées et leur hauteur maximale vaut 0,5.` : `Ici, ct < rayon : les deux copies se recouvrent ; la courbe est leur somme et ne forme pas deux bosses séparées.`}</p><p>En dehors de ces supports, u reste exactement nul : les fronts n’ont pas encore atteint ces points.</p>`;
+      $('k-msg').className = 'msg'; $('k-msg').textContent = separees
+        ? `La bosse initiale est partagée en deux copies de hauteur maximale 0,5. Ici ct = ${fmt(centre, 3)} m ≥ rayon ${fmt(rayon, 2)} m : elles sont séparées et se déplacent aux vitesses ±c.`
+        : `La solution est la somme de deux copies décalées de ±ct. Ici ct = ${fmt(centre, 3)} m < rayon ${fmt(rayon, 2)} m : leurs supports se recouvrent.`;
+      explain('edpb', [separees ? `Deux bosses séparées, centrées en x = ±c·t = <b>±${fmt(centre, 3)} m</b>, de hauteur maximale 0,5.` : `Les copies décalées de ±ct = ±${fmt(centre, 3)} m se recouvrent (ct < rayon) ; leurs contributions s’additionnent.`, `En x = 3, u = ${u3 === 0 ? '0 exactement : ce point est hors des supports transportés' : u3.toExponential(2).replace('.', ',')}.`, 'Hors des supports transportés, la solution reste exactement nulle : la propagation a une vitesse finie.']);
+      cards($('k-cards'), [{ color: c[0], title: `À t = ${fmt(th, 3)} s`, lines: [separees ? `bosses séparées, centres ±ct = <b>±${fmt(centre, 3)} m</b>, hauteur maximale 0,5` : `copies superposées, décalées de ±ct = ±${fmt(centre, 3)} m`, `supports : [${fmt(-centre - rayon, 3)} ; ${fmt(-centre + rayon, 3)}] et [${fmt(centre - rayon, 3)} ; ${fmt(centre + rayon, 3)}] m`, `u(x = 3) = <b>${u3 === 0 ? '0' : u3.toExponential(2).replace('.', ',')}</b>`] }]);
     }
   }
 
