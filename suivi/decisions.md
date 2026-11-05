@@ -239,3 +239,7 @@ Ajouter un curseur pour Pe et faire réagir l’interprétation de la courbe du 
 
 ### Clôture tâche 113 — 2026-11-05 01:38:36 +01:00 — Codex
 Le curseur Pe actualise D et les courbes du profil de transport ; la jauge et le commentaire dynamique distinguent Pe<1, Pe=1 et Pe>1 par comparaison de t_d et t_c. Foσ₀(t), le déplacement du centre et la largeur normalisée sont également affichés. Essais locaux réalisés pour Pe=1, Pe=10 et a=0. Copie vérifiée identique à MFTN ; publication Pages à confirmer. Aucun PDF modifié. Validation scientifique indépendante non réalisée.
+
+
+### Instruction utilisateur / prise FIFO — tâche 114 — 2026-11-05 01:51:30 +01:00 — Codex
+Demande : sur la page EDP : comportement, rendre l’explication dynamique en fonction du bouton Elliptique, Parabolique ou Hyperbolique. Ajout prévu d’une synthèse immédiate du comportement sous l’équation et d’une transition visuelle réduite si l’utilisateur préfère moins d’animation. Responsable Codex ; publication après essais.

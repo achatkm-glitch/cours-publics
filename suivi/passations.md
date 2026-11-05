@@ -355,3 +355,9 @@ Miroir mftn/calculateurs synchronisé avec MFTN. Commit du site 4f572acf7d880641
 
 ### Vérification publique finale — tâche 113 — 2026-11-05 01:40:35 +01:00 — Codex
 GitHub Pages run 41942910086 : completed, success, commit 272673297fa07176940abd2e1f4cbbf44fd72d76. Page publique ouverte ; curseur Pe=1 vérifié : D=0,1500 m²/s, t_d=t_c=0,150 s, Foσ₀ et lecture de la courbe se mettent à jour. Verrous libérés.
+
+
+### Prise en charge tâche 114 — 2026-11-05 01:51:30 +01:00 — Codex
+- Périmètre : mftn/calculateurs/index.html, app.js, style.css et registres de suivi ; site source Peda_inv correspondant.
+- Le sélecteur change déjà formule, paramètres, graphe et analyse détaillée. L’amélioration cible une synthèse courte qui suit immédiatement la sélection et une transition visible.
+- Dernier verrou public était libre ; contrôle Git effectué, aucun fichier modifié avant cette prise.
