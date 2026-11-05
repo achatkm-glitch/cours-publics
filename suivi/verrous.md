@@ -84,3 +84,7 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 | MFTN tâche 143 / miroir 133 — situations.js, index.html, nouvel actif image, crédits et registres | ACTIF — Codex | 2026-11-05 17:26:51 +01:00 — remplacement de thermographie Conditions aux limites ; synchroniser, contrôler et publier |
 | Tâche 143 / miroir 133 — code site, actif image et crédits | LIBRE — Codex | code vérifié localement et source MFTN poussée, 2026-11-05 17:32 +01:00 |
 | Tâche 143 / miroir 133 — registres | ACTIF — Codex | consigner publication Pages, commits, puis libérer |
+
+| Tâche miroir 133 — code et registres | LIBRE — Codex | 2026-11-05 17:36 +01:00 — commit miroir 8dc0dad poussé, Pages run 42065379910 réussi |
+
+| Tâche miroir 133 — code et registres | LIBRE — Codex | 2026-11-05 17:37 +01:00 — Pages run 42065379910 réussi ; tâches close |

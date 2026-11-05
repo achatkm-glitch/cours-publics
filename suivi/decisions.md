@@ -327,7 +327,6 @@ Rendu math inline KaTeX implémenté et contrôlé dans le dépôt source ; équ
 
 | 132 | 2026-11-05 17:17:23 +01:00 | Utilisateur | Rendre les équations lisibles sous forme mathématique graphique et vérifier tout le site. | Codex (prise FIFO, tâche MFTN 142) | TERMINÉE : source/miroir poussés, Pages run 42062434043 réussi, page publique contrôlée sur Barre 1D, verrous libérés | MFTN HEAD 7d2a915 ; miroir HEAD 709dfa7 ; passations MFTN et miroir, 2026-11-05 17:17:23
 
-| 133 | 2026-11-05 17:26:51 +01:00 | Utilisateur | Remplacer la thermographie de la section Conditions aux limites, jugée peu parlante, par une illustration plus pertinente avec légende exacte. | Codex (prise FIFO, miroir tâche 143) | terminée localement, source et miroir synchronisés ; publication Pages à vérifier | MFTN `Peda_inv/site`, miroir `mftn/calculateurs`, passation 143 |
+| 133 | 2026-11-05 17:26:51 +01:00 | Utilisateur | Remplacer la thermographie de la section Conditions aux limites, jugée peu parlante, par une illustration plus pertinente avec légende exacte. | Codex (prise FIFO, miroir tâche 143) | terminée et publiée : Pages run 42065379910 réussi ; thermogramme contrôlé en ligne, commits source 3a83e84 / miroir 8dc0dad | MFTN `Peda_inv/site`, miroir `mftn/calculateurs`, passation 143 |
 
 Miroir tâche 133 — image de la section Conditions aux limites remplacée par FensterIR_Blower_Door.jpg (Sönke Krüll, CC BY 3.0). La légende indique que le thermogramme montre une fuite d’air autour d’une fenêtre de toit pendant un essai de dépression et le distingue des modèles mathématiques représentés dans le schéma. Code et image synchronisés depuis MFTN ; aperçu local vérifié.
-
