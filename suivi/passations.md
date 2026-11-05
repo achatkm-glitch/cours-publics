@@ -462,3 +462,6 @@ Tâche utilisateur 138 prise après clôture et libération de la tâche miroir 
 
 ### Avancement tâche miroir 128 — 2026-11-05 15:23:18 Europe/Paris (UTC+01:00) — Codex
 Synchronisation depuis `C:\Latex\MFTN\Peda_inv\site` : `index.html` et `style.css`, SHA-256 identiques source/miroir (index `898C93C940049A82608708AC1A3894319B5F3C4A175CE32AE3F7C070E2362AF3`, style `2C6368A6D01E8D296582592BE5FD7F90E7B9C6E30F958F5D34653E51C7E7CF29`). L'audit couvre 13 calculateurs, 58 curseurs et 78 préréglages ; tests `test_calc.js` réussis. Restent le commit/push et le contrôle du déploiement Pages. Pas d'essai sur appareil tactile dans cette passe.
+
+### Clôture tâche miroir 128 — 2026-11-05 15:33:24 Europe/Paris (UTC+01:00) — Codex
+Commit `dc62b7ec98e8607b22c09599268be9a4929eeb46` poussé sur `origin/main` et confirmé par `git ls-remote`. GitHub Pages run `42045456301` réussi ; page et ressources HTTPS (index, style.css v138a, app.js, calc.js, guide.js) répondent HTTP 200. Le CSS public contient les règles responsive. Pas d'essai visuel sur tablette ou téléphone physique.
