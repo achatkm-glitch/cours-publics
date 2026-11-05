@@ -261,3 +261,9 @@ Expliquer directement le graphe de l’onde sélectionné, en particulier les co
 
 ### Clôture tâche 116 — 2026-11-05 02:18:23 +01:00 — Codex
 Le graphe distingue par sa légende le profil initial pointillé de la solution en trait plein ; une carte sous le graphe explique d’Alembert, centres, supports et recouvrement selon c et t. Pages run 41947434139 réussi, vérification navigateur faite.
+
+### Instruction utilisateur / prise FIFO — tâche 117 — 2026-11-05 02:23:35 +01:00 — Codex
+Expliquer le graphe parabolique qui superpose les courbes t=0, 0,500, 1,000 et 2,000 ; clarifier le code couleur, l’effet diffusif et les situations où les profils fusionnent.
+
+### Publication tâche 117 — 2026-11-05 02:30:00 +01:00
+Explication publiée dans le miroir du calculateur, visible lorsque le type parabolique est sélectionné. Pages run 41948746050 réussi pour le commit dc583fb8161631ab4bb7a7f04c3563dbbaf77e34. Contrôle navigateur effectué aux valeurs par défaut ; contrôle technique réussi. Le rendu couvre couleur/temps, étalement et aplatissement, effet de D, symétrie et queues non nulles du modèle continu. Cas de sources rapprochées relu dans le code, mais non manipulé dans le navigateur. Validation scientifique indépendante non réalisée.

@@ -382,3 +382,9 @@ Réservation de mftn/calculateurs/index.html, app.js, style.css et registres. Le
 
 ### Clôture tâche 116 — 2026-11-05 02:18:23 +01:00 Europe/Paris (UTC+01:00) — Codex
 Publication du contenu 5c28358d5b73d845351285d082dc01e25eb80b17 vérifiée (Pages run 41947434139). Les deux choix de réglages sont contrôlés : c=1,t=2 donne deux bosses séparées ; c=0,2,t=0,5 indique le recouvrement. L’explication visible correspond à chaque état. Verrou libéré.
+
+### Prise en charge tâche 117 — 2026-11-05 02:23:35 +01:00 Europe/Paris (UTC+01:00) — Codex
+Réservation de mftn/calculateurs/index.html, app.js, style.css et registres. Ajouter un repère sous le graphe parabolique expliquant les couleurs/instants et la façon dont D et t modifient les profils ; tenir compte du chevauchement des sources.
+
+### Clôture tâche 117 — 2026-11-05 02:30:00 +01:00 — Codex
+Page publique contrôlée avec l’option parabolique : chaque courbe est associée à son instant ; l’explication précise élargissement, baisse du maximum, symétrie et non-nullité de la solution continue. Pages run 41948746050 réussi ; source publique dc583fb. Validation scientifique indépendante non effectuée.
