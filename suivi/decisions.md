@@ -360,3 +360,5 @@ L’animation #adv est intégrée et synchronisée avec la source MFTN ; contrô
 
 ### Clôture tâche 151 / prise tâche 152 — 2026-11-05 21:36:56 +01:00 — Codex
 Animation #adv publiée (Pages run `42104208823`, HTTP 200). La tâche suivante de la FIFO est le panneau flottant de Chaleur (#chaleur), sans scrollbar imbriquée.
+### Clôture tâche 152 — 2026-11-05 21:43:34 +01:00 — Codex
+Chaleur (#chaleur) : panneau flottant compact, sans scrollbar interne sur écran large ; règles responsives existantes préservées. Pages run 42105651143 réussi ; contrôle HTTP 200 page/CSS ; inspection visuelle non effectuée.
