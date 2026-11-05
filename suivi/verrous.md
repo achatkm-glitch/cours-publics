@@ -27,3 +27,4 @@
 | mftn/calculateurs/index.html, app.js, style.css et registres tâche 117 | ACTIF — Codex | 2026-11-05 02:23:35 +01:00 |
 | mftn/calculateurs/index.html, app.js, style.css et registres tâche 117 | LIBRE | Codex — Pages run 41948746050 réussi ; publication et contrôle navigateur terminés |
 | MFTN `Peda_inv/site/index.html`, `equations.js`, `app.js`, `guide.js` et miroir `mftn/calculateurs/index.html`, `equations.js`, `app.js`, `guide.js` — tâche 118 | ACTIF — Codex | 2026-11-05 10:04:35 +01:00 |
+| MFTN `Peda_inv/site/index.html`, `equations.js`, `app.js`, `guide.js` et miroir `mftn/calculateurs/index.html`, `equations.js`, `app.js`, `guide.js` — tâche 118 | LIBRE — Codex | 2026-11-05 10:18:49 +01:00 — Pages run 42001173087 réussi ; inspection publique terminée |

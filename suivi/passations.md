@@ -391,3 +391,6 @@ Page publique contrôlée avec l’option parabolique : chaque courbe est associ
 
 ### Prise en charge tâche 118 — 2026-11-05 10:04:35 +01:00 — Codex
 Source de référence MFTN `Peda_inv/site/` réservée pour harmoniser les onglets Transport et Péclet ; le miroir `mftn/calculateurs/` sera mis à jour après contrôle. Les fichiers source et miroir avaient les mêmes SHA-256 ; branche main du miroir et origin/main vérifiées à `3e26f817d331cdf2f6c5cab4b911ad9aac26bb87`. Verrou déclaré dans `suivi/verrous.md`. Garder les deux calculateurs distincts.
+
+### Clôture tâche 118 — 2026-11-05 10:18:49 +01:00 Europe/Paris
+Code harmonisé et synchronisé depuis MFTN ; commit miroir `fde3a18bb9eaddf7a0ca2fe25ebf8d737abd8bb8`, origin/main confirmé. SHA-256 identiques pour index.html, app.js, equations.js et guide.js. Pages run 42001173087 réussi ; inspection navigateur des sections publiques #transport et #peclet : objectif, équations, notation d’échelle, Pe signé stationnaire, légendes/explications et exercices cohérents. Syntaxe Node et diff contrôlés. Aucun PDF. Verrous libérés.

@@ -271,5 +271,5 @@ Explication publiée dans le miroir du calculateur, visible lorsque le type para
 ### Instruction utilisateur / prise FIFO — tâche 118 — 2026-11-05 10:04:35 +01:00 — Codex
 Harmoniser Transport et Péclet, sans fusionner les onglets : notation commune a vitesse, D diffusivité, φ variable transportée ; définition de Pe aux échelles L, σ₀ et h ; garder le signe de Pe dans les coefficients stationnaires ; distinguer objectif physique et objectif numérique. Référence de coordination MFTN : instruction 64, tâche 124.
 
-### Réalisation en cours — tâche 118 — 2026-11-05 10:12:41 +01:00 — Codex
-Source MFTN et miroir synchronisés pour `index.html`, `app.js`, `equations.js`, `guide.js` (empreintes identiques). Notation harmonisée dans les deux onglets et le guide ; contrôles techniques et publication Pages à achever avant libération.
+### Clôture — tâche 118 — 2026-11-05 10:18:49 +01:00 — Codex
+Miroir `index.html`, `app.js`, `equations.js`, `guide.js` commité (`fde3a18bb9eaddf7a0ca2fe25ebf8d737abd8bb8`) et confirmé sur origin/main. SHA source/miroir identiques. GitHub Pages run 42001173087 réussi ; onglets Transport et Péclet contrôlés au navigateur. Verrou libéré.
