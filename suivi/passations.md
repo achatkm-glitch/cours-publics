@@ -453,3 +453,6 @@ La tâche utilisateur 137 est prise en FIFO après libération explicite de la t
 
 ### Avancement tâche miroir 127 — 2026-11-05 15:05:27 Europe/Paris (UTC+01:00) — Codex
 Synchronisation des trois fichiers source MFTN vers mftn/calculateurs effectuée ; SHA-256 index.html 98B7058825FE76D37865868F0FEA5FA467D115E038551430BF276C343D08D335, app.js 91907216E90D0B6528934F1B868A2CFA1BABE02BAC1F72DB0C4E77F7C0C9D758, style.css 73984123B6567AC6FC77014E4901F1BB09E41B34A609FE676EF9A05641E71C6A ; hashes source/miroir égaux. Syntaxe JS contrôlée. Reste publication GitHub Pages et réponse HTTP.
+
+### Clôture tâche miroir 127 — 2026-11-05 15:08:21 Europe/Paris (UTC+01:00) — Codex
+Miroir publié et contrôlé en HTTPS : page, app.js?v=20261105-137a et style.css répondent 200 ; les deux options radio sont accessibles, avec première dérivée sélectionnée et affichée par défaut. GitHub Pages run 42041756935 réussi sur le commit miroir f186186318b41080232c6438f1ed3bf3a55d7499, confirmé par ls-remote. SHA-256 des trois fichiers identiques à MFTN : index.html 98B7058825FE76D37865868F0FEA5FA467D115E038551430BF276C343D08D335 ; app.js 91907216E90D0B6528934F1B868A2CFA1BABE02BAC1F72DB0C4E77F7C0C9D758 ; style.css 73984123B6567AC6FC77014E4901F1BB09E41B34A609FE676EF9A05641E71C6A. Test de syntaxe JS réussi. Bascule au pointeur non exercée ; verrou libéré.
