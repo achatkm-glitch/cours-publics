@@ -478,3 +478,14 @@ Tâche miroir associée à la tâche 139 MFTN. État initial : branche main, HEA
 
 ### Actualisation des verrous — tâche miroir 129 — 2026-11-05 15:52:17 Europe/Paris (UTC+01:00) — Codex
 Périmètre inchangé sur les sources du site. Les registres miroir réservés sont suivi/decisions.md, suivi/passations.md et suivi/verrous.md ; synchronisation, publication puis libération après contrôle.
+
+
+### Clôture tâche miroir 129 — 2026-11-05 15:56:03 Europe/Paris (UTC+01:00) — Codex
+Synchronisation app.js et index.html depuis MFTN terminée ; empreintes source/miroir identiques. Commit b914185901605f033278acef979f10c62a8d87a9 poussé et confirmé sur origin/main. GitHub Pages run 42049578189 réussi ; page publique et script v20261105-139a HTTP 200, script servi conforme. Limite : interaction au pointeur/tactile non testée individuellement.
+
+
+### VERROUS — clôture tâche miroir 129 — 2026-11-05 15:56:03 Europe/Paris (UTC+01:00) — Codex
+| Périmètre | État |
+|---|---|
+| mftn/calculateurs/app.js, index.html, style.css | LIBRE — commit b914185 publié |
+| suivi/decisions.md, passations.md, verrous.md | LIBRE — contrôles et publication consignés |
