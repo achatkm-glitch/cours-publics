@@ -318,3 +318,7 @@ Dans « EDP : classer », les curseurs de coefficients sont remplacés par Δ di
 - **Raison** : la représentation précédente montrait deux bosses pour deux zones, mais leur distance graphique ne correspondait pas à l’écart indiqué, et le schéma ne suivait pas l’évolution temporelle.
 - **Preuve** : commentaires navigateur utilisateur du 2026-11-05, onglet `#edpb`.
 - **Responsable** : Codex, tâche miroir 131.
+| 132 | 2026-11-05 16:46:45 +01:00 | Utilisateur | Rendre les équations lisibles sous forme mathématique graphique et vérifier tout le site. | Codex (prise FIFO, tâche MFTN 142) | en cours : synchroniser la conversion KaTeX depuis le dépôt source, vérifier les pages et publier | C:\Latex\MFTN\Peda_inv\site ; tâche 142 |
+
+### Tâche miroir 132 — avancement — 2026-11-05 17:01:15 Europe/Paris (UTC+01:00)
+Rendu math inline KaTeX implémenté et contrôlé dans le dépôt source ; équations et symboles réels sont typographiés, les phrases explicatives ne sont pas transformées. Code miroir synchronisé aux mêmes SHA que la source. Référence distante à pousser et déploiement Pages à vérifier.

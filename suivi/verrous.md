@@ -69,3 +69,8 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 
 | MFTN `Peda_inv/site/situations.js`, `app.js`, `index.html`, `style.css` et miroir `mftn/calculateurs/...` — tâche 141/miroir 131 | LIBRE — Codex | 2026-11-05 16:36:54 Europe/Paris (UTC+01:00) — commits `18aedd7` / `273a075` poussés et vérifiés |
 | Registres MFTN et cours-publics tâche 141/miroir 131 | LIBRE — Codex | 2026-11-05 16:36:54 Europe/Paris (UTC+01:00) — Pages run `42056402012` réussi, ressources publiques HTTP 200 |
+
+| MFTN Peda_inv/site/{guide.js,app.js,index.html,style.css} ; miroir mftn/calculateurs/{guide.js,app.js,index.html,style.css} ; registres tâche 142/miroir 132 | ACTIF — Codex | 2026-11-05 16:46:45 +01:00 — rendu KaTeX des équations texte, audit global, synchronisation et publication |
+
+| MFTN 142 / miroir 132 — Peda_inv/site/{app.js,index.html,style.css} et mftn/calculateurs/{app.js,index.html,style.css} | LIBRE — Codex | 2026-11-05 17:01:15 Europe/Paris (UTC+01:00) — contrôle local terminé, synchronisation Git/Pages en cours |
+| Registres tâches MFTN 142 / miroir 132 | ACTIF — Codex | consigner commits distants et publication, puis libérer |

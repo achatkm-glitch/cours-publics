@@ -2,6 +2,59 @@
 (function () {
   'use strict';
   const $ = (id) => document.getElementById(id);
+  /* Les équations principales utilisent déjà les cartes KaTeX. Ce rendu
+     complémentaire transforme les égalités mathématiques inline, y compris
+     dans les consignes et les messages recalculés après réglage. */
+  function renderInlineMath(root) {
+    if (!window.katex || !root) return;
+    const operand = String.raw`(?:[−-]?[A-Za-zα-ωΑ-Ω][A-Za-z0-9α-ωΑ-Ω₀-₉⁰-⁹²³′″']*(?:\([^()]*\))?|[0-9]+(?:[,.][0-9]+)?|\([^()]*\)|\|[^|]+\|[A-Za-zα-ωΑ-Ω₀-₉⁰-⁹]*)`;
+    const expression = `${operand}(?:\\s*(?:[+−*/·]|\\s[−+]\\s)\\s*${operand})*`;
+    const equality = `(?!(?:pour|avec|puis|donnez?|calculez?|déterminez?|vérifiez?|comparez?|écrivez?|prévoyez?|relevez?|lisez|soit|que|et|à|de|du|la|le|les|un|une|dans|sur|pourquoi|comment|erreur|solution|bilan|flux|ordre|pente|maximum|minimum)\\b)(?:−)?${expression}\\s*(?:=|≤|≥|≈|<|>)\\s*(?:±|∓)?${expression}`;
+    const notation = String.raw`(?:q\s+h(?:²|\^2)\s*/\s*\(8λ\)|(?:q|a)·(?:L|t)|Pe(?:σ₀|[_]?L|[_]?h)?|σ(?:₀|\(t\))|T(?:\([^()]*\)|_[0-9]+|[₀-₉]+|′{1,2}|'{1,2})|u(?:\([^()]*\)|_[a-z]+|[₀-₉]+|[′″]{1,3}|'{1,3})|[A-Za-zα-ωΑ-Ω](?:_[A-Za-z0-9]+|\^[0-9]+)|Δ[tx]|h₀|h\^[0-9]+|Fo|Co|G(?:\([^()]*\)|[₀-₉]+)|\|G\([^()]*\)\||α|λ|κ|φ|θ|ξ|ρ|μ)`;
+    const relation = new RegExp(`(?<![\\p{L}\\p{N}])(?:${equality}|${notation})(?![\\p{L}\\p{N}])`, 'giu');
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        const parent = node.parentElement;
+        if (!parent || parent.closest('script,style,textarea,code,svg,.katex,.math-inline')) return NodeFilter.FILTER_REJECT;
+        relation.lastIndex = 0;
+        return relation.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+      const text = node.nodeValue;
+      relation.lastIndex = 0;
+      let match, last = 0;
+      const fragment = document.createDocumentFragment();
+      while ((match = relation.exec(text))) {
+        if (match.index > last) fragment.append(document.createTextNode(text.slice(last, match.index)));
+        const span = document.createElement('span');
+        span.className = 'math-inline';
+        try { window.katex.render(match[0], span, { displayMode: false, throwOnError: false }); }
+        catch (_) { span.textContent = match[0]; }
+        fragment.append(span);
+        last = relation.lastIndex;
+      }
+      if (last < text.length) fragment.append(document.createTextNode(text.slice(last)));
+      node.replaceWith(fragment);
+    });
+  }
+  function enableInlineMath() {
+    renderInlineMath(document.body);
+    if (window._mftnMathObserver) window._mftnMathObserver.disconnect();
+    window._mftnMathObserver = new MutationObserver(records => {
+      records.forEach(record => {
+        if (record.type === 'characterData') renderInlineMath(record.target.parentElement);
+        record.addedNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE) renderInlineMath(node.parentElement);
+          else if (node.nodeType === Node.ELEMENT_NODE) renderInlineMath(node);
+        });
+      });
+    });
+    window._mftnMathObserver.observe(document.body, { childList: true, characterData: true, subtree: true });
+  }
+  window.addEventListener('load', enableInlineMath, { once: true });
   const num = (id) => {
     const e = $(id), v = parseFloat(String(e.value).replace(',', '.'));
     if (e.dataset.log) return Math.pow(10, v);

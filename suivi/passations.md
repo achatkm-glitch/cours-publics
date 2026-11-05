@@ -534,3 +534,9 @@ Tâche liée à MFTN 141. HEAD miroir `bcd8daf`, arbre propre, verrous tâche mi
 - Page, app.js, situations.js et style.css avec le cache-buster `20261105-141a` répondent HTTP 200 et exposent le bouton, la géométrie corrigée et le profil dynamique.
 - SHA-256 source/miroir identiques consignés dans `C:\Latex\MFTN\version_traceability.md`. Contrôle visuel local interactif réussi, pas d’essai sur appareil mobile physique.
 - Verrous du code et des trois registres LIBRES.
+
+### Prise FIFO — tâche miroir 132 — 2026-11-05 16:46:45 +01:00 — Codex
+Tâche miroir de MFTN 142. HEAD initial 5ef9619, arbre propre ; dernière entrée de verrous tâche 131 libérée. Réservation de mftn/calculateurs/{guide.js,app.js,index.html,style.css} et des registres suivi/{decisions,passations,verrous}.md. Source de référence : C:\Latex\MFTN\Peda_inv\site. Harmoniser le rendu des formules du site avec KaTeX, vérifier l’ensemble, puis pousser et contrôler Pages.
+
+### Avancement tâche miroir 132 — 2026-11-05 17:01:15 Europe/Paris (UTC+01:00) — Codex
+Miroir synchronisé à la source MFTN pour app.js, index.html et style.css. Contrôles locaux : node --check, diff-check avec cr-at-eol et comparaison des SHA réussis. Aperçu navigateur : exercice Barre 1D rendu en KaTeX, formule qh²/(8λ) formatée, message recalculé après modification du curseur q sans faux rendu des énoncés en français ; aucune erreur de console. Commit miroir/publication en cours.

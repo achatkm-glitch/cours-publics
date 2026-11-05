@@ -182,6 +182,7 @@ details > summary { cursor: pointer; color: var(--blue); margin: 10px 0; }
 .eq-math { overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; font-size: 1.05rem; }
 .eq-math.plain { font-family: ui-monospace, Consolas, monospace; font-size: 0.85rem; white-space: pre-wrap; }
 .eq-math .katex-display { margin: 0.4em 0; }
+.math-inline { display: inline-block; vertical-align: -0.12em; white-space: nowrap; }
 .plotgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .plotgrid canvas { max-width: 100%; }
 @media (max-width: 700px) { .plotgrid { grid-template-columns: 1fr; } }
