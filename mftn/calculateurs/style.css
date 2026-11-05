@@ -185,6 +185,7 @@ details > summary { cursor: pointer; color: var(--blue); margin: 10px 0; }
 .sit2 { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin: 10px 0; padding: 10px 14px; border: 1px solid var(--line); border-left: 4px solid var(--orange); border-radius: 8px; background: var(--card); }
 .sit2 .sit-txt { flex: 1 1 260px; line-height: 1.5; }
 .sit2 .sit-svg { flex: 0 1 380px; width: 100%; max-width: 380px; height: auto; }
+.sit2 .edp-type-selector { flex: 1 1 100%; margin: 0; }
 
 .sit-photo { flex: 1 1 100%; margin: 6px 0 0; }
 .sit-photo img { display: block; max-width: 100%; max-height: 340px; width: auto; height: auto; margin: 0 auto; border-radius: 6px; }

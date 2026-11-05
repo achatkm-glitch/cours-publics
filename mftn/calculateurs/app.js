@@ -635,6 +635,11 @@
       box.innerHTML = tab === 'transport'
         ? `${ph}${v}<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}`
         : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${ph}${v}`;
+      if (tab === 'edpb') {
+        const selector = panel.querySelector('.edp-type-selector');
+        const situation = box.querySelector('.sit-txt');
+        if (selector && situation) situation.after(selector);
+      }
       lead.after(box);
     });
   }

@@ -246,3 +246,9 @@ Demande : sur la page EDP : comportement, rendre l’explication dynamique en fo
 
 ### Clôture tâche 114 — 2026-11-05 01:56:43 +01:00 — Codex
 Synthèse dynamique liée au bouton ajoutée et déployée ; Pages run 41944835906 réussi. Contrôle navigateur public chargé ; équation et contrôles du type actif présents. Validation technique faite, relecture scientifique indépendante non réalisée, approbation utilisateur réservée.
+
+### Instruction utilisateur / prise FIFO — tâche 115 — 2026-11-05 02:02:47 +01:00 Europe/Paris (UTC+01:00) — Codex
+Déplacer les boutons Elliptique/Parabolique/Hyperbolique au début du bloc « Situation physique » et faire correspondre figure et équation au bouton choisi. Le code actuel met déjà à jour l’équation et les figures ; le sélecteur est à rapprocher de ce bloc.
+
+### État technique tâche 115 — 2026-11-05 02:05:12 +01:00 — Codex
+Sélecteur déplacé dans la situation physique avant le pictogramme. Les gestionnaires existants synchronisent l’équation, l’illustration correspondante et les réglages. Vérification syntaxique et diff terminée ; miroir identique à MFTN. Publication Pages à confirmer.
