@@ -59,3 +59,5 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 | mftn/calculateurs/situations.js, app.js, index.html et suivi/decisions.md, passations.md, verrous.md — tâche 130 | ACTIF — Codex | 2026-11-05 16:12:07 Europe/Paris (UTC+01:00) |
 
 | mftn/calculateurs/situations.js, app.js, index.html et registres — tâche 130 | LIBRE — Codex | 2026-11-05 16:14:12 Europe/Paris (UTC+01:00) — vérification locale terminée ; déploiement en cours |
+
+| mftn/calculateurs/situations.js, app.js, index.html et registres — tâche 130 | LIBRE — Codex | 2026-11-05 16:16:46 Europe/Paris (UTC+01:00) — commit cca3bcb publié ; Pages run 42053012938 réussi |

@@ -506,3 +506,11 @@ Sources synchronisées avec MFTN, syntaxe contrôlée et aperçu local inspecté
 |---|---|
 | mftn/calculateurs/situations.js, app.js, index.html | LIBRE — vérifiés identiques à la source MFTN |
 | suivi/decisions.md, passations.md, verrous.md | LIBRE — contrôles consignés, publication en cours |
+### Clôture tâche miroir 130 — 2026-11-05 16:16:46 Europe/Paris (UTC+01:00) — Codex
+Miroir poussé et confirmé : `cca3bcbb246a4dfaea0f05397040da9be48854a2`, Pages run `42053012938` réussi. La page et les scripts `app.js?v=20261105-140a`, `situations.js?v=20261105-140a` répondent HTTP 200 et contiennent le texte/schéma corrigés. Les trois fichiers web sont identiques au dépôt MFTN. Verrous libérés.
+
+### VERROUS — clôture tâche miroir 130 — 2026-11-05 16:16:46 Europe/Paris (UTC+01:00)
+| Périmètre | État |
+|---|---|
+| mftn/calculateurs/situations.js, app.js, index.html | LIBRE — commit `cca3bcb` publié |
+| suivi/decisions.md, passations.md, verrous.md | LIBRE — publication et contrôles consignés |
