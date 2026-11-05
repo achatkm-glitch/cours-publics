@@ -465,3 +465,16 @@ Synchronisation depuis `C:\Latex\MFTN\Peda_inv\site` : `index.html` et `style.cs
 
 ### Clôture tâche miroir 128 — 2026-11-05 15:33:24 Europe/Paris (UTC+01:00) — Codex
 Commit `dc62b7ec98e8607b22c09599268be9a4929eeb46` poussé sur `origin/main` et confirmé par `git ls-remote`. GitHub Pages run `42045456301` réussi ; page et ressources HTTPS (index, style.css v138a, app.js, calc.js, guide.js) répondent HTTP 200. Le CSS public contient les règles responsive. Pas d'essai visuel sur tablette ou téléphone physique.
+
+### Prise FIFO — tâche miroir 129 — 2026-11-05 15:42:01 Europe/Paris (UTC+01:00) — Codex
+Tâche miroir associée à la tâche 139 MFTN. État initial : branche main, HEAD 1da42d1, arbre propre ; tâche miroir 128 clôturée et verrous libérés. Je réserve mftn/calculateurs/app.js, index.html et style.css, ainsi que suivi/decisions.md, passations.md et verrous.md. La source de référence est C:\Latex\MFTN\Peda_inv\site. Après synchronisation, vérifier la cohérence des fichiers, les interactions des graphes, les contrôles techniques et le déploiement GitHub Pages.
+
+### VERROUS ACTIFS — tâche miroir 129 — 2026-11-05 15:42:01 Europe/Paris (UTC+01:00) — Codex
+| Fichier / périmètre | État | Prochaine action |
+|---|---|---|
+| mftn/calculateurs/app.js, index.html, style.css | ACTIF — Codex | synchroniser après contrôle MFTN puis vérifier Pages |
+| suivi/decisions.md, passations.md, verrous.md | ACTIF — Codex | tracer contrôles et publication puis libérer |
+
+
+### Actualisation des verrous — tâche miroir 129 — 2026-11-05 15:52:17 Europe/Paris (UTC+01:00) — Codex
+Périmètre inchangé sur les sources du site. Les registres miroir réservés sont suivi/decisions.md, suivi/passations.md et suivi/verrous.md ; synchronisation, publication puis libération après contrôle.

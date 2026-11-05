@@ -107,9 +107,59 @@
     'a-modal-phase': 'Erreur de phase par pas selon θ ; l’axe vertical est exprimé en radians.',
     'a-conv': 'Erreur maximale à temps final commun selon h pour les schémas affichés.'
   };
+  function figureContext(canvas) {
+    const id = canvas.id;
+    const value = inputId => {
+      const e = $(inputId); if (!e) return '';
+      const raw = parseFloat(e.value), digits = Number(e.dataset.digits);
+      const text = e.dataset.log ? `1e${Math.round(raw * 10) / 10}` : e.dataset.digits
+        ? raw.toFixed(digits).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1').replace('.', ',')
+        : String(raw).replace('.', ',');
+      const unit = e.dataset.unit ? ` ${e.dataset.unit}` : '';
+      return `${text}${unit}`;
+    };
+    const shown = (inputId, label) => $(inputId) ? `${label} ${value(inputId)}` : '';
+    const selected = (name, labels) => {
+      const inputs = Array.from(document.querySelectorAll(`input[name="${name}"]:checked`));
+      const names = inputs.map(e => e.value === 'fd' ? 'différences finies' : e.value === 'vf' ? 'volumes finis' : e.value === 'centre' ? 'centré' : SCHEME[e.value] || e.value);
+      return names.length ? `${labels} ${names.slice(0, 3).join(', ')}${names.length > 3 ? ` et ${names.length - 3} autres` : ''}` : '';
+    };
+    const type = (name, labels) => {
+      const e = document.querySelector(`input[name="${name}"]:checked`);
+      return e ? `${labels} ${e.closest('label')?.querySelector('strong')?.textContent || e.closest('label')?.textContent.trim() || e.value}` : '';
+    };
+    const mesh = () => {
+      const values = checked('b-mesh').map(v => v === 'uniforme' ? 'uniforme' : 'non uniforme');
+      return values.length ? `maillage ${values.join(' et ')}` : '';
+    };
+    let items = [];
+    if (id === 't-plot') items = [shown('t-Pe', 'Peσ₀ ='), shown('t-t', 't ='), shown('t-s0', 'σ₀ =')];
+    else if (id === 'd-plot') items = [shown('d-delta', 'Δ =')];
+    else if (id === 'd-dep') items = [shown('d-delta', 'Δ du modèle :')];
+    else if (id === 'k-hyp') items = [type('k-type', 'cas :'), shown('k-c', 'c ='), shown('k-th', 't =')];
+    else if (id === 'k-par') items = [type('k-type', 'cas :'), shown('k-D', 'D ='), shown('k-tp', 't ='), shown('k-gap', 'écart :')];
+    else if (id === 'k-heat' || id === 'k-line') items = [type('k-type', 'cas :'), `T(g, d, h, b) = ${['k-Tl', 'k-Tr', 'k-Tt', 'k-Tb'].map(value).join(' / ')} °C`, shown('k-n', 'nœuds par direction :')];
+    else if (id === 'l-plot') items = [shown('l-L', 'L ='), shown('l-q', 'production q ='), `bords : ${checked('l-type').join(', ')}`];
+    else if (id === 'b-plot' || id === 'b-plot2') items = [shown('b-N', 'N ='), selected('b-s', 'méthodes :'), mesh()];
+    else if (id === 'e-plot' || id === 'e-plot2') items = [shown('e-PeL', 'PeL ='), shown('e-N', 'N ='), selected('e-s', 'schémas :')];
+    else if (id === 'e-conv') items = [shown('e-PeL', 'PeL =')];
+    else if (id === 'j-plot' || id === 'j-plot2') items = [shown('j-n', 'n ='), shown('j-k', 'itérations k ='), selected('j-m', 'méthodes :')];
+    else if (id.startsWith('o-')) items = [type('o-kind', 'approximation :'), shown('o-h0', 'pas initial h₀ ='), shown('o-k', 'niveaux de raffinement :')];
+    else if (id === 'n-plot') items = [type('n-bc', 'condition :'), shown('n-kappa', 'κ ='), shown('n-N0', 'N₀ ='), shown('n-k', 'raffinements =')];
+    else if (id === 'n-plot2') items = [type('n-bc', 'condition :'), shown('n-Np', 'N du profil =')];
+    else if (id === 'c-amp' || id === 'c-g-signed') items = [shown('c-Fo', 'Fo ='), `${checked('c-s').length} schémas sélectionnés`];
+    else if (id === 'c-refine') items = [shown('c-Fo', 'Fo ='), shown('c-tf', 'temps final ='), `${checked('c-s').length} schémas sélectionnés`];
+    else if (id.startsWith('c-')) items = [shown('c-Fo', 'Fo ='), shown('c-h', 'h ='), shown('c-tf', 'temps final ='), `${checked('c-s').length} schémas sélectionnés`];
+    else if ((id.startsWith('p-') && id.includes('plot')) || id.startsWith('p-effect-')) items = [shown('p-r', 'r ='), shown('p-co', 'Co ='), shown('p-fo', 'Fo ='), shown('p-h0', 'h₀ =')];
+    else if (id === 'a-modal-amp' || id === 'a-modal-phase') items = [shown('a-Co', 'Co ='), `${checked('a-s').length} schémas sélectionnés`];
+    else if (id.startsWith('a-')) items = [shown('a-Co', 'Co ='), shown('a-tf', 'temps final ='), shown('a-Nx', 'maillage Nx ='), `${checked('a-s').length} schémas sélectionnés`];
+    else if (id.startsWith('i-c-')) items = [shown('i-N', 'N ='), shown('i-Co', 'C ='), shown(id.endsWith('-0') ? 'i-t1' : 'i-t2', 'instant =')];
+    return items.filter(Boolean).join(' · ');
+  }
   function figureNote(canvas, title) {
     const note = FIGURE_NOTES[canvas.id] || (title ? `Graphe « ${title} » : lisez les axes et la légende, puis comparez les courbes affichées.` : 'Lisez les axes et la légende pour identifier les grandeurs représentées.');
-    return note;
+    const context = figureContext(canvas);
+    return context ? `${note}\nRéglages affichés : ${context}.` : note;
   }
   function attachPlotInteraction(canvas, points, area, labels) {
     let wrap = canvas.parentElement;
@@ -167,7 +217,9 @@
       canvas.addEventListener('click', e => {
         const r = canvas.getBoundingClientRect(), sx = canvas.clientWidth / r.width, sy = canvas.clientHeight / r.height;
         const x = (e.clientX - r.left) * sx, y = (e.clientY - r.top) * sy, p = nearest(x, y);
-        state.pinned = !!p; show(p, x, y);
+        const inside = state.area && x >= state.area.l && x <= state.area.r && y >= state.area.t && y <= state.area.b;
+        if (!p && state.pinned) { state.pinned = false; state.tip.hidden = true; state.marker.hidden = true; return; }
+        state.pinned = !!p || !!inside; show(p, x, y);
       });
       canvas.addEventListener('keydown', e => {
         if (e.key === 'Escape') { state.pinned = false; state.tip.hidden = true; state.marker.hidden = true; return; }
@@ -189,14 +241,19 @@
     let tip = wrap.querySelector('.figure-note-tooltip');
     if (!tip) {
       tip = document.createElement('div'); tip.className = 'plot-tooltip figure-note-tooltip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true; wrap.appendChild(tip);
+      tip._pinned = false;
+      const show = () => { tip.textContent = tip._note; tip.hidden = false; };
       canvas.tabIndex = canvas.tabIndex < 0 ? 0 : canvas.tabIndex;
-      canvas.addEventListener('pointerenter', () => { tip.hidden = false; });
-      canvas.addEventListener('pointerleave', () => { tip.hidden = true; });
-      canvas.addEventListener('focus', () => { tip.hidden = false; });
-      canvas.addEventListener('blur', () => { tip.hidden = true; });
+      canvas.addEventListener('pointerenter', show);
+      canvas.addEventListener('pointerleave', () => { if (!tip._pinned) tip.hidden = true; });
+      canvas.addEventListener('click', () => { tip._pinned = !tip._pinned; if (tip._pinned) show(); else tip.hidden = true; });
+      canvas.addEventListener('focus', show);
+      canvas.addEventListener('blur', () => { if (!tip._pinned) tip.hidden = true; });
+      canvas.addEventListener('keydown', e => { if (e.key === 'Escape') { tip._pinned = false; tip.hidden = true; } });
       canvas.setAttribute('aria-describedby', canvas.id + '-figure-note'); tip.id = canvas.id + '-figure-note';
     }
-    tip.textContent = note;
+    tip._note = note;
+    if (!tip.hidden) tip.textContent = note;
   }
   function plot(canvas, series, o) {
     o = o || {};
@@ -220,10 +277,11 @@
     if (y1 === y0) { y0 -= 1; y1 += 1; }
     const padY = o.ylim ? 0 : 0.06 * (y1 - y0); y0 -= padY; y1 += padY;
     const X = v => L + (tx(v) - x0) / (x1 - x0) * pw, Y = v => T + ph - (ty(v) - y0) / (y1 - y0) * ph;
-    const hitPoints = [];
+    const hitPoints = [], context = figureContext(canvas), defaultNote = figureNote(canvas, o.title);
     series.forEach(s => s.x.forEach((v, i) => {
       const y = s.y[i]; if (!isFinite(v) || !isFinite(y) || (o.logx && v <= 0) || (o.logy && y <= 0)) return;
-      hitPoints.push({ px: X(v), py: Y(y), x: v, y, label: s.label || 'Courbe', commentAt: s.commentAt || figureNote(canvas, o.title), tooltipTextOnly: !!s.tooltipTextOnly });
+      const baseComment = s.commentAt || defaultNote;
+      hitPoints.push({ px: X(v), py: Y(y), x: v, y, label: s.label || 'Courbe', commentAt: context && s.commentAt ? `${baseComment}\nRéglages affichés : ${context}.` : baseComment, tooltipTextOnly: !!s.tooltipTextOnly });
     }));
     const grid = css('--plot-grid'), axis = css('--plot-axis'), muted = css('--muted');
     g.font = '12px system-ui, sans-serif'; g.lineWidth = 1;
@@ -828,7 +886,7 @@
       const unstable = !isFinite(r.max) || Math.abs(r.max) > 3 || Math.abs(r.min) > 3; bad = bad || unstable;
       const comp = unstable ? 'instable' : (r.maxErr < 1e-9 ? 'exact (décalage d\u2019une maille par pas)' : (r.min < -0.02 || r.max > 1.05 ? 'oscillations (dispersion)' : 'lissage (diffusion numérique)'));
       const exactComment = 'Référence du problème : utilisez cette courbe pour comparer les profils calculés.';
-      const numericComment = `Profil calculé avec ${INTRO[s]} ; les réglages N = ${N}, C = ${fmt(Co, 3)} et t = ${fmt(r.t, 3)} sont actifs. Comparez sa forme à la référence.`;
+      const numericComment = `Profil calculé avec ${INTRO[s]}. Comparez sa forme à la référence.`;
       plot($(`i-c-${s}-${k}`), [{ x: r.x.concat([1]), y: r.exact.concat([r.exact[0]]), color: css('--plot-axis'), width: 1.4, label: 'exacte', commentAt: exactComment },
         { x: r.x, y: r.u, color: c[si % 6], noline: true, points: true, label: INTRO[s], commentAt: numericComment }], { xlabel: 'x', ylabel: 'u', ylim: [-0.5, 1.5], title: `${INTRO[s]} à t = ${fmt(t, 3)}` });
       items.push({ color: c[si % 6], title: `${INTRO[s]} · t = ${fmt(t, 3)}`, lines: [unstable ? 'valeurs hors échelle' : `pic <b>${fmt(r.bump, 3)}</b> (exact 1) · minimum <b>${fmt(r.min, 3)}</b>`, `<b>${comp}</b>`] });
