@@ -900,12 +900,10 @@ window.GUIDE = {
             "C1.4"
           ],
           "reglages": {
-            "d-A": "1",
-            "d-B": "0",
-            "d-C": "4",
+            "d-delta": "-4",
             "d-u": "0.5"
           },
-          "consigne": "Réglez A = 1, B = 0, C = 4 (équation u_xx + 4 u_yy = 0). Lisez le discriminant, le type, les données nécessaires et la forme de la conique et le schéma de dépendance sous la conique.",
+          "consigne": "Réglez Δ = −4. Lisez le type, les données nécessaires, la conique repère et le schéma de dépendance. Le calcul à la main vous fait retrouver Δ pour A = 1, B = 0, C = 4.",
           "question": "Quel est le type ? Quelles conditions faut-il fournir, et que dit-on de l'influence de la frontière ? Quel est le domaine de dépendance du point P (schéma sous la conique) ?",
           "main": "Calculez à la main le discriminant Δ = B² − AC pour A = 1, B = 0, C = 4, et donnez le type.",
           "corr": true
@@ -917,12 +915,10 @@ window.GUIDE = {
             "C1.4"
           ],
           "reglages": {
-            "d-A": "-1",
-            "d-B": "0",
-            "d-C": "0",
+            "d-delta": "0",
             "d-u": "0.5"
           },
-          "consigne": "Réglez A = −1, B = 0, C = 0 (équation de la chaleur u_t − α u_xx avec α = 1). Lisez le discriminant et la forme de la conique et le schéma de dépendance sous la conique.",
+          "consigne": "Réglez Δ = 0. Lisez le type, la conique dégénérée et le schéma de dépendance ; reliez ce cas à l’équation de la chaleur.",
           "question": "Quel est le type ? Pourquoi la conique est-elle dégénérée ? Quelles données faut-il ? Quel est le domaine de dépendance du point P ?",
           "main": "Calculez Δ pour A = −1, B = 0, C = 0 et donnez le type.",
           "corr": true
@@ -934,12 +930,10 @@ window.GUIDE = {
             "C1.4"
           ],
           "reglages": {
-            "d-A": "-3",
-            "d-B": "0",
-            "d-C": "1",
+            "d-delta": "3",
             "d-u": "0.5"
           },
-          "consigne": "Réglez A = −3, B = 0, C = 1 (équation des ondes u_tt − 3 u_xx, de vitesse c = √3). Lisez le discriminant et la forme de la conique et le schéma de dépendance sous la conique.",
+          "consigne": "Réglez Δ = 3. Lisez le type, la conique repère et le schéma de dépendance ; reliez ce cas à l’équation des ondes.",
           "question": "Quel est le type ? Quelles données initiales et aux limites faut-il ? Quel est le domaine de dépendance du point P ?",
           "main": "Calculez Δ pour A = −3, B = 0, C = 1 et donnez le type et la vitesse c.",
           "corr": true
@@ -951,12 +945,10 @@ window.GUIDE = {
             "C1.4"
           ],
           "reglages": {
-            "d-A": "1",
-            "d-B": "0",
-            "d-C": "1",
+            "d-delta": "-4",
             "d-u": "1.5"
           },
-          "consigne": "Faites glisser le curseur de u de −2 à 2 et observez la jauge du cas non linéaire (1 − u²) u_xx + u_yy = 0 ; arrêtez-vous en u = 1,5.",
+          "consigne": "Dans (1 − u²) u_xx + u_yy = 0, u=u(x,y) est l’inconnue. Faites varier sa valeur locale u(P) et observez comment le discriminant et le type en P changent ; arrêtez-vous en u(P)=1,5.",
           "question": "Pour quelles valeurs de u l'équation est-elle elliptique, parabolique, hyperbolique ? Que vaut Δ pour u = 1,5 ?",
           "main": "Pour (1 − u²) u_xx + u_yy = 0, écrivez A, B, C et Δ en fonction de u, puis évaluez Δ pour u = 1,5."
         }

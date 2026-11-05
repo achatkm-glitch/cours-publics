@@ -755,7 +755,7 @@
   }
 
   /* ---------- EDP : classer ---------- */
-  function drawConic(canvas, A, B, Cc) {
+  function drawConic(canvas, delta) {
     const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
     canvas.width = W * dpr; canvas.height = W * dpr;
     const g = canvas.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
@@ -769,7 +769,7 @@
     const curve = (sign, color, dash) => {
       g.strokeStyle = color; g.lineWidth = 2.4; g.setLineDash(dash); let pen = false; g.beginPath();
       for (let k = 0; k <= 1440; k++) {
-        const th = k / 1440 * 2 * Math.PI, ct = Math.cos(th), st = Math.sin(th), den = sign * (A * ct * ct + 2 * B * ct * st + Cc * st * st);
+        const th = k / 1440 * 2 * Math.PI, ct = Math.cos(th), st = Math.sin(th), den = sign * (ct * ct - delta * st * st);
         if (den > 1e-3) { const r = Math.min(1 / Math.sqrt(den), 20); const px = X(r * ct), py = Y(r * st); if (!pen) { g.moveTo(px, py); pen = true; } else g.lineTo(px, py); } else pen = false;
       }
       g.stroke(); g.setLineDash([]);
@@ -777,7 +777,7 @@
     curve(1, css('--blue'), []); curve(-1, css('--orange'), [6, 5]);
     g.restore();
     g.fillStyle = muted; g.font = '12px system-ui, sans-serif'; g.textAlign = 'center'; g.fillText('x', X(R) - 8, Y(0) - 6); g.fillText('y', X(0) + 10, Y(R) + 12);
-    g.fillStyle = axis; g.textAlign = 'left'; g.fillText('Conique A x² + 2B xy + C y² = ±1', m, 18);
+    g.fillStyle = axis; g.textAlign = 'left'; g.fillText('Conique repère x² − Δ y² = ±1', m, 18);
   }
   /* Domaine de dépendance du point P selon le type (notion du cours : poly 1.6, diapositive « Domaine de dépendance »). */
   function drawDep(canvas, type) {
@@ -801,26 +801,28 @@
     g.fillStyle = axis; g.fillText('Domaine de dépendance de P : toute la frontière', m, 20);
   }
   function runEdpc() {
-    const A = num('d-A'), Bc = num('d-B'), Cc = num('d-C'), u = num('d-u'), c = pal();
-    const r = Calc.classifyPDE(A, Bc, Cc), col = { elliptique: c[0], parabolique: c[2], hyperbolique: c[1] }[r.type];
+    const delta = num('d-delta'), u = num('d-u'), c = pal();
+    const r = Calc.classifyPDE(1, 0, -delta), col = { elliptique: c[0], parabolique: c[2], hyperbolique: c[1] }[r.type];
     const info = {
       elliptique: ['Laplace, Poisson : équilibre spatial', 'conditions sur toute la frontière fermée', 'influence globale : toute la frontière agit sur chaque point', 'ellipse'],
       parabolique: ['chaleur : évolution diffusive, dissipative', 'état initial et conditions aux limites', 'les gradients s\u2019atténuent ; propagation instantanée mais très faible', 'droites parallèles (cas dégénéré)'],
       hyperbolique: ['ondes, advection : propagation à vitesse finie', 'données initiales et une condition à chaque frontière (en 1D, à chaque extrémité)', 'l\u2019information suit les caractéristiques, dans un cône de dépendance', 'hyperbole'] }[r.type];
-    $('d-msg').className = 'msg'; $('d-msg').innerHTML = `Δ = B² − AC = <b>${fmt(r.delta, 3)}</b> : l\u2019EDP est <b>${r.type}</b>.`;
+    $('d-msg').className = 'msg'; $('d-msg').innerHTML = `Pour le représentant A = 1, B = 0, C = −Δ, on a Δ = <b>${fmt(delta, 3)}</b> : l’EDP est <b>${r.type}</b>.`;
     cards($('d-cards'), [{ color: col, title: `Type : ${r.type}`, lines: [`prototype : ${info[0]}`, `données nécessaires : ${info[1]}`, `conique associée : ${info[3]}`] }]);
-    drawConic($('d-plot'), A, Bc, Cc);
+    drawConic($('d-plot'), delta);
     drawDep($('d-dep'), r.type);
     $('d-dep-leg').textContent = { elliptique: 'Elliptique : toute la frontière (bord épais) influence P.', parabolique: 'Parabolique : toute la ligne initiale (et les conditions aux limites jusqu\u2019à t) influence P.', hyperbolique: 'Hyperbolique : seul le segment limité par les caractéristiques influence P.' }[r.type];
-    $('d-leg').innerHTML = `<span><i style="border-color:${css('--blue')}"></i>A x² + 2B xy + C y² = 1</span><span><i style="border-color:${css('--orange')};border-top-style:dashed"></i>= −1 (conjuguée)</span>`;
-    const rn = Calc.classifyPDE(1 - u * u, 0, 1);
-    gauge($('d-gauge'), { linear: true, min: -2, max: 2, title: `Cas non linéaire (1 − u²) u_xx + u_yy = 0 : pour u = ${fmt(u, 3)}, Δ = u² − 1 = ${fmt(u * u - 1, 3)} → ${rn.type}`,
+    $('d-leg').innerHTML = `<span><i style="border-color:${css('--blue')}"></i>x² − Δ y² = 1</span><span><i style="border-color:${css('--orange')};border-top-style:dashed"></i>x² − Δ y² = −1</span>`;
+    const rn = Calc.classifyPDE(1 - u * u, 0, 1), nonlinearDelta = u * u - 1;
+    const deltaEquation = delta === 0 ? 'u_{xx}=0' : `u_{xx}${delta < 0 ? '+' + fmt(-delta, 3) : '−' + fmt(delta, 3)}\\,u_{yy}=0`;
+    renderEquationEntry($('d-canonical-equation'), { titre: 'Équation représentative associée au curseur Δ', tex: deltaEquation });
+    gauge($('d-gauge'), { linear: true, min: -2, max: 2, title: `Exemple quasi linéaire : (1 − u²) u_xx + u_yy = 0 ; en u(P) = ${fmt(u, 3)}, Δ(P) = u(P)² − 1 = ${fmt(nonlinearDelta, 3)} → ${rn.type}`,
       zones: [{ from: -2, to: -1, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'hyperbolique' }, { from: -1, to: 1, color: 'color-mix(in srgb, var(--blue) 35%, transparent)', label: 'elliptique' }, { from: 1, to: 2, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'hyperbolique' }],
-      marks: [{ v: u, color: css('--plot-axis'), label: 'u' }, { v: -1, color: css('--green'), label: 'parabolique' }, { v: 1, color: css('--green'), label: 'parabolique' }],
-      text: 'Les repères verts (u = ±1) sont les valeurs où l\u2019EDP est parabolique.' });
-    explain('edpc', [`Δ = B² − AC = ${fmt(r.delta, 3)} : ${r.delta < 0 ? 'Δ < 0, donc elliptique' : (r.type === 'parabolique' ? 'Δ = 0, donc parabolique' : 'Δ > 0, donc hyperbolique')}.`,
+      marks: [{ v: u, color: css('--plot-axis'), label: 'u(P)' }, { v: -1, color: css('--green'), label: 'parabolique' }, { v: 1, color: css('--green'), label: 'parabolique' }],
+      text: `u(P) est la valeur de la solution au point P ; elle fixe localement A(P)=1−u(P)², B=0 et C=1. Donc Δ(P)=u(P)²−1. Aux valeurs u(P)=±1, Δ(P)=0 et le type est parabolique.` });
+    explain('edpc', [`Avec le représentant A=1, B=0, C=−Δ, l’équation affichée a le discriminant Δ=${fmt(delta, 3)} : ${r.type}.`,
       `Données à fournir : ${info[1]}.`,
-      `Cas non linéaire pour u = ${fmt(u, 3)} : Δ = u² − 1 = ${fmt(u * u - 1, 3)}, donc ${rn.type}. Le type dépend de la solution : il peut changer d\u2019un point à l\u2019autre du domaine.`]);
+      `Dans l’exemple quasi linéaire, u(P)=${fmt(u, 3)} est la valeur locale de l’inconnue : A(P)=1−u(P)², B=0, C=1, donc Δ(P)=u(P)²−1=${fmt(nonlinearDelta, 3)} et le type local est ${rn.type}. Il peut varier d’un point à l’autre si u varie.`]);
   }
 
   /* ---------- EDP : comportement des trois types ---------- */

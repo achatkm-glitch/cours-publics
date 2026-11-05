@@ -10,7 +10,9 @@ window.EQUATIONS = {
     {"titre": "Solution exacte gaussienne avec le Péclet de la largeur σ₀", "tex": "\\begin{gathered}\\xi=\\frac{x-at}{\\sigma_0},\\quad t^*=\\frac{|a|t}{\\sigma_0},\\quad \\mathrm{Pe}_{\\sigma_0}=\\frac{|a|\\sigma_0}{D}\\quad (|a|>0,\\ D>0),\\\\\\frac{\\phi(x,t)}{U_0}=\\frac{1}{\\sqrt{1+2t^*/\\mathrm{Pe}_{\\sigma_0}}}\\exp\\!\\left[-\\frac{\\xi^2}{2(1+2t^*/\\mathrm{Pe}_{\\sigma_0})}\\right]\\end{gathered}"},
   ],
   "edpc": [
-    {"titre": "EDP quasi linéaire d'ordre 2 à deux variables", "tex": "A\\,u_{xx}+2B\\,u_{xy}+C\\,u_{yy}+F(x,y,u,u_x,u_y)=0"}
+    {"titre": "Équation générale et discriminant du terme d’ordre 2", "tex": "A\\,u_{xx}+2B\\,u_{xy}+C\\,u_{yy}+F(x,y,u,u_x,u_y)=0,\\qquad \\Delta=B^2-AC"},
+    {"titre": "Discriminant et classification (A, B, C : coefficients du terme d’ordre 2)", "tex": "\\Delta=B^2-AC;\\quad \\Delta<0 : \\text{elliptique},\\quad \\Delta=0 : \\text{parabolique},\\quad \\Delta>0 : \\text{hyperbolique}"},
+    {"titre": "Exemple quasi linéaire : le type dépend de la valeur locale de u", "tex": "(1-u^2)u_{xx}+u_{yy}=0,\\qquad \\Delta(P)=u(P)^2-1"}
   ],
   "edpb": [
     {"type": "elliptique", "titre": "Modèle elliptique — équilibre spatial", "tex": "\\nabla^2u=u_{xx}+u_{yy}=0,\\qquad (x,y)\\in\\Omega,\\qquad u|_{\\partial\\Omega}=g"},

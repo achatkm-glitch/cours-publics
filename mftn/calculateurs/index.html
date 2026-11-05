@@ -136,22 +136,22 @@
 <!-- EDP : classer -->
 <section class="panel" id="p-edpc">
   <h2>EDP : classer une équation et lire son domaine de dépendance</h2>
-  <p class="lead">Le signe du discriminant des coefficients du terme d'ordre 2 donne le type de l'EDP, donc la façon dont l'information se propage et les données à fournir. Réglez A, B et C pour passer d'un type à l'autre ; la courbe tracée est la conique associée. Le dernier curseur suit un cas non linéaire dont le type change avec la solution. Séance 1, bloc B.</p>
+  <p class="lead">Le signe de Δ = B² − AC classe l’équation et détermine les données nécessaires. Le premier curseur fait varier Δ ; le second montre comment le type peut dépendre de la valeur de l’inconnue u en un point. Séance 1, bloc B.</p>
   <div class="eqs" data-eq="edpc"></div>
+  <div class="eqs" id="d-canonical-equation" aria-live="polite"></div>
   <div class="grid">
     <div>
       <form class="params">
-        <label>Coefficient A (devant u_xx)<span class="sl"><input type="range" id="d-A" min="-3" max="3" step="0.1" value="1"><output></output></span></label>
-        <label>Coefficient B (devant 2 u_xy)<span class="sl"><input type="range" id="d-B" min="-3" max="3" step="0.1" value="0"><output></output></span></label>
-        <label>Coefficient C (devant u_yy)<span class="sl"><input type="range" id="d-C" min="-3" max="3" step="0.1" value="1"><output></output></span></label>
-        <label>Cas non linéaire : valeur de u<span class="sl"><input type="range" id="d-u" min="-2" max="2" step="0.05" value="0.5"><output></output></span></label>
+        <label>Discriminant Δ<span class="sl"><input type="range" id="d-delta" min="-4" max="4" step="0.1" value="-4"><output></output></span></label>
+        <label>Cas non linéaire : valeur locale u(P)<span class="sl"><input type="range" id="d-u" min="-2" max="2" step="0.05" value="0.5"><output></output></span></label>
+        <p class="repere">Ici, u = u(x,y) est l’inconnue de l’équation. Le curseur choisit une valeur locale u(P) pour voir comment le type change au point P.</p>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> A = 1, B = 0, C = 4 donne Δ = −4 (elliptique). Pour la chaleur u_t − α u_xx, on a A = −α, B = 0, C = 0 : Δ = 0 (parabolique). Pour l'onde u_tt − c² u_xx, A = −c², B = 0, C = 1 : Δ = c² &gt; 0 (hyperbolique).</p>
+      <p class="repere"><b>Repères du cours :</b> Laplace, Δ &lt; 0 ; chaleur, Δ = 0 ; onde, Δ &gt; 0.</p>
     </div>
     <div>
       <div class="msg" id="d-msg" aria-live="polite"></div>
-      <div class="plots2"><div><canvas id="d-plot" aria-label="Conique associée à la forme quadratique"></canvas><div class="legend" id="d-leg"></div></div><div><canvas id="d-dep" aria-label="Domaine de dépendance du point P selon le type"></canvas><div class="legend" id="d-dep-leg"></div></div></div>
+      <div class="plots2"><div><canvas id="d-plot" aria-label="Conique repère x au carré moins le discriminant fois y au carré"></canvas><div class="legend" id="d-leg"></div></div><div><canvas id="d-dep" aria-label="Domaine de dépendance du point P selon le type"></canvas><div class="legend" id="d-dep-leg"></div></div></div>
       <div class="cards" id="d-cards"></div>
       <div class="gauge" id="d-gauge"></div>
     </div>
@@ -533,9 +533,9 @@
 </footer>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script src="calc.js?v=20261105-129d"></script>
-<script src="equations.js?v=20261105-129d"></script>
+<script src="equations.js?v=20261105-132a"></script>
 <script src="situations.js?v=20261105-129d"></script>
-<script src="guide.js?v=20261105-129d"></script>
-<script src="app.js?v=20261105-130a"></script>
+<script src="guide.js?v=20261105-132a"></script>
+<script src="app.js?v=20261105-132a"></script>
 </body>
 </html>
