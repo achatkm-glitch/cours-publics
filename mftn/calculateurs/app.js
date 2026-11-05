@@ -789,7 +789,7 @@
         : `<figure class="sit-video"><video controls playsinline preload="metadata" poster="${S[tab].video.poster}" aria-label="${S[tab].video.alt}"><source src="${S[tab].video.src}" type="video/mp4">Votre navigateur ne peut pas lire cette vidéo. <a href="${S[tab].video.src}">Télécharger la vidéo MP4</a>.</video><figcaption>${S[tab].video.legende}</figcaption></figure>`) : '';
       box.innerHTML = tab === 'transport'
         ? `${ph}${v}<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}`
-        : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${ph}${v}`;
+        : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${tab === 'edpb' ? '<div class="sit-animation" data-kt="parabolique"><button id="k-edpb-play" class="btn alt" type="button" aria-pressed="false">Animer la diffusion</button><span id="k-edpb-play-status" aria-live="polite">Le schéma suit le temps choisi dans le curseur.</span><span class="sit-animation-key"><i></i> profil initial <b>—</b> profil diffusé</span></div>' : ''}${ph}${v}`;
       box.querySelectorAll('.sit-svg').forEach(svg => {
         svg.setAttribute('title', notes[tab] || 'Schéma de la situation physique associée à cet onglet.');
         svg.setAttribute('aria-label', notes[tab] || 'Schéma de la situation physique associée à cet onglet.');
@@ -826,6 +826,20 @@
     });
   }
   let renderedEdpbType = null;
+  function updateEdpbSituationProfile(D, gap, time, centres, radius) {
+    const svg = document.querySelector('#p-edpb .sit2 svg[data-kt="parabolique"]');
+    if (!svg) return;
+    const initial = svg.querySelector('#k-sit-profile-initial'), profile = svg.querySelector('#k-sit-profile'), caption = svg.querySelector('#k-sit-caption');
+    const xs = Calc.linspace(-8, 8, 81), map = values => values.map((u, i) => `${i ? 'L' : 'M'}${(60 + 16.25 * (xs[i] + 8)).toFixed(1)} ${(130 - 25 * u).toFixed(1)}`).join(' ');
+    const y0 = Calc.chaleurCompacte({ D, rayon: radius, centres, t: 0, xs });
+    const yt = Calc.chaleurCompacte({ D, rayon: radius, centres, t: time, xs });
+    if (initial) initial.setAttribute('d', map(y0));
+    if (profile) { profile.setAttribute('d', map(yt)); profile.style.display = time > 0 ? '' : 'none'; }
+    if (caption) {
+      const shape = gap === 0 ? '1 zone' : gap < 2 * radius ? '2 zones proches' : '2 zones séparées';
+      caption.textContent = time > 0 ? `${shape} · t = ${fmt(time, 2)} s` : `${shape} · initial (t = 0)`;
+    }
+  }
   function renderSelectedEdpbEquation(type) {
     const equation = (window.EQUATIONS.edpb || []).find(e => e.type === type);
     renderEquationEntry($('k-equation'), equation);
@@ -836,22 +850,19 @@
       const profileSvg = document.querySelector('#p-edpb .sit2 svg[data-kt="parabolique"]');
       if (profileSvg) {
         const hotLeft = profileSvg.querySelector('#k-sit-hot-left'), hotRight = profileSvg.querySelector('#k-sit-hot-right');
-        const profile = profileSvg.querySelector('#k-sit-profile'), caption = profileSvg.querySelector('#k-sit-caption');
-        const xLeft = 190 - 16.25 * gap, xRight = 190 + 16.25 * gap;
-        if (hotLeft) hotLeft.setAttribute('x', String(Math.max(60, Math.min(284, xLeft - 16))));
-        if (hotRight) { hotRight.style.display = gap === 0 ? 'none' : ''; hotRight.setAttribute('x', String(Math.max(60, Math.min(284, xRight - 16)))); }
-        if (profile) profile.setAttribute('d', gap === 0
-          ? 'M60 130 C135 130 152 98 190 98 C228 98 245 130 320 130'
-          : `M60 130 C${xLeft - 26} 130 ${xLeft - 16} 98 ${xLeft} 98 C${xLeft + 16} 98 ${xLeft + 26} 130 190 130 C${xRight - 26} 130 ${xRight - 16} 98 ${xRight} 98 C${xRight + 16} 98 ${xRight + 26} 130 320 130`);
-        if (caption) caption.textContent = gap === 0 ? 'profil initial t = 0 : un pic' : gap < 1 ? 'profil initial t = 0 : bosses rapprochées' : 'profil initial t = 0 : deux pics';
+        const caption = profileSvg.querySelector('#k-sit-caption');
+        const xLeft = 190 - 8.125 * gap, xRight = 190 + 8.125 * gap, zoneWidth = 16.25;
+        if (hotLeft) hotLeft.setAttribute('x', String(Math.max(60, Math.min(320 - zoneWidth, xLeft - zoneWidth / 2))));
+        if (hotRight) { hotRight.style.display = gap === 0 ? 'none' : ''; hotRight.setAttribute('x', String(Math.max(60, Math.min(320 - zoneWidth, xRight - zoneWidth / 2)))); }
+        if (caption) caption.textContent = gap === 0 ? 'une zone chaude → une bosse initiale' : gap < 1 ? 'deux zones proches : leurs bosses se chevauchent' : 'deux zones chaudes → deux bosses initiales';
       }
       const texts = {
         elliptique: '<b>Situation physique.</b> La plaque est à l’équilibre : on impose sa température sur les bords, puis on observe le champ intérieur. Il n’y a pas de profil initial à faire évoluer.',
         parabolique: gap === 0
-          ? '<b>Situation physique.</b> Au départ, on prescrit la température le long de la barre : une zone chaude en forme de bosse cosinus, de rayon 0,5 m. La courbe « Profil initial » à t = 0 montre ce pic ; la diffusion l’élargit et l’abaisse. Ici, on ne prescrit pas une température à l’entrée de la barre.'
+          ? '<b>Situation physique.</b> On impose au départ une seule zone chaude sur la barre. Sa forme cosinus donne une bosse sur la courbe initiale ; la diffusion l’élargit et l’abaisse. Le bouton anime cette évolution et reste lié au curseur du temps.'
           : gap < 1
-            ? `<b>Situation physique.</b> Au départ, on prescrit la température le long de la barre : deux bosses cosinus de rayon 0,5 m, séparées de ${fmt(gap, 1)} m. Elles se recouvrent ; le profil initial est leur somme, et ses sommets peuvent se confondre. Les courbes suivantes montrent la diffusion de ce profil. Ici, on ne prescrit pas une température à l’entrée de la barre.`
-            : `<b>Situation physique.</b> Au départ, on prescrit la température le long de la barre : deux zones chaudes en forme de bosse cosinus, de rayon 0,5 m, séparées de ${fmt(gap, 1)} m (écart réglable ci-dessous). La courbe « Profil initial » à t = 0 montre donc deux pics, un par zone chaude. Les courbes suivantes montrent leur évolution : la diffusion élargit et abaisse les pics. Ici, on ne prescrit pas une température à l’entrée de la barre.`,
+            ? `<b>Situation physique.</b> On impose deux zones chaudes de forme cosinus, séparées de ${fmt(gap, 1)} m. Chaque zone contribue une bosse ; comme leurs supports se chevauchent, leurs contributions s’additionnent et peuvent former un seul sommet. Le bouton anime leur diffusion.`
+            : `<b>Situation physique.</b> On impose deux zones chaudes de forme cosinus, séparées de ${fmt(gap, 1)} m. La température initiale est la somme des deux zones : chacune donne une bosse sur la courbe, d’où les deux pics. Pendant la diffusion, les bosses s’élargissent et s’abaissent ; le bouton anime cette évolution.`,
         hyperbolique: '<b>Situation physique.</b> Dans le tube, la bosse dessinée représente le profil initial : c’est la courbe pointillée à t = 0. Comme la vitesse initiale est nulle, ce profil se partage en deux bosses de demi-hauteur qui avancent en sens opposés. La courbe pleine montre ces deux bosses à l’instant t, centrées en x = ±ct.'
       };
       situation.innerHTML = texts[type];
@@ -1039,6 +1050,7 @@
       cards($('k-cards'), [{ color: c[0], title: 'Température au centre', lines: [`valeur = <b>${fmt(r.centre, 4)} °C</b>`, `minimum = <b>${fmt(r.min, 4)}</b> ; maximum = <b>${fmt(r.max, 4)}</b>`, `${r.iters} itérations de sur-relaxation`] }]);
     } else if (type === 'parabolique') {
       const D = num('k-D'), tp = num('k-tp'), gap = num('k-gap'), rayon = 0.5, ctr = gap === 0 ? [0] : [-gap / 2, gap / 2];
+      updateEdpbSituationProfile(D, gap, tp, ctr, rayon);
       const xs = Calc.linspace(-8, 8, 800), times = [0, tp / 4, tp / 2, tp].filter((t, i, a) => a.indexOf(t) === i);
       const S = times.map((t, i) => ({
         x: xs, y: Calc.chaleurCompacte({ D, rayon, centres: ctr, t, xs }), color: c[i % 6], width: 2.2,
@@ -1108,11 +1120,34 @@
     });
   }
 
-  let current = 'home';
+  let current = 'home', edpbAnimationTimer = null;
+  function stopEdpbAnimation(message) {
+    if (edpbAnimationTimer !== null) { window.clearInterval(edpbAnimationTimer); edpbAnimationTimer = null; }
+    const button = $('k-edpb-play'), status = $('k-edpb-play-status');
+    if (button) { button.textContent = 'Animer la diffusion'; button.setAttribute('aria-pressed', 'false'); }
+    if (status && message) status.textContent = message;
+  }
+  function startEdpbAnimation() {
+    const slider = $('k-tp'), button = $('k-edpb-play'), status = $('k-edpb-play-status');
+    if (!slider || !button || !status) return;
+    const target = Number(slider.value), step = Number(slider.step) || 0.5;
+    if (edpbAnimationTimer !== null) { stopEdpbAnimation(`Animation en pause à t = ${fmt(Number(slider.value), 2)} s.`); return; }
+    if (target <= 0) { status.textContent = 'Choisissez un instant final supérieur à 0 s avec le curseur pour lancer l’animation.'; return; }
+    slider.value = '0'; syncSliders(); safe('edpb');
+    button.textContent = 'Mettre en pause'; button.setAttribute('aria-pressed', 'true');
+    status.textContent = `Diffusion animée : t = 0 sur ${fmt(target, 2)} s.`;
+    edpbAnimationTimer = window.setInterval(() => {
+      const next = Math.min(target, Number(slider.value) + step);
+      slider.value = String(next); syncSliders(); safe('edpb');
+      status.textContent = `Diffusion animée : t = ${fmt(next, 2)} sur ${fmt(target, 2)} s.`;
+      if (next >= target) stopEdpbAnimation(`Animation terminée à t = ${fmt(target, 2)} s.`);
+    }, 450);
+  }
   function safe(name) {
     try { if (RUN[name]) RUN[name](); } catch (e) { const panel = $('p-' + name); const p = panel && panel.querySelector('.msg'); if (p) { p.className = 'msg bad'; p.textContent = 'Paramètres invalides : ' + e.message; } }
   }
   function show(name) {
+    if (name !== 'edpb' && edpbAnimationTimer !== null) stopEdpbAnimation('Animation arrêtée en quittant cet onglet.');
     current = name;
     document.querySelectorAll('section.panel').forEach(s => s.classList.toggle('active', s.id === 'p-' + name));
     document.querySelectorAll('nav button[data-tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === name ? 'true' : 'false'));
@@ -1136,11 +1171,11 @@
     }));
     document.querySelectorAll('section.panel form').forEach(f => {
       f.addEventListener('submit', e => { e.preventDefault(); safe(current); });
-      f.addEventListener('input', () => safe(current));
-      f.addEventListener('change', () => safe(current));
+      f.addEventListener('input', e => { if (edpbAnimationTimer !== null && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
+      f.addEventListener('change', e => { if (edpbAnimationTimer !== null && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
     });
     document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncSliders(); safe(current); }));
-    document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => safe('edpb')));
+    document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => { stopEdpbAnimation(''); safe('edpb'); }));
     document.querySelectorAll('input[type="range"]').forEach(r => r.addEventListener('input', syncSliders));
     syncSliders();
     $('theme').addEventListener('click', () => {
@@ -1149,6 +1184,7 @@
     });
     renderEquations();
     renderSituations();
+    const edpbPlay = $('k-edpb-play'); if (edpbPlay) edpbPlay.addEventListener('click', startEdpbAnimation);
     // onglets à deux graphiques : commandes en haut, graphiques côte à côte sur toute la largeur
     document.querySelectorAll('.grid').forEach(g => { if (g.querySelector('.plots2')) g.classList.add('grid2'); });
     window.addEventListener('load', renderEquations);
