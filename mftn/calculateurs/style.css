@@ -209,6 +209,12 @@ details > summary { cursor: pointer; color: var(--blue); margin: 10px 0; }
 .sit-animation-key { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: .86rem; }
 .sit-animation-key i { width: 23px; border-top: 2px dashed var(--sit-initial, var(--orange)); }
 .sit-animation-key b { width: 23px; border-top: 3px solid var(--sit-current, var(--green)); font-size: 0; }
+.adv-animation { flex: 1 1 100%; min-width: 0; margin: 4px 0 0; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.adv-animation-plot { width: min(100%, 760px); margin: 0 auto; }
+.adv-animation-plot canvas { width: 100%; max-width: none; aspect-ratio: 2 / 1; }
+.adv-animation-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 8px auto; max-width: 760px; }
+.adv-animation-controls span { flex: 1 1 320px; color: var(--muted); line-height: 1.45; }
+.adv-animation figcaption { max-width: 760px; margin: 6px auto 0; color: var(--muted); font-size: .88rem; line-height: 1.45; }
 
 .sit-photo { flex: 1 1 100%; margin: 6px 0 0; }
 .sit-photo img { display: block; max-width: 100%; max-height: 340px; width: auto; height: auto; margin: 0 auto; border-radius: 6px; }

@@ -596,3 +596,9 @@ La source MFTN a libéré `Peda_inv/` dans sa dernière table de verrous. Repris
 - Miroir poussé par `66100f0bf9dcf6cd537a6c14cc5369212656ef79`; `git ls-remote` a confirmé la référence `main`.
 - GitHub Pages run `42100338432` terminé avec succès. La page du calculateur et `app.js?v=20261105-149a` répondent HTTP 200 ; le cache-buster et le code d’animation sont présents.
 - Le test Edge local source a confirmé suivi de `c` et `t`, pause et reprise. Les fichiers du miroir et registres de la tâche 149 sont LIBRES. Aucun PDF modifié.
+
+### Prise FIFO — tâche miroir 151 — 2026-11-05 21:12:34 +01:00 — Codex
+Réservation des fichiers `mftn/calculateurs/{app.js,situations.js,index.html,style.css}` et des registres pour synchroniser l’animation contrôlable #adv après contrôle de la source MFTN. Calcul attendu via l’API existante `Calc.advection1d`; aucun changement à `calc.js`. Tâche 150 évaluée sans animation supplémentaire dans le résumé #edpc.
+
+### Avancement miroir — tâche 151 — 2026-11-05 21:27:35 +01:00 Europe/Paris — Codex
+Les quatre fichiers web source/mirroir ont des empreintes SHA-256 identiques ; node --check passe, la suite calculatoire passe dans le dépôt MFTN, git diff --check propre dans les deux dépôts. Le verrou miroir reste actif jusqu’au commit et au contrôle du déploiement Pages. Pas de validation visuelle locale (blocage file:).

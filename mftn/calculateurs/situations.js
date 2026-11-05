@@ -120,13 +120,8 @@
         arr(160, 80, 210, 80, 'var(--orange)', 2.4) + t(28, 148, 'maillage grossier') + t(218, 148, 'maillage fin') + t(160, 70, 'h ↘, Δt ↘'))
     },
     adv: {
-      texte: "Un fluide chaud pénètre dans une conduite : le front se déplace à la vitesse de l'écoulement. Selon le schéma, il est lissé, déformé par des oscillations, ou le calcul explose.",
-      video: {
-        src: 'media/advection_front_schemes.mp4',
-        poster: 'media/advection_front_schemes_poster.png',
-        alt: "Comparaison animée des schémas amont, Lax–Wendroff et FTCS centré sur un paquet chaud à support compact, transporté sur un domaine périodique.",
-        legende: "Analogie numérique d'un paquet de fluide chaud transporté : le profil initial est exactement nul hors de [0,55 ; 0,80] et ses fronts sont lissés par un raccord cosinus. Le domaine périodique sert à isoler l'effet du schéma ; il ne modélise pas une entrée avec condition imposée. Équation u_t + a u_x = 0, a = 1, N = 100, Co = 0,8, t* = at/L = 0,4. Les pointillés représentent la solution exacte ; les traits, les valeurs calculées. Échelle verticale fixe pour montrer l'instabilité de FTCS."
-      },
+      texte: "Un paquet de fluide chaud est transporté dans une conduite. La référence se déplace sans changer de forme ; les trois schémas calculent son évolution et révèlent lissage, oscillations ou instabilité.",
+      legende: "Comparaison numérique sur un domaine périodique, avec un paquet compact et des fronts raccordés par un cosinus. Le cas illustré fixe a = 1, N = 100 et Co = 0,8 ; t* = at/L évolue de 0 à 0,4. La courbe pointillée est la solution exacte. L’échelle verticale reste fixe pour rendre visible l’instabilité de FTCS. Ce cas périodique isole l’effet du schéma et ne représente pas une entrée avec condition imposée.",
       svg: wrap(
         `<rect x="10" y="50" width="360" height="60" rx="30" fill="none" stroke="var(--plot-axis)" stroke-width="3"/>` +
         `<rect x="14" y="54" width="170" height="52" rx="26" fill="var(--red)" opacity="0.4"/><rect x="184" y="54" width="172" height="52" rx="26" fill="var(--blue)" opacity="0.25"/>` +

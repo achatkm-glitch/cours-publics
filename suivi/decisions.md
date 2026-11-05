@@ -351,3 +351,9 @@ Décision de présentation : nommer explicitement l’erreur signée du graphe e
 
 ### Tâche 149 — clôture — 2026-11-05 21:08:52 +01:00 — Codex
 Animation hyperbolique #edpb synchronisée avec la source MFTN ; commit miroir `66100f0bf9dcf6cd537a6c14cc5369212656ef79`, GitHub Pages run `42100338432` réussi, contrôle HTTP 200 de la page et du script déployés. Verrous du miroir libérés.
+
+### Tâches 150–151 — 2026-11-05 21:12:34 +01:00 — Codex
+Tâche 150 close sans animation récapitulative supplémentaire dans #edpc (la synthèse simultanée est préférable au doublon temporel de #edpb). Réservation miroir tâche 151 : animation contrôlable #adv, après prise FIFO Codex dans la source MFTN ; `calc.js` reste verrouillé par Claude.
+
+### Tâche 151 — avancement — 2026-11-05 21:27:35 +01:00 — Codex
+L’animation #adv est intégrée et synchronisée avec la source MFTN ; contrôle syntaxique, suite numérique et empreintes validés. Le commit et le contrôle public restent à faire ; aucune inspection visuelle publique encore réalisée.

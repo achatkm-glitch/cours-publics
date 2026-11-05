@@ -330,12 +330,12 @@
     o = o || {};
     distinctSeriesColors(canvas, series || []);
     (window.__plotLog = window.__plotLog || {})[canvas.id] = (series || []).map(s => s.color); // contrôle des couleurs en double
-    const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
-    canvas.width = W * dpr; canvas.height = W * dpr;
+    const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440, H = o.aspectRatio ? W / o.aspectRatio : W;
+    canvas.width = W * dpr; canvas.height = H * dpr;
     const g = canvas.getContext('2d');
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
-    g.clearRect(0, 0, W, W);
-    const L = 58, R = 14, T = 26, Bm = 46, pw = W - L - R, ph = W - T - Bm;
+    g.clearRect(0, 0, W, H);
+    const L = 58, R = 14, T = 26, Bm = 46, pw = W - L - R, ph = H - T - Bm;
     const tx = o.logx ? Math.log10 : (v => v), ty = o.logy ? Math.log10 : (v => v);
     const xs = [], ys = [];
     series.forEach(s => s.x.forEach((v, i) => {
@@ -395,7 +395,7 @@
     });
     g.restore();
     g.fillStyle = muted; g.textAlign = 'center';
-    if (o.xlabel) g.fillText(o.xlabel, L + pw / 2, W - 8);
+    if (o.xlabel) g.fillText(o.xlabel, L + pw / 2, H - 8);
     if (o.ylabel) { g.save(); g.translate(14, T + ph / 2); g.rotate(-Math.PI / 2); g.fillText(o.ylabel, 0, 0); g.restore(); }
     if (o.title) { g.fillStyle = axis; g.textAlign = 'left'; g.fillText(o.title, L, 16); }
     attachPlotInteraction(canvas, hitPoints, { l: L, r: L + pw, t: T, b: T + ph }, { x: o.xlabel || 'x', y: o.ylabel || 'y', note: figureNote(canvas, o.title) });
@@ -871,9 +871,10 @@
       const v = S[tab].video ? (tab === 'transport'
         ? `<figure class="sit-video"><a class="btn alt" href="${S[tab].video.page}" target="_blank" rel="noopener">${S[tab].video.titre}</a><figcaption>${S[tab].video.legende} <a href="${S[tab].video.page}" target="_blank" rel="noopener">Source officielle UC San Diego</a>.</figcaption></figure>`
         : `<figure class="sit-video"><video controls playsinline preload="metadata" poster="${S[tab].video.poster}" aria-label="${S[tab].video.alt}"><source src="${S[tab].video.src}" type="video/mp4">Votre navigateur ne peut pas lire cette vidéo. <a href="${S[tab].video.src}">Télécharger la vidéo MP4</a>.</video><figcaption>${S[tab].video.legende}</figcaption></figure>`) : '';
+      const advAnimation = tab === 'adv' ? `<figure class="adv-animation"><div class="adv-animation-plot"><canvas id="adv-demo" aria-label="Comparaison animée du paquet transporté : solution exacte, schéma amont, Lax–Wendroff et FTCS"></canvas><div class="legend" id="adv-demo-leg" aria-label="Légende des courbes"></div></div><div class="adv-animation-controls"><button type="button" class="btn alt" id="adv-demo-play" aria-pressed="false">Animer le transport</button><span id="adv-demo-status" aria-live="polite">À t* = 0, les profils calculés coïncident avec le paquet initial.</span></div><figcaption>${S[tab].legende}</figcaption></figure>` : '';
       box.innerHTML = tab === 'transport'
         ? `${ph}${v}<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}`
-        : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${tab === 'edpb' ? '<div class="sit-animation" data-kt="parabolique"><button id="k-edpb-play" class="btn alt" type="button" aria-pressed="false">Animer la diffusion</button><span id="k-edpb-play-status" aria-live="polite">Le schéma suit le temps choisi dans le curseur.</span><span class="sit-animation-key"><i></i><span>profil initial</span><b></b><span>profil à l’instant t</span></span></div>' : ''}${ph}${v}`;
+        : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${tab === 'edpb' ? '<div class="sit-animation" data-kt="parabolique"><button id="k-edpb-play" class="btn alt" type="button" aria-pressed="false">Animer la diffusion</button><span id="k-edpb-play-status" aria-live="polite">Le schéma suit le temps choisi dans le curseur.</span><span class="sit-animation-key"><i></i><span>profil initial</span><b></b><span>profil à l’instant t</span></span></div>' : ''}${advAnimation}${ph}${v}`;
       box.querySelectorAll('.sit-svg').forEach(svg => {
         svg.setAttribute('title', notes[tab] || 'Schéma de la situation physique associée à cet onglet.');
         svg.setAttribute('aria-label', notes[tab] || 'Schéma de la situation physique associée à cet onglet.');
@@ -1252,6 +1253,56 @@
   }
 
   let current = 'home', edpbAnimationTimer = null, edpbAnimationTarget = null;
+  let advDemoTimer = null, advDemoTime = 0;
+  function advDemoInitial(x) {
+    if (x < 0.55 || x > 0.8) return 0;
+    if (x < 0.575) return 0.5 * (1 - Math.cos(Math.PI * (x - 0.55) / 0.025));
+    if (x > 0.775) return 0.5 * (1 + Math.cos(Math.PI * (x - 0.775) / 0.025));
+    return 1;
+  }
+  function renderAdvDemo(time) {
+    const canvas = $('adv-demo'), status = $('adv-demo-status');
+    if (!canvas || !window.Calc) return;
+    const t = Math.max(0, Math.min(0.4, time)), xs = Array.from({ length: 100 }, (_, i) => i / 100), initial = xs.map(advDemoInitial);
+    const result = scheme => Calc.advection1d({ scheme, Nx: 100, Co: 0.8, t, initial: advDemoInitial });
+    const exact = t === 0 ? { x: xs, exact: initial } : result('amont');
+    const upwind = t === 0 ? { x: xs, u: initial, min: 0, max: 1 } : exact;
+    const lw = t === 0 ? { x: xs, u: initial, min: 0, max: 1 } : result('lw');
+    const ftcs = t === 0 ? { x: xs, u: initial, min: 0, max: 1 } : result('ftcs');
+    const series = [
+      { x: exact.x.concat([1]), y: exact.exact.concat([exact.exact[0]]), color: css('--plot-axis'), dash: [6, 4], width: 1.6, label: 'Solution exacte', commentAt: 'Référence : le paquet est transporté sans changer de forme.' },
+      { x: upwind.x.concat([1]), y: upwind.u.concat([upwind.u[0]]), color: css('--blue'), width: 2.3, label: 'Amont', commentAt: 'La diffusion numérique lisse les fronts et abaisse progressivement le pic.' },
+      { x: lw.x.concat([1]), y: lw.u.concat([lw.u[0]]), color: css('--orange'), width: 2.3, label: 'Lax–Wendroff', commentAt: 'La dispersion numérique peut créer des oscillations près des fronts.' },
+      { x: ftcs.x.concat([1]), y: ftcs.u.concat([ftcs.u[0]]), color: css('--red'), width: 2.1, label: 'FTCS centré', commentAt: 'À Co = 0,8, ce schéma est instable ; l’amplitude peut sortir de l’échelle fixe.' }
+    ];
+    plot(canvas, series, { aspectRatio: 2, xlabel: 'x/L', ylabel: 'u', ylim: [-1.5, 1.5], title: `Advection périodique · t* = ${fmt(t, 3)} · Co = 0,8` });
+    legend($('adv-demo-leg'), series);
+    const ftcsMax = Math.max(Math.abs(ftcs.min), Math.abs(ftcs.max));
+    const ftcsNote = ftcsMax > 1.5 ? `FTCS sort de l’échelle ±1,5 (|u|max ≈ ${fmt(ftcsMax, 2)}).` : 'FTCS est centré et explicite.';
+    const lwNote = lw.min < -0.02 || lw.max > 1.05 ? 'Lax–Wendroff oscille près du front.' : 'Lax–Wendroff suit encore le front.';
+    const upwindNote = upwind.max < 0.98 ? 'Amont lisse et abaisse le pic.' : 'Amont transporte le paquet.';
+    if (status) status.textContent = `t* = ${fmt(t, 3)} : ${upwindNote} ${lwNote} ${ftcsNote}`;
+    canvas.setAttribute('aria-label', `À t étoile ${fmt(t, 3)} : solution exacte, amont, Lax–Wendroff et FTCS ; minimum FTCS ${fmt(ftcs.min, 2)}, maximum FTCS ${fmt(ftcs.max, 2)}.`);
+  }
+  function pauseAdvDemo(message) {
+    if (advDemoTimer !== null) { window.clearInterval(advDemoTimer); advDemoTimer = null; }
+    const button = $('adv-demo-play'), status = $('adv-demo-status');
+    if (button) { button.textContent = advDemoTime >= 0.4 ? 'Rejouer l’animation' : 'Reprendre l’animation'; button.setAttribute('aria-pressed', 'false'); }
+    if (status && message) status.textContent = message;
+  }
+  function startAdvDemo() {
+    const button = $('adv-demo-play');
+    if (!button) return;
+    if (advDemoTimer !== null) { pauseAdvDemo(`Animation en pause à t* = ${fmt(advDemoTime, 3)}.`); return; }
+    if (advDemoTime >= 0.4) advDemoTime = 0;
+    renderAdvDemo(advDemoTime);
+    button.textContent = 'Mettre en pause'; button.setAttribute('aria-pressed', 'true');
+    advDemoTimer = window.setInterval(() => {
+      advDemoTime = Math.min(0.4, Math.round((advDemoTime + 0.008) * 1000) / 1000);
+      renderAdvDemo(advDemoTime);
+      if (advDemoTime >= 0.4) pauseAdvDemo('Animation terminée à t* = 0,4. Les profils calculés sont comparés à la solution exacte.');
+    }, 160);
+  }
   function stopEdpbAnimation(message) {
     if (edpbAnimationTimer !== null) { window.clearInterval(edpbAnimationTimer); edpbAnimationTimer = null; }
     edpbAnimationTarget = null;
@@ -1288,6 +1339,7 @@
   }
   function show(name) {
     if (name !== 'edpb' && edpbAnimationTimer !== null) stopEdpbAnimation('Animation arrêtée en quittant cet onglet.');
+    if (name !== 'adv' && advDemoTimer !== null) pauseAdvDemo('Animation mise en pause en quittant cet onglet.');
     current = name;
     document.querySelectorAll('section.panel').forEach(s => s.classList.toggle('active', s.id === 'p-' + name));
     document.querySelectorAll('nav button[data-tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === name ? 'true' : 'false'));
@@ -1296,6 +1348,7 @@
     });
     try { history.replaceState(null, '', '#' + name); } catch (e) { /* ignoré */ }
     safe(name);
+    if (name === 'adv') renderAdvDemo(advDemoTime);
   }
   function init() {
     const transportForm = document.querySelector('#p-transport form.params');
@@ -1329,12 +1382,15 @@
     });
     renderEquations();
     renderSituations();
+    renderAdvDemo(0);
     const edpbPlay = $('k-edpb-play'); if (edpbPlay) edpbPlay.addEventListener('click', startEdpbAnimation);
+    const advDemoPlay = $('adv-demo-play'); if (advDemoPlay) advDemoPlay.addEventListener('click', startAdvDemo);
+    document.addEventListener('visibilitychange', () => { if (document.hidden && advDemoTimer !== null) pauseAdvDemo('Animation mise en pause lorsque la page est masquée.'); });
     // onglets à deux graphiques : commandes en haut, graphiques côte à côte sur toute la largeur
     document.querySelectorAll('.grid').forEach(g => { if (g.querySelector('.plots2')) g.classList.add('grid2'); });
     window.addEventListener('load', renderEquations);
     renderGuides();
-    window.addEventListener('resize', () => safe(current));
+    window.addEventListener('resize', () => { safe(current); if (current === 'adv') renderAdvDemo(advDemoTime); });
     window.addEventListener('hashchange', () => { const name = location.hash.replace('#', ''); if (RUN[name] && name !== current) show(name); });
     const h = location.hash.replace('#', '');
     show(RUN[h] ? h : 'home');
