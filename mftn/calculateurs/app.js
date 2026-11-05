@@ -611,6 +611,13 @@
   }
 
   /* ---------- Équations affichées en pleine ligne (KaTeX si disponible) ---------- */
+  function renderEquationEntry(box, equation) {
+    if (!box || !equation) return;
+    box.innerHTML = `<div><div class="eq-label">${equation.titre}</div><div class="eq-math"></div></div>`;
+    const el = box.querySelector('.eq-math');
+    if (window.katex) { try { window.katex.render(equation.tex, el, { displayMode: true, throwOnError: false }); } catch (err) { el.textContent = equation.tex; el.classList.add('plain'); } }
+    else { el.textContent = equation.tex; el.classList.add('plain'); }
+  }
   function renderEquations() {
     const E = window.EQUATIONS || {};
     document.querySelectorAll('[data-eq]').forEach(box => {
@@ -622,6 +629,11 @@
         else { el.textContent = e.tex; el.classList.add('plain'); }
       });
     });
+  }
+  function renderSelectedEdpbEquation(type) {
+    const equation = (window.EQUATIONS.edpb || []).find(e => e.type === type);
+    renderEquationEntry($('k-equation'), equation);
+    document.querySelectorAll('.edp-type-option').forEach(option => option.classList.toggle('selected', option.querySelector('input:checked') !== null));
   }
 
   /* ---------- Introduction : le même signal, plusieurs schémas ---------- */
@@ -769,6 +781,7 @@
   }
   function runEdpb() {
     const type = checked('k-type')[0] || 'elliptique', c = pal();
+    renderSelectedEdpbEquation(type);
     document.querySelectorAll('[data-kt]').forEach(el => { el.style.display = el.dataset.kt === type ? '' : 'none'; });
     if (type === 'elliptique') {
       const N = Math.round(num('k-n')), r = Calc.laplace2d({ N, left: num('k-Tl'), right: num('k-Tr'), top: num('k-Tt'), bottom: num('k-Tb') });
@@ -858,7 +871,8 @@
       f.addEventListener('input', () => safe(current));
       f.addEventListener('change', () => safe(current));
     });
-    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); syncSliders(); safe(current); }));
+    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } syncSliders(); safe(current); }));
+    document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => safe('edpb')));
     document.querySelectorAll('input[type="range"]').forEach(r => r.addEventListener('input', syncSliders));
     syncSliders();
     $('theme').addEventListener('click', () => {

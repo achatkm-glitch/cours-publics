@@ -13,9 +13,9 @@ window.EQUATIONS = {
     {"titre": "EDP quasi linéaire d'ordre 2 à deux variables", "tex": "A\\,u_{xx}+2B\\,u_{xy}+C\\,u_{yy}+F(x,y,u,u_x,u_y)=0"}
   ],
   "edpb": [
-    {"titre": "Elliptique : équation de Laplace sur le carré unité", "tex": "\\nabla^2u=u_{xx}+u_{yy}=0\\ \\text{dans }]0,1[^2,\\qquad u=\\text{valeur imposée sur chaque côté}"},
-    {"titre": "Parabolique : diffusion d'un profil initial compact", "tex": "u_t=D\\,u_{xx},\\qquad u(x,t)=\\int_{-\\infty}^{\\infty}\\frac{e^{-\\frac{(x-y)^2}{4Dt}}}{\\sqrt{4\\pi Dt}}\\,u_0(y)\\,\\mathrm{d}y,\\qquad t>0"},
-    {"titre": "Hyperbolique : d'Alembert pour une bosse initiale compacte au repos", "tex": "u_{tt}=c^2u_{xx},\\qquad u(x,t)=\\tfrac12\\bigl[f(x-ct)+f(x+ct)\\bigr],\\qquad f(x)=\\begin{cases}\\tfrac12(1+\\cos(\\pi x/R)),&|x|<R,\\\\0,&|x|\\ge R,\\end{cases}\\qquad R=0{,}5"}
+    {"type": "elliptique", "titre": "Modèle elliptique — équilibre spatial", "tex": "\\nabla^2u=u_{xx}+u_{yy}=0,\\qquad (x,y)\\in\\Omega,\\qquad u|_{\\partial\\Omega}=g"},
+    {"type": "parabolique", "titre": "Modèle parabolique — diffusion", "tex": "u_t=D\\,u_{xx},\\qquad u(x,0)=u_0(x)"},
+    {"type": "hyperbolique", "titre": "Modèle hyperbolique — onde", "tex": "u_{tt}=c^2u_{xx},\\qquad u(x,0)=f(x),\\qquad u_t(x,0)=0"}
   ],
   "cl": [
     {"titre": "Conduction stationnaire avec production", "tex": "\\lambda\\,T''+q=0,\\qquad T(0)=T_0\\qquad\\Longrightarrow\\qquad T(x)=T_0+C_1x-\\frac{q}{2\\lambda}\\,x^2"},

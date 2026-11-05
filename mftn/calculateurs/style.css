@@ -98,6 +98,21 @@ footer { max-width: 1100px; margin: 0 auto 30px; padding: 0 16px; color: var(--m
 .checks { display: flex; gap: 12px; flex-wrap: wrap; }
 .checks label { display: flex; align-items: center; gap: 6px; color: var(--ink); }
 .checks input { width: auto; }
+.edp-type-selector { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 12px 0 10px; padding: 0; border: 0; }
+.edp-type-selector legend { margin-bottom: 7px; color: var(--muted); font-size: .88rem; font-weight: 650; }
+.edp-type-option { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); cursor: pointer; transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease, transform .15s ease; }
+.edp-type-option:hover { border-color: var(--blue); }
+.edp-type-option.selected { border: 2px solid var(--blue); padding: 9px 11px; background: var(--blue-soft); box-shadow: 0 0 0 2px color-mix(in srgb, var(--blue) 18%, transparent); transform: translateY(-1px); }
+.edp-type-option input { flex: 0 0 auto; width: 20px; height: 20px; margin: 0; accent-color: var(--blue); }
+.edp-type-option span, .edp-type-option strong, .edp-type-option small { display: block; }
+.edp-type-option strong { line-height: 1.2; }
+.edp-type-option small { margin-top: 3px; color: var(--muted); font-size: .78rem; line-height: 1.2; }
+.edp-type-option.selected small { color: var(--ink); }
+.edp-type-option:focus-within { outline: 3px solid var(--orange); outline-offset: 2px; }
+.edp-selected-equation { margin: 0 0 16px; padding: 10px 14px 12px; border: 1px solid var(--blue); border-left: 6px solid var(--blue); border-radius: 10px; background: var(--blue-soft); }
+.edp-selected-equation .eq-label { color: var(--ink); font-weight: 700; font-size: .9rem; }
+.edp-selected-equation .eq-math { color: var(--ink); font-size: 1.22rem; }
+@media (max-width: 560px) { .edp-type-selector { grid-template-columns: 1fr; } .edp-type-option { padding: 9px 11px; } }
 nav .theme { margin-left: auto; }
 h3 { margin: 14px 0 4px; font-size: 1rem; color: var(--muted); }
 
