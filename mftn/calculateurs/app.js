@@ -15,7 +15,7 @@
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node) {
         const parent = node.parentElement;
-        if (!parent || parent.closest('script,style,textarea,code,svg,.katex,.math-inline')) return NodeFilter.FILTER_REJECT;
+        if (!parent || parent.closest('script,style,textarea,code,svg,.katex,.math-inline,.no-math')) return NodeFilter.FILTER_REJECT;
         relation.lastIndex = 0;
         return relation.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
       }
@@ -151,8 +151,8 @@
     'n-plot': 'Erreur maximale selon h pour les formules de bord sélectionnées. Les deux axes sont logarithmiques.',
     'n-plot2': 'Répartition de l’erreur le long du domaine pour le maillage indiqué.',
     'c-plot': 'Profils calculés de température au temps indiqué ; x est la position et u la température normalisée.',
-    'c-amp': 'Module du facteur d’amplification selon le nombre d’onde θ. Comparez les courbes sur l’intervalle tracé.',
-    'c-g-signed': 'Facteur d’amplification signé selon θ ; le signe conserve l’information sur l’alternance du mode.',
+    'c-amp': 'Module du facteur d’amplification selon le nombre d’onde φ. Comparez les courbes sur l’intervalle tracé.',
+    'c-g-signed': 'Facteur d’amplification signé selon φ ; le signe conserve l’information sur l’alternance du mode.',
     'c-plot2': 'Erreur maximale selon le pas de temps Δt pour les schémas affichés.',
     'c-refine': 'Erreur maximale au même temps final selon le maillage. La légende distingue les schémas.',
     'p-plot': 'Valeur du terme associé à Dufort–Frankel selon h, pour les chemins de raffinement affichés.',
@@ -160,8 +160,8 @@
     'p-effect-df': 'Profils calculés par Dufort–Frankel selon le maillage ; la légende indique les valeurs de r.',
     'p-effect-lxf': 'Profils calculés par Lax–Friedrichs selon le maillage ; la légende indique les valeurs de r.',
     'a-plot': 'Profils calculés d’advection selon x. La légende distingue les schémas et les maillages.',
-    'a-modal-amp': 'Module du facteur d’amplification selon θ pour les modes affichés.',
-    'a-modal-phase': 'Erreur de phase par pas selon θ ; l’axe vertical est exprimé en radians.',
+    'a-modal-amp': 'Module du facteur d’amplification selon φ pour les modes affichés.',
+    'a-modal-phase': 'Erreur de phase par pas selon φ ; l’axe vertical est exprimé en radians.',
     'a-conv': 'Erreur maximale à temps final commun selon h pour les schémas affichés.'
   };
   function figureContext(canvas) {
@@ -403,7 +403,7 @@
   function legend(el, items, o) {
     el.innerHTML = items.map(s => {
       const m = o && o.showSlope ? observedLogSlope(s) : NaN;
-      const slope = isFinite(m) ? ` · pente observée ≈ ${fmt(m, 2)}` : '';
+      const slope = isFinite(m) ? ` · <span class="no-math">pente observée ≈ ${fmt(m, 2)}</span>` : '';
       const help = isFinite(m) ? `Pente de régression des points affichés : ${fmt(m, 3)}. Elle décrit cet essai et cette plage de maillages.` : '';
       return `<span${help ? ` class="slope-help" title="${help}"` : ''}><i style="border-color:${s.color};border-top-style:${s.dash ? 'dashed' : 'solid'}"></i>${s.label}${slope}</span>`;
     }).join('');
@@ -482,7 +482,7 @@
   function runCL() {
     const c = pal(), base = { L: num('l-L'), lambda: num('l-lambda'), q: num('l-q'), T0: num('l-T0') };
     const types = checked('l-type');
-    const names = { dirichlet: 'Dirichlet', neumann: 'Neumann (flux imposé)', robin: 'Robin (échange convectif)' };
+    const names = { dirichlet: 'Dirichlet', neumann: 'Neumann (flux imposé)', robin: 'Fourier (échange convectif)' };
     const par = { dirichlet: { TL: num('l-TL') }, neumann: { qL: num('l-qL') }, robin: { h: num('l-h'), Tinf: num('l-Tinf') } };
     const style = { dirichlet: { width: 6, dash: [] }, neumann: { width: 3.5, dash: [9, 5] }, robin: { width: 1.6, dash: [2, 4] } };
     const res = types.map(t => ({ t, r: Calc.barreCL(Object.assign({ type: t }, base, par[t])) }));
@@ -577,6 +577,9 @@
     const L = [`Pe_L signé = ${fmt(PeL, 3)} : la solution exacte a une couche limite près de x = L.`];
     if (cen.length) { const os = cen.filter(o => o.osc), mo = cen.filter(o => !o.osc); L.push(`Centré : ${os.length ? 'oscille pour N = ' + lst(os) + ' (Pe_h > 2 : un coefficient devient négatif)' : ''}${os.length && mo.length ? ' ; ' : ''}${mo.length ? 'monotone pour N = ' + lst(mo) + ' (Pe_h ≤ 2)' : ''}.`); }
     if (amo.length) L.push(`Amont : ${amo.every(o => !o.osc) ? 'monotone pour tous les N' : 'oscille pour N = ' + lst(amo.filter(o => o.osc))}, mais il étale davantage la couche limite.`);
+    const hN = [4, 8, 16, 32, 64, 128, 256].filter(v => v <= 400);
+    const convS = schemes.map(s => ({ x: hN.map(N => 1 / N), y: hN.map(N => Calc.peclet({ N, PeL, scheme: s }).maxErr), color: c[s === 'centre' ? 0 : 1], points: true, marker: s === 'centre' ? undefined : 'square', label: names[s] }));
+    draw('e-conv', 'e-conv-leg', convS, { logx: true, logy: true, showSlope: true, xlabel: 'h = L/N', ylabel: 'erreur maximale', title: `Erreur selon h · Pe_L = ${fmt(PeL, 3)}` });
     explain('peclet', L);
   }
 
@@ -644,6 +647,10 @@
     document.querySelectorAll('[data-bc]').forEach(el => { el.style.display = el.dataset.bc === bc ? '' : 'none'; });
     const nom = bc === 'fourier' ? 'Fourier' : 'Neumann';
     const Ns = Array.from({ length: Math.round(num('n-k')) }, (_, i) => Math.round(num('n-N0') * Math.pow(2, i))).filter(v => v >= 4 && v <= 400);
+    const msgN = $('n-msg');
+    if (!Ns.length) { msgN.className = 'msg bad'; msgN.textContent = 'Aucun maillage exploitable : il faut des valeurs de N comprises entre 4 et 400. Réduisez le plus petit N ou le nombre de maillages.'; return; }
+    msgN.className = Ns.length < 2 ? 'msg warn' : 'msg';
+    msgN.textContent = Ns.length < 2 ? 'Un seul maillage retenu : l’ordre observé ne peut pas être estimé.' : `Maillages utilisés : N = ${Ns.join(', ')} (seules les valeurs de 4 à 400 sont retenues).`;
     const rows = Calc.neumannOrdres(Ns, opts);
     const defs = [['e1', 'p1', `${nom} : fermeture d\u2019ordre 1`, c[1]], ['e2', 'p2', `${nom} : ordre 2 (régressive)`, c[0]], ['e3', 'p3', `${nom} : point fantôme`, c[2]]];
     const lastN = rows[rows.length - 1];
@@ -657,7 +664,7 @@
       `Fourier d\u2019ordre 2 (régressive à trois points) : ordre global observé ${tx(lr.p2)}. La dernière ligne fait intervenir u<sub>N−2</sub>, u<sub>N−1</sub> et u<sub>N</sub> : la matrice sort de la structure tridiagonale.`,
       `Point fantôme : u<sub>N+1</sub> = u<sub>N−1</sub> + 2h (g<sub>R</sub> − κ u<sub>N</sub>), ordre global observé ${tx(lr.p3)}. La dernière ligne (−2 ; 2 + 2hκ) garde la matrice tridiagonale.`,
       `À x = 1, N = ${Np} : ordre 1 <b>${fmt(prof[0].errs[Np], 3)}</b>, ordre 2 <b>${fmt(prof[1].errs[Np], 3)}</b>, point fantôme <b>${fmt(prof[2].errs[Np], 3)}</b> : l\u2019erreur se forme au bord.`,
-      'Retenir : la condition de Fourier (Robin) mêle la valeur et la dérivée au bord ; son ordre de discrétisation compte autant que pour Neumann. κ → ∞ redonne une condition de Dirichlet, κ = 0 une condition de Neumann homogène.'] : [
+      'Retenir : la condition de Fourier mêle la valeur et la dérivée au bord ; son ordre de discrétisation compte autant que pour Neumann. κ → ∞ redonne une condition de Dirichlet, κ = 0 une condition de Neumann homogène.'] : [
       `Neumann d\u2019ordre 1 (u<sub>N</sub> = u<sub>N−1</sub> + h g) : ordre global observé ${tx(lr.p1)}. Le schéma intérieur est d\u2019ordre 2, mais cette fermeture est d\u2019ordre 1 : l\u2019erreur née au bord se propage dans tout le domaine et limite l\u2019ordre global.`,
       `Neumann d\u2019ordre 2 (différence régressive à trois points) : ordre global observé ${tx(lr.p2)}. Elle fait intervenir trois nœuds : la dernière ligne de la matrice sort de la structure tridiagonale.`,
       `Point fantôme (nœud fictif u<sub>N+1</sub> éliminé par la différence centrée en x = 1) : ordre global observé ${tx(lr.p3)}. La matrice reste tridiagonale, avec la dernière ligne (−2 ; 2) : on gagne l\u2019ordre 2 sans changer la structure.`,
@@ -686,23 +693,27 @@
     const modal = schemes.map((s, i) => ({ x: theta, y: theta.map(th => Calc.heatAmplification(s, r0.Fo, th)), color: c[i], label: SCHEME[s] }));
     modal.push({ x: theta, y: theta.map(() => 1), color: css('--plot-axis'), dash: [5, 4], label: 'seuil |G| = 1' });
     modal.push({ x: theta, y: theta.map(th => Math.exp(-r0.Fo * th * th)), color: css('--muted'), dash: [2, 4], label: 'chaleur continue, même mode' });
-    draw('c-amp', 'c-amp-leg', modal, { xlabel: 'nombre d’onde θ', ylabel: '|G(θ)|', title: `Fo = ${fmt(r0.Fo, 3)}` });
+    draw('c-amp', 'c-amp-leg', modal, { xlabel: 'nombre d’onde φ', ylabel: '|G(φ)|', title: `Fo = ${fmt(r0.Fo, 3)}` });
     const oneLevel = schemes.filter(s => ['ftcs', 'btcs', 'cn'].includes(s));
     const signed = oneLevel.map((s, i) => ({ x: theta, y: theta.map(th => Calc.heatAmplificationSigned(s, r0.Fo, th)), color: c[schemes.indexOf(s)], label: SCHEME[s] }));
     signed.push({ x: theta, y: theta.map(() => 1), color: css('--plot-axis'), dash: [5, 4], label: 'G = 1' });
     signed.push({ x: theta, y: theta.map(() => -1), color: css('--muted'), dash: [2, 4], label: 'G = −1' });
-    draw('c-g-signed', 'c-g-signed-leg', signed, { xlabel: 'nombre d’onde θ', ylabel: 'G(θ)', ylim: [-1.1, 1.1], title: `G signé · Fo = ${fmt(r0.Fo, 3)}` });
+    draw('c-g-signed', 'c-g-signed-leg', signed, { xlabel: 'nombre d’onde φ', ylabel: 'G(φ)', ylim: [-1.1, 1.1], title: `G signé · Fo = ${fmt(r0.Fo, 3)}` });
     const rows = [];
     schemes.forEach((s, i) => dts.forEach(dt => { const r = run(s, dt); rows.push({ s, i, dt: tf / Math.max(1, Math.round(tf / dt)), r }); }));
     cards($('c-table'), rows.map(o => ({ color: c[o.i], title: `${SCHEME[o.s]} · Δt = ${fmt(o.dt, 4)} s`, lines: [`Fo = <b>${fmt(o.r.Fo, 4)}</b> (${Math.max(1, Math.round(tf / o.dt))} pas ; temps final = ${fmt(o.r.t, 4)} s)`, `erreur maximale = <b>${fmt(o.r.maxErr, 4)}</b>`, o.s === 'ri' ? '<b>instable pour tout Fo</b>' : (o.s === 'ftcs' ? (o.r.stable ? 'critère Fo ≤ 1/2 respecté' : '<b>Fo > 1/2 : critère de FTCS non respecté</b>') : (o.s === 'df' ? 'erreur bornée dans ce calcul (stabilité vue au chapitre 4)' : 'stable pour tout Fo'))] })));
     const S2 = schemes.map((s, i) => { const pr = rows.filter(o => o.s === s).sort((p, q) => p.dt - q.dt); return { x: pr.map(o => o.dt), y: pr.map(o => o.r.maxErr), color: c[i], label: SCHEME[s], points: true }; });
     draw('c-plot2', 'c-leg2', S2, { logx: true, logy: true, showSlope: true, xlabel: 'Δt (s)', ylabel: 'erreur maximale', title: 'Erreur selon Δt' });
+    const Fo0 = dts[0] * alpha / (h * h), N0 = Math.max(2, Math.round(L / h));
+    const refNs = [Math.floor(N0 / 2), N0, 2 * N0].filter((N, k) => N >= 4 && (k < 2 || N * Math.max(1, Math.round(tf / (Fo0 * (L / N) * (L / N) / alpha))) <= 3e6));
+    const refS = schemes.map((s, i) => { const pts = refNs.map(N => { const hk = L / N, steps = Math.max(1, Math.round(tf / (Fo0 * hk * hk / alpha))); return { hk, err: Calc.chaleur({ alpha, L, h: hk, dt: tf / steps, steps, scheme: s }).maxErr }; }); return { x: pts.map(p => p.hk), y: pts.map(p => p.err), color: c[i], points: true, label: SCHEME[s] }; });
+    draw('c-refine', 'c-refine-leg', refS, { logx: true, logy: true, showSlope: true, xlabel: 'h (m)', ylabel: 'erreur maximale', title: `Raffinement à Fo = ${fmt(Fo0, 3)}, t = ${fmt(tf, 3)} s` });
     const Lx = [];
     schemes.forEach(s => { const pr = rows.filter(o => o.s === s).sort((p, q) => q.dt - p.dt), o0 = pr[0];
       const st = s === 'ftcs' ? (o0.r.stable ? `Fo = ${fmt(o0.r.Fo, 3)} ≤ 1/2 : stable` : `Fo = ${fmt(o0.r.Fo, 3)} > 1/2 : <b>instable</b>, l’erreur explose`) : (s === 'ri' ? `<b>instable</b> pour tout Fo (Fo = ${fmt(o0.r.Fo, 3)}), l’erreur explose` : (s === 'df' ? `erreur bornée dans ce calcul (Fo = ${fmt(o0.r.Fo, 3)})` : `inconditionnellement stable (Fo = ${fmt(o0.r.Fo, 3)})`));
       const p = pr.length > 1 && pr[0].r.stable && pr[1].r.stable ? ` ; entre Δt = ${fmt(pr[0].dt, 3)} et ${fmt(pr[1].dt, 3)}, pente de l’erreur ${fmt(ord2(pr[0].r.maxErr, pr[1].r.maxErr, pr[0].dt / pr[1].dt), 3)} (inclut aussi l’erreur spatiale)` : '';
       Lx.push(`${SCHEME[s]} : ${st}${p}.`); });
-    Lx.push('Lecture : comparez |G| au facteur exact exp(−Fo θ²) du même mode pour isoler l’amortissement numérique de l’amortissement physique. Le graphe est une analyse de stabilité modale, pas une mesure d’ordre ; l’erreur selon Δt est tracée à temps final commun, mais inclut l’erreur spatiale. FTCS est stable si Fo ≤ 1/2 ; Dufort–Frankel reste borné dans ces essais, mais sa consistance dépend du chemin de raffinement et son schéma complet inclut une première étape FTCS ; Richardson est instable. BTCS est stable pour tout Δt et d’ordre 1 en temps ; Crank–Nicolson est stable pour tout Δt et d’ordre 2, mais peut changer le signe de G et alterner temporellement lorsque Fo est grand.');
+    Lx.push('Lecture : comparez |G| au facteur exact exp(−Fo φ²) du même mode pour isoler l’amortissement numérique de l’amortissement physique. Le graphe est une analyse de stabilité modale, pas une mesure d’ordre ; l’erreur selon Δt est tracée à temps final commun, mais inclut l’erreur spatiale. FTCS est stable si Fo ≤ 1/2 ; Dufort–Frankel reste borné dans ces essais, mais sa consistance dépend du chemin de raffinement et son schéma complet inclut une première étape FTCS ; Richardson est instable. BTCS est stable pour tout Δt et d’ordre 1 en temps ; Crank–Nicolson est stable pour tout Δt et d’ordre 2, mais peut changer le signe de G et alterner temporellement lorsque Fo est grand.');
     explain('chaleur', Lx);
     $('c-mid').textContent = '';
   }
@@ -788,10 +799,10 @@
     const theta = Array.from({ length: 81 }, (_, i) => i * Math.PI / 80), C = Math.sign(a) * Co;
     const modalAmp = schemes.map((s, i) => ({ x: theta, y: theta.map(th => Calc.advectionAmplification(s, C, th).modulus), color: c[i], label: SCHEME[s] }));
     modalAmp.push({ x: theta, y: theta.map(() => 1), color: css('--plot-axis'), dash: [5, 4], label: 'seuil |G| = 1' });
-    draw('a-modal-amp', 'a-modal-amp-leg', modalAmp, { xlabel: 'nombre d’onde θ', ylabel: '|G(θ)|', title: `Co signé = ${fmt(C, 3)}` });
+    draw('a-modal-amp', 'a-modal-amp-leg', modalAmp, { xlabel: 'nombre d’onde φ', ylabel: '|G(φ)|', title: `Co signé = ${fmt(C, 3)}` });
     const modalPhase = schemes.map((s, i) => ({ x: theta, y: theta.map(th => Calc.advectionAmplification(s, C, th).phaseError), color: c[i], label: SCHEME[s] }));
     modalPhase.push({ x: theta, y: theta.map(() => 0), color: css('--plot-axis'), dash: [5, 4], label: 'phase exacte' });
-    draw('a-modal-phase', 'a-modal-phase-leg', modalPhase, { xlabel: 'nombre d’onde θ', ylabel: 'erreur de phase (rad/pas)', ylim: [-Math.PI, Math.PI], title: 'Erreur de phase modulo 2π' });
+    draw('a-modal-phase', 'a-modal-phase-leg', modalPhase, { xlabel: 'nombre d’onde φ', ylabel: 'erreur de phase (rad/pas)', ylim: [-Math.PI, Math.PI], title: 'Erreur de phase modulo 2π' });
     const Nbase = Math.min(500, Nxs[0]), convNs = [Nbase, 2 * Nbase, 4 * Nbase];
     const conv = schemes.map((s, i) => {
       const rows = convNs.map(Nx => {
@@ -823,7 +834,7 @@
       eq.push(`<p><b>Lax–Wendroff :</b> u<sub>t</sub> + a u<sub>x</sub> = β u<sub>xxx</sub> + …, avec β = −a h²(1 − Co²)/6 = <b>${fmt(beta, 6)}</b> m³/s. Le terme impair agit sur la phase : comparez à la courbe d'erreur de phase et aux oscillations du profil.</p>`);
     }
     $('a-modified').innerHTML = `<h3>Équation équivalente : la conséquence du calcul de Taylor</h3><p>Avec a = ${fmt(a, 4)} m/s, Co = ${fmt(ca, 4)}, h = ${fmt(hMod, 5)} m et Δt = ${fmt(dtMod, 6)} s. Ces expressions gardent seulement le terme dominant établi dans le chapitre 4 ; elles ne constituent pas une équation exacte du schéma.</p>${eq.join('') || '<p>Sélectionnez Euler centré, Lax–Friedrichs ou Lax–Wendroff pour afficher le calcul du terme dominant correspondant.</p>'}`;
-    const limits = { amont: '|Co| ≤ 1', lxf: '|Co| ≤ 1', lw: '|Co| ≤ 1', bw: '|Co| ≤ 2', cimp: 'stable pour tout Co', ftcs: 'instable pour tout Co non nul fixé (analyse de von Neumann)' };
+    const limits = { amont: '|Co| ≤ 1', lxf: '|Co| ≤ 1', lw: '|Co| ≤ 1', bw: '0 ≤ Co ≤ 2 pour a > 0 (|Co| ≤ 2 en valeur absolue du Courant signé)', cimp: 'stable pour tout Co', ftcs: 'instable pour tout Co non nul fixé (analyse de von Neumann)' };
     explain('adv', [
       'Analyse modale théorique pour le problème linéaire périodique : ' + first.map(o => `${SCHEME[o.s]} : ${limits[o.s]}`).join(' ; ') + '.',
       'Courbes : |G| > 1 indique un mode amplifié ; |G| < 1 indique un amortissement numérique ; l’erreur de phase décrit le décalage du mode par rapport au transport exact. La stabilité est contrôlée sur tous les nombres d’onde, pas déduite d’un seul profil.',
@@ -862,7 +873,7 @@
         : `<figure class="sit-video"><video controls playsinline preload="metadata" poster="${S[tab].video.poster}" aria-label="${S[tab].video.alt}"><source src="${S[tab].video.src}" type="video/mp4">Votre navigateur ne peut pas lire cette vidéo. <a href="${S[tab].video.src}">Télécharger la vidéo MP4</a>.</video><figcaption>${S[tab].video.legende}</figcaption></figure>`) : '';
       box.innerHTML = tab === 'transport'
         ? `${ph}${v}<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}`
-        : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${tab === 'edpb' ? '<div class="sit-animation" data-kt="parabolique"><button id="k-edpb-play" class="btn alt" type="button" aria-pressed="false">Animer la diffusion</button><span id="k-edpb-play-status" aria-live="polite">Le schéma suit le temps choisi dans le curseur.</span><span class="sit-animation-key"><i></i> profil initial <b>—</b> profil diffusé</span></div>' : ''}${ph}${v}`;
+        : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${tab === 'edpb' ? '<div class="sit-animation" data-kt="parabolique"><button id="k-edpb-play" class="btn alt" type="button" aria-pressed="false">Animer la diffusion</button><span id="k-edpb-play-status" aria-live="polite">Le schéma suit le temps choisi dans le curseur.</span><span class="sit-animation-key"><i></i><span>profil initial</span><b></b><span>profil à l’instant t</span></span></div>' : ''}${ph}${v}`;
       box.querySelectorAll('.sit-svg').forEach(svg => {
         svg.setAttribute('title', notes[tab] || 'Schéma de la situation physique associée à cet onglet.');
         svg.setAttribute('aria-label', notes[tab] || 'Schéma de la situation physique associée à cet onglet.');
@@ -913,10 +924,50 @@
       caption.textContent = time > 0 ? `${shape} · t = ${fmt(time, 2)} s` : `${shape} · initial (t = 0)`;
     }
   }
+  function updateEdpbSituationWave(c, time, radius) {
+    const svg = document.querySelector('#p-edpb .sit2 svg[data-kt="hyperbolique"]');
+    if (!svg) return;
+    const initial = svg.querySelector('#k-sit-wave-initial'), profile = svg.querySelector('#k-sit-wave-profile'), caption = svg.querySelector('#k-sit-wave-caption');
+    const xs = Calc.linspace(-8, 8, 161);
+    const path = values => values.map((u, i) => `${i ? 'L' : 'M'}${(48 + (xs[i] + 8) * 17.75).toFixed(1)} ${(91 - 27 * u).toFixed(1)}`).join(' ');
+    if (initial) initial.setAttribute('d', path(Calc.ondeDAlembert({ c, rayon: radius, t: 0, xs })));
+    if (profile) {
+      profile.setAttribute('d', path(Calc.ondeDAlembert({ c, rayon: radius, t: time, xs })));
+      profile.style.opacity = time > 0 ? '1' : '0';
+    }
+    if (caption) {
+      const distance = Math.abs(c * time);
+      caption.textContent = time === 0 ? 'départ : une bosse' : distance < radius
+        ? `t = ${fmt(time, 2)} s · copies superposées`
+        : `t = ${fmt(time, 2)} s · centres ±${fmt(distance, 2)} m`;
+    }
+  }
   function renderSelectedEdpbEquation(type) {
     const equation = (window.EQUATIONS.edpb || []).find(e => e.type === type);
     renderEquationEntry($('k-equation'), equation);
     document.querySelectorAll('.edp-type-option').forEach(option => option.classList.toggle('selected', option.querySelector('input:checked') !== null));
+    const animation = document.querySelector('#p-edpb .sit-animation');
+    if (animation) {
+      animation.dataset.kt = type;
+      const button = $('k-edpb-play'), legend = animation.querySelector('.sit-animation-key');
+      if (button) button.textContent = edpbAnimationTimer !== null ? 'Mettre en pause'
+        : edpbAnimationTarget !== null ? 'Reprendre l’animation'
+          : type === 'hyperbolique' ? 'Animer la propagation' : 'Animer la diffusion';
+      if (legend) {
+        const labels = legend.querySelectorAll('span');
+        if (type === 'hyperbolique') {
+          if (labels[0]) labels[0].textContent = 'profil initial (pointillé)';
+          if (labels[1]) labels[1].textContent = 'solution (trait plein)';
+          legend.style.setProperty('--sit-initial', 'var(--plot-axis)');
+          legend.style.setProperty('--sit-current', 'var(--blue)');
+        } else {
+          if (labels[0]) labels[0].textContent = 'profil initial';
+          if (labels[1]) labels[1].textContent = 'profil diffusé';
+          legend.style.setProperty('--sit-initial', 'var(--orange)');
+          legend.style.setProperty('--sit-current', 'var(--green)');
+        }
+      }
+    }
     const situation = document.querySelector('#p-edpb .sit-txt');
     if (situation) {
       const gap = num('k-gap');
@@ -936,7 +987,7 @@
           : gap < 1
             ? `<b>Situation physique.</b> On impose deux zones chaudes de forme cosinus, séparées de ${fmt(gap, 1)} m. Chaque zone contribue une bosse ; comme leurs supports se chevauchent, leurs contributions s’additionnent et peuvent former un seul sommet. Le bouton anime leur diffusion.`
             : `<b>Situation physique.</b> On impose deux zones chaudes de forme cosinus, séparées de ${fmt(gap, 1)} m. La température initiale est la somme des deux zones : chacune donne une bosse sur la courbe, d’où les deux pics. Pendant la diffusion, les bosses s’élargissent et s’abaissent ; le bouton anime cette évolution.`,
-        hyperbolique: '<b>Situation physique.</b> Dans le tube, la bosse dessinée représente le profil initial : c’est la courbe pointillée à t = 0. Comme la vitesse initiale est nulle, ce profil se partage en deux bosses de demi-hauteur qui avancent en sens opposés. La courbe pleine montre ces deux bosses à l’instant t, centrées en x = ±ct.'
+        hyperbolique: '<b>Situation physique.</b> La bosse dans le tube est le profil initial, aussi tracé en pointillés sur le graphe. Au cours du temps, il donne deux copies de demi-hauteur qui se déplacent en sens opposés à la vitesse c. Le dessin animé et la courbe suivent ensemble les valeurs de c et de t ; les copies ne forment deux bosses distinctes que lorsque leurs supports ne se chevauchent plus.'
       };
       situation.innerHTML = texts[type];
     }
@@ -962,7 +1013,8 @@
   const INTRO = { amont: 'Schéma A', lw: 'Schéma B', bw: 'Schéma C', lxf: 'Schéma D', ftcs: 'Schéma E' };
   function runIntro() {
     const c = pal(), schemes = checked('i-s'), N = Math.round(num('i-N')), Co = num('i-Co'), ts = [num('i-t1'), num('i-t2')];
-    if (!schemes.length) return;
+    if (!schemes.length) { $('i-msg').className = 'msg warn'; $('i-msg').textContent = 'Cochez au moins un schéma pour afficher les profils.'; return; }
+    if (!(N >= 20) || !(Co > 0) || !isFinite(N) || !isFinite(Co) || ts.some(t => !(t > 0))) { $('i-msg').className = 'msg bad'; $('i-msg').textContent = 'Paramètres invalides : il faut N ≥ 20, C > 0 et des instants strictement positifs.'; return; }
     $('i-grid').innerHTML = schemes.map(s => ts.map((t, k) => `<canvas id="i-c-${s}-${k}" aria-label="${INTRO[s]} à t = ${t}"></canvas>`).join('')).join('');
     const items = []; let bad = false;
     schemes.forEach((s, si) => ts.forEach((t, k) => {
@@ -1149,6 +1201,7 @@
       cards($('k-cards'), [{ color: c[3], title: `À t = ${fmt(tp, 3)} s`, lines: [`u(5, 0) = <b>0</b> : x = 5 est hors du support initial`, `u(5, ${fmt(tp, 3)}) = <b>${far[0].toExponential(2).replace('.', ',')}</b>`, `u(0, ${fmt(tp, 3)}) = <b>${far[1].toExponential(2).replace('.', ',')}</b>`, `repères : u(5, 2) ≈ ${far2.toExponential(2).replace('.', ',')} ; u(5, 8) ≈ ${far8.toExponential(2).replace('.', ',')}`] }]);
     } else {
       const cc = num('k-c'), th = num('k-th'), rayon = 0.5, xs = Calc.linspace(-8, 8, 800);
+      updateEdpbSituationWave(cc, th, rayon);
       const S = [{ x: xs, y: Calc.ondeDAlembert({ c: cc, rayon, t: 0, xs }), color: css('--plot-axis'), dash: [6, 4], label: 'Initiale (t = 0)' },
                  { x: xs, y: Calc.ondeDAlembert({ c: cc, rayon, t: th, xs }), color: c[0], width: 2.4, label: `Solution (t = ${fmt(th, 3)} s)` }];
       draw('k-hyp', 'k-hyp-leg', S, { xlabel: 'x (m)', ylabel: 'u', title: 'Équation des ondes' });
@@ -1168,6 +1221,10 @@
   function applyPreset(tab, idx) {
     const e = window.GUIDE.tabs[tab].explorations[idx];
     Object.keys(e.reglages || {}).forEach(id => { const el = $(id); if (el) el.value = e.reglages[id]; });
+    if (e.reglages && e.reglages['t-D'] && $('t-Pe')) {   // le curseur de Péclet suit la diffusivité imposée
+      const D = Number(e.reglages['t-D']), speed = Math.abs(num('t-a')), sigma0 = num('t-s0');
+      if (D > 0 && speed > 0) { $('t-Pe').value = String(speed * sigma0 / D); $('t-Pe').dataset.lastNonzero = $('t-Pe').value; }
+    }
     Object.keys(e.checks || {}).forEach(name => document.querySelectorAll('input[name="' + name + '"]').forEach(cb => { cb.checked = e.checks[name].indexOf(cb.value) >= 0; }));
     syncSliders(); safe(current);
     const m = $('p-' + tab).querySelector('.preset-note'); if (m) m.textContent = 'Réglages de ' + e.id + ' appliqués : lisez le résultat, puis répondez sur la fiche.';
@@ -1181,8 +1238,9 @@
       const tabName = document.querySelector('button[data-tab="' + tab + '"]').textContent.trim();
       const comps = t.competences.map(k => `<li><b>${k}</b> ${G.competences[k]}</li>`).join('');
       const notions = t.notions.map(n => `<li>${n}</li>`).join('');
+      const sym = txt => String(txt == null ? '' : txt).replace(/\bCo_ref\b/g, 'Co<sub>ref</sub>').replace(/\bFo_ref\b/g, 'Fo<sub>ref</sub>').replace(/\bh_ref\b/g, 'h<sub>ref</sub>').replace(/\balpha\b/g, 'α').replace(/\blambda\b/g, 'λ').replace(/\bsigma0\b/g, 'σ₀').replace(/\bc0\b/g, 'c₀').replace(/\bh0\b/g, 'h₀');
       const ex = t.explorations.map((e, i) => `<div class="explo"><p class="repere"><b>Repère avant l’activité :</b> ${G.reperes[e.id].replace(/[.]$/, '')} ; calculateur : onglet « ${tabName} ».</p><b>${e.id} · ${e.titre}</b> <span class="codes">(${e.comp.join(', ')})</span>
-        ${e.main ? `<p class="main"><b>D\u2019abord, à la main :</b> ${e.main}</p>` : ''}<p>${e.consigne}</p><p><i>Question :</i> ${e.question}</p><button type="button" class="btn alt" data-explo="${tab}|${i}">Appliquer ces réglages</button></div>`).join('');
+        ${e.main ? `<p class="main"><b>D\u2019abord, à la main :</b> ${sym(e.main)}</p>` : ''}<p>${sym(e.consigne)}</p><p><i>Question :</i> ${sym(e.question)}</p><button type="button" class="btn alt" data-explo="${tab}|${i}">Appliquer ces réglages</button></div>`).join('');
       box.innerHTML = `<h3>Pour approfondir : ${t.fiche}</h3>
         <div class="two"><div><h4>Compétences travaillées</h4><ul>${comps}</ul></div>
         <div><h4>Notions à définir et à retrouver sur la fiche</h4><ul>${notions}</ul><p>Exercices liés : ${t.exercices}.</p></div></div>
@@ -1193,28 +1251,37 @@
     });
   }
 
-  let current = 'home', edpbAnimationTimer = null;
+  let current = 'home', edpbAnimationTimer = null, edpbAnimationTarget = null;
   function stopEdpbAnimation(message) {
     if (edpbAnimationTimer !== null) { window.clearInterval(edpbAnimationTimer); edpbAnimationTimer = null; }
+    edpbAnimationTarget = null;
     const button = $('k-edpb-play'), status = $('k-edpb-play-status');
-    if (button) { button.textContent = 'Animer la diffusion'; button.setAttribute('aria-pressed', 'false'); }
+    if (button) { button.textContent = checked('k-type')[0] === 'hyperbolique' ? 'Animer la propagation' : 'Animer la diffusion'; button.setAttribute('aria-pressed', 'false'); }
     if (status && message) status.textContent = message;
   }
   function startEdpbAnimation() {
-    const slider = $('k-tp'), button = $('k-edpb-play'), status = $('k-edpb-play-status');
+    const type = checked('k-type')[0] || 'elliptique';
+    const slider = $(type === 'hyperbolique' ? 'k-th' : 'k-tp'), button = $('k-edpb-play'), status = $('k-edpb-play-status');
     if (!slider || !button || !status) return;
-    const target = Number(slider.value), step = Number(slider.step) || 0.5;
-    if (edpbAnimationTimer !== null) { stopEdpbAnimation(`Animation en pause à t = ${fmt(Number(slider.value), 2)} s.`); return; }
+    const step = Number(slider.step) || 0.5;
+    if (edpbAnimationTimer !== null) {
+      window.clearInterval(edpbAnimationTimer); edpbAnimationTimer = null;
+      button.textContent = 'Reprendre l’animation'; button.setAttribute('aria-pressed', 'false');
+      status.textContent = `Animation en pause à t = ${fmt(Number(slider.value), 2)} s.`;
+      return;
+    }
+    const target = edpbAnimationTarget ?? Number(slider.value);
     if (target <= 0) { status.textContent = 'Choisissez un instant final supérieur à 0 s avec le curseur pour lancer l’animation.'; return; }
-    slider.value = '0'; syncSliders(); safe('edpb');
+    if (edpbAnimationTarget === null) { edpbAnimationTarget = target; slider.value = '0'; syncSliders(); safe('edpb'); }
     button.textContent = 'Mettre en pause'; button.setAttribute('aria-pressed', 'true');
-    status.textContent = `Diffusion animée : t = 0 sur ${fmt(target, 2)} s.`;
+    status.textContent = `${type === 'hyperbolique' ? 'Propagation' : 'Diffusion'} animée : t = ${fmt(Number(slider.value), 2)} sur ${fmt(target, 2)} s.`;
+    const frameDelay = Math.max(100, Math.min(400, 8000 / Math.max(1, target / step)));
     edpbAnimationTimer = window.setInterval(() => {
       const next = Math.min(target, Number(slider.value) + step);
       slider.value = String(next); syncSliders(); safe('edpb');
-      status.textContent = `Diffusion animée : t = ${fmt(next, 2)} sur ${fmt(target, 2)} s.`;
+      status.textContent = `${type === 'hyperbolique' ? 'Propagation' : 'Diffusion'} animée : t = ${fmt(next, 2)} sur ${fmt(target, 2)} s.`;
       if (next >= target) stopEdpbAnimation(`Animation terminée à t = ${fmt(target, 2)} s.`);
-    }, 450);
+    }, frameDelay);
   }
   function safe(name) {
     try { if (RUN[name]) RUN[name](); } catch (e) { const panel = $('p-' + name); const p = panel && panel.querySelector('.msg'); if (p) { p.className = 'msg bad'; p.textContent = 'Paramètres invalides : ' + e.message; } }
@@ -1251,6 +1318,9 @@
     document.querySelectorAll('input[name="b-mesh"]').forEach(i => i.addEventListener('change', syncBarreMeshControl));
     document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => { stopEdpbAnimation(''); safe('edpb'); }));
     document.querySelectorAll('input[type="range"]').forEach(r => r.addEventListener('input', syncSliders));
+    // intro : le calcul de N et C est lourd (≈ 1,4 s à N = 400, C = 1) ; on attend la fin du geste du curseur
+    let introTimer = null;
+    ['i-N', 'i-Co'].forEach(id => { const el = $(id); if (!el) return; el.addEventListener('input', e => { e.stopImmediatePropagation(); syncSliders(); clearTimeout(introTimer); introTimer = setTimeout(() => safe('intro'), 250); }); });
     syncSliders();
     syncBarreMeshControl();
     $('theme').addEventListener('click', () => {
@@ -1265,6 +1335,7 @@
     window.addEventListener('load', renderEquations);
     renderGuides();
     window.addEventListener('resize', () => safe(current));
+    window.addEventListener('hashchange', () => { const name = location.hash.replace('#', ''); if (RUN[name] && name !== current) show(name); });
     const h = location.hash.replace('#', '');
     show(RUN[h] ? h : 'home');
   }

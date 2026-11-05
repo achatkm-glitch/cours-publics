@@ -575,3 +575,19 @@ Tâche miroir de MFTN 145. Réserver `mftn/calculateurs/{app.js,calc.js,index.ht
 
 ### Clôture tâche miroir 135 — 2026-11-05 18:09:22 +01:00 — Codex
 MFTN commit `c7d064b62108b59f077b7ea13da9b8aa5f0f81ec`, miroir `892752b0dbeecbf667409a8472b9446256379216`, refs `main` vérifiées. Pages run `42071673554` réussi. Empreintes source/miroir de app.js, calc.js et index.html concordent (MFTN `version_traceability.md`). Page publique `#barre` affiche l’erreur signée, le maximum absolu, le cas uniforme DF/VF et le curseur d’étirement cosinus. Contrôles syntaxe, diff et numérique réussis. Aucun PDF ou source externe modifié. Verrous libérés.
+
+### Prise en charge Codex — MFTN tâche 149 — 2026-11-05 19:19:44 +01:00
+- État : en cours ; miroir réservé pour synchronisation après modification de la source MFTN.
+- Périmètre : mftn/calculateurs/{app.js,situations.js,index.html} et registres du dépôt cours-publics.
+- Dépendance : tâche 149 source MFTN, verrou désormais libre selon passation du 2026-11-05 19:12:10.
+- Contrôle prévu : syntaxe, cohérence source/miroir, rendu local/public et GitHub Pages.
+- Prochaine action : synchroniser après l’implémentation MFTN, déployer et vérifier la page #edpb.
+
+### Reprise FIFO — tâche miroir 149 — 2026-11-05 20:46:02 +01:00 — Codex
+La source MFTN a libéré `Peda_inv/` dans sa dernière table de verrous. Reprise du verrou réservé précédemment : modifier uniquement `mftn/calculateurs/{app.js,situations.js,index.html}` et les registres de suivi pour synchroniser l’animation #edpb depuis MFTN. Les modifications déjà présentes aux registres restent préservées et seront vérifiées avant leur commit.
+
+### Avancement tâche miroir 149 — 2026-11-05 21:04:02 +01:00 — Codex
+- **Fait** : les quatre fichiers du calculateur public ont été synchronisés depuis `C:\Latex\MFTN\Peda_inv\site`.
+- **Contrôlé** : les empreintes SHA-256 de `app.js`, `situations.js`, `index.html` et `style.css` sont identiques à la source ; l’animation, la pause et la reprise ont été vérifiées visuellement dans Edge local sur la source MFTN.
+- **Limites** : cette copie locale du miroir n’est pas encore publiée ; aucun contrôle du site public après déploiement.
+- **Prochaine étape** : commit/push des deux dépôts, attendre le workflow Pages et vérifier le calculateur public #edpb.

@@ -96,3 +96,10 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 | MFTN 145 / miroir 135 — app.js, calc.js, index.html et registres | ACTIF — Codex | 2026-11-05 17:57:31 +01:00 — clarifier erreurs, différencier DF/VF et rendre le maillage non uniforme ajustable |
 
 | MFTN 145 / miroir 135 — app.js, calc.js, index.html et registres | LIBRE — Codex | 2026-11-05 18:09:22 +01:00 — commits MFTN c7d064b / miroir 892752b poussés ; Pages run 42071673554 réussi |
+
+| MFTN tâche 149 / miroir — mftn/calculateurs/{app.js,situations.js,index.html,style.css}, suivi/{decisions,passations,verrous}.md | ACTIF — Codex | 2026-11-05 19:19:44 +01:00 — animation hyperbolique #edpb, puis synchronisation/publication |
+
+| MFTN tâche 149 / miroir — mftn/calculateurs/{app.js,situations.js,index.html}, suivi/{decisions,passations,verrous}.md | LIBRE — Codex suspend le travail du miroir ; code source bloqué par le verrou Claude MFTN tâche 153 | 2026-11-05 19:28:17 +01:00 — rang FIFO conservé, reprise seulement après libération source |
+| MFTN tâche 149 — `Peda_inv/site/{app.js,situations.js,index.html}` | ACTIF — Codex | 2026-11-05 20:46:02 +01:00 — pictogramme de propagation hyperbolique animé selon les paramètres c et t, bouton lecture/pause synchronisé au curseur ; ne pas toucher au `calc.js` de Claude |
+| Tâche miroir 149 — `mftn/calculateurs/{app.js,situations.js,index.html,style.css}` et registres | ACTIF — Codex | 2026-11-05 20:46:02 +01:00 — reprise après libération de la source ; synchroniser strictement après contrôle MFTN |
+| MFTN tâche 149 — code source et miroir | ACTIF — Codex | 2026-11-05 21:04:02 +01:00 — source et miroir identiques ; poursuivre jusqu’au push et au contrôle GitHub Pages |

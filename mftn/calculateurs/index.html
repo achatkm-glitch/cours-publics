@@ -187,7 +187,7 @@
         </div>
         <div data-kt="hyperbolique" class="kgroup" style="display:none">
           <label>Vitesse de propagation c<span class="sl"><input type="range" id="k-c" min="0.2" max="3" step="0.1" value="1" data-unit="m/s"><output></output></span></label>
-          <label>Instant t<span class="sl"><input type="range" id="k-th" min="0.5" max="6" step="0.1" value="2" data-unit="s"><output></output></span></label>
+          <label>Instant t<span class="sl"><input type="range" id="k-th" min="0" max="6" step="0.1" value="2" data-unit="s"><output></output></span></label>
         </div>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
@@ -216,7 +216,7 @@
 
 <!-- Ch.1 : conditions aux limites -->
 <section class="panel" id="p-cl">
-  <h2>Barre : conditions aux limites Dirichlet, Neumann, Robin (condition de Fourier)</h2>
+  <h2>Barre : conditions aux limites Dirichlet, Neumann, Fourier</h2>
   <p class="lead">Conduction stationnaire dans une barre avec production, la température étant imposée en x = 0 et trois conditions possibles en x = L. Séance 1, bloc B. Cochez plusieurs conditions pour les comparer ; par défaut, l'exemple de la paroi du polycopié, où elles sont équivalentes.</p>
   <div class="eqs" data-eq="cl"></div>
   <div class="grid">
@@ -225,7 +225,7 @@
         <div class="checks" role="group" aria-label="Conditions en x = L">
           <label><input type="checkbox" name="l-type" value="dirichlet" checked> Dirichlet</label>
           <label><input type="checkbox" name="l-type" value="neumann" checked> Neumann</label>
-          <label><input type="checkbox" name="l-type" value="robin" checked> Robin</label>
+          <label><input type="checkbox" name="l-type" value="robin" checked> Fourier</label>
         </div>
         <label>Épaisseur L, en m<span class="sl"><input type="range" id="l-L" min="0.05" max="1" step="0.05" value="0.1" data-unit="m"><output></output></span></label>
         <label>Conductivité λ, en W/(m·K)<span class="sl"><input type="range" id="l-lambda" min="1" max="100" step="1" value="10"><output></output></span></label>
@@ -233,8 +233,8 @@
         <label>T(0), en K<span class="sl"><input type="range" id="l-T0" min="250" max="400" step="1" value="300"><output></output></span></label>
         <label>Dirichlet : T(L), en K<span class="sl"><input type="range" id="l-TL" min="250" max="450" step="1" value="331"><output></output></span></label>
         <label>Neumann : flux sortant en L, en W/m²<span class="sl"><input type="range" id="l-qL" min="0" max="10000" step="100" value="1900"><output></output></span></label>
-        <label>Robin : coefficient h, en W/(m²·K)<span class="sl"><input type="range" id="l-h" min="5" max="500" step="5" value="50"><output></output></span></label>
-        <label>Robin : température du fluide T∞, en K<span class="sl"><input type="range" id="l-Tinf" min="250" max="350" step="1" value="293"><output></output></span></label>
+        <label>Fourier : coefficient h, en W/(m²·K)<span class="sl"><input type="range" id="l-h" min="5" max="500" step="5" value="50"><output></output></span></label>
+        <label>Fourier : température du fluide T∞, en K<span class="sl"><input type="range" id="l-Tinf" min="250" max="350" step="1" value="293"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
       <p class="repere"><b>Repère (valeurs initiales) :</b> C₁ = 810 K/m, T(L) = 331 K, T max ≈ 332,8 K en x = 0,081 m ; flux sortants 8100 W/m² en x = 0 et 1900 W/m² en x = L, dont la somme vaut q·L = 10 000 W/m².</p>
@@ -398,15 +398,15 @@
 
 <!-- Ch.2 : Neumann -->
 <section class="panel" id="p-neumann">
-  <h2>Conditions aux limites discrétisées : Neumann et Fourier (Robin), ordre 1, ordre 2 et point fantôme</h2>
-  <p class="lead">Problème avec une condition de Dirichlet à gauche et, à droite, une condition de Neumann (flux imposé) ou de Fourier (échange convectif, dite de Robin dans le cours), de solution exacte connue. En thermique, un flux imposé q donne, par la loi de Fourier (−λ T′ = q), la dérivée à imposer au bord. Compare trois façons de discrétiser cette condition pour fermer le système : formule d'ordre 1, formule régressive d'ordre 2 et point fantôme. Séance 2, exercices B, F et H.</p>
+  <h2>Conditions aux limites discrétisées : Neumann et Fourier, ordre 1, ordre 2 et point fantôme</h2>
+  <p class="lead">Problème avec une condition de Dirichlet à gauche et, à droite, une condition de Neumann (flux imposé) ou de Fourier (échange convectif), de solution exacte connue. En thermique, un flux imposé q donne, par la loi de Fourier (−λ T′ = q), la dérivée à imposer au bord. Compare trois façons de discrétiser cette condition pour fermer le système : formule d'ordre 1, formule régressive d'ordre 2 et point fantôme. Séance 2, exercices B, F et H.</p>
   <div class="eqs" data-eq="neumann"></div>
   <div class="grid">
     <div>
       <form class="params">
         <div class="checks" role="radiogroup" aria-label="Condition au bord">
           <label><input type="radio" name="n-bc" value="neumann" checked> Neumann (flux imposé)</label>
-          <label><input type="radio" name="n-bc" value="fourier"> Fourier (échange convectif, Robin)</label>
+          <label><input type="radio" name="n-bc" value="fourier"> Fourier (échange convectif)</label>
         </div>
         <label data-bc="fourier" style="display:none">Coefficient d'échange κ = h/λ<span class="sl"><input type="range" id="n-kappa" min="0.5" max="20" step="0.5" value="2"><output></output></span></label>
         <label>Plus petit N<span class="sl"><input type="range" id="n-N0" min="4" max="40" step="1" value="10"><output></output></span></label>
@@ -417,6 +417,7 @@
       <p class="repere"><b>Repère :</b> pour N de 10 à 80, l'ordre global observé vaut environ 1,0 avec la fermeture d'ordre 1 et environ 2,0 avec la fermeture d'ordre 2 et avec le point fantôme.</p>
     </div>
     <div>
+      <p class="msg" id="n-msg" aria-live="polite"></p>
       <div class="plots2"><div><canvas id="n-plot" aria-label="Erreur maximale selon h"></canvas><div class="legend" id="n-leg"></div></div><div><canvas id="n-plot2" aria-label="Profil de l'erreur"></canvas><div class="legend" id="n-leg2"></div></div></div>
       <div class="cards" id="n-table"></div>
     </div>
@@ -452,7 +453,7 @@
       <p id="c-mid"></p>
       <div class="plots2"><div><canvas id="c-plot" aria-label="Profils de température"></canvas><div class="legend" id="c-leg"></div></div><div><canvas id="c-plot2" aria-label="Erreur selon le pas de temps" style="margin-top:12px"></canvas><div class="legend" id="c-leg2"></div></div></div>
         <h3>Stabilité modale pour le Fo choisi</h3>
-        <p class="repere">Chaque mode sinusoïdal de nombre d'onde θ est multiplié à chaque pas par un facteur d'amplification. |G| &gt; 1 : croissance ; |G| ≤ 1 pour tous les modes : stabilité de von Neumann dans ce cadre périodique. La courbe « chaleur continue » donne l'amortissement physique exact du même mode ; l'écart indique l'amortissement numérique en plus ou en moins. Pour Dufort–Frankel et Richardson, on trace le module maximal des deux racines : cela vérifie le critère modal mais ne montre ni la nature de chaque racine ni l'effet de l'initialisation, ici faite par FTCS. Pour FTCS, BTCS et Crank–Nicolson, le graphe signé révèle aussi les changements de signe de G : ils peuvent produire une alternance temporelle sans croissance si |G| ≤ 1.</p>
+        <p class="repere">Chaque mode sinusoïdal de nombre d'onde φ est multiplié à chaque pas par un facteur d'amplification. |G| &gt; 1 : croissance ; |G| ≤ 1 pour tous les modes : stabilité de von Neumann dans ce cadre périodique. La courbe « chaleur continue » donne l'amortissement physique exact du même mode ; l'écart indique l'amortissement numérique en plus ou en moins. Pour Dufort–Frankel et Richardson, on trace le module maximal des deux racines : cela vérifie le critère modal mais ne montre ni la nature de chaque racine ni l'effet de l'initialisation, ici faite par FTCS. Pour FTCS, BTCS et Crank–Nicolson, le graphe signé révèle aussi les changements de signe de G : ils peuvent produire une alternance temporelle sans croissance si |G| ≤ 1.</p>
         <div class="plots2"><div><canvas id="c-amp" aria-label="Module du facteur d’amplification en fonction du nombre d’onde"></canvas><div class="legend" id="c-amp-leg"></div></div><div><canvas id="c-g-signed" aria-label="Facteur d’amplification signé des schémas à un niveau"></canvas><div class="legend" id="c-g-signed-leg"></div></div></div>
       <h3>Convergence conjointe à temps final commun</h3>
       <p class="repere">Les maillages sont raffinés avec Fo approximativement constant (Δt proportionnel à h²). Les erreurs sont comparées au même temps final ; les ordres observés décrivent ce chemin et cette solution test, et ne remplacent pas le critère de stabilité ni la consistance.</p>
@@ -522,14 +523,14 @@
         <label>Nombre de points Nx (sert au profil)<span class="sl"><input type="range" id="a-Nx" min="50" max="400" step="10" value="100"><output></output></span><input id="a-Nxx" value="200" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> pour le schéma FTCS, l'analyse de von Neumann à Courant non nul fixé donne un mode amplifié ; le comportement sur un temps physique fini dépend aussi du chemin suivi lorsque h et Δt tendent vers zéro. Amont, Lax–Friedrichs et Lax–Wendroff sont stables si |Co| ≤ 1 ; Beam–Warming si |Co| ≤ 2 ; le centré implicite est stable pour tout Co. Le tracé de |G(θ)| vérifie la croissance/amortissement de chaque mode, tandis que l'erreur de phase distingue la dispersion. Les profils illustrent ces effets pour un signal donné sans, à eux seuls, prouver la stabilité ni la convergence. La vitesse a doit être non nulle ; pour a &lt; 0 le schéma amont prend la différence du côté opposé.</p>
+      <p class="repere"><b>Repère :</b> pour le schéma FTCS, l'analyse de von Neumann à Courant non nul fixé donne un mode amplifié ; le comportement sur un temps physique fini dépend aussi du chemin suivi lorsque h et Δt tendent vers zéro. Amont, Lax–Friedrichs et Lax–Wendroff sont stables si |Co| ≤ 1 ; Beam–Warming si 0 ≤ Co ≤ 2 (pour a > 0) ; le centré implicite est stable pour tout Co. Le tracé de |G(φ)| vérifie la croissance/amortissement de chaque mode, tandis que l'erreur de phase distingue la dispersion. Les profils illustrent ces effets pour un signal donné sans, à eux seuls, prouver la stabilité ni la convergence. La vitesse a doit être non nulle ; pour a &lt; 0 le schéma amont prend la différence du côté opposé.</p>
     </div>
     <div>
       <div class="msg" id="a-msg" aria-live="polite"></div>
       <div class="modified-equation" id="a-modified" aria-live="polite"></div>
       <canvas id="a-plot" aria-label="Profil advecté"></canvas><div class="legend" id="a-leg"></div>
         <h3>Stabilité et dispersion modale</h3>
-        <p class="repere">Pour l'advection périodique, |G(θ)| mesure l'amplification d'un mode et l'erreur de phase mesure son décalage par rapport au transport exact. Une courbe bornée d'un profil particulier n'établit pas, à elle seule, la stabilité ni la convergence du schéma. La courbe de convergence compare l'erreur maximale sur trois maillages, à temps final commun ; son ordre mesuré reste propre à ce problème, au profil et au chemin choisi.</p>
+        <p class="repere">Pour l'advection périodique, |G(φ)| mesure l'amplification d'un mode et l'erreur de phase mesure son décalage par rapport au transport exact. Une courbe bornée d'un profil particulier n'établit pas, à elle seule, la stabilité ni la convergence du schéma. La courbe de convergence compare l'erreur maximale sur trois maillages, à temps final commun ; son ordre mesuré reste propre à ce problème, au profil et au chemin choisi.</p>
         <div class="plots2"><div><canvas id="a-modal-amp" aria-label="Module du facteur d’amplification des schémas d’advection"></canvas><div class="legend" id="a-modal-amp-leg"></div></div><div><canvas id="a-modal-phase" aria-label="Erreur de phase des schémas d’advection"></canvas><div class="legend" id="a-modal-phase-leg"></div></div></div>
         <h3>Erreur au raffinement (temps final commun)</h3>
         <canvas id="a-conv" aria-label="Erreur maximale selon la taille de maille pour plusieurs schémas d’advection"></canvas><div class="legend" id="a-conv-leg"></div>
@@ -545,8 +546,8 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script src="calc.js?v=20261105-145a"></script>
 <script src="equations.js?v=20261105-135a"></script>
-<script src="situations.js?v=20261105-143a"></script>
+<script src="situations.js?v=20261105-149a"></script>
 <script src="guide.js?v=20261105-135a"></script>
-<script src="app.js?v=20261105-145b"></script>
+<script src="app.js?v=20261105-149a"></script>
 </body>
 </html>

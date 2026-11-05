@@ -342,3 +342,9 @@ L’horodatage de la décision précédente est mal formé (date répétée). He
 
 ### 2026-11-05 17:57:31 +01:00 — Erreur de la barre et maillage ajustable (tâche miroir 135)
 Décision de présentation : nommer explicitement l’erreur signée du graphe et distinguer la norme maximale en valeur absolue. Ajouter un cas simple comparant DF nodal et VF centré sur un maillage uniforme, puis rendre paramétrable l’étirement du maillage non uniforme sans appeler cela un maillage arbitraire point par point. Auteur : Codex, prise FIFO.
+
+### 2026-11-05 19:19:44 +01:00 — Animation de l’onde et cohérence du site
+- Instruction utilisateur : créer une animation dans la situation physique de « EDP : comportement » (#edpb), montrant l’évolution du profil initial en deux bosses se propageant en sens opposés.
+- Attribution : Codex, prise FIFO après la libération du verrou Claude sur Peda_inv/ (tâche 148).
+- Preuve : commentaire utilisateur du 2026-11-05, navigateur local #edpb.
+- Instruction complémentaire reçue : le panneau de réglages de « Chaleur » (#chaleur) doit être flottant comme les autres ; tâche 152 en attente derrière les tâches 149–151.
