@@ -376,3 +376,9 @@ Le sélecteur est maintenant dans le bloc de situation physique, entre son texte
 
 ### Clôture tâche 115 — 2026-11-05 02:07:09 +01:00 Europe/Paris (UTC+01:00) — Codex
 Le déploiement Pages run 41946133951 a réussi pour ecbae3a671171b06d470e840d2c0069086f07c24. L’onglet EDP comportement a été contrôlé : radios elliptique/parabolique/hyperbolique essayées ; l’équation, le pictogramme, les curseurs et les graphes changent ensemble. Verrou libéré.
+
+### Prise en charge tâche 116 — 2026-11-05 02:10:20 +01:00 Europe/Paris (UTC+01:00) — Codex
+Réservation de mftn/calculateurs/index.html, app.js, style.css et registres. Le graphe hyperbolique montrera distinctement le profil initial pointillé et la solution au temps courant ; une lecture sous le graphe expliquera les deux bosses selon c et t.
+
+### Clôture tâche 116 — 2026-11-05 02:18:23 +01:00 Europe/Paris (UTC+01:00) — Codex
+Publication du contenu 5c28358d5b73d845351285d082dc01e25eb80b17 vérifiée (Pages run 41947434139). Les deux choix de réglages sont contrôlés : c=1,t=2 donne deux bosses séparées ; c=0,2,t=0,5 indique le recouvrement. L’explication visible correspond à chaque état. Verrou libéré.

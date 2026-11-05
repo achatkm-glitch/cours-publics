@@ -255,3 +255,9 @@ Sélecteur déplacé dans la situation physique avant le pictogramme. Les gestio
 
 ### Clôture tâche 115 — 2026-11-05 02:07:09 +01:00 — Codex
 Sélecteur placé dans la carte de situation physique. Vérification en ligne des trois choix : équation, pictogramme, réglages et graphes correspondants. Pages run 41946133951 réussi. Aucun PDF modifié.
+
+### Instruction utilisateur / prise FIFO — tâche 116 — 2026-11-05 02:10:20 +01:00 Europe/Paris (UTC+01:00) — Codex
+Expliquer directement le graphe de l’onde sélectionné, en particulier les courbes de la légende t=0 et t=2,000. Ajouter un repère visuel et une explication adaptée aux valeurs c et t.
+
+### Clôture tâche 116 — 2026-11-05 02:18:23 +01:00 — Codex
+Le graphe distingue par sa légende le profil initial pointillé de la solution en trait plein ; une carte sous le graphe explique d’Alembert, centres, supports et recouvrement selon c et t. Pages run 41947434139 réussi, vérification navigateur faite.

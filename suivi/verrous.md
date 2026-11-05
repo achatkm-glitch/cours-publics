@@ -22,3 +22,5 @@
 | mftn/calculateurs/index.html, app.js, style.css et registres tâche 114 | LIBRE | Codex — déploiement confirmé, Pages run 41944835906 |
 | mftn/calculateurs/index.html, app.js, style.css et registres tâche 115 | ACTIF — Codex | 2026-11-05 02:02:47 +01:00 |
 | mftn/calculateurs/index.html, app.js, style.css et registres tâche 115 | LIBRE | Codex — Pages run 41946133951 réussi, trois choix contrôlés |
+| mftn/calculateurs/index.html, app.js, style.css et registres tâche 116 | ACTIF — Codex | 2026-11-05 02:10:20 +01:00 |
+| mftn/calculateurs/index.html, app.js, style.css et registres tâche 116 | LIBRE | Codex — Pages run 41947434139 réussi, explication contrôlée |
