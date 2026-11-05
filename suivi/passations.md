@@ -616,3 +616,28 @@ Réservation de `mftn/calculateurs/{index.html,style.css}` et des registres. Dé
 
 ### Clôture tâche miroir 156 — 2026-11-05 21:57:33 +01:00 — Codex
 Commit miroir `254a46c20545f6cda408c9b85e01769f6b1fa777` confirmé sur `origin/main` ; Pages run `42107725161` réussi. Page/CSS HTTP 200 et règles `adv-grid` servies ; SHA-256 identiques à la source MFTN. Inspection visuelle non réalisée. Verrous libérés.
+
+### Prise FIFO — tâche miroir 157 — 2026-11-06 00:00:43 +01:00 — Codex
+- Déclencheur : mission utilisateur d’audit/corrections ciblées du site public GitHub Pages, reçue le 2026-11-05 puis reprise le 2026-11-06.
+- Dépôt : C:\Latex\cours-publics, branche main, HEAD initial af30c21a465ff6fdcc5f62ef3ecaa831dbc99e06 = origin/main ; arbre initial propre.
+- Périmètre réservé : mftn/calculateurs/{index.html,app.js,situations.js,style.css} et registres suivi/{decisions,passations,verrous}.md. Aucune modification du dépôt source MFTN.
+- Contrôle initial : la situation #edpb contient des valeurs directes sous « Repère » et le générateur des fiches affiche « Repère avant l’activité » (app.js:1243). Le bouton d’animation est injecté pour #edpb et porte data-kt=parabolique ; les gestionnaires arrêtent sur changement d’onglet, réglage et modèle. Ces contrôles sont des indices directs à réévaluer.
+- Prochaine action : auditer les trois modèles et la machine d’état d’animation, déplacer les résultats derrière une divulgation consultable après le calcul manuscrit, puis tests navigateur et numériques.
+- Limite de la mission reçue : le texte transmis s’arrête après le contrôle de l’amplitude des contributions hyperboliques ; ne pas inférer des exigences supplémentaires non fournies.
+
+### Addendum — amélioration continue et livraison — tâche miroir 157 — 2026-11-06 00:04:03 +01:00 — Codex
+L’utilisateur demande que cette mission s’inscrive dans l’amélioration continue et aboutisse à un livrable. Cycle suivi : audit des comportements et calculs → corrections ciblées → tests numériques et interactionnels → publication Pages si les contrôles sont concluants. Le périmètre inclut mftn/calculateurs/calc.js pour vérifier et traiter les coins du problème de Dirichlet, en plus du périmètre web initial.
+
+### Addendum — objectif de surveillance — tâche miroir 157 — 2026-11-06 00:08:15 +01:00 — Codex
+Orientation confirmée par l’utilisateur : surveillance active visant des livrables utilisables dans les séances. Pour cette passe, clôturer le lot #edpb par contrôle interactionnel/scientifique et publication ; inscrire les suites non couvertes sans présenter l’audit partiel comme un livrable complet.
+
+### Clôture de passe — tâche miroir 157 — 2026-11-06 00:15:06 +01:00 — Codex
+- Contrôles numériques : Laplace carré, bords à 0/100 °C ; au centre, un côté chaud = 25 °C, deux côtés opposés = 50 °C, trois côtés = 75 °C, pour N=31 et N=61 (écart inférieur à 4×10⁻⁹ °C aux valeurs de symétrie). Le solveur respecte les bornes et s’arrête en 141–144 itérations (N=31) et 271–272 (N=61), loin du plafond 5000.
+- Parabolique : convolution du profil compact avec le noyau de chaleur sur la droite ; les tests numériques déjà exécutés préservent l’intégrale à l’erreur de quadrature près. À t>0, la valeur distante est non nulle mathématiquement ; les petits nombres affichés sont des approximations numériques. La diffusivité est explicitement illustrative, pas une propriété attribuée à une cellule lithium-ion.
+- Hyperbolique : formule de d’Alembert vérifiée ; à c=1 m/s et t=2 s, centres ±2 m, amplitude 0,5, supports [−2,5;−1,5] et [1,5;2,5], valeur nulle en x=3 m.
+- Interaction locale vérifiée : elliptique sans bouton d’animation ; lecture/pause, fin au temps demandé, changement de paramètre et arrêt en quittant #edpb. Les résultats et repères S1-K1/K2/K3 sont repliés par défaut et accessibles explicitement après le calcul manuscrit. L’animation lancée est elle-même une action explicite qui dévoile les courbes.
+- Réserve : aucun appareil mobile physique n’a été testé ; la mission reçue était tronquée après « amplitude des deux contributions hyperboliques ». Audit global des autres séances non effectué. Le pied de page mentionne `test_calc.js`, mais aucun fichier portant ce nom n’existe dans ce dépôt miroir ; ce décalage préexistant reste à corriger dans une tâche de maintenance transversale.
+- Contrôle technique du code : `node --check` réussi pour `app.js` et `calc.js`; `git diff --check` propre sur les quatre fichiers du calculateur. Aucun fichier de test dédié n’est présent ici.
+- Fichiers modifiés : `mftn/calculateurs/{index.html,app.js,calc.js,style.css}` et les registres de suivi.
+- État scientifique : contrôles analytiques et numériques internes effectués pour le périmètre indiqué ; relecteur scientifique indépendant non sollicité, niveau 2 non atteint. Pas de décision d’approbation utilisateur demandée à ce stade.
+- État final des verrous de cette passe : libérés à 2026-11-06 00:15:06 +01:00. Prochaine action : synchronisation Git, puis vérification du déploiement Pages et des ressources publiques.

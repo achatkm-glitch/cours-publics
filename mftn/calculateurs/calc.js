@@ -450,6 +450,14 @@
     const mean = (left + right + top + bottom) / 4;
     for (let j = 0; j < M; j++) for (let i = 0; i < M; i++) u[j][i] = mean;
     for (let k = 0; k < M; k++) { u[k][0] = left; u[k][M - 1] = right; u[0][k] = bottom; u[M - 1][k] = top; }
+    /* Les valeurs de Dirichlet de deux côtés peuvent diverger à un coin.
+       Le point de coin n'affecte pas la donnée continue (mesure nulle) ;
+       pour le stencil discret, on prend la moyenne des deux côtés adjacents,
+       sans donner systématiquement priorité au bord haut ou bas. */
+    u[0][0] = (left + bottom) / 2;
+    u[0][M - 1] = (right + bottom) / 2;
+    u[M - 1][0] = (left + top) / 2;
+    u[M - 1][M - 1] = (right + top) / 2;
     const w = 2 / (1 + Math.sin(Math.PI / (N + 1)));
     let diff = Infinity, it = 0;
     while (diff > 1e-9 && it < 5000) {

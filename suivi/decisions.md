@@ -362,3 +362,11 @@ L’animation #adv est intégrée et synchronisée avec la source MFTN ; contrô
 Animation #adv publiée (Pages run `42104208823`, HTTP 200). La tâche suivante de la FIFO est le panneau flottant de Chaleur (#chaleur), sans scrollbar imbriquée.
 ### Clôture tâche 152 — 2026-11-05 21:43:34 +01:00 — Codex
 Chaleur (#chaleur) : panneau flottant compact, sans scrollbar interne sur écran large ; règles responsives existantes préservées. Pages run 42105651143 réussi ; contrôle HTTP 200 page/CSS ; inspection visuelle non effectuée.
+| 134 | 2026-11-06 00:00:43 +01:00 | Utilisateur | Audit/corrections ciblées du calculateur public MFTN, priorité à #edpb : contrôles d’animation, retrait des résultats avant calcul manuscrit, vérification scientifique elliptique/parabolique/hyperbolique ; préserver l’architecture et les fonctions. | Codex (prise FIFO) | en cours — source miroir uniquement ; aucune modification du dépôt MFTN ni déploiement avant contrôles | tâche miroir 157 |
+
+| 135 | 2026-11-06 00:04:03 +01:00 | Utilisateur | Intégrer cette mission à l’amélioration continue et produire un livrable effectivement contrôlé. | Codex | en cours — cycle audit → correction → vérifications → livraison tracé dans passation 157 | tâche miroir 157 |
+
+| 136 | 2026-11-06 00:08:15 +01:00 | Utilisateur | Maintenir la surveillance avec pour objectif un travail livrable pour les séances. | Codex | en cours — terminer et contrôler la livraison #edpb, puis rendre visibles les suites par séance dans la passation | tâche miroir 157 |
+
+### Tâche miroir 157 — clôture du lot #edpb — 2026-11-06 00:15:06 +01:00 — Codex
+Livrable ciblé contrôlé : les trois réponses S1-K1 à K3 sont derrière une consultation explicite après le calcul manuscrit ; le modèle elliptique ne propose pas d’animation ; les modèles diffusif et ondulatoire restent animés ; le changement d’onglet arrête bien l’onde. Audit numérique interne des trois modèles et contrôle navigateur local réalisés. La diffusivité de l’exemple parabolique est signalée comme illustrative. Cette clôture ne vaut pas audit complet des quatre séances ni validation scientifique par un relecteur indépendant. Publication Pages à vérifier après commit.

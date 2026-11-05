@@ -110,3 +110,7 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et registres | ACTIF — Codex | 2026-11-05 21:50:55 +01:00 — panneau Performance (#adv) flottant sans scroll interne ; synchroniser après vérification source
 
 MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et registres | LIBRE — Codex | 2026-11-05 21:57:33 +01:00 — déployé et contrôlé techniquement ; aucune inspection visuelle
+
+| Tâche miroir 157 — mftn/calculateurs/{index.html,app.js,situations.js,style.css} et suivi/{decisions,passations,verrous}.md | ACTIF — Codex | 2026-11-06 00:00:43 +01:00 — audit #edpb et corrections autorisées ; préserver explorations/IDs/paramètres, tester localement avant commit et Pages |
+| Tâche miroir 157 — mftn/calculateurs/calc.js ajouté au périmètre | ACTIF — Codex | 2026-11-06 00:04:03 +01:00 — audit des coins Dirichlet et de la convergence du solveur elliptique |
+| Tâche miroir 157 — `mftn/calculateurs/{index.html,app.js,calc.js,style.css}` et `suivi/{decisions,passations,verrous}.md` | LIBRE — Codex | 2026-11-06 00:15:06 +01:00 — passe #edpb contrôlée localement ; synchronisation et contrôle public en cours |

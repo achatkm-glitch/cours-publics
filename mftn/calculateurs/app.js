@@ -432,7 +432,7 @@
     if (!box) {
       box = document.createElement('div'); box.className = 'interp';
       const g = panel.querySelector('.grid');
-      const results = g?.children[1];
+      const results = tab === 'edpb' ? $('k-results') : g?.children[1];
       if (results) results.appendChild(box);
       else if (g) g.appendChild(box);
       else panel.appendChild(box);
@@ -950,6 +950,7 @@
     const animation = document.querySelector('#p-edpb .sit-animation');
     if (animation) {
       animation.dataset.kt = type;
+      animation.hidden = type === 'elliptique';
       const button = $('k-edpb-play'), legend = animation.querySelector('.sit-animation-key');
       if (button) button.textContent = edpbAnimationTimer !== null ? 'Mettre en pause'
         : edpbAnimationTarget !== null ? 'Reprendre l’animation'
@@ -1000,6 +1001,15 @@
     const reading = readings[type], changed = renderedEdpbType !== type, panel = $('k-type-dynamic');
     panel.dataset.type = type;
     panel.innerHTML = `<strong>${reading.title}</strong><span>${reading.text}</span>`;
+    const beforeWork = $('k-before-work');
+    if (beforeWork) {
+      const prompts = {
+        elliptique: 'S1-K1 — Sur la fiche, prévoyez puis calculez à la main les températures demandées au centre pour chaque configuration des bords.',
+        parabolique: 'S1-K2 — Sur la fiche, vérifiez d’abord le support initial et prévoyez l’évolution au point demandé avant de comparer les instants.',
+        hyperbolique: 'S1-K3 — Sur la fiche, calculez à la main les positions et supports demandés, puis prévoyez la valeur au point étudié.'
+      };
+      beforeWork.innerHTML = `<strong>Avant de consulter les résultats</strong>${prompts[type]} Ensuite, ouvrez les résultats numériques et rédigez l’interprétation demandée sur la fiche.`;
+    }
     if (changed) {
       [$('k-equation'), panel].forEach(el => {
         el.classList.remove('edp-dynamic-enter');
@@ -1171,7 +1181,7 @@
       $('k-heat-leg').textContent = '';
       const xs = Calc.linspace(0, 1, r.M);
       draw('k-line', 'k-line-leg', [{ x: xs, y: r.ligneCentrale, color: c[0], label: 'u(x, y = 0,5)' }], { xlabel: 'x', ylabel: 'T (°C)', title: 'Ligne médiane' });
-      $('k-msg').className = 'msg'; $('k-msg').textContent = 'Principe du maximum : les valeurs restent comprises entre la plus petite et la plus grande valeur imposée. Changez un seul côté : tout le champ change aussitôt, y compris loin de ce côté (influence globale).';
+      $('k-msg').className = 'msg'; $('k-msg').textContent = 'Principe du maximum : les valeurs restent comprises entre la plus petite et la plus grande valeur imposée. Changez un seul côté : tout le champ change aussitôt, y compris loin de ce côté (influence globale). Aux coins où les températures prescrites par deux côtés diffèrent, le calcul discret utilise leur moyenne.';
       explain('edpb', [`Température au centre : <b>${fmt(r.centre, 4)} °C</b> ; moyenne des quatre côtés : ${fmt((num('k-Tl') + num('k-Tr') + num('k-Tt') + num('k-Tb')) / 4, 4)} °C (égales par symétrie du carré).`, `Valeurs comprises entre ${fmt(r.min, 4)} et ${fmt(r.max, 4)} °C : principe du maximum, pas de valeur intérieure hors des valeurs imposées.`, 'Chaque côté agit sur tout le domaine : une EDP elliptique est un problème d’équilibre global.']);
       cards($('k-cards'), [{ color: c[0], title: 'Température au centre', lines: [`valeur = <b>${fmt(r.centre, 4)} °C</b>`, `minimum = <b>${fmt(r.min, 4)}</b> ; maximum = <b>${fmt(r.max, 4)}</b>`, `${r.iters} itérations de sur-relaxation`] }]);
     } else if (type === 'parabolique') {
@@ -1193,7 +1203,7 @@
         : gap < 2 * rayon
           ? `À t = 0, les deux bosses centrées en x = ±${fmt(gap / 2, 3)} m se recouvrent déjà : le profil initial est leur somme.`
           : `À t = 0, les deux bosses sont distinctes, centrées en x = ±${fmt(gap / 2, 3)} m.`;
-      lecture.innerHTML = `<strong>Lire les courbes</strong><div class="curve-times">${cle}</div><p>${situation} Quand le temps augmente, la diffusion élargit le profil et abaisse ses maxima. À temps égal, augmenter D accentue cet étalement.</p><p>La symétrie par rapport à x = 0 est conservée. Si les sources sont proches ou si la diffusion agit longtemps, leurs profils peuvent se rejoindre.</p><p>Seule la courbe initiale est exactement nulle hors de ses supports. Pour tout t &gt; 0, la solution continue idéale de l’équation de la chaleur est très faible mais non nulle à toute distance ; l’échelle du graphe peut la faire paraître nulle.</p>`;
+      lecture.innerHTML = `<strong>Lire les courbes</strong><div class="curve-times">${cle}</div><p>${situation} Quand le temps augmente, la diffusion élargit le profil et abaisse ses maxima. À temps égal, augmenter D accentue cet étalement. La diffusivité choisie ici est illustrative : elle ne caractérise pas à elle seule une cellule lithium-ion.</p><p>La symétrie par rapport à x = 0 est conservée. Si les sources sont proches ou si la diffusion agit longtemps, leurs profils peuvent se rejoindre.</p><p>Seule la courbe initiale est exactement nulle hors de ses supports. Pour tout t &gt; 0, la solution continue idéale de l’équation de la chaleur est très faible mais non nulle à toute distance ; l’échelle du graphe peut la faire paraître nulle.</p>`;
       const far = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: tp, xs: [5, 0] });
       const far2 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 2, xs: [5] })[0];
       const far8 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 8, xs: [5] })[0];
@@ -1221,6 +1231,7 @@
   /* ---------- Guide : notions, compétences, explorations avec réglages prêts à l'emploi ---------- */
   function applyPreset(tab, idx) {
     const e = window.GUIDE.tabs[tab].explorations[idx];
+    if (tab === 'edpb') { const results = $('k-results'); if (results) results.open = false; }
     Object.keys(e.reglages || {}).forEach(id => { const el = $(id); if (el) el.value = e.reglages[id]; });
     if (e.reglages && e.reglages['t-D'] && $('t-Pe')) {   // le curseur de Péclet suit la diffusivité imposée
       const D = Number(e.reglages['t-D']), speed = Math.abs(num('t-a')), sigma0 = num('t-s0');
@@ -1228,7 +1239,9 @@
     }
     Object.keys(e.checks || {}).forEach(name => document.querySelectorAll('input[name="' + name + '"]').forEach(cb => { cb.checked = e.checks[name].indexOf(cb.value) >= 0; }));
     syncSliders(); safe(current);
-    const m = $('p-' + tab).querySelector('.preset-note'); if (m) m.textContent = 'Réglages de ' + e.id + ' appliqués : lisez le résultat, puis répondez sur la fiche.';
+    const m = $('p-' + tab).querySelector('.preset-note'); if (m) m.textContent = tab === 'edpb'
+      ? 'Réglages de ' + e.id + ' appliqués. Faites d’abord la prévision et le calcul à la main ; ouvrez ensuite les résultats pour comparer.'
+      : 'Réglages de ' + e.id + ' appliqués : lisez le résultat, puis répondez sur la fiche.';
     $('p-' + tab).querySelector('.grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function renderGuides() {
@@ -1240,8 +1253,14 @@
       const comps = t.competences.map(k => `<li><b>${k}</b> ${G.competences[k]}</li>`).join('');
       const notions = t.notions.map(n => `<li>${n}</li>`).join('');
       const sym = txt => String(txt == null ? '' : txt).replace(/\bCo_ref\b/g, 'Co<sub>ref</sub>').replace(/\bFo_ref\b/g, 'Fo<sub>ref</sub>').replace(/\bh_ref\b/g, 'h<sub>ref</sub>').replace(/\balpha\b/g, 'α').replace(/\blambda\b/g, 'λ').replace(/\bsigma0\b/g, 'σ₀').replace(/\bc0\b/g, 'c₀').replace(/\bh0\b/g, 'h₀');
-      const ex = t.explorations.map((e, i) => `<div class="explo"><p class="repere"><b>Repère avant l’activité :</b> ${G.reperes[e.id].replace(/[.]$/, '')} ; calculateur : onglet « ${tabName} ».</p><b>${e.id} · ${e.titre}</b> <span class="codes">(${e.comp.join(', ')})</span>
-        ${e.main ? `<p class="main"><b>D\u2019abord, à la main :</b> ${sym(e.main)}</p>` : ''}<p>${sym(e.consigne)}</p><p><i>Question :</i> ${sym(e.question)}</p><button type="button" class="btn alt" data-explo="${tab}|${i}">Appliquer ces réglages</button></div>`).join('');
+      const ex = t.explorations.map((e, i) => {
+        const answer = G.reperes[e.id].replace(/[.]$/, '') + ` ; calculateur : onglet « ${tabName} ».`;
+        const answerBox = ['S1-K1', 'S1-K2', 'S1-K3'].includes(e.id)
+          ? `<details class="guide-answer"><summary>Repère de vérification — à consulter après le calcul</summary><p>${answer}</p></details>`
+          : `<p class="repere"><b>Repère avant l’activité :</b> ${answer}</p>`;
+        return `<div class="explo">${answerBox}<b>${e.id} · ${e.titre}</b> <span class="codes">(${e.comp.join(', ')})</span>
+        ${e.main ? `<p class="main"><b>D\u2019abord, à la main :</b> ${sym(e.main)}</p>` : ''}<p>${sym(e.consigne)}</p><p><i>Question :</i> ${sym(e.question)}</p><button type="button" class="btn alt" data-explo="${tab}|${i}">Appliquer ces réglages</button></div>`;
+      }).join('');
       box.innerHTML = `<h3>Pour approfondir : ${t.fiche}</h3>
         <div class="two"><div><h4>Compétences travaillées</h4><ul>${comps}</ul></div>
         <div><h4>Notions à définir et à retrouver sur la fiche</h4><ul>${notions}</ul><p>Exercices liés : ${t.exercices}.</p></div></div>
@@ -1314,6 +1333,8 @@
     const type = checked('k-type')[0] || 'elliptique';
     const slider = $(type === 'hyperbolique' ? 'k-th' : 'k-tp'), button = $('k-edpb-play'), status = $('k-edpb-play-status');
     if (!slider || !button || !status) return;
+    if (type === 'elliptique') { status.textContent = 'Ce modèle d’équilibre ne comporte pas d’évolution à animer.'; return; }
+    const results = $('k-results'); if (results) results.open = true;
     const step = Number(slider.step) || 0.5;
     if (edpbAnimationTimer !== null) {
       window.clearInterval(edpbAnimationTimer); edpbAnimationTimer = null;
@@ -1338,7 +1359,7 @@
     try { if (RUN[name]) RUN[name](); } catch (e) { const panel = $('p-' + name); const p = panel && panel.querySelector('.msg'); if (p) { p.className = 'msg bad'; p.textContent = 'Paramètres invalides : ' + e.message; } }
   }
   function show(name) {
-    if (name !== 'edpb' && edpbAnimationTimer !== null) stopEdpbAnimation('Animation arrêtée en quittant cet onglet.');
+    if (name !== 'edpb' && (edpbAnimationTimer !== null || edpbAnimationTarget !== null)) stopEdpbAnimation('Animation arrêtée en quittant cet onglet.');
     if (name !== 'adv' && advDemoTimer !== null) pauseAdvDemo('Animation mise en pause en quittant cet onglet.');
     current = name;
     document.querySelectorAll('section.panel').forEach(s => s.classList.toggle('active', s.id === 'p-' + name));
@@ -1364,12 +1385,12 @@
     }));
     document.querySelectorAll('section.panel form').forEach(f => {
       f.addEventListener('submit', e => { e.preventDefault(); safe(current); });
-      f.addEventListener('input', e => { if (edpbAnimationTimer !== null && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
-      f.addEventListener('change', e => { if (edpbAnimationTimer !== null && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
+      f.addEventListener('input', e => { if ((edpbAnimationTimer !== null || edpbAnimationTarget !== null) && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
+      f.addEventListener('change', e => { if ((edpbAnimationTimer !== null || edpbAnimationTarget !== null) && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
     });
-    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncBarreMeshControl(); syncSliders(); safe(current); }));
+    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { if (b.closest('#p-edpb')) stopEdpbAnimation('Animation réinitialisée.'); b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncBarreMeshControl(); syncSliders(); safe(current); }));
     document.querySelectorAll('input[name="b-mesh"]').forEach(i => i.addEventListener('change', syncBarreMeshControl));
-    document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => { stopEdpbAnimation(''); safe('edpb'); }));
+    document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => { stopEdpbAnimation(''); const results = $('k-results'); if (results) results.open = false; safe('edpb'); }));
     document.querySelectorAll('input[type="range"]').forEach(r => r.addEventListener('input', syncSliders));
     // intro : le calcul de N et C est lourd (≈ 1,4 s à N = 400, C = 1) ; on attend la fin du geste du curseur
     let introTimer = null;
@@ -1383,9 +1404,14 @@
     renderEquations();
     renderSituations();
     renderAdvDemo(0);
+    const edpbResults = $('k-results'); if (edpbResults) edpbResults.addEventListener('toggle', () => { if (edpbResults.open) requestAnimationFrame(() => safe('edpb')); });
     const edpbPlay = $('k-edpb-play'); if (edpbPlay) edpbPlay.addEventListener('click', startEdpbAnimation);
     const advDemoPlay = $('adv-demo-play'); if (advDemoPlay) advDemoPlay.addEventListener('click', startAdvDemo);
-    document.addEventListener('visibilitychange', () => { if (document.hidden && advDemoTimer !== null) pauseAdvDemo('Animation mise en pause lorsque la page est masquée.'); });
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) return;
+      if (advDemoTimer !== null) pauseAdvDemo('Animation mise en pause lorsque la page est masquée.');
+      if (edpbAnimationTimer !== null || edpbAnimationTarget !== null) stopEdpbAnimation('Animation arrêtée lorsque la page est masquée.');
+    });
     // onglets à deux graphiques : commandes en haut, graphiques côte à côte sur toute la largeur
     document.querySelectorAll('.grid').forEach(g => { if (g.querySelector('.plots2')) g.classList.add('grid2'); });
     window.addEventListener('load', renderEquations);
