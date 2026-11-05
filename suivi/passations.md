@@ -602,3 +602,9 @@ Réservation des fichiers `mftn/calculateurs/{app.js,situations.js,index.html,st
 
 ### Avancement miroir — tâche 151 — 2026-11-05 21:27:35 +01:00 Europe/Paris — Codex
 Les quatre fichiers web source/mirroir ont des empreintes SHA-256 identiques ; node --check passe, la suite calculatoire passe dans le dépôt MFTN, git diff --check propre dans les deux dépôts. Le verrou miroir reste actif jusqu’au commit et au contrôle du déploiement Pages. Pas de validation visuelle locale (blocage file:).
+
+### Clôture tâche miroir 151 — 2026-11-05 21:36:56 +01:00 Europe/Paris — Codex
+La source `a8b70599b6aa335a63181cf9f659c5c709090c82` et le miroir `76db73a4225d5c2cb8398b43d39a0206e72ceddf` sont publiés ; Pages run `42104208823` réussi ; page et ressources HTTP 200. Vérification visuelle locale non effectuée (politique `file:`). Les quatre fichiers ont des empreintes identiques ; détails dans la passation MFTN.
+
+### Prise FIFO miroir tâche 152 — 2026-11-05 21:36:56 +01:00 Europe/Paris — Codex
+Réservation de `mftn/calculateurs/{app.js,style.css,index.html}` et registres pour retirer la scrollbar interne de l’onglet Chaleur après analyse du style partagé.
