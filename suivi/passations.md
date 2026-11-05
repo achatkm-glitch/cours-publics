@@ -591,3 +591,8 @@ La source MFTN a libéré `Peda_inv/` dans sa dernière table de verrous. Repris
 - **Contrôlé** : les empreintes SHA-256 de `app.js`, `situations.js`, `index.html` et `style.css` sont identiques à la source ; l’animation, la pause et la reprise ont été vérifiées visuellement dans Edge local sur la source MFTN.
 - **Limites** : cette copie locale du miroir n’est pas encore publiée ; aucun contrôle du site public après déploiement.
 - **Prochaine étape** : commit/push des deux dépôts, attendre le workflow Pages et vérifier le calculateur public #edpb.
+
+### Clôture tâche miroir 149 — 2026-11-05 21:08:52 +01:00 — Codex
+- Miroir poussé par `66100f0bf9dcf6cd537a6c14cc5369212656ef79`; `git ls-remote` a confirmé la référence `main`.
+- GitHub Pages run `42100338432` terminé avec succès. La page du calculateur et `app.js?v=20261105-149a` répondent HTTP 200 ; le cache-buster et le code d’animation sont présents.
+- Le test Edge local source a confirmé suivi de `c` et `t`, pause et reprise. Les fichiers du miroir et registres de la tâche 149 sont LIBRES. Aucun PDF modifié.

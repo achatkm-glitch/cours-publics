@@ -348,3 +348,6 @@ Décision de présentation : nommer explicitement l’erreur signée du graphe e
 - Attribution : Codex, prise FIFO après la libération du verrou Claude sur Peda_inv/ (tâche 148).
 - Preuve : commentaire utilisateur du 2026-11-05, navigateur local #edpb.
 - Instruction complémentaire reçue : le panneau de réglages de « Chaleur » (#chaleur) doit être flottant comme les autres ; tâche 152 en attente derrière les tâches 149–151.
+
+### Tâche 149 — clôture — 2026-11-05 21:08:52 +01:00 — Codex
+Animation hyperbolique #edpb synchronisée avec la source MFTN ; commit miroir `66100f0bf9dcf6cd537a6c14cc5369212656ef79`, GitHub Pages run `42100338432` réussi, contrôle HTTP 200 de la page et du script déployés. Verrous du miroir libérés.
