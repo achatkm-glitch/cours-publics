@@ -308,8 +308,23 @@
     tip._note = note;
     if (!tip.hidden) tip.textContent = note;
   }
+  function distinctSeriesColors(canvas, series) {
+    const context = canvas.getContext('2d');
+    const normalized = (series || []).map(s => {
+      context.fillStyle = s.color || css('--blue');
+      return context.fillStyle;
+    });
+    if (new Set(normalized).size === normalized.length) return;
+    const dark = document.documentElement.dataset.theme === 'dark' ||
+      (!document.documentElement.dataset.theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const lightness = dark ? 66 : 42, count = Math.max(series.length, 1);
+    series.forEach((s, i) => {
+      s.color = `hsl(${(16 + 360 * i / count).toFixed(1)} 76% ${lightness}%)`;
+    });
+  }
   function plot(canvas, series, o) {
     o = o || {};
+    distinctSeriesColors(canvas, series || []);
     (window.__plotLog = window.__plotLog || {})[canvas.id] = (series || []).map(s => s.color); // contrôle des couleurs en double
     const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth || 440;
     canvas.width = W * dpr; canvas.height = W * dpr;
@@ -508,7 +523,7 @@
         items.push({ color: col, title: `Volumes finis · ${meshNames[mesh]} · N = ${N}`, lines: [`erreur maximale = <b>${fmt(r.maxErr)} K</b>`, `bilan de flux = <b>${fmt(r.bilan, 3)} W/m²</b>`] });
       }
     }));
-    $('b-msg').innerHTML = 'Cercles : différences finies aux nœuds ; carrés : volumes finis aux centres des cellules. Trait plein : maillage uniforme ; tirets : non uniforme ; couleur : valeur de N. L = 1 m. Erreur = solution calculée − solution analytique ; bilan de flux = flux sortants − q·L.';
+    $('b-msg').innerHTML = 'Chaque couleur identifie une courbe ; cercles : différences finies aux nœuds ; carrés : volumes finis aux centres des cellules. Trait plein : maillage uniforme ; tirets : non uniforme. L = 1 m. Erreur = solution calculée − solution analytique ; bilan de flux = flux sortants − q·L.';
     draw('b-plot', 'b-leg', S1, { xlabel: 'x (m)', ylabel: 'T (K)', title: 'Solution' });
     // erreurs de l'ordre de l'arrondi : on fige l'axe pour ne pas amplifier le bruit machine en « courbes » trompeuses
     const eMax = Math.max.apply(null, S2.map(q => Calc.maxAbs(q.y)));

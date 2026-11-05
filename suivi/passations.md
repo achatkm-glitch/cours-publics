@@ -561,3 +561,6 @@ La thermographie est synchronisée depuis MFTN. La légende crédite Sönke Krü
 GitHub Pages run 42065379910 a réussi après le commit miroir 8dc0dad. La page publique #cl affiche la nouvelle thermographie, la légende et les liens d’attribution. Références source et miroir contrôlées. Les verrous du code sont LIBRES ; clôture des registres après publication de ce suivi.
 ### Clôture tâche miroir 133 — 2026-11-05 17:37:00 +01:00 — Codex
 La photo remplacée est visible en ligne après le déploiement Pages `42065379910` (succès). L’image, la légende, le texte alternatif et les crédits CC BY 3.0 sont contrôlés. Le miroir reflète MFTN. Code et registres libérés.
+
+### Prise FIFO — tâche miroir 134 — 2026-11-05 17:43:55 +01:00 — Codex
+Dépôt cours-publics main, HEAD initial 42955bc, arbre propre et origin/main synchronisé. Tâche miroir de MFTN 144. Source de référence : C:\Latex\MFTN\Peda_inv\site. Réserver mftn/calculateurs/app.js et CSS de palette si requis, ainsi que suivi/{decisions,passations,verrous}.md. Corriger le rendu des couleurs de toutes les séries partageant un même canvas ; préserver les formes de marqueur, pointillés et légendes. Contrôler le screenshot Barre et les autres panneaux avec superpositions, puis publier et vérifier Pages.

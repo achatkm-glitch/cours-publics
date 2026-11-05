@@ -330,3 +330,9 @@ Rendu math inline KaTeX implémenté et contrôlé dans le dépôt source ; équ
 | 133 | 2026-11-05 17:26:51 +01:00 | Utilisateur | Remplacer la thermographie de la section Conditions aux limites, jugée peu parlante, par une illustration plus pertinente avec légende exacte. | Codex (prise FIFO, miroir tâche 143) | terminée et publiée : Pages run 42065379910 réussi ; thermogramme contrôlé en ligne, commits source 3a83e84 / miroir 8dc0dad | MFTN `Peda_inv/site`, miroir `mftn/calculateurs`, passation 143 |
 
 Miroir tâche 133 — image de la section Conditions aux limites remplacée par FensterIR_Blower_Door.jpg (Sönke Krüll, CC BY 3.0). La légende indique que le thermogramme montre une fuite d’air autour d’une fenêtre de toit pendant un essai de dépression et le distingue des modèles mathématiques représentés dans le schéma. Code et image synchronisés depuis MFTN ; aperçu local vérifié.
+
+### 2026-11-05 2026-11-05 17:43:55 +01:00 — Couleurs distinctes par graphe (tâche miroir 134)
+- Décision : chaque série tracée dans un même graphe du calculateur doit avoir sa propre couleur, même lorsque plusieurs méthodes ou maillages sont comparés.
+- Raison : le graphe Barre 1D montrait des courbes de différences finies et volumes finis avec la même couleur ; seuls les marqueurs différaient.
+- Preuve : capture utilisateur du graphe solution et erreur/solution analytique.
+- Responsable : Codex, prise FIFO après clôture de la tâche miroir 133.

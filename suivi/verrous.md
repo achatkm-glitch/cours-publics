@@ -88,3 +88,5 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 | Tâche miroir 133 — code et registres | LIBRE — Codex | 2026-11-05 17:36 +01:00 — commit miroir 8dc0dad poussé, Pages run 42065379910 réussi |
 
 | Tâche miroir 133 — code et registres | LIBRE — Codex | 2026-11-05 17:37 +01:00 — Pages run 42065379910 réussi ; tâches close |
+
+| MFTN 144 / miroir 134 — app.js, éventuelle CSS palette, registres | ACTIF — Codex | 2026-11-05 17:43:55 +01:00 — garantir une couleur unique par courbe et par canvas, vérifier site miroir |
