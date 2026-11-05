@@ -441,3 +441,6 @@ Maillage uniforme/non uniforme publié dans `mftn/calculateurs`; contrôles loca
 
 ### Addendum horodatage — tâche miroir 125 — 2026-11-05 14:37:51 Europe/Paris (UTC+01:00) — Codex
 L’heure 14:35:51 de la clôture précédente était le relevé système préalable à sa rédaction. Heure de consignation et de libération corrigée par cet addendum à 14:37:51 ; hashes et état de publication inchangés.
+
+### Prise en charge tâche miroir 126 — 2026-11-05 14:41:15 Europe/Paris (UTC+01:00) — Codex
+La vidéo USGS du Missouri ne plaît pas à l’utilisateur. Réservation de `mftn/calculateurs/situations.js`, `app.js` et des registres de suivi pour remplacer le lien par l’expérience PiNC de Scripps/UC San Diego : https://today.ucsd.edu/story/pink-dye-experiment-to-reveal-mysteries-of-coastal-ocean-dynamics. La source officielle décrit un traceur rose suivi par drones, dériveurs et capteurs à la sortie de Los Peñasquitos Lagoon, avec vagues, courants et marée. On conserve un lien externe (pas de copie du contenu copyrighté) et précise que l’observation montre un transport/mélange côtier complexe, pas la diffusion moléculaire isolée. Les fichiers miroir app.js/situations.js concordent avec MFTN et aucun verrou n’est actif.

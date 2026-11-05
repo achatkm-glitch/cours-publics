@@ -27,7 +27,7 @@
 
   const S = {
     transport: {
-      video: { page: 'https://www.usgs.gov/media/videos/usgs-missouri-river-dye-tracing-assessment', legende: 'Exemple réel : un colorant traceur est transporté et dispersé dans le Missouri. Cette observation à l’échelle du fleuve ne mesure pas la diffusivité D du modèle. U.S. Geological Survey, 5 mai 2021, 1 min 42, domaine public.' },
+      video: { page: 'https://today.ucsd.edu/story/pink-dye-experiment-to-reveal-mysteries-of-coastal-ocean-dynamics', titre: 'Voir l’expérience du traceur rose à la sortie d’une lagune (UC San Diego)', legende: 'À Los Peñasquitos Lagoon, des chercheurs suivent un traceur rose emporté vers la côte à l’aide de drones, de dériveurs et de capteurs. Les vagues, les courants et la marée agissent ensemble : cette observation montre un transport et un mélange réels, sans isoler la diffusion moléculaire D du modèle. Vidéo et présentation : Scripps Oceanography, UC San Diego (2023).' },
       photo: { src: 'img/Sediment_plume_at_sea_1280px.jpg', alt: 'Panache de sédiments en mer vu par satellite', legende: 'Panache de sédiments en mer vu par le satellite Sentinel-2B (5 février 2019). ESA, « Contains modified Copernicus Sentinel data (2019), processed by ESA », <a href="https://creativecommons.org/licenses/by-sa/3.0/igo/deed.en">CC BY-SA 3.0 IGO</a>, <a href="https://commons.wikimedia.org/wiki/File:Sediment_plume_at_sea.jpg">via Wikimedia Commons</a> (miniature de 1280 px).' },
       texte: "Mise en problème simplifiée. Un polluant ou une eau chaude est rejeté dans un courant uniforme. Où le signal est-il transporté ? Comment s'étale-t-il ? Le nombre de Péclet compare advection et diffusion dans le modèle.",
       svg: wrap(
