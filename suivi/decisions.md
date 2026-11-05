@@ -322,3 +322,5 @@ Dans « EDP : classer », les curseurs de coefficients sont remplacés par Δ di
 
 ### Tâche miroir 132 — avancement — 2026-11-05 17:01:15 Europe/Paris (UTC+01:00)
 Rendu math inline KaTeX implémenté et contrôlé dans le dépôt source ; équations et symboles réels sont typographiés, les phrases explicatives ne sont pas transformées. Code miroir synchronisé aux mêmes SHA que la source. Référence distante à pousser et déploiement Pages à vérifier.
+
+| 132 | 2026-11-05 17:14:29 +01:00 | Utilisateur | Rendre les équations lisibles sous forme mathématique graphique et vérifier tout le site. | Codex (prise FIFO, tâche MFTN 142) | code poussé au miroir (`d9dcef1`) et source MFTN (`63e9355`) ; rendu et contrôle local OK. Le Pages run 42061088298 a échoué au déploiement (502) ; relance incohérente et publication publique à revérifier après nouveau déclenchement | C:\Latex\MFTN\Peda_inv\site ; tâche 142 ; passation 2026-11-05 17:14:29

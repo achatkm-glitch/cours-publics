@@ -540,3 +540,6 @@ Tâche miroir de MFTN 142. HEAD initial 5ef9619, arbre propre ; dernière entré
 
 ### Avancement tâche miroir 132 — 2026-11-05 17:01:15 Europe/Paris (UTC+01:00) — Codex
 Miroir synchronisé à la source MFTN pour app.js, index.html et style.css. Contrôles locaux : node --check, diff-check avec cr-at-eol et comparaison des SHA réussis. Aperçu navigateur : exercice Barre 1D rendu en KaTeX, formule qh²/(8λ) formatée, message recalculé après modification du curseur q sans faux rendu des énoncés en français ; aucune erreur de console. Commit miroir/publication en cours.
+
+### Reprise publication tâche 132 — 2026-11-05 17:14:29 Europe/Paris (UTC+01:00) — Codex
+Le code miroir est poussé sur `main` (commit `d9dcef1a27b652a852fe87772d7bbd820a3bc6d9`, référence distante contrôlée). Le build initial a réussi mais la création du déploiement Pages a échoué avec HTTP 502. La relance `42061088298` reste incohérente côté API (toujours `queued`, sans jobs ; le déploiement `7578600868` a un statut `failure`). L’appel de reconstruction Pages n’a retourné aucun JSON exploitable. Je pousse une mise à jour des registres pour déclencher une nouvelle exécution Pages, puis vérifierai son état et l’URL publique. Commit de suivi MFTN `63e9355cc19030753d27df8437bc5c3e0b842345` poussé et référence distante confirmée.

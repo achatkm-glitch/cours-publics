@@ -74,3 +74,6 @@ Libération tâche 121 — 2026-11-05 11:40:02 +01:00 : fichiers du calculateur 
 
 | MFTN 142 / miroir 132 — Peda_inv/site/{app.js,index.html,style.css} et mftn/calculateurs/{app.js,index.html,style.css} | LIBRE — Codex | 2026-11-05 17:01:15 Europe/Paris (UTC+01:00) — contrôle local terminé, synchronisation Git/Pages en cours |
 | Registres tâches MFTN 142 / miroir 132 | ACTIF — Codex | consigner commits distants et publication, puis libérer |
+
+| MFTN 142 / miroir 132 — `Peda_inv/site` et `mftn/calculateurs` code | LIBRE — Codex | 2026-11-05 17:01:15 — code vérifié localement, SHA source/miroir égaux ; synchronisation terminée |
+| MFTN 142 / miroir 132 — registres | ACTIF — Codex | 2026-11-05 17:14:29 — traçabilité de l’échec 502, nouvelle construction Pages et vérification publique |
