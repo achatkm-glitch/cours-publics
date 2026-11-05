@@ -447,3 +447,9 @@ La vidéo USGS du Missouri ne plaît pas à l’utilisateur. Réservation de `mf
 
 ### Clôture tâche miroir 126 — 2026-11-05 14:51:43 Europe/Paris (UTC+01:00) — Codex
 Lien vidéo remplacé par l’expérience PiNC de Scripps/UC San Diego ; légende explique le contexte côtier (vagues, courants, marée) et précise que l’observation ne sépare pas la diffusion moléculaire. La page et les scripts publics répondent HTTP 200 après le déploiement Pages run 42039243844 (succès, HEAD `9caa69691e4813b8acf5b794fada1c04d6959c7e`). SHA-256 des fichiers synchronisés avec MFTN consignées dans `version_traceability.md`. La vidéo n’a pas été visionnée dans un navigateur contrôlable ; choix basé sur la description officielle. Verrou libéré.
+
+### Prise en charge tâche miroir 127 — 2026-11-05 15:01:38 Europe/Paris (UTC+01:00) — Codex
+La tâche utilisateur 137 est prise en FIFO après libération explicite de la tâche miroir 126 (14:51:43). Branche main, HEAD  f425d4, dépôt propre au début. Réservation de mftn/calculateurs/index.html, pp.js, style.css et des registres suivi/decisions.md, passations.md, errous.md. Source de référence : MFTN. Après synchronisation : contrôler le diff, la syntaxe et le déploiement GitHub Pages.
+
+### Avancement tâche miroir 127 — 2026-11-05 15:05:27 Europe/Paris (UTC+01:00) — Codex
+Synchronisation des trois fichiers source MFTN vers mftn/calculateurs effectuée ; SHA-256 index.html 98B7058825FE76D37865868F0FEA5FA467D115E038551430BF276C343D08D335, app.js 91907216E90D0B6528934F1B868A2CFA1BABE02BAC1F72DB0C4E77F7C0C9D758, style.css 73984123B6567AC6FC77014E4901F1BB09E41B34A609FE676EF9A05641E71C6A ; hashes source/miroir égaux. Syntaxe JS contrôlée. Reste publication GitHub Pages et réponse HTTP.

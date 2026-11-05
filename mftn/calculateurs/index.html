@@ -6,7 +6,7 @@
 <title>Calculateurs MFTN — par séance</title>
 <meta name="description" content="Calculateurs et parcours des quatre séances MFTN : modèle et transport, stationnaire, instationnaire et performance des schémas.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261105-133a">
+<link rel="stylesheet" href="style.css?v=20261105-137a">
 </head>
 <body>
 <header>
@@ -348,13 +348,18 @@
 <!-- Ch.2 : ordre -->
 <section class="panel" id="p-ordre">
   <h2>Ordre d'une différence finie : dérivées première et seconde</h2>
-  <p class="lead">Comparez séparément les approximations des dérivées première et seconde de u(x) = sin(x), en x = 1, quand le pas h diminue. Les stencils et leurs ordres sont ceux du chapitre 2 ; le cas non uniforme précise pourquoi la géométrie du maillage compte. Séance 2, exercices D et E.</p>
+  <p class="lead">Choisissez la dérivée à étudier. Les formules et la courbe d’erreur changent ensemble quand le pas h diminue. Séance 2, exercices D et E.</p>
+  <fieldset class="edp-type-selector ordre-type-selector" aria-label="Choisir la dérivée à étudier">
+    <legend>Quelle dérivée comparer ?</legend>
+    <label class="edp-type-option selected"><input type="radio" name="o-kind" value="premiere" checked><span><strong>Dérivée première</strong><small>Pente du profil : u′</small></span></label>
+    <label class="edp-type-option"><input type="radio" name="o-kind" value="seconde"><span><strong>Dérivée seconde</strong><small>Courbure du profil : u″</small></span></label>
+  </fieldset>
   <div class="operator-columns">
-    <section class="operator-family" aria-labelledby="o-first-title">
+    <section class="operator-family" data-ordre-kind="premiere" aria-labelledby="o-first-title">
       <h3 id="o-first-title">Dérivée première u′</h3>
       <div class="eqs" data-eq="ordre1"></div>
     </section>
-    <section class="operator-family" aria-labelledby="o-second-title">
+    <section class="operator-family" data-ordre-kind="seconde" hidden aria-labelledby="o-second-title">
       <h3 id="o-second-title">Dérivée seconde u″</h3>
       <div class="eqs" data-eq="ordre2"></div>
       <p class="repere"><b>Maillage non uniforme :</b> h₋ = xᵢ − xᵢ₋₁ et h₊ = xᵢ₊₁ − xᵢ. Si h₊ − h₋ est de l’ordre de h, le terme en u‴ peut limiter l’approximation à l’ordre 1. Sur un maillage uniforme, h₊ = h₋ et ce terme s’annule : on retrouve l’ordre 2.</p>
@@ -371,14 +376,14 @@
     </div>
     <div>
       <p class="msg" id="o-msg"></p>
-      <section class="order-result" aria-labelledby="o-first-plot-title">
+      <section class="order-result" data-ordre-kind="premiere" aria-labelledby="o-first-plot-title">
         <h3 id="o-first-plot-title">Erreur sur la dérivée première</h3>
         <canvas id="o-first-plot" aria-label="Erreurs des schémas de dérivée première en échelle logarithmique"></canvas>
         <div class="legend" id="o-first-leg"></div>
         <div class="cards" id="o-first-table"></div>
         <p class="family-note" id="o-first-note"></p>
       </section>
-      <section class="order-result" aria-labelledby="o-second-plot-title">
+      <section class="order-result" data-ordre-kind="seconde" hidden aria-labelledby="o-second-plot-title">
         <h3 id="o-second-plot-title">Erreur sur la dérivée seconde</h3>
         <canvas id="o-second-plot" aria-label="Erreurs des schémas de dérivée seconde en échelle logarithmique"></canvas>
         <div class="legend" id="o-second-leg"></div>
@@ -540,6 +545,6 @@
 <script src="equations.js?v=20261105-135a"></script>
 <script src="situations.js?v=20261105-136a"></script>
 <script src="guide.js?v=20261105-135a"></script>
-<script src="app.js?v=20261105-136a"></script>
+<script src="app.js?v=20261105-137a"></script>
 </body>
 </html>

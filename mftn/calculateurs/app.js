@@ -478,7 +478,18 @@
   }
 
   /* ---------- Chapitre 2 : ordre de trois différences finies ---------- */
+  function syncOrdreSelector() {
+    const kind = document.querySelector('#p-ordre input[name="o-kind"]:checked')?.value || 'premiere';
+    document.querySelectorAll('#p-ordre .edp-type-option').forEach(option => {
+      option.classList.toggle('selected', option.querySelector('input:checked') !== null);
+    });
+    document.querySelectorAll('#p-ordre [data-ordre-kind]').forEach(section => {
+      section.hidden = section.dataset.ordreKind !== kind;
+    });
+  }
+
   function runOrdre() {
+    syncOrdreSelector();
     const c = pal(), hs = Array.from({ length: Math.round(num('o-k')) }, (_, i) => num('o-h0') / Math.pow(2, i));
     const rows = Calc.ordreSin(hs);
     $('o-msg').textContent = 'La pente observée sur chaque courbe log-log estime l’ordre dans la plage de pas affichée.';
@@ -1070,7 +1081,7 @@
       f.addEventListener('input', () => safe(current));
       f.addEventListener('change', () => safe(current));
     });
-    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncSliders(); safe(current); }));
+    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncSliders(); safe(current); }));
     document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => safe('edpb')));
     document.querySelectorAll('input[type="range"]').forEach(r => r.addEventListener('input', syncSliders));
     syncSliders();
