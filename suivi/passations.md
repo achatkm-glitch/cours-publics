@@ -364,3 +364,6 @@ GitHub Pages run 41942910086 : completed, success, commit 272673297fa07176940abd
 
 ### Clôture tâche 114 — 2026-11-05 01:56:43 +01:00 Europe/Paris — Codex
 La page publique affiche sous l’équation une synthèse différente selon le bouton EDP sélectionné ; le changement est animé avec respect de prefers-reduced-motion. Sources miroir identiques par SHA-256. Pages run 41944835906 réussi sur ae01e43751f83cd95595ce06a972648e2fecccfa. JS syntax check réussi. Aucun PDF. Validation scientifique indépendante non réalisée.
+
+### Synchronisation finale tâche 114 — 2026-11-05 02:00:09 +01:00 Europe/Paris — Codex
+Commit de clôture ae01e43751f83cd95595ce06a972648e2fecccfa et registres 83c4730a35ac733d4a6448d3ab7ce31695bac3b9 présents sur origin/main. Pages run 41944835906 réussi. Verrou libéré.
