@@ -331,3 +331,13 @@ Dans le navigateur local (127.0.0.1:8766/#chemin), clic sur un point du graphe D
 
 #### Addendum de publication tâche 111 — 2026-11-05 01:06:13 Europe/Paris (UTC+01:00)
 Rectification : le commit cdd12b354f749c190026e14312d106f77aff5286 est sur origin/main ; run Pages 41938241979 réussi ; page Ordre publique vérifiée avec familles séparées et stencils supplémentaires. Aucun verrou actif.
+
+
+### Prise en charge tâche 112 — 2026-11-05 01:12:06 Europe/Paris (UTC+01:00) — Codex
+- **Fait** : demande consignée ; dépôt vérifié libre et périmètre réservé.
+- **Périmètre** : choix du type EDP, équation dynamique et champs/graphes correspondants, site miroir et registres.
+- **Contrôlé** : branches main et absence de verrou concurrent vérifiées avant prise.
+- **Prochaine étape** : implémenter, contrôler la sélection et la formule au navigateur, puis publier.
+
+### Clôture tâche 112 — 2026-11-05 01:19:33 +01:00 Europe/Paris (UTC+01:00) — Codex
+Miroir mftn/calculateurs synchronisé avec MFTN. Commit du site 4f572acf7d8806415050c1ac2602b840de5a6b7e poussé sur origin/main et confirmé ; GitHub Pages run 41940350980 réussi. Page publique HTTP 200 et sélection elliptique/parabolique/hyperbolique contrôlée dans le navigateur. Quatre empreintes identiques à celles de MFTN. Verrous libérés.

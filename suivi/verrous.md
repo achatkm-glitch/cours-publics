@@ -6,7 +6,7 @@
 
 | Fichier / Dossier | Verrou | Depuis |
 |---|---|---|
-| — | Aucun verrou actif | tâche 110 clôturée le 2026-11-05 00:33:56 +01:00 |
+| — | Aucun verrou actif | tâche 112 clôturée le 2026-11-05 01:19:42 +01:00 |
 
 ## Règles
 

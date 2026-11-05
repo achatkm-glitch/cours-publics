@@ -221,3 +221,15 @@ La page Ordre sépare les familles de dérivées et présente les stencils secon
 
 #### Rectificatif de clôture tâche 111 — 2026-11-05 01:06:13 Europe/Paris (UTC+01:00)
 La publication est achevée : commit cdd12b354f749c190026e14312d106f77aff5286 poussé sur origin/main ; GitHub Pages run 41938241979 terminé avec succès ; page Ordre vérifiée en ligne.
+
+
+### 2026-11-05 01:12:06 Europe/Paris (UTC+01:00) — Choix du type d’EDP et équation associée
+- **Instruction utilisateur** : séparer les types de la page « EDP : comportement » au moyen de boutons radio (ou équivalent), rendre le type choisi plus visible et afficher l’équation correspondante.
+- **Responsable** : Codex, tâche FIFO 112.
+- **Périmètre** : mftn/calculateurs/index.html, app.js, equations.js, style.css et registres de suivi.
+- **État** : en cours ; dernier état des verrous vérifié libre.
+
+### Clôture tâche 112 — 2026-11-05 01:19:33 +01:00 Europe/Paris (UTC+01:00) — Codex
+- Les trois choix EDP ont été vérifiés en ligne après déploiement ; l’équation et les réglages changent avec la sélection.
+- Miroir public à l’identique de MFTN pour les quatre fichiers concernés. Commit de contenu 4f572acf7d8806415050c1ac2602b840de5a6b7e ; Pages run 41940350980 réussi.
+- Verrou libéré. Vérification technique terminée ; validation scientifique indépendante et approbation utilisateur non effectuées.
