@@ -420,3 +420,9 @@ Le thème du calculateur MFTN est harmonisé avec l’accueil général. Commit 
 ### Clôture tâche miroir 187 — sélecteur de dérivée — 2026-11-07 12:41:36 +01:00
 Correctif publié sous le commit 6d6e14548c2b4c3432ff3f32d7a6f65d6bc490d5 ; Pages run 42369152962 réussi. Page et script HTTP 200, nouvel écouteur présent. Vérification interactive impossible dans la session ; limitation consignée dans la passation.
 
+### Tâche miroir 188 — libellés trop étroits dans l’onglet « Ordre » — 2026-11-07 12:45 +01:00
+Instruction utilisateur avec capture. Codex prend la première tâche libre après la publication du sélecteur. Simplifier la présentation des deux intitulés du panneau de réglages sans modifier les paramètres ni le calcul ; synchroniser l’index public.
+
+### Clôture tâche miroir 188 — libellés de raffinement — 2026-11-07 12:46:31 +01:00
+Intitulés clarifiés dans les deux sites. Les valeurs et les calculs ne changent pas. Commit miroir 1aa3687abf68b1ff8f7fa37d0a9beecbee788083 ; Pages run 42369542577 réussi ; page et CSS versionné HTTP 200.
+

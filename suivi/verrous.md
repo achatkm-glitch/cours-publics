@@ -141,3 +141,7 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Clôture tâche miroir 187 — mftn/calculateurs/app.js, index.html et registres | LIBRE — commit 6d6e145 poussé ; Pages run 42369152962 réussi ; endpoints vérifiés | Codex | 2026-11-07 12:41:36 +01:00 |
 | Addendum tâche miroir 185 — mftn/calculateurs/index.html, style.css et source | LIBRE — clôture publiée en passations le 2026-11-07 12:14:19 ; ancienne ligne ACTIF obsolète | Codex | 2026-11-07 12:41:36 +01:00 |
 
+| Tâche miroir 188 — mftn/calculateurs/index.html et registres | ACTIF — simplifier les libellés des réglages de l’onglet « Ordre » | Codex | 2026-11-07 12:45 +01:00 |
+
+| Clôture tâche miroir 188 — mftn/calculateurs/index.html, style.css et registres | LIBRE — commit 1aa3687 poussé ; Pages run 42369542577 réussi ; page/CSS et libellés HTTP vérifiés | Codex | 2026-11-07 12:46:31 +01:00 |
+

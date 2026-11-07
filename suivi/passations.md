@@ -714,3 +714,12 @@ ode --check et git diff --check ciblés propres ; index et script publics HTTP 2
 La clôture précédente de la tâche 186 contient des caractères parasites dans le SHA du commit et le type MIME transcrit. Valeurs vérifiées : commit c03f1f9c8b649acfb97bebc2b6acff47683f123 ; type MIME pplication/pdf. La date répétée dans son titre est une erreur de transcription ; l'heure correcte de cette clôture est 2026-11-07 12:31:24 Europe/Paris (UTC+01:00). L'entrée signée antérieure reste intacte.
 ### Addendum de forme — tâches miroir 186 et 187 — 2026-11-07 12:42:23 +01:00 — Codex
 L'addendum précédent sur la transcription de la clôture 186 a lui-même subi un échappement parasite. Valeurs vérifiées : SHA de commit c03f1f9c8b649acfb97bebc2b6acff47683f123 ; type MIME application/pdf ; heure de clôture 2026-11-07 12:31:24 Europe/Paris (UTC+01:00). Pour la tâche 187, commandes réellement exécutées : node --check mftn/calculateurs/app.js et git diff --check ciblé ; les deux réussissent. L'URL publique de l'application et le script versionné répondent HTTP 200 ; le script contient l'écouteur #p-ordre input[name=o-kind]. Pages run 42369152962 réussi, commit code 6d6e14548c2b4c3432ff3f32d7a6f65d6bc490d5. Le contrôle visuel interactif n'a pas été obtenu.
+
+### Tâche miroir 188 — intitulés du panneau de réglages de l’onglet « Ordre » — 2026-11-07 12:45 +01:00 — Codex
+Prise FIFO. Périmètre limité à mftn/calculateurs/index.html et registres de suivi. Capture utilisateur : les notations des pas et le texte « Nombre de pas testés » se replient en une colonne haute et peu lisible. Corriger la présentation en conservant les paramètres et la suite de raffinement. Vérifier puis publier.
+
+### Clôture tâche miroir 188 — libellés de raffinement — 2026-11-07 12:46:31 +01:00 — Codex
+- **Fait** : libellés compacts et explication du raffinement placée sur une ligne d’aide distincte ; aucun paramètre ni calcul modifié.
+- **Contrôlé** : page et CSS HTTP 200 ; cache style.css?v=20261107-191a et les deux libellés présents. GitHub Pages run 42369542577 réussi. Commit miroir 1aa3687abf68b1ff8f7fa37d0a9beecbee788083.
+- **Limite** : pas d’inspection visuelle dans la fenêtre navigateur de cette session.
+- **Verrous** : libérés.
