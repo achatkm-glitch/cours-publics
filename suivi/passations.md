@@ -679,3 +679,11 @@ Clôture tâche miroir 183 — 2026-11-07 11:35 Europe/Paris (UTC+01:00) — Cod
 - **Périmètre réservé** : miroir mftn/calculateurs/{index.html,style.css} et registres ; source Peda_inv/site/{index.html,style.css}.
 - **Prochaine étape** : harmoniser les éléments visuels communs et inspecter les vues ordinateur/téléphone avant publication.
 - **Verrous** : actifs.
+
+
+### Clôture tâche miroir 185 — 2026-11-07 12:14:19 +01:00 — Codex
+- **Fait** : bandeau de marque reprenant le site général, palette navy/turquoise, titre serif, thème clair par défaut ; le thème sombre demeure disponible. Le lien vers le site général est placé dans le bandeau supérieur ; le QR et l’accès au calculateur restent.
+- **Contrôlé** : `git diff --check` propre sur le périmètre ; commit source MFTN `283951e26d40ac683baa69a3eadcd0a51db076bc` et commit miroir `96758d277bd17eb1bc1f0ad63deaf649e8b4fd02` présents sur les branches distantes ; Pages run 42367166819 terminé avec succès ; page et CSS HTTP 200, cache `20261107-188a` servi.
+- **Limites** : inspection visuelle par navigateur non réalisée ; l’utilisateur peut vérifier le rendu sur ordinateur et téléphone à l’URL publique.
+- **Prochaine étape** : retour utilisateur sur le rendu.
+- **Verrous** : libérés.

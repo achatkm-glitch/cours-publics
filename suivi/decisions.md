@@ -399,3 +399,7 @@ Le lien « ← Retour au site général des cours » cible l’accueil public ht
 - **Prise FIFO** : Codex, après libération de la tâche miroir 184 ; travail coordonné avec la source MFTN tâche 188.
 - **Décision** : rapprocher palette, fond, typographie et bandeau de marque de l’accueil général, en préservant les calculateurs, le thème sombre et l’usage mobile.
 - **Périmètre réservé** : mftn/calculateurs/index.html, style.css et registres ; mise à jour concordante de Peda_inv/site/.
+
+
+### Clôture tâche miroir 185 — 2026-11-07 12:14:19 +01:00 — publication vérifiée
+Le thème du calculateur MFTN est harmonisé avec l’accueil général. Commit `96758d277bd17eb1bc1f0ad63deaf649e8b4fd02` poussé ; GitHub Pages run 42367166819 réussi. La page publique et le CSS `style.css?v=20261107-188a` répondent HTTP 200 ; le bandeau, le lien général et le thème clair par défaut sont présents. Les verrous sont libérés. Inspection visuelle automatisée indisponible ; le rendu est soumis au contrôle de l’utilisateur.
