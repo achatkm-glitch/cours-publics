@@ -767,3 +767,9 @@ Prise de tâche après contrôle de la dernière section des verrous : tâche 19
 
 #### Clôture tâche miroir 201 — PDF public du chapitre 1 — 2026-11-07 15:16:12 +01:00
 Remplacement effectué : le bandeau de la première page indique maintenant « LaTeX compilé le 7 novembre 2026 à 14 h 25 », conformément à la couverture du poly officiel. Contrôle du PDF local et public : 39 pages A4 ; le texte exact du nouveau tampon est présent, l’ancien « Source compilée … 10 h 39 » est absent de la première page. Pages 2 à 39 identiques à l’ancienne version en texte et en pixels. SHA-256 public/local : 7AF4C18F12244AA49F01439D904BF406B923C6BAD52C3820B1A388A2A8D6504F. Pages run 42380705818 réussi ; téléchargement public HTTP 200, application/pdf, hash identique. Commit e59bafe6e6df231d4772241a09905b17ad8fd0a poussé et confirmé ; source Git propre. Verrou libéré.
+
+### Tâche miroir 202 — correction responsive du calculateur MFTN — 2026-11-07 18:44:28 +01:00
+Prise FIFO après clôture miroir 201 et vérification worktree public propre. Diagnostic source/miroir concordant : labels CSS grid contenant des éléments <sub> directs, notamment le nombre de Biot, provoquent la séparation en colonnes du texte mathématique. Périmètre verrouillé : mftn/calculateurs/{index.html,style.css} et registres ; la source maître est Peda_inv/site. Vérifier en affichages téléphone/tablette, puis publier si le contrôle est concluant.
+
+#### Clôture tâche miroir 202 — correction responsive du calculateur MFTN — 2026-11-07 18:55:46 +01:00
+La source et le miroir ont été synchronisés sur les libellés Péclet/Biot et les règles mobile de l’en-tête. Contrôles des fichiers et capture locale 390 × 844 effectués ; label Biot masqué jusqu’au choix Fourier, contrôlé dans sa structure HTML. Hashes : index 58CC07438D8294DC5867689F71420F809EC7F1E347BE404D0BD84614ECBC706F ; style 95FC5B2D95FEC81801B6A14038860CCFE9DD818627010936386402BD2AD2FF05. Déploiement à confirmer après push.

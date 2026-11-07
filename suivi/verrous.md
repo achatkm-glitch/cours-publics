@@ -167,3 +167,6 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Tâche miroir 201 — mftn/chapitre-01-poly.pdf, suivi/{decisions,passations,verrous}.md | ACTIF — corriger seulement le tampon et republier | Codex | 2026-11-07 15:10:12 +01:00 |
 
 | Clôture tâche miroir 201 — mftn/chapitre-01-poly.pdf | LIBRE — nouveau tampon vérifié localement et sur Pages ; run 42380705818 réussi | Codex | 2026-11-07 15:16:12 +01:00 |
+
+| Tâche miroir 202 — mftn/calculateurs/{index.html,style.css} et registres | ACTIF — corriger et contrôler les ruptures de libellés mobile/tablette | Codex | 2026-11-07 18:44:28 +01:00 |
+| Clôture tâche miroir 202 — mftn/calculateurs/index.html et style.css | LIBRE — correction responsive vérifiée localement ; publication à confirmer | Codex | 2026-11-07 18:55:46 +01:00 |

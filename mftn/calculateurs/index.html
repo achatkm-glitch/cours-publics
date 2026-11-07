@@ -6,7 +6,7 @@
 <title>Calculateurs MFTN — par séance</title>
 <meta name="description" content="Calculateurs et parcours des quatre séances MFTN : modèle et transport, stationnaire, instationnaire et performance des schémas.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261107-198a">
+<link rel="stylesheet" href="style.css?v=20261107-200a">
 </head>
 <body>
 <header class="site-header">
@@ -130,7 +130,7 @@
     <div>
       <form class="params">
         <label>Vitesse a, en m/s<span class="sl"><input type="range" id="t-a" min="-3" max="3" step="0.1" value="1" data-unit="m/s"><output></output></span><input id="t-ax" value="" placeholder="autres valeurs à comparer, séparées par des espaces" aria-label="Autres valeurs à comparer"></label>
-        <label>Nombre de Péclet du profil Pe<sub>σ₀</sub><span class="sl"><input type="range" id="t-Pe" min="0.1" max="20" step="0.1" value="3" data-digits="2"><output></output></span></label>
+        <label><span>Nombre de Péclet du profil Pe<sub>σ₀</sub></span><span class="sl"><input type="range" id="t-Pe" min="0.1" max="20" step="0.1" value="3" data-digits="2"><output></output></span></label>
         <p class="repere" id="t-D-derived" aria-live="polite"></p>
         <input type="hidden" id="t-D" value="0.05">
         <label for="t-Dx">Autres valeurs de D (m²/s) à comparer, séparées par des espaces</label><input id="t-Dx" value="" placeholder="ex. 0,02 0,05 0,1" aria-label="Autres valeurs de diffusivité D à comparer">
@@ -314,7 +314,7 @@
           <label><input type="checkbox" name="e-s" value="centre" checked> Centré</label>
           <label><input type="checkbox" name="e-s" value="amont" checked> Amont</label>
         </div>
-        <label>Péclet global signé Pe<sub>L</sub> (a &gt; 0 ici)<span class="sl"><input type="range" id="e-PeL" min="1" max="200" step="1" value="50"><output></output></span></label>
+        <label><span>Péclet global signé Pe<sub>L</sub> (a &gt; 0 ici)</span><span class="sl"><input type="range" id="e-PeL" min="1" max="200" step="1" value="50"><output></output></span></label>
         <label>Nombre de cellules N<span class="sl"><input type="range" id="e-N" min="4" max="200" step="1" value="10"><output></output></span><input id="e-Nx" value="" placeholder="autres N à comparer (jusqu'à 5 valeurs au total)" aria-label="Autres valeurs à comparer"></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
@@ -424,7 +424,7 @@
           <label><input type="radio" name="n-bc" value="neumann" checked> Neumann (flux imposé)</label>
           <label><input type="radio" name="n-bc" value="fourier"> Fourier (échange convectif)</label>
         </div>
-        <label data-bc="fourier" style="display:none">Nombre de Biot Bi = h<sub>conv</sub>L/λ (L = 1 m)<span class="sl"><input type="range" id="n-kappa" min="0.5" max="20" step="0.5" value="2"><output></output></span></label>
+        <label data-bc="fourier" style="display:none"><span>Nombre de Biot Bi = h<sub>conv</sub>L/λ (L = 1 m)</span><span class="sl"><input type="range" id="n-kappa" min="0.5" max="20" step="0.5" value="2"><output></output></span></label>
         <label>Plus petit N<span class="sl"><input type="range" id="n-N0" min="4" max="40" step="1" value="10"><output></output></span></label>
         <label>Nombre de maillages testés (N₀, 2N₀, 4N₀, …)<span class="sl"><input type="range" id="n-k" min="2" max="6" step="1" value="5"><output></output></span></label>
         <label>N du profil d'erreur<span class="sl"><input type="range" id="n-Np" min="6" max="100" step="2" value="20"><output></output></span></label>

@@ -456,3 +456,12 @@ Curseur f remplacé par une valeur fixe 1 dans la source et le miroir. Site publ
 ### Clôture tâche miroir 201 — 2026-11-07 15:16:12 +01:00
 - **État** : livré et contrôlé ; le PDF public a le tampon LaTeX officiel et le contenu des pages du chapitre est inchangé.
 - **Preuves** : commit e59bafe6e6df231d4772241a09905b17ad8fd0a, Pages run 42380705818, téléchargement public HTTP 200 et empreinte identique.
+
+### 2026-11-07 2026-11-07 18:44:28 +01:00 — correction responsive du calculateur MFTN
+- **Reçu par** : Codex.
+- **Demande** : corriger plusieurs problèmes de mise en page téléphone/tablette, illustrés par le libellé Biot cassé en lignes.
+- **Prise en charge** : Codex, première tâche libre après contrôle FIFO et libération de la tâche 201.
+- **État** : source maître et miroir public réservés pour l’audit/correction responsive.
+
+### Clôture tâche miroir 202 — 2026-11-07 18:55:46 +01:00
+Miroir responsive synchronisé. Trois libellés mathématiques avec <sub> regroupés ; en-tête et carte téléphone adaptés aux petites largeurs. Capture locale à 390 × 844 inspectée ; label Biot vérifié dans sa structure HTML, car masqué avant sélection Fourier. SHA-256 identiques : index 58CC07438D8294DC5867689F71420F809EC7F1E347BE404D0BD84614ECBC706F, style 95FC5B2D95FEC81801B6A14038860CCFE9DD818627010936386402BD2AD2FF05. Publication à confirmer après commit.
