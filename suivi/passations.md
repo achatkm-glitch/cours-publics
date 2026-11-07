@@ -696,3 +696,19 @@ Prochaine action : contrôle HTML, commit/push et vérification GitHub Pages.
 L’extrait mftn/chapitre-01-poly.pdf est public et accessible. Il contient 39 pages correspondant exactement aux pages physiques 7–45 du poly officiel ; la page 7 ouvre le chapitre 1, la page 46 du poly ouvre le chapitre 2, et la dernière page de l’extrait est la bibliographie du chapitre 1. Signets conservés ; rendu de la première et de la dernière page inspecté. La première page identifie la version de travail et reprend la date/heure de compilation inscrite sur la couverture du poly source : 7 novembre 2026 à 10 h 39.
 Commit de contenu  c03f1f9c8b649acfb97bebc2b6acff47683f123 présent sur origin/main. Première exécution Pages 42367979660 annulée après un blocage de déploiement et signal API « Page build failed » ; construction Pages relancée via l’API, build 1348845320 « built », run 42368417230 réussi. Vérification de l’accueil public : HTTP 200, lien du poly et mention « version de travail » présents. PDF public : HTTP 200, pplication/pdf, 873813 octets, 39 pages, titre et bibliographie vérifiés.
 Contrôle technique et de rendu de l’extrait : atteint. Validation scientifique nouvelle : non réalisée ; le chapitre est publié à l’identique du poly source, sans révision de contenu. Le statut « version de travail » est signalé. Prochaine étape : l’utilisateur peut ouvrir l’extrait depuis la page générale. Verrous libérés.
+
+
+### Tâche miroir 187 — correction du sélecteur de dérivée — 2026-11-07 12:36:02 +01:00 — Codex
+Prise FIFO après la clôture miroir 186. Dépôt `C:\Latex\cours-publics` propre sur `main`, HEAD et `origin/main` `2a69882`. Dernière réservation publiée libre. Périmètre : `mftn/calculateurs/app.js`, `index.html` et trois registres ; code source correspondant `C:\Latex\MFTN\Peda_inv\site`. La source MFTN contient d’autres modifications hors périmètre qui seront préservées. Diagnostic attendu : radio `o-kind` situé hors des formulaires ; vérifier si son `change` n’appelle pas le rendu.
+Prochaine étape : brancher le radio sur `runOrdre`, mettre à jour le cache, contrôler manuellement les deux états et publier.
+
+### Clôture tâche miroir 187 — sélecteur de dérivée — 2026-11-07 12:41:36 +01:00 — Codex
+- **Fait** : le groupe radio o-kind, situé hors formulaire, possède maintenant son écouteur change ; il relance le rendu complet de l'onglet et actualise le sélecteur, les équations, courbes et résultats.
+- **Contrôlé** : 
+ode --check et git diff --check ciblés propres ; index et script publics HTTP 200, version pp.js?v=20261107-190a servie avec l'écouteur ; GitHub Pages run 42369152962 réussi ; miroir poussé sous 6d6e14548c2b4c3432ff3f32d7a6f65d6bc490d5.
+- **Limite** : l'automatisation n'a pas pu interagir avec les boutons dans la fenêtre Edge ; pas de validation visuelle directe.
+- **Prochaine étape** : l'utilisateur peut confirmer le rendu sur la page publique.
+- **Verrous** : libérés. La clôture antérieure de la tâche 185 dans ce registre confirme également que son verrou est libre ; sa ligne ACTIF plus ancienne dans errous.md était restée obsolète.
+
+### Addendum de traçabilité — correction des caractères de contrôle dans la clôture miroir 186 — 2026-11-07 12:41:36 +01:00 — Codex
+La clôture précédente de la tâche 186 contient des caractères parasites dans le SHA du commit et le type MIME transcrit. Valeurs vérifiées : commit c03f1f9c8b649acfb97bebc2b6acff47683f123 ; type MIME pplication/pdf. La date répétée dans son titre est une erreur de transcription ; l'heure correcte de cette clôture est 2026-11-07 12:31:24 Europe/Paris (UTC+01:00). L'entrée signée antérieure reste intacte.

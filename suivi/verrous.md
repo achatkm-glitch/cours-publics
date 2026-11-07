@@ -135,3 +135,9 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Tâche miroir 186 — `index.html`, `mftn/chapitre-01-poly.pdf`, `suivi/{decisions,passations,verrous}.md` | ACTIF — finir la publication et vérifier le déploiement public | Codex | 2026-11-07 12:20:00 +01:00 |
 
 | Tâche miroir 186 — index.html, mftn/chapitre-01-poly.pdf, suivi/{decisions,passations,verrous}.md | LIBRE — run Pages 42368417230 réussi ; page et PDF accessibles HTTP 200 | Codex | 2026-11-07 12:31:41 +01:00 |
+
+| Tâche miroir 187 — mftn/calculateurs/app.js, index.html et registres | ACTIF — réparer et publier le sélecteur dérivée première/seconde | Codex | 2026-11-07 12:36:02 +01:00 |
+
+| Clôture tâche miroir 187 — mftn/calculateurs/app.js, index.html et registres | LIBRE — commit 6d6e145 poussé ; Pages run 42369152962 réussi ; endpoints vérifiés | Codex | 2026-11-07 12:41:36 +01:00 |
+| Addendum tâche miroir 185 — mftn/calculateurs/index.html, style.css et source | LIBRE — clôture publiée en passations le 2026-11-07 12:14:19 ; ancienne ligne ACTIF obsolète | Codex | 2026-11-07 12:41:36 +01:00 |
+

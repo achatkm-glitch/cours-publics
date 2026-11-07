@@ -409,3 +409,14 @@ Le thème du calculateur MFTN est harmonisé avec l’accueil général. Commit 
 - **Source** : PDF officiel MFTN, chapitre 1 entre les pages PDF 7 et 45 incluses, signet du chapitre 2 à la page 46 ; extrait contrôlé avant mise en ligne.
 - **Prise FIFO et décision** : Codex réserve l’extrait PDF public, l’entrée correspondante de `index.html` et les registres. Le fichier sera clairement indiqué comme extrait du poly en version de travail.
 - **Publication** : commit et push autorisés par la demande ; vérifier le déploiement et l’accès public au PDF.
+
+
+### Tâche miroir 187 — sélecteur de dérivée dans « Ordre » — 2026-11-07 12:36:02 +01:00
+- **Instruction utilisateur** : le choix dérivée première/seconde ne met pas à jour les équations et les autres résultats.
+- **Prise FIFO** : Codex ; dépôt miroir vérifié sur `main`, `origin/main` au commit `2a69882`, index et scripts libres dans la dernière passation.
+- **Diagnostic** : le sélecteur radio est hors des formulaires surveillés ; confirmer et brancher son événement `change` sur le recalcul complet de l’onglet.
+- **Périmètre** : `mftn/calculateurs/app.js`, `index.html` et les registres publics. Synchroniser le script et son cache versionné avec la source MFTN.
+
+### Clôture tâche miroir 187 — sélecteur de dérivée — 2026-11-07 12:41:36 +01:00
+Correctif publié sous le commit 6d6e14548c2b4c3432ff3f32d7a6f65d6bc490d5 ; Pages run 42369152962 réussi. Page et script HTTP 200, nouvel écouteur présent. Vérification interactive impossible dans la session ; limitation consignée dans la passation.
+
