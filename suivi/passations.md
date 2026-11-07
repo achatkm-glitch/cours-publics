@@ -761,3 +761,6 @@ Le miroir public est libre depuis la clôture de la tâche 196, publication Page
 
 #### Clôture tâche miroir 198 — calculateur chaleur, Fo seul — 2026-11-07 15:05:10 Europe/Paris (UTC+01:00)
 Le curseur de diffusivité est retiré ; α=10⁻⁵ m²/s est fixé et Δt est dérivé de Fo h²/α. L=1 m, h réglable et comparaisons Fo conservés. Miroir vérifié identique à la source par empreintes. Pages run `42379581331` succès, page HTML avec cache busting : note α fixe présente, `c-alpha` absent, version `20261107-198a`. Tests `test_calc.js` et syntaxes JS passés. Commit miroir `8584c48e27a87584e3655c9e21f1524eb8fa4fa6`. Verrous libérés. Contrôle visuel automatisé non obtenu.
+
+#### Tâche miroir 201 — corriger le tampon du PDF public du chapitre 1 — 2026-11-07 15:10:12 +01:00
+Prise de tâche après contrôle de la dernière section des verrous : tâche 198 libérée, dépôt public propre. Le tampon obsolète est dans le PDF d’extrait lui-même, pas dans le HTML. Périmètre verrouillé : mftn/chapitre-01-poly.pdf et registres publics. Le tampon sera remplacé par la date/heure compilée figurant sur le poly officiel ; le contenu des pages sera préservé.

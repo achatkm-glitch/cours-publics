@@ -446,3 +446,9 @@ Curseur f remplacé par une valeur fixe 1 dans la source et le miroir. Site publ
 | 198 | 2026-11-07 14:57:44 Europe/Paris (UTC+01:00) | Utilisateur | Laisser le curseur Fo comme seul réglage de Fourier dans le calculateur chaleur ; retirer les contrôles de diffusivité et de Δt. | Codex — prise FIFO | En cours : fixer α à la référence 10⁻⁵ m²/s ; conserver Fo réglable, Δt calculé, L=1 m ; vérifier les préréglages puis synchroniser et publier. | mftn/calculateurs/{index.html,app.js,guide.js,style.css} et registres |
 
 | 199 | 2026-11-07 15:05:10 Europe/Paris (UTC+01:00) | Codex | Clôture : curseur Fourier seul dans le calculateur chaleur | Source/miroir identiques ; α fixé à 10⁻⁵ m²/s, Δt calculé par Fo h²/α, L=1 m ; tests réussis ; Pages run 42379581331 et HTML public vérifiés. | mftn/calculateurs/{index.html,app.js,guide.js,style.css} |
+
+### 2026-11-07 15:10:12 Europe/Paris (UTC+01:00) — PDF public du chapitre 1 : tampon de compilation obsolète
+- **Reçu par** : Codex.
+- **Demande** : la capture montre encore « Source compilée le 7 novembre 2026 à 10 h 39 » dans le PDF public du chapitre 1 ; corriger le libellé et l'heure selon la couverture actuelle du poly officiel.
+- **Prise en charge** : Codex, après vérification que la tâche précédente est libérée et le dépôt public propre.
+- **État** : prise en charge ; changement limité au bandeau en première page, pages du chapitre conservées.
