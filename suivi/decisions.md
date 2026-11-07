@@ -393,3 +393,9 @@ Commit `f15a20f822fe82af118631d1d44b8513327d4c2b` présent sur `origin/main`. Gi
 
 ### Clôture tâche miroir 184 — 2026-11-07 12:02:08 +01:00 — Publication vérifiée
 Le lien « ← Retour au site général des cours » cible l’accueil public https://achatkm-glitch.github.io/cours-publics/. Le lien voisin est renommé « Ouvrir le calculateur ». Commit 0735a05a4cd14f94a0afa34bbe55ed5a299bba3 poussé sur main ; GitHub Pages run 42366374198 réussi ; page publique HTTP 200 et les deux liens y sont présents. Arbre de travail propre.
+
+### Tâche miroir 185 — 2026-11-07 12:06:45 +01:00 — Cohérence de la charte graphique MFTN
+- **Instruction utilisateur** : harmoniser visuellement les calculateurs avec le site général (captures du site général et du calculateur).
+- **Prise FIFO** : Codex, après libération de la tâche miroir 184 ; travail coordonné avec la source MFTN tâche 188.
+- **Décision** : rapprocher palette, fond, typographie et bandeau de marque de l’accueil général, en préservant les calculateurs, le thème sombre et l’usage mobile.
+- **Périmètre réservé** : mftn/calculateurs/index.html, style.css et registres ; mise à jour concordante de Peda_inv/site/.

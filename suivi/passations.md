@@ -672,3 +672,10 @@ Clôture tâche miroir 183 — 2026-11-07 11:35 Europe/Paris (UTC+01:00) — Cod
 - **Limites** : contrôle effectué par réponse HTML servie ; pas d’inspection visuelle sur téléphone physique.
 - **Prochaine étape** : aucune pour cette demande.
 - **Verrous** : libérés.
+
+### 2026-11-07 12:06:45 +01:00 Codex → prochain intervenant — prise FIFO tâche miroir 185
+- **Fait** : comparaison des captures et des styles du portail général et du calculateur ; URL générale confirmée.
+- **Contrôlé** : miroir propre à b54c57d; source MFTN 628bded, index/style libres selon la passation 187. Le dépôt MFTN comporte d’autres modifications préexistantes, qui restent hors périmètre.
+- **Périmètre réservé** : miroir mftn/calculateurs/{index.html,style.css} et registres ; source Peda_inv/site/{index.html,style.css}.
+- **Prochaine étape** : harmoniser les éléments visuels communs et inspecter les vues ordinateur/téléphone avant publication.
+- **Verrous** : actifs.

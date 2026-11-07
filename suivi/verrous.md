@@ -126,3 +126,5 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Tâche miroir 184 — mftn/calculateurs/index.html et suivi/{decisions,passations,verrous}.md | ACTIF — Codex | 2026-11-07 12:00:13 +01:00 — lien de retour vers le site général public |
 
 | Clôture tâche miroir 184 — mftn/calculateurs/index.html et registres | LIBRE — Codex | 2026-11-07 12:02:08 +01:00 — commit f0735a0 poussé ; Pages run 42366374198 réussi ; liens vérifiés dans la page publique |
+
+| Tâche miroir 185 — mftn/calculateurs/{index.html,style.css} et registres ; MFTN Peda_inv/site/{index.html,style.css} | ACTIF — Codex | 2026-11-07 12:06:45 +01:00 — harmonisation graphique avec l’accueil général |
