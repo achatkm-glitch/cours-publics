@@ -6,7 +6,7 @@
 <title>Calculateurs MFTN — par séance</title>
 <meta name="description" content="Calculateurs et parcours des quatre séances MFTN : modèle et transport, stationnaire, instationnaire et performance des schémas.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261107-188a">
+<link rel="stylesheet" href="style.css?v=20261107-191a">
 </head>
 <body>
 <header class="site-header">
@@ -384,8 +384,8 @@
   <div class="grid">
     <div>
       <form class="params">
-        <label>Pas le plus grand h₀<span class="sl"><input type="range" id="o-h0" min="0.01" max="0.5" step="0.01" value="0.1"><output></output></span></label>
-        <label>Nombre de pas testés (h₀, h₀/2, h₀/4, …)<span class="sl"><input type="range" id="o-k" min="2" max="8" step="1" value="4"><output></output></span></label>
+        <label><span>Pas initial h₀</span><span class="sl"><input type="range" id="o-h0" min="0.01" max="0.5" step="0.01" value="0.1"><output></output></span></label>
+        <label><span>Nombre de maillages comparés</span><small class="control-hint">h₀, puis h divisé par 2 à chaque étape</small><span class="sl"><input type="range" id="o-k" min="2" max="8" step="1" value="4"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
       <p class="repere"><b>Repère :</b> les erreurs doivent décroître quand h diminue ; le rapport des erreurs successives tend vers 2 pour un schéma d'ordre 1 et vers 4 pour un schéma d'ordre 2. Le calcul à la main établit le terme dominant par Taylor ; les poids se déterminent en imposant la dérivation exacte des polynômes de degré requis.</p>
