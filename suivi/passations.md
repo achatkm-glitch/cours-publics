@@ -665,3 +665,10 @@ Clôture tâche miroir 183 — 2026-11-07 11:35 Europe/Paris (UTC+01:00) — Cod
 - **Contrôlé** : l’en-tête actuel ne contient que le QR code et un lien vers le calculateur ; aucun lien général distinct.
 - **Prochaine étape** : ajouter le lien, contrôler sa cible, publier et vérifier Pages.
 - **Verrous** : actifs pour cette passe.
+
+### Clôture tâche miroir 184 — 2026-11-07 12:02:08 +01:00 — Codex
+- **Fait** : ajout d’un lien de retour vers le site général dans la carte d’accès ; libellé du lien vers la page actuelle précisé en « Ouvrir le calculateur ».
+- **Contrôlé** : git diff --check propre ; deux destinations HTTP 200 avant publication ; commit 0735a05a4cd14f94a0afa34bbe55ed5a299bba3 poussé sur origin/main ; GitHub Pages run 42366374198 terminé avec succès ; page publique HTTP 200, lien de retour et cible générale présents.
+- **Limites** : contrôle effectué par réponse HTML servie ; pas d’inspection visuelle sur téléphone physique.
+- **Prochaine étape** : aucune pour cette demande.
+- **Verrous** : libérés.

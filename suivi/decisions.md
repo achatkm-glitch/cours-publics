@@ -390,3 +390,6 @@ Commit `f15a20f822fe82af118631d1d44b8513327d4c2b` présent sur `origin/main`. Gi
 - **Prise FIFO** : Codex réserve la tâche 184, limitée au miroir public.
 - **Décision** : ajouter dans l’en-tête un lien distinct vers https://achatkm-glitch.github.io/cours-publics/ ; conserver le QR code et le lien vers le calculateur.
 - **Périmètre** : mftn/calculateurs/index.html et registres de suivi ; aucun autre fichier du site.
+
+### Clôture tâche miroir 184 — 2026-11-07 12:02:08 +01:00 — Publication vérifiée
+Le lien « ← Retour au site général des cours » cible l’accueil public https://achatkm-glitch.github.io/cours-publics/. Le lien voisin est renommé « Ouvrir le calculateur ». Commit 0735a05a4cd14f94a0afa34bbe55ed5a299bba3 poussé sur main ; GitHub Pages run 42366374198 réussi ; page publique HTTP 200 et les deux liens y sont présents. Arbre de travail propre.
