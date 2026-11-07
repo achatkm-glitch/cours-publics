@@ -379,3 +379,8 @@ Commit `f15a20f822fe82af118631d1d44b8513327d4c2b` présent sur `origin/main`. Gi
 - **Raison** : distinguer le cas étalon S1 sans source des exercices avec production, et clarifier le rôle des bancs numériques utilisés dans les séances.
 - **Preuve** : consigne utilisateur du 2026-11-07 ; source C:\Latex\MFTN\Peda_inv\site et miroir mftn/calculateurs.
 - **Responsable** : Codex.
+
+### 2026-11-07 — Tâche 183 : situations contextualisées
+- **Décision** : décrire pour chaque calculateur le cas modélisé, ses simplifications et le but pédagogique de celles-ci ; distinguer schéma de contexte physique et banc numérique quand ils diffèrent.
+- **Preuve** : instruction utilisateur et capture du nœud Jacobi/Gauss–Seidel ; fiches S1–S4 et fichiers `mftn/calculateurs/situations.js`.
+- **Responsable** : Codex.

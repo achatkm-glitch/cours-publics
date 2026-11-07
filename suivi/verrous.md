@@ -118,3 +118,5 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Tâche miroir 180 — mftn/calculateurs/index.html, situations.js, registres | ACTIF — Codex | 2026-11-07 11:03:34 +01:00 — synchroniser les corrections autorisées depuis C:\Latex\MFTN\Peda_inv\site ; préserver les autres fichiers |
 
 | Clôture tâche miroir 180 — mftn/calculateurs/index.html, situations.js, registres | LIBRE — Codex | 2026-11-07 11:08:52 +01:00 — contrôles statiques passés ; prêt pour synchronisation publique |
+
+| Tâche miroir 183 — mftn/calculateurs/situations.js | ACTIF — Codex | 2026-11-07 11:34:00 +01:00 — relier chaque explication au cas effectivement étudié et justifier les simplifications |

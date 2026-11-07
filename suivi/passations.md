@@ -652,3 +652,6 @@ Commit `f15a20f822fe82af118631d1d44b8513327d4c2b` confirmé sur `origin/main`. G
 `node --check` passe sur `situations.js` ; empreinte du fichier identique entre la source MFTN et le miroir. `git diff --check` est propre sur les changements de contenu. Audit éditorial statique terminé ; rendu visuel navigateur non inspecté.
 
 Addendum publication : commit `f1a3c1e4e5ab347a42733a0e2462bdb89c6c81ac` poussé sur `main` ; GitHub Pages run `42362919175` réussi. Page et script publics HTTP 200, avec les textes mis à jour servis.
+
+### 2026-11-07 11:34 +01:00 — Tâche 183 : situations reliées aux modèles étudiés
+Le texte de situation a été relié aux modèles effectivement calculés et les simplifications sont justifiées : transport 1D à coefficients constants, paroi de S2, système tridiagonal de Jacobi/Gauss–Seidel, refroidissement de référence en S3, et banc périodique d’advection. L’onglet « Ordre » distingue maintenant le dessin de paroi du profil analytique test sin(x) utilisé par le calculateur. Copie synchronisée depuis la source MFTN ; syntaxe JavaScript vérifiée ; déploiement à faire.

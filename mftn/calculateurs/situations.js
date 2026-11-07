@@ -29,7 +29,7 @@
     transport: {
       video: { page: 'https://today.ucsd.edu/story/pink-dye-experiment-to-reveal-mysteries-of-coastal-ocean-dynamics', titre: 'Voir l’expérience du traceur rose à la sortie d’une lagune (UC San Diego)', legende: 'À Los Peñasquitos Lagoon, des chercheurs suivent un traceur rose emporté vers la côte à l’aide de drones, de dériveurs et de capteurs. Les vagues, les courants et la marée agissent ensemble : cette observation montre un transport et un mélange réels, sans isoler la diffusion moléculaire D du modèle. Vidéo et présentation : Scripps Oceanography, UC San Diego (2023).' },
       photo: { src: 'img/Sediment_plume_at_sea_1280px.jpg', alt: 'Panache de sédiments en mer vu par satellite', legende: 'Panache de sédiments en mer vu par le satellite Sentinel-2B (5 février 2019). ESA, « Contains modified Copernicus Sentinel data (2019), processed by ESA », <a href="https://creativecommons.org/licenses/by-sa/3.0/igo/deed.en">CC BY-SA 3.0 IGO</a>, <a href="https://commons.wikimedia.org/wiki/File:Sediment_plume_at_sea.jpg">via Wikimedia Commons</a> (miniature de 1280 px).' },
-      texte: "Mise en problème simplifiée. Un polluant ou une eau chaude est rejeté dans un courant uniforme. Où le signal est-il transporté ? Comment s'étale-t-il ? Le nombre de Péclet compare advection et diffusion dans le modèle.",
+      texte: "Pour étudier advection et diffusion sans simuler un cours d’eau réel, le modèle réduit le phénomène à un profil 1D, une vitesse uniforme a et une diffusivité D constantes. Il suit où va le signal et comment il s’étale ; le nombre de Péclet compare ces deux effets. Ce calcul ne prédit pas à lui seul la dispersion d’un rejet dans une rivière.",
       svg: wrap(
         `<rect x="10" y="40" width="360" height="90" fill="var(--blue)" opacity="0.14"/>` +
         `<path d="M10 40 H370 M10 130 H370" stroke="var(--blue)" stroke-width="2.2"/>` +
@@ -38,9 +38,9 @@
         arr(60, 62, 130, 62, 'var(--blue)', 2.4) + arr(60, 112, 130, 112, 'var(--blue)', 2.4) +
         t(150, 150, 'courant : advection') + t(262, 150, 'étalement : diffusion'))
     },
-    edpc: { texte: "Trois situations, trois types : un équilibre (plaque aux bords à températures imposées), une évolution diffusive (barre qui se refroidit) et une bosse initiale qui se propage dans un tube.", svg: trois },
+    edpc: { texte: "Trois cas de référence isolent les comportements à reconnaître : équilibre d’une plaque, diffusion dans une barre et propagation d’une bosse dans un tube. Ces modèles simples servent à relier le type d’équation à son comportement ; les dessins ne représentent pas des installations complètes.", svg: trois },
     edpb: {
-      texte: "Un pictogramme par type : une plaque en régime permanent (elliptique), une barre qui diffuse la chaleur (parabolique), une bosse initiale dans un tube (hyperbolique). Le pictogramme affiché suit le type choisi.",
+      texte: "Pour comparer trois comportements mathématiques, le calculateur représente une plaque, une barre 1D et une bosse dans un tube. Ces cas pédagogiques simplifiés isolent chaque classe d’EDP sans reproduire une installation complète ; le pictogramme suit le type choisi.",
       svg: [
         ['elliptique', grad('g3a', '--red', '--blue') + `<rect x="95" y="36" width="190" height="100" rx="3" fill="url(#g3a)" opacity="0.55"/><rect x="95" y="36" width="190" height="100" rx="3" fill="none" stroke="var(--plot-axis)" stroke-width="4"/>` + t(100, 26, 'plaque chauffée, régime permanent', 'font-weight="600"') + t(100, 156, 'chaque côté agit sur toute la plaque')],
         ['parabolique', `<rect x="60" y="64" width="260" height="28" rx="3" fill="var(--blue)" opacity="0.22" stroke="var(--plot-axis)" stroke-width="1.5"/><rect id="k-sit-hot-left" x="181.875" y="65" width="16.25" height="26" rx="3" fill="var(--orange)" opacity="0.8"/><rect id="k-sit-hot-right" x="191.875" y="65" width="16.25" height="26" rx="3" fill="var(--orange)" opacity="0.8"/><path id="k-sit-profile-initial" d="M60 130 H320" fill="none" stroke="var(--orange)" stroke-width="2" stroke-dasharray="5 4"/><path id="k-sit-profile" d="M60 130 H320" fill="none" stroke="var(--green)" stroke-width="2.8"/><path d="M60 130 H320" stroke="var(--plot-axis)" stroke-width="1" stroke-dasharray="2 4"/>` + t(60, 46, 'barre : zones chaudes initiales', 'font-weight="600"') + `<text id="k-sit-caption" x="60" y="151" fill="var(--ink)" font-size="14">profil initial fourni au calcul</text>`],
@@ -49,7 +49,7 @@
     },
     cl: {
       photo: { src: 'img/FensterIR_Blower_Door.jpg', alt: 'Thermogramme d’une fenêtre de toit pendant un essai de dépression : fuite d’air visible autour de la fenêtre', legende: 'Thermogramme d’une fenêtre de toit pendant un essai de dépression : la fuite d’air autour de l’ouvrant apparaît dans l’image. Cet exemple réel illustre un échange avec l’extérieur ; le schéma ci-dessus présente séparément les modèles de condition au bord. Sönke Krüll, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:FensterIR_Blower_Door.jpg">Wikimedia Commons</a>.' },
-      texte: "Une paroi qui produit de la chaleur (résistance électrique, réaction) : à chaque extrémité on peut imposer la température, le flux, ou un échange convectif avec l'air ambiant.",
+      texte: "On ramène la conduction dans une paroi à un modèle 1D : conductivité et source uniformes, avec une condition thermique à chaque face. Comparer température imposée, flux imposé et échange convectif montre comment les frontières entrent dans le calcul ; cette coupe simplifiée ne décrit pas toute la géométrie d’une pièce.",
       svg: wrap(
         grad('gcl', '--red', '--orange') +
         `<rect x="14" y="50" width="40" height="70" fill="var(--blue)" opacity="0.5" stroke="var(--plot-axis)" stroke-width="1.2"/>` + t(8, 40, 'bloc thermostaté') + t(8, 138, 'T imposée', 'font-weight="600"') + t(8, 152, '(Dirichlet)') +
@@ -68,7 +68,7 @@
     },
     peclet: {
       photo: { src: 'img/Schlieren-color-candle-plume.jpg', alt: 'Panache thermique d’une bougie par strioscopie', legende: 'Panache thermique d’une bougie visualisé par strioscopie. Settles1, <a href="https://creativecommons.org/licenses/by/3.0/deed.en">CC BY 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Schlieren-color-candle-plume.jpg">via Wikimedia Commons</a>.' },
-      texte: "Un fluide s'écoule le long d'une paroi chaude : près de la paroi, la température passe de celle de la paroi à celle du fluide sur une couche mince, d'autant plus mince que Pe est grand. Un schéma centré trop grossier y oscille.",
+      texte: "Près d’une paroi chaude, l’advection entraîne le fluide tandis que la diffusion étale la température. Le calculateur réduit ce phénomène à une équation stationnaire 1D à coefficients constants : Pe_h compare les deux effets à l’échelle d’une maille. Cette simplification permet d’observer le rôle du maillage et du schéma ; une couche limite réelle est plus complexe.",
       svg: wrap(
         `<rect x="10" y="120" width="360" height="24" fill="var(--red)" opacity="0.5" stroke="var(--plot-axis)"/>` + t(14, 160, 'paroi chaude') +
         arr(24, 50, 120, 50, 'var(--blue)', 2.4) + arr(24, 80, 120, 80, 'var(--blue)', 2.4) + t(130, 44, 'fluide en mouvement') +
@@ -77,7 +77,7 @@
         t(230, 74, 'couche limite (Pe petit)', 'fill="var(--orange)"') + t(214, 100, 'couche plus mince (Pe grand)', 'fill="var(--green)"'))
     },
     ordre: {
-      texte: "Dans une paroi, les températures aux nœuds permettent d’estimer la pente T′ ou la courbure T″ du profil. À l’intérieur, on dispose de points de chaque côté ; au bord, on construit une formule avec le nœud de bord et les nœuds intérieurs, sans point extérieur.",
+      texte: "Dans le modèle 1D de paroi, la température est portée par les nœuds : une pente T′ ou une courbure T″ se reconstruit à partir de valeurs voisines. Pour mesurer l’erreur des formules sans dépendre de données expérimentales, le calculateur utilise le profil analytique test u(x)=sin(x), en x=1. Le schéma donne le contexte physique ; le test mesure l’approximation numérique.",
       svg: wrap(
         grad('go', '--red', '--blue') +
         `<rect x="20" y="50" width="340" height="50" rx="3" fill="url(#go)" opacity="0.45" stroke="var(--plot-axis)"/>` +
@@ -86,7 +86,7 @@
         arr(100, 142, 190, 142, 'var(--orange)', 1.8) + arr(190, 142, 100, 142, 'var(--orange)', 1.8) + t(130, 160, 'pas h') + t(20, 38, 'capteurs de température dans une paroi'))
     },
     neumann: {
-      texte: "Dans le modèle thermique stationnaire de S2, la température est imposée à une face et le flux à l'autre. Un flux nul correspond à une face isolée ; une condition de Fourier (Robin) représente l'échange avec le fluide. Pour le calcul, le flux imposé est traduit par une dérivée puis discrétisé au bord.",
+      texte: "Dans le modèle thermique stationnaire de S2, la température est imposée à une face et le flux à l’autre. Un flux nul représente une face isolée ; une condition de Fourier (Robin) modélise l’échange avec le fluide. Le calculateur isole la formule au bord : le flux devient une dérivée à discrétiser, sans reconstruire toute la paroi.",
       svg: wrap(
         grad('gn', '--blue', '--orange') + hatch('hn') +
         `<rect x="14" y="50" width="30" height="70" fill="var(--blue)" opacity="0.5" stroke="var(--plot-axis)"/>` + t(8, 40, 'T imposée') +
@@ -95,15 +95,16 @@
         arr(310, 150, 340, 150, 'var(--orange)', 2.2) + t(272, 164, 'flux imposé : T′ connue'))
     },
     jg: {
-      texte: "Cet onglet isole la résolution itérative d'un système tridiagonal de diffusion, exercice numérique de S2 ; il ne résout pas à lui seul toute la paroi à source uniforme et à flux imposé décrite dans la mise en situation. À chaque itération, une valeur nodale est corrigée à partir de ses voisines : Jacobi utilise l'ancienne itération, Gauss–Seidel les valeurs déjà mises à jour.",
+      texte: "En S2, la discrétisation spatiale de la paroi thermique conduit à un système linéaire tridiagonal. Cet onglet simplifie le problème en isolant la résolution de ce système : il ne réassemble pas toute la source et la condition de flux. Le but est de comparer les itérations de Jacobi et de Gauss–Seidel et de suivre leur résidu ; le schéma montre comment une valeur nodale est mise à jour à partir de ses voisines.",
       svg: wrap(
+        t(10, 28, 'Paroi thermique S2 : système 1D discrétisé') +
         [0, 1, 2, 3, 4, 5, 6].map(i => `<circle cx="${40 + i * 50}" cy="60" r="11" fill="var(--blue)" opacity="${0.25 + 0.1 * (i % 3)}" stroke="var(--plot-axis)"/>`).join('') +
         `<line x1="40" y1="60" x2="340" y2="60" stroke="var(--plot-axis)" stroke-width="1.2" opacity="0.5"/>` +
         arr(140, 100, 190, 76, 'var(--orange)', 2.2) + arr(240, 100, 190, 76, 'var(--orange)', 2.2) + t(164, 118, 'nouvelle valeur du nœud') +
         t(100, 150, 'itération 1, 2, 3, … jusqu’à résidu petit'))
     },
     chaleur: {
-      texte: "Une barre chaude, aux extrémités tenues à la température de l'ambiance, se refroidit : le profil s'aplatit au cours du temps. Les schémas diffèrent par le pas de temps qu'ils admettent.",
+      texte: "Pour isoler l’effet des schémas en temps, le calculateur étudie une barre homogène 1D, sans source, dont les deux extrémités restent à la température ambiante. Le profil initial se refroidit ; ce cas étalon vérifie les méthodes et ne constitue pas une simulation complète de batterie.",
       svg: wrap(
         `<rect x="14" y="56" width="30" height="50" fill="var(--blue)" opacity="0.5" stroke="var(--plot-axis)"/><rect x="336" y="56" width="30" height="50" fill="var(--blue)" opacity="0.5" stroke="var(--plot-axis)"/>` +
         `<path d="M44 106 C130 20 250 20 336 106" fill="none" stroke="var(--red)" stroke-width="2.6"/>` +
@@ -112,14 +113,14 @@
         t(150, 28, 't = 0', 'fill="var(--red)"') + t(150, 62, 'plus tard', 'fill="var(--orange)"') + t(150, 84, 'plus tard encore', 'fill="var(--green)"') + t(24, 130, 'bord à température ambiante') + t(24, 148, 'u = 0 aux deux extrémités'))
     },
     chemin: {
-      texte: "Raffiner un calcul, c'est diminuer h et Δt ensemble : la façon dont Δt suit h (Δt = c₀h^r) peut décider si un schéma reste consistant avec l'équation de la chaleur ou de l'advection.",
+      texte: "Ce test numérique ne décrit pas un nouvel appareil : il impose un chemin de raffinement Δt = c₀h^r pour vérifier si le défaut du schéma tend vers zéro avec les maillages. Il sert à distinguer la consistance d’une simple courbe bornée ou d’une erreur faible sur un seul réglage.",
       svg: wrap(
         [0, 1, 2, 3].map(i => `<line x1="${30 + i * 40}" y1="30" x2="${30 + i * 40}" y2="130" stroke="var(--plot-axis)"/>`).join('') + [0, 1, 2].map(j => `<line x1="30" y1="${30 + j * 50}" x2="150" y2="${30 + j * 50}" stroke="var(--plot-axis)"/>`).join('') +
         [...Array(9).keys()].map(i => `<line x1="${220 + i * 15}" y1="30" x2="${220 + i * 15}" y2="130" stroke="var(--blue)"/>`).join('') + [...Array(5).keys()].map(j => `<line x1="220" y1="${30 + j * 25}" x2="340" y2="${30 + j * 25}" stroke="var(--blue)"/>`).join('') +
         arr(160, 80, 210, 80, 'var(--orange)', 2.4) + t(28, 148, 'maillage grossier') + t(218, 148, 'maillage fin') + t(160, 70, 'h ↘, Δt ↘'))
     },
     adv: {
-      texte: "Un paquet de fluide chaud est transporté dans une conduite. La référence se déplace sans changer de forme ; les trois schémas calculent son évolution et révèlent lissage, oscillations ou instabilité.",
+      texte: "Un paquet de fluide est transporté à vitesse uniforme. Le calcul choisit un domaine périodique : le signal qui sort réapparaît de l’autre côté, afin d’isoler les effets des schémas sans imposer une entrée de conduite. On compare alors le profil calculé à la translation exacte et on repère lissage, oscillations ou amplification.",
       legende: "Comparaison numérique sur un domaine périodique, avec un paquet compact et des fronts raccordés par un cosinus. Le cas illustré fixe a = 1, N = 100 et Co = 0,8 ; t* = at/L évolue de 0 à 0,4. La courbe pointillée est la solution exacte. L’échelle verticale reste fixe pour rendre visible l’instabilité de FTCS. Ce cas périodique isole l’effet du schéma et ne représente pas une entrée avec condition imposée.",
       svg: wrap(
         `<rect x="10" y="50" width="360" height="60" rx="30" fill="none" stroke="var(--plot-axis)" stroke-width="3"/>` +
