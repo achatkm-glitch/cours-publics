@@ -735,3 +735,6 @@ Prise FIFO. Répercuter le réglage fixe f = 1 depuis Peda_inv/site/index.html d
 
 ### Tâche miroir 190 — Fo variable, L=1 m fixe — 2026-11-07 13:59:27 Europe/Paris (UTC+01:00) — Codex
 Synchroniser le calculateur chaleur depuis la source MFTN : Fo demeure réglable et pilote Δt ; L est fixé à 1 m. Contrôler le repère, les valeurs initiales et la publication Pages.
+
+#### Clôture tâche miroir 190 — 2026-11-07 14:05:15 Europe/Paris (UTC+01:00)
+L est fixé à 1 m dans l’onglet chaleur et ses préréglages ; Fo reste réglable et pilote Δt. Réglage initial tf=200 s, affichage corrigé du Δt réellement appliqué. Contrôles JS et diff réussis. Commit 28176ac365a6955718a239a60be70b0b95c8fc2, Pages run 42375211920 réussi ; page et ressources versionnées HTTP 200. Verrou libéré.

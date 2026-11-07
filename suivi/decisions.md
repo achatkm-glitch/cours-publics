@@ -434,3 +434,5 @@ Curseur f remplacé par une valeur fixe 1 dans la source et le miroir. Site publ
 
 
 | 191 | 2026-11-07 13:59:27 +01:00 | Utilisateur | Dans le calculateur chaleur, garder Fo réglable et fixer L=1 m. | Codex | En cours : mêmes réglages dans la source et le miroir ; vérifier le comportement quand Fo varie puis publier. | Peda_inv/site/index.html ; mftn/calculateurs/index.html |
+
+| 192 | 2026-11-07 14:05:15 +01:00 | Codex | Clôture : garder Fo variable et fixer L=1 m dans le calculateur chaleur | Codex | Préréglages S3/S4 alignés ; message Δt corrigé ; publication Pages réussie, run 42375211920. | mftn/calculateurs/{index.html,app.js,guide.js} |
