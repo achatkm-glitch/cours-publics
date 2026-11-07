@@ -738,3 +738,6 @@ Synchroniser le calculateur chaleur depuis la source MFTN : Fo demeure réglable
 
 #### Clôture tâche miroir 190 — 2026-11-07 14:05:15 Europe/Paris (UTC+01:00)
 L est fixé à 1 m dans l’onglet chaleur et ses préréglages ; Fo reste réglable et pilote Δt. Réglage initial tf=200 s, affichage corrigé du Δt réellement appliqué. Contrôles JS et diff réussis. Commit 28176ac365a6955718a239a60be70b0b95c8fc2, Pages run 42375211920 réussi ; page et ressources versionnées HTTP 200. Verrou libéré.
+
+### Addendum hashes de la tâche miroir 190 — 2026-11-07 14:06:15 Europe/Paris (UTC+01:00)
+Correction de transcription : le commit du code du site est b28176ac365a6955718a239a60be70b0b95c8fc2 ; le commit de clôture du suivi est c8904054d32d6d5e3072201bb3d6bec53eff964d. Les deux hashes ont été vérifiés sur origin/main. La ligne précédente n’est pas réécrite.
