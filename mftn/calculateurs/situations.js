@@ -49,13 +49,15 @@
     },
     cl: {
       photo: { src: 'img/FensterIR_Blower_Door.jpg', alt: 'Thermogramme d’une fenêtre de toit pendant un essai de dépression : fuite d’air visible autour de la fenêtre', legende: 'Thermogramme d’une fenêtre de toit pendant un essai de dépression : la fuite d’air autour de l’ouvrant apparaît dans l’image. Cet exemple réel illustre un échange avec l’extérieur ; le schéma ci-dessus présente séparément les modèles de condition au bord. Sönke Krüll, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:FensterIR_Blower_Door.jpg">Wikimedia Commons</a>.' },
-      texte: "On ramène la conduction dans une paroi à un modèle 1D : conductivité et source uniformes, avec une condition thermique à chaque face. Comparer température imposée, flux imposé et échange convectif montre comment les frontières entrent dans le calcul ; cette coupe simplifiée ne décrit pas toute la géométrie d’une pièce.",
+      texte: "Pour la situation thermique de S1, on représente une paroi par une barre 1D en régime stationnaire. S1-X3 est le cas sans production et sans flux à une face : la paroi est adiabatique. S1-X4 ajoute une production uniforme et compare les conditions possibles à l’autre face. On les étudie une à la fois pour isoler leur effet ; ce modèle de référence ne décrit pas une cellule de batterie complète.",
       svg: wrap(
         grad('gcl', '--red', '--orange') +
-        `<rect x="14" y="50" width="40" height="70" fill="var(--blue)" opacity="0.5" stroke="var(--plot-axis)" stroke-width="1.2"/>` + t(8, 40, 'bloc thermostaté') + t(8, 138, 'T imposée', 'font-weight="600"') + t(8, 152, '(Dirichlet)') +
-        `<rect x="54" y="50" width="200" height="70" fill="url(#gcl)" opacity="0.55" stroke="var(--plot-axis)" stroke-width="1.2"/>` + t(100, 90, 'paroi avec production q') +
-        `<rect x="254" y="50" width="10" height="70" fill="var(--orange)"/>` + t(262, 40, 'film chauffant', 'text-anchor="end"') + t(214, 138, 'flux imposé', 'font-weight="600"') + t(214, 152, '(Neumann)') +
-        `<path d="M290 70 q10 -8 20 0 t20 0 M290 90 q10 -8 20 0 t20 0 M290 110 q10 -8 20 0 t20 0" fill="none" stroke="var(--blue)" stroke-width="2"/>` + t(292, 40, 'air ambiant') + t(284, 138, 'échange convectif', 'font-weight="600"') + t(284, 152, '(Robin)'))
+        `<rect x="14" y="50" width="40" height="70" fill="var(--blue)" opacity="0.5" stroke="var(--plot-axis)" stroke-width="1.2"/>` + t(8, 40, 'face x = 0') +
+        `<rect x="54" y="50" width="200" height="70" fill="url(#gcl)" opacity="0.55" stroke="var(--plot-axis)" stroke-width="1.2"/>` + t(85, 90, 'paroi 1D · production q') +
+        `<rect x="254" y="50" width="10" height="70" fill="var(--orange)"/>` + t(264, 40, 'face x = L') +
+        `<path d="M290 70 q10 -8 20 0 t20 0 M290 90 q10 -8 20 0 t20 0 M290 110 q10 -8 20 0 t20 0" fill="none" stroke="var(--blue)" stroke-width="2"/>` +
+        t(10, 136, 'x = 0 : température imposée') + t(10, 151, 'x = L : choisir une condition, pas les trois') +
+        t(10, 166, 'température · flux · échange avec l’air'))
     },
     barre: {
       texte: "Dans le cas étalon de S1, une barre homogène en régime permanent, sans source, relie T(0) = 300 K à T(L) = 400 K. Le préréglage q = 100 W/m³ correspond ensuite aux explorations S1-X5 et X6 : le curseur q permet de revenir au cas sans source. Les différences finies calculent aux nœuds ; les volumes finis, aux centres des cellules. Cette barre sert à vérifier les méthodes, pas à simuler une cellule industrielle.",
