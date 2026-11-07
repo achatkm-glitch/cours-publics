@@ -438,3 +438,5 @@ Curseur f remplacé par une valeur fixe 1 dans la source et le miroir. Site publ
 | 192 | 2026-11-07 14:05:15 +01:00 | Codex | Clôture : garder Fo variable et fixer L=1 m dans le calculateur chaleur | Codex | Préréglages S3/S4 alignés ; message Δt corrigé ; publication Pages réussie, run 42375211920. | mftn/calculateurs/{index.html,app.js,guide.js} |
 
 | 193 | 2026-11-07 14:09:32 UTC+01:00 | Utilisateur | Afficher la pente directement sur les figures des graphes d’erreur chaleur. | Codex | En cours : afficher l’ordre observé pour chaque série dans le graphe, en plus de la légende. | mftn/calculateurs/{app.js,index.html} |
+
+| 194 | 2026-11-07 14:13:55 UTC+01:00 | Codex | Clôture : pente observée affichée dans les deux graphes d’erreur du calculateur chaleur | Codex | Source b646b5c, miroir 766659d ; Pages run 42375883659 réussi ; ressources HTTP 200. | mftn/calculateurs/{app.js,index.html} |

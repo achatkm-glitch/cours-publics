@@ -744,3 +744,6 @@ Correction de transcription : le commit du code du site est b28176ac365a6955718a
 
 ### Tâche miroir 193 — pente visible dans les graphes de chaleur — 2026-11-07 14:09:32 Europe/Paris (UTC+01:00)
 Demande : afficher directement dans les figures les pentes déjà calculées pour les graphes d’erreur selon Δt et d’erreur selon h. Légende et calcul conservés ; annotation à distinguer comme pente observée.
+
+#### Clôture tâche miroir 193 — pente visible dans les graphes chaleur — 2026-11-07 14:13:55 Europe/Paris (UTC+01:00)
+Pentes log-log observées affichées dans les deux figures d’erreur, avec couleur correspondant à chaque courbe ; valeurs de pente conservées dans la légende. Scripts contrôlés, page et app.js versionné HTTP 200 ; Pages run 42375883659 réussi. Commit miroir 766659d12f18a223a8259ecc1ce6e395faab9bcc. Verrou libéré.
