@@ -1400,6 +1400,7 @@
     document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { if (b.closest('#p-edpb')) stopEdpbAnimation('Animation réinitialisée.'); b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncBarreMeshControl(); syncSliders(); safe(current); }));
     document.querySelectorAll('input[name="b-mesh"]').forEach(i => i.addEventListener('change', syncBarreMeshControl));
     document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => { stopEdpbAnimation(''); const results = $('k-results'); if (results) results.open = false; safe('edpb'); }));
+    document.querySelectorAll('#p-ordre input[name="o-kind"]').forEach(input => input.addEventListener('change', () => safe('ordre')));
     document.querySelectorAll('input[type="range"]').forEach(r => r.addEventListener('input', syncSliders));
     // intro : le calcul de N et C est lourd (≈ 1,4 s à N = 400, C = 1) ; on attend la fin du geste du curseur
     let introTimer = null;
