@@ -48,7 +48,6 @@
       ].map(q => `<svg class="sit-svg" data-kt="${q[0]}" viewBox="0 0 380 170" role="img" aria-hidden="true">${q[1]}</svg>`).join('')
     },
     cl: {
-      photo: { src: 'img/FensterIR_Blower_Door.jpg', alt: 'Thermogramme d’une fenêtre de toit pendant un essai de dépression : fuite d’air visible autour de la fenêtre', legende: 'Thermogramme d’une fenêtre de toit pendant un essai de dépression : la fuite d’air autour de l’ouvrant apparaît dans l’image. Cet exemple réel illustre un échange avec l’extérieur ; le schéma ci-dessus présente séparément les modèles de condition au bord. Sönke Krüll, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:FensterIR_Blower_Door.jpg">Wikimedia Commons</a>.' },
       texte: "Pour la situation thermique de S1, on représente une paroi par une barre 1D en régime stationnaire. S1-X3 est le cas sans production et sans flux à une face : la paroi est adiabatique. S1-X4 ajoute une production uniforme et compare les conditions possibles à l’autre face. On les étudie une à la fois pour isoler leur effet ; ce modèle de référence ne décrit pas une cellule de batterie complète.",
       svg: wrap(
         grad('gcl', '--red', '--orange') +
