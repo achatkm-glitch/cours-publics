@@ -202,7 +202,7 @@
     else if (id === 'e-conv') items = [shown('e-PeL', 'PeL =')];
     else if (id === 'j-plot' || id === 'j-plot2') items = [shown('j-n', 'n ='), shown('j-k', 'itérations k ='), selected('j-m', 'méthodes :')];
     else if (id.startsWith('o-')) items = [type('o-kind', 'approximation :'), shown('o-h0', 'pas initial h₀ ='), shown('o-k', 'niveaux de raffinement :')];
-    else if (id === 'n-plot') items = [type('n-bc', 'condition :'), shown('n-kappa', 'κ ='), shown('n-N0', 'N₀ ='), shown('n-k', 'raffinements =')];
+    else if (id === 'n-plot') items = [type('n-bc', 'condition :'), shown('n-kappa', 'Bi ='), shown('n-N0', 'N₀ ='), shown('n-k', 'raffinements =')];
     else if (id === 'n-plot2') items = [type('n-bc', 'condition :'), shown('n-Np', 'N du profil =')];
     else if (id === 'c-amp' || id === 'c-g-signed') items = [shown('c-Fo', 'Fo ='), `${checked('c-s').length} schémas sélectionnés`];
     else if (id === 'c-refine') items = [shown('c-Fo', 'Fo ='), shown('c-tf', 'temps final ='), `${checked('c-s').length} schémas sélectionnés`];
@@ -400,7 +400,9 @@
         g.save(); g.font = '600 11px system-ui, sans-serif'; g.textAlign = 'left'; g.textBaseline = 'middle';
         let xRight = L + pw - 6, row = 0;
         slopes.slice().reverse().forEach(s => {
-          const label = `p ≈ ${fmt(s.value, 2)}`, w = g.measureText(label).width + 19;
+          const xs = s.x.filter(v => isFinite(v) && v > 0), xmin = xs.length ? Math.min(...xs) : NaN, xmax = xs.length ? Math.max(...xs) : NaN;
+          const span = isFinite(xmin) && isFinite(xmax) ? ` [${fmt(xmin, 2)};${fmt(xmax, 2)}]` : '';
+          const label = `p ≈ ${fmt(s.value, 2)}${span}`, w = g.measureText(label).width + 19;
           if (xRight - w < L + 4) { row++; xRight = L + pw - 6; }
           const bx = xRight - w, by = T + 6 + row * 18;
           g.fillStyle = css('--card'); g.strokeStyle = s.color; g.lineWidth = 1;
@@ -423,7 +425,9 @@
     el.innerHTML = items.map(s => {
       const m = o && o.showSlope ? observedLogSlope(s) : NaN;
       const slope = isFinite(m) ? ` · <span class="no-math">pente observée ≈ ${fmt(m, 2)}</span>` : '';
-      const help = isFinite(m) ? `Pente de régression des points affichés : ${fmt(m, 3)}. Elle décrit cet essai et cette plage de maillages.` : '';
+      const xs = s.x.filter(v => isFinite(v) && v > 0), xmin = xs.length ? Math.min(...xs) : NaN, xmax = xs.length ? Math.max(...xs) : NaN;
+      const interval = isFinite(xmin) && isFinite(xmax) ? ` sur x ∈ [${fmt(xmin, 4)} ; ${fmt(xmax, 4)}]` : '';
+      const help = isFinite(m) ? `Pente de régression observée des points affichés${interval} : ${fmt(m, 3)}. Elle décrit cet essai et cette plage, pas à elle seule l'ordre général du schéma.` : '';
       return `<span${help ? ` class="slope-help" title="${help}"` : ''}><i style="border-color:${s.color};border-top-style:${s.dash ? 'dashed' : 'solid'}"></i>${s.label}${slope}</span>`;
     }).join('');
   }
@@ -451,7 +455,7 @@
     if (!box) {
       box = document.createElement('div'); box.className = 'interp';
       const g = panel.querySelector('.grid');
-      const results = tab === 'edpb' ? $('k-results') : g?.children[1];
+      const results = g?.children[1];
       if (results) results.appendChild(box);
       else if (g) g.appendChild(box);
       else panel.appendChild(box);
@@ -610,11 +614,13 @@
     if (!runs.length) return;
     const need = {};
     const ref = runs[0].r;
-    $('j-msg').textContent = `Après ${K} itération(s), pour n = ${n} nœuds intérieurs et f = ${fmt(f, 3)}.`;
+    const relativeAvailable = runs.every(o => o.r.history[0].res > 0);
+    $('j-msg').textContent = `Après ${K} itération(s), pour n = ${n} nœuds intérieurs et f = ${fmt(f, 3)}.` + (relativeAvailable ? ' Le résidu relatif est normalisé par le résidu initial.' : ' Résidu relatif non défini : le résidu initial est nul.');
     cards($('j-table'), runs.map((o, i) => {
       const h = o.r.history[K], long = Calc.jacobiGS({ n, method: o.m, iters: 1000, f }).history.findIndex(x => x.res < 1e-3);
       need[o.m] = long;
-      return { color: c[i], title: SCHEME[o.m], lines: [`résidu ‖r‖∞ = <b>${fmt(h.res, 5)}</b>`, `erreur algébrique max = <b>${fmt(Calc.maxAbs(h.u.map((v, j) => v - o.r.exact[j])), 5)}</b>`,
+      const res0 = o.r.history[0].res, rel = res0 > 0 ? h.res / res0 : null;
+      return { color: c[i], title: SCHEME[o.m], lines: [`résidu absolu ‖b − Au⁽ᵏ⁾‖∞ = <b>${fmt(h.res, 5)}</b>`, `résidu relatif Rₖ = <b>${rel === null ? 'non défini (R₀ = 0)' : fmt(rel, 5)}</b>`, `erreur algébrique max = <b>${fmt(Calc.maxAbs(h.u.map((v, j) => v - o.r.exact[j])), 5)}</b>`,
         `itération où ‖r‖∞ < 1e-3 : <b>${long < 0 ? '> 1000' : long}</b>`].filter(Boolean) };
     }));
     const xs = [0].concat(ref.x.slice(1, n + 1), [1]);
@@ -623,10 +629,18 @@
     draw('j-plot', 'j-leg', S1, { xlabel: 'x', ylabel: 'u', title: 'Itérés' });
     const S2 = runs.map((o, i) => ({ x: o.r.history.map(h => h.k), y: o.r.history.map(h => h.res), color: c[i], label: SCHEME[o.m] }));
     draw('j-plot2', 'j-leg2', S2, { logy: true, xlabel: 'itération k', ylabel: 'résidu ‖r‖∞', title: 'Convergence' });
+    const relCanvas = $('j-plot2-rel');
+    relCanvas.hidden = !relativeAvailable;
+    $('j-leg2-rel').hidden = !relativeAvailable;
+    if (relativeAvailable) {
+      const Srel = runs.map((o, i) => ({ x: o.r.history.map(h => h.k), y: o.r.history.map(h => h.res / o.r.history[0].res), color: c[i], label: SCHEME[o.m] }));
+      draw('j-plot2-rel', 'j-leg2-rel', Srel, { logy: true, xlabel: 'itération k', ylabel: 'Rₖ', title: 'Résidu relatif au résidu initial' });
+    }
     const nn = m => need[m] < 0 ? '> 1000' : need[m];
     const L = runs.map(o => `${SCHEME[o.m]} : après ${K} itération(s), résidu ${fmt(o.r.history[K].res, 3)} ; seuil 1e-3 franchi à l\u2019itération <b>${nn(o.m)}</b>.`);
     if (need.jacobi > 0 && need.gs > 0) L.push(`Rapport Jacobi / Gauss–Seidel = <b>${fmt(need.jacobi / need.gs, 3)}</b> : Gauss–Seidel réutilise les valeurs déjà mises à jour ; pour ce problème (Poisson 1D) son facteur de convergence est le carré de celui de Jacobi, d\u2019où un rapport voisin de 2.`);
-    L.push(`Le résidu mesure à quel point l\u2019équation discrète est vérifiée ; l\u2019erreur algébrique mesure l\u2019écart à la solution du système. Plus n est grand, plus il faut d\u2019itérations : comparez n = 5 et n = 20.`);
+    L.push(`Le résidu absolu ‖b − Au⁽ᵏ⁾‖∞ mesure à quel point l\u2019équation discrète est vérifiée. Pour comparer des maillages, utilisez aussi Rₖ = ‖b − Au⁽ᵏ⁾‖∞ / ‖b − Au⁽⁰⁾‖∞ ; il n\u2019est défini que si le résidu initial est non nul. L\u2019erreur algébrique mesure l\u2019écart à la solution du système ; l\u2019erreur de discrétisation compare cette solution à celle du problème continu.`);
+    L.push(`Plus n est grand, plus il faut d\u2019itérations : comparez n = 5 et n = 20. Le seuil de 10⁻³ porte ici sur le résidu absolu ; ne le confondez pas avec le résidu relatif.`);
     explain('jg', L);
   }
 
@@ -679,11 +693,11 @@
     draw('n-plot2', 'n-leg2', defs.map((d, k) => ({ x: prof[k].x, y: prof[k].errs.map(v => Math.max(v, 1e-16)), color: d[3], label: d[2], points: true })), { logy: true, xlabel: 'x', ylabel: 'erreur en chaque nœud', title: `Où l\u2019erreur se forme (N = ${Np})` });
     const lr = rows[rows.length - 1], tx = v => v === undefined ? 'à mesurer avec au moins deux maillages' : `<b>${fmt(v, 3)}</b>`;
     const L = bc === 'fourier' ? [
-      `Fourier d\u2019ordre 1 : (u<sub>N</sub> − u<sub>N−1</sub>)/h + κ u<sub>N</sub> = g<sub>R</sub>, ordre global observé ${tx(lr.p1)}. La condition au bord est d\u2019ordre 1 et limite l\u2019ordre global, comme pour Neumann ; ici u<sub>N</sub> reste une inconnue de la dernière ligne (κ = ${fmt(kappa, 3)}).`,
+      `Fourier d\u2019ordre 1 : (u<sub>N</sub> − u<sub>N−1</sub>)/h + Bi u<sub>N</sub> = g<sub>R</sub>, ordre global observé ${tx(lr.p1)}. La condition au bord est d\u2019ordre 1 et limite l\u2019ordre global, comme pour Neumann ; ici u<sub>N</sub> reste une inconnue de la dernière ligne (Bi = ${fmt(kappa, 3)}).`,
       `Fourier d\u2019ordre 2 (régressive à trois points) : ordre global observé ${tx(lr.p2)}. La dernière ligne fait intervenir u<sub>N−2</sub>, u<sub>N−1</sub> et u<sub>N</sub> : la matrice sort de la structure tridiagonale.`,
-      `Point fantôme : u<sub>N+1</sub> = u<sub>N−1</sub> + 2h (g<sub>R</sub> − κ u<sub>N</sub>), ordre global observé ${tx(lr.p3)}. La dernière ligne (−2 ; 2 + 2hκ) garde la matrice tridiagonale.`,
+      `Point fantôme : u<sub>N+1</sub> = u<sub>N−1</sub> + 2h (g<sub>R</sub> − Bi u<sub>N</sub>), ordre global observé ${tx(lr.p3)}. La dernière ligne (−2 ; 2 + 2h Bi) garde la matrice tridiagonale.`,
       `À x = 1, N = ${Np} : ordre 1 <b>${fmt(prof[0].errs[Np], 3)}</b>, ordre 2 <b>${fmt(prof[1].errs[Np], 3)}</b>, point fantôme <b>${fmt(prof[2].errs[Np], 3)}</b> : l\u2019erreur se forme au bord.`,
-      'Retenir : la condition de Fourier mêle la valeur et la dérivée au bord ; son ordre de discrétisation compte autant que pour Neumann. κ → ∞ redonne une condition de Dirichlet, κ = 0 une condition de Neumann homogène.'] : [
+      `Retenir : Bi = h<sub>conv</sub>L/λ compare échange convectif et conduction à l’échelle L = 1 m. La condition de Fourier mêle la valeur et la dérivée au bord ; son ordre de discrétisation compte autant que pour Neumann. Bi = 0 redonne une condition de Neumann homogène. La limite Bi → ∞ correspond à Dirichlet si g<sub>R</sub> reste fixé ; ici g<sub>R</sub> est recalculé pour conserver la solution test, donc le curseur ne simule pas cette limite.`] : [
       `Neumann d\u2019ordre 1 (u<sub>N</sub> = u<sub>N−1</sub> + h g) : ordre global observé ${tx(lr.p1)}. Le schéma intérieur est d\u2019ordre 2, mais cette fermeture est d\u2019ordre 1 : l\u2019erreur née au bord se propage dans tout le domaine et limite l\u2019ordre global.`,
       `Neumann d\u2019ordre 2 (différence régressive à trois points) : ordre global observé ${tx(lr.p2)}. Elle fait intervenir trois nœuds : la dernière ligne de la matrice sort de la structure tridiagonale.`,
       `Point fantôme (nœud fictif u<sub>N+1</sub> éliminé par la différence centrée en x = 1) : ordre global observé ${tx(lr.p3)}. La matrice reste tridiagonale, avec la dernière ligne (−2 ; 2) : on gagne l\u2019ordre 2 sans changer la structure.`,
@@ -701,9 +715,9 @@
     const first = schemes.map(s => ({ s, r: run(s, dts[0]) }));
     const r0 = first[0].r, mid = Math.floor(r0.u.length / 2);
     const warn = first.some(o => (o.s === 'ftcs' && o.r.Fo > 0.5) || o.s === 'ri');
-    $('c-msg').className = warn ? 'msg bad' : 'msg good';
+    $('c-msg').className = warn ? 'msg warn' : 'msg good';
     const dtEffectif = r0.Fo * r0.h * r0.h / alpha;
-    $('c-msg').textContent = `Fo = ${fmt(r0.Fo, 4)} (Δt = ${fmt(dtEffectif, 4)} s) ; pas de temps maximal de FTCS = ${fmt(r0.dtMax, 4)} s.` + (warn ? (first.some(o => o.s === 'ri') ? ' Richardson est instable quel que soit Fo' + (first.some(o => o.s === 'ftcs' && o.r.Fo > 0.5) ? ' ; FTCS aussi, car Fo > 1/2.' : '.') : ' Fo > 1/2 : FTCS est instable.') : '');
+    $('c-msg').textContent = `Fo = ${fmt(r0.Fo, 4)} (Δt = ${fmt(dtEffectif, 4)} s) ; pas de temps maximal de FTCS = ${fmt(r0.dtMax, 4)} s.` + (warn ? (first.some(o => o.s === 'ri') ? ' Richardson ne satisfait pas le critère général de stabilité ; certains modes peuvent être amplifiés.' + (first.some(o => o.s === 'ftcs' && o.r.Fo > 0.5) ? ' Pour FTCS, Fo > 1/2 : certains modes peuvent aussi être amplifiés, sans que ce profil particulier doive nécessairement exploser.' : '') : ' FTCS : Fo > 1/2, le critère général de stabilité n’est pas satisfait ; certains modes peuvent être amplifiés. L’évolution du profil affiché dépend des modes qu’il contient.') : '');
     const lim = Math.max(1.2, ...first.flatMap(o => o.r.u.map(Math.abs)).filter(isFinite));
     const S1 = [{ x: r0.x, y: r0.u0, color: c[5], dash: [2, 4], label: 'état initial' },
                 { x: r0.x, y: r0.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution exacte' }]
@@ -730,7 +744,7 @@
     draw('c-refine', 'c-refine-leg', refS, { logx: true, logy: true, showSlope: true, showSlopeInPlot: true, xlabel: 'h (m)', ylabel: 'erreur maximale', title: `Raffinement à Fo = ${fmt(Fo0, 3)}, t = ${fmt(tf, 3)} s` });
     const Lx = [];
     schemes.forEach(s => { const pr = rows.filter(o => o.s === s).sort((p, q) => q.dt - p.dt), o0 = pr[0];
-      const st = s === 'ftcs' ? (o0.r.stable ? `Fo = ${fmt(o0.r.Fo, 3)} ≤ 1/2 : stable` : `Fo = ${fmt(o0.r.Fo, 3)} > 1/2 : <b>instable</b>, l’erreur explose`) : (s === 'ri' ? `<b>instable</b> pour tout Fo (Fo = ${fmt(o0.r.Fo, 3)}), l’erreur explose` : (s === 'df' ? `erreur bornée dans ce calcul (Fo = ${fmt(o0.r.Fo, 3)})` : `inconditionnellement stable (Fo = ${fmt(o0.r.Fo, 3)})`));
+      const st = s === 'ftcs' ? (o0.r.stable ? `Fo = ${fmt(o0.r.Fo, 3)} ≤ 1/2 : critère général respecté` : `Fo = ${fmt(o0.r.Fo, 3)} > 1/2 : critère général non respecté ; des modes peuvent être amplifiés`) : (s === 'ri' ? `critère général non respecté pour tout Fo (Fo = ${fmt(o0.r.Fo, 3)}) ; des modes peuvent être amplifiés` : (s === 'df' ? `erreur bornée dans ce calcul (Fo = ${fmt(o0.r.Fo, 3)})` : `inconditionnellement stable (Fo = ${fmt(o0.r.Fo, 3)})`));
       const p = pr.length > 1 && pr[0].r.stable && pr[1].r.stable ? ` ; entre Δt = ${fmt(pr[0].dt, 3)} et ${fmt(pr[1].dt, 3)}, pente de l’erreur ${fmt(ord2(pr[0].r.maxErr, pr[1].r.maxErr, pr[0].dt / pr[1].dt), 3)} (inclut aussi l’erreur spatiale)` : '';
       Lx.push(`${SCHEME[s]} : ${st}${p}.`); });
     Lx.push('Lecture : comparez |G| au facteur exact exp(−Fo φ²) du même mode pour isoler l’amortissement numérique de l’amortissement physique. Le graphe est une analyse de stabilité modale, pas une mesure d’ordre ; l’erreur selon Δt est tracée à temps final commun, mais inclut l’erreur spatiale. FTCS est stable si Fo ≤ 1/2 ; Dufort–Frankel reste borné dans ces essais, mais sa consistance dépend du chemin de raffinement et son schéma complet inclut une première étape FTCS ; Richardson est instable. BTCS est stable pour tout Δt et d’ordre 1 en temps ; Crank–Nicolson est stable pour tout Δt et d’ordre 2, mais peut changer le signe de G et alterner temporellement lorsque Fo est grand.');
@@ -875,7 +889,7 @@
       edpb: 'Pictogramme de la situation physique sélectionnée.',
       cl: 'Paroi, source thermique et conditions aux limites.',
       barre: 'Barre chauffée entre deux températures imposées, avec son maillage.',
-      peclet: 'Écoulement le long d’une paroi chaude ; la couche limite est schématisée.',
+      peclet: 'Modèle stationnaire axial 1D entre deux concentrations imposées ; le panache photo motive le sujet mais ne représente pas une diffusion pure.',
       ordre: 'Points d’un maillage et pas h pour construire une différence.',
       neumann: 'Flux thermique représenté au bord de la paroi.',
       jg: 'Nœuds d’une barre et mise à jour par itérations.',
@@ -969,8 +983,9 @@
     document.querySelectorAll('.edp-type-option').forEach(option => option.classList.toggle('selected', option.querySelector('input:checked') !== null));
     const animation = document.querySelector('#p-edpb .sit-animation');
     if (animation) {
-      animation.dataset.kt = type;
+      // Un cas elliptique est stationnaire : ne pas laisser croire qu'il existe une animation.
       animation.hidden = type === 'elliptique';
+      animation.dataset.kt = type;
       const button = $('k-edpb-play'), legend = animation.querySelector('.sit-animation-key');
       if (button) button.textContent = edpbAnimationTimer !== null ? 'Mettre en pause'
         : edpbAnimationTarget !== null ? 'Reprendre l’animation'
@@ -1028,15 +1043,6 @@
           ? 'Cas stationnaire : aucune évolution temporelle à animer.'
           : 'Lancez l’animation pour suivre le profil et la courbe au cours du temps.';
       }
-    }
-    const beforeWork = $('k-before-work');
-    if (beforeWork) {
-      const prompts = {
-        elliptique: 'S1-K1 — Sur la fiche, prévoyez puis calculez à la main les températures demandées au centre pour chaque configuration des bords.',
-        parabolique: 'S1-K2 — Sur la fiche, vérifiez d’abord le support initial et prévoyez l’évolution au point demandé avant de comparer les instants.',
-        hyperbolique: 'S1-K3 — Sur la fiche, calculez à la main les positions et supports demandés, puis prévoyez la valeur au point étudié.'
-      };
-      beforeWork.innerHTML = `<strong>Avant de consulter les résultats</strong>${prompts[type]} Ensuite, ouvrez les résultats numériques et rédigez l’interprétation demandée sur la fiche.`;
     }
     if (changed) {
       [$('k-equation'), panel].forEach(el => {
@@ -1209,7 +1215,7 @@
       $('k-heat-leg').textContent = '';
       const xs = Calc.linspace(0, 1, r.M);
       draw('k-line', 'k-line-leg', [{ x: xs, y: r.ligneCentrale, color: c[0], label: 'u(x, y = 0,5)' }], { xlabel: 'x', ylabel: 'T (°C)', title: 'Ligne médiane' });
-      $('k-msg').className = 'msg'; $('k-msg').textContent = 'Principe du maximum : les valeurs restent comprises entre la plus petite et la plus grande valeur imposée. Changez un seul côté : tout le champ change aussitôt, y compris loin de ce côté (influence globale). Aux coins où les températures prescrites par deux côtés diffèrent, le calcul discret utilise leur moyenne.';
+      $('k-msg').className = 'msg'; $('k-msg').textContent = 'Principe du maximum : les valeurs restent comprises entre la plus petite et la plus grande valeur imposée. Changez un seul côté : tout le champ change aussitôt, y compris loin de ce côté (influence globale).';
       explain('edpb', [`Température au centre : <b>${fmt(r.centre, 4)} °C</b> ; moyenne des quatre côtés : ${fmt((num('k-Tl') + num('k-Tr') + num('k-Tt') + num('k-Tb')) / 4, 4)} °C (égales par symétrie du carré).`, `Valeurs comprises entre ${fmt(r.min, 4)} et ${fmt(r.max, 4)} °C : principe du maximum, pas de valeur intérieure hors des valeurs imposées.`, 'Chaque côté agit sur tout le domaine : une EDP elliptique est un problème d’équilibre global.']);
       cards($('k-cards'), [{ color: c[0], title: 'Température au centre', lines: [`valeur = <b>${fmt(r.centre, 4)} °C</b>`, `minimum = <b>${fmt(r.min, 4)}</b> ; maximum = <b>${fmt(r.max, 4)}</b>`, `${r.iters} itérations de sur-relaxation`] }]);
     } else if (type === 'parabolique') {
@@ -1231,7 +1237,7 @@
         : gap < 2 * rayon
           ? `À t = 0, les deux bosses centrées en x = ±${fmt(gap / 2, 3)} m se recouvrent déjà : le profil initial est leur somme.`
           : `À t = 0, les deux bosses sont distinctes, centrées en x = ±${fmt(gap / 2, 3)} m.`;
-      lecture.innerHTML = `<strong>Lire les courbes</strong><div class="curve-times">${cle}</div><p>${situation} Quand le temps augmente, la diffusion élargit le profil et abaisse ses maxima. À temps égal, augmenter D accentue cet étalement. La diffusivité choisie ici est illustrative : elle ne caractérise pas à elle seule une cellule lithium-ion.</p><p>La symétrie par rapport à x = 0 est conservée. Si les sources sont proches ou si la diffusion agit longtemps, leurs profils peuvent se rejoindre.</p><p>Seule la courbe initiale est exactement nulle hors de ses supports. Pour tout t &gt; 0, la solution continue idéale de l’équation de la chaleur est très faible mais non nulle à toute distance ; l’échelle du graphe peut la faire paraître nulle.</p>`;
+      lecture.innerHTML = `<strong>Lire les courbes</strong><div class="curve-times">${cle}</div><p>${situation} Quand le temps augmente, la diffusion élargit le profil et abaisse ses maxima. À temps égal, augmenter D accentue cet étalement.</p><p>La symétrie par rapport à x = 0 est conservée. Si les sources sont proches ou si la diffusion agit longtemps, leurs profils peuvent se rejoindre.</p><p>Seule la courbe initiale est exactement nulle hors de ses supports. Pour tout t &gt; 0, la solution continue idéale de l’équation de la chaleur est très faible mais non nulle à toute distance ; l’échelle du graphe peut la faire paraître nulle.</p>`;
       const far = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: tp, xs: [5, 0] });
       const far2 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 2, xs: [5] })[0];
       const far8 = Calc.chaleurCompacte({ D, rayon, centres: ctr, t: 8, xs: [5] })[0];
@@ -1259,7 +1265,6 @@
   /* ---------- Guide : notions, compétences, explorations avec réglages prêts à l'emploi ---------- */
   function applyPreset(tab, idx) {
     const e = window.GUIDE.tabs[tab].explorations[idx];
-    if (tab === 'edpb') { const results = $('k-results'); if (results) results.open = false; }
     Object.keys(e.reglages || {}).forEach(id => { const el = $(id); if (el) el.value = e.reglages[id]; });
     if (e.reglages && e.reglages['t-D'] && $('t-Pe')) {   // le curseur de Péclet suit la diffusivité imposée
       const D = Number(e.reglages['t-D']), speed = Math.abs(num('t-a')), sigma0 = num('t-s0');
@@ -1267,9 +1272,7 @@
     }
     Object.keys(e.checks || {}).forEach(name => document.querySelectorAll('input[name="' + name + '"]').forEach(cb => { cb.checked = e.checks[name].indexOf(cb.value) >= 0; }));
     syncSliders(); safe(current);
-    const m = $('p-' + tab).querySelector('.preset-note'); if (m) m.textContent = tab === 'edpb'
-      ? 'Réglages de ' + e.id + ' appliqués. Faites d’abord la prévision et le calcul à la main ; ouvrez ensuite les résultats pour comparer.'
-      : 'Réglages de ' + e.id + ' appliqués : lisez le résultat, puis répondez sur la fiche.';
+    const m = $('p-' + tab).querySelector('.preset-note'); if (m) m.textContent = 'Réglages de ' + e.id + ' appliqués : lisez le résultat, puis répondez sur la fiche.';
     $('p-' + tab).querySelector('.grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function renderGuides() {
@@ -1281,14 +1284,8 @@
       const comps = t.competences.map(k => `<li><b>${k}</b> ${G.competences[k]}</li>`).join('');
       const notions = t.notions.map(n => `<li>${n}</li>`).join('');
       const sym = txt => String(txt == null ? '' : txt).replace(/\bCo_ref\b/g, 'Co<sub>ref</sub>').replace(/\bFo_ref\b/g, 'Fo<sub>ref</sub>').replace(/\bh_ref\b/g, 'h<sub>ref</sub>').replace(/\balpha\b/g, 'α').replace(/\blambda\b/g, 'λ').replace(/\bsigma0\b/g, 'σ₀').replace(/\bc0\b/g, 'c₀').replace(/\bh0\b/g, 'h₀');
-      const ex = t.explorations.map((e, i) => {
-        const answer = G.reperes[e.id].replace(/[.]$/, '') + ` ; calculateur : onglet « ${tabName} ».`;
-        const answerBox = ['S1-K1', 'S1-K2', 'S1-K3'].includes(e.id)
-          ? `<details class="guide-answer"><summary>Repère de vérification — à consulter après le calcul</summary><p>${answer}</p></details>`
-          : `<p class="repere"><b>Repère avant l’activité :</b> ${answer}</p>`;
-        return `<div class="explo">${answerBox}<b>${e.id} · ${e.titre}</b> <span class="codes">(${e.comp.join(', ')})</span>
-        ${e.main ? `<p class="main"><b>D\u2019abord, à la main :</b> ${sym(e.main)}</p>` : ''}<p>${sym(e.consigne)}</p><p><i>Question :</i> ${sym(e.question)}</p><button type="button" class="btn alt" data-explo="${tab}|${i}">Appliquer ces réglages</button></div>`;
-      }).join('');
+      const ex = t.explorations.map((e, i) => `<div class="explo"><p class="repere"><b>Repère avant l’activité :</b> ${G.reperes[e.id].replace(/[.]$/, '')} ; calculateur : onglet « ${tabName} ».</p><b>${e.id} · ${e.titre}</b> <span class="codes">(${e.comp.join(', ')})</span>
+        ${e.main ? `<p class="main"><b>D\u2019abord, à la main :</b> ${sym(e.main)}</p>` : ''}<p>${sym(e.consigne)}</p><p><i>Question :</i> ${sym(e.question)}</p><button type="button" class="btn alt" data-explo="${tab}|${i}">Appliquer ces réglages</button></div>`).join('');
       box.innerHTML = `<h3>Pour approfondir : ${t.fiche}</h3>
         <div class="two"><div><h4>Compétences travaillées</h4><ul>${comps}</ul></div>
         <div><h4>Notions à définir et à retrouver sur la fiche</h4><ul>${notions}</ul><p>Exercices liés : ${t.exercices}.</p></div></div>
@@ -1362,8 +1359,6 @@
     const slider = $(type === 'hyperbolique' ? 'k-th' : 'k-tp'), button = $('k-edpb-play'), status = $('k-edpb-play-status');
     if (!slider || !button || !status) return;
     if (type === 'elliptique') { status.textContent = 'Cas stationnaire : aucune évolution temporelle à animer.'; return; }
-    if (type === 'elliptique') { status.textContent = 'Ce modèle d’équilibre ne comporte pas d’évolution à animer.'; return; }
-    const results = $('k-results'); if (results) results.open = true;
     const step = Number(slider.step) || 0.5;
     if (edpbAnimationTimer !== null) {
       window.clearInterval(edpbAnimationTimer); edpbAnimationTimer = null;
@@ -1388,7 +1383,7 @@
     try { if (RUN[name]) RUN[name](); } catch (e) { const panel = $('p-' + name); const p = panel && panel.querySelector('.msg'); if (p) { p.className = 'msg bad'; p.textContent = 'Paramètres invalides : ' + e.message; } }
   }
   function show(name) {
-    if (name !== 'edpb' && (edpbAnimationTimer !== null || edpbAnimationTarget !== null)) stopEdpbAnimation('Animation arrêtée en quittant cet onglet.');
+    if (name !== 'edpb' && edpbAnimationTimer !== null) stopEdpbAnimation('Animation arrêtée en quittant cet onglet.');
     if (name !== 'adv' && advDemoTimer !== null) pauseAdvDemo('Animation mise en pause en quittant cet onglet.');
     current = name;
     document.querySelectorAll('section.panel').forEach(s => s.classList.toggle('active', s.id === 'p-' + name));
@@ -1414,12 +1409,12 @@
     }));
     document.querySelectorAll('section.panel form').forEach(f => {
       f.addEventListener('submit', e => { e.preventDefault(); safe(current); });
-      f.addEventListener('input', e => { if ((edpbAnimationTimer !== null || edpbAnimationTarget !== null) && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
-      f.addEventListener('change', e => { if ((edpbAnimationTimer !== null || edpbAnimationTarget !== null) && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
+      f.addEventListener('input', e => { if (edpbAnimationTimer !== null && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
+      f.addEventListener('change', e => { if (edpbAnimationTimer !== null && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
     });
-    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { if (b.closest('#p-edpb')) stopEdpbAnimation('Animation réinitialisée.'); b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncBarreMeshControl(); syncSliders(); safe(current); }));
+    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncBarreMeshControl(); syncSliders(); safe(current); }));
     document.querySelectorAll('input[name="b-mesh"]').forEach(i => i.addEventListener('change', syncBarreMeshControl));
-    document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => { stopEdpbAnimation(''); const results = $('k-results'); if (results) results.open = false; safe('edpb'); }));
+    document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => { stopEdpbAnimation(''); safe('edpb'); }));
     document.querySelectorAll('#p-ordre input[name="o-kind"]').forEach(input => input.addEventListener('change', () => safe('ordre')));
     document.querySelectorAll('input[type="range"]').forEach(r => r.addEventListener('input', syncSliders));
     // intro : le calcul de N et C est lourd (≈ 1,4 s à N = 400, C = 1) ; on attend la fin du geste du curseur
@@ -1434,14 +1429,9 @@
     renderEquations();
     renderSituations();
     renderAdvDemo(0);
-    const edpbResults = $('k-results'); if (edpbResults) edpbResults.addEventListener('toggle', () => { if (edpbResults.open) requestAnimationFrame(() => safe('edpb')); });
     const edpbPlay = $('k-edpb-play'); if (edpbPlay) edpbPlay.addEventListener('click', startEdpbAnimation);
     const advDemoPlay = $('adv-demo-play'); if (advDemoPlay) advDemoPlay.addEventListener('click', startAdvDemo);
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) return;
-      if (advDemoTimer !== null) pauseAdvDemo('Animation mise en pause lorsque la page est masquée.');
-      if (edpbAnimationTimer !== null || edpbAnimationTarget !== null) stopEdpbAnimation('Animation arrêtée lorsque la page est masquée.');
-    });
+    document.addEventListener('visibilitychange', () => { if (document.hidden && advDemoTimer !== null) pauseAdvDemo('Animation mise en pause lorsque la page est masquée.'); });
     // onglets à deux graphiques : commandes en haut, graphiques côte à côte sur toute la largeur
     document.querySelectorAll('.grid').forEach(g => { if (g.querySelector('.plots2')) g.classList.add('grid2'); });
     window.addEventListener('load', renderEquations);

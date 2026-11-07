@@ -68,14 +68,15 @@
         t(8, 30, 'T(0) = 300 K') + t(286, 30, 'T(L) = 400 K') + t(98, 120, 'q = 0 : cas étalon') + t(82, 140, 'q = 100 pour S1-X5/X6'))
     },
     peclet: {
-      photo: { src: 'img/Schlieren-color-candle-plume.jpg', alt: 'Panache thermique d’une bougie par strioscopie', legende: 'Panache thermique d’une bougie visualisé par strioscopie. Settles1, <a href="https://creativecommons.org/licenses/by/3.0/deed.en">CC BY 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Schlieren-color-candle-plume.jpg">via Wikimedia Commons</a>.' },
-      texte: "Près d’une paroi chaude, l’advection entraîne le fluide tandis que la diffusion étale la température. Le calculateur réduit ce phénomène à une équation stationnaire 1D à coefficients constants : Pe_h compare les deux effets à l’échelle d’une maille. Cette simplification permet d’observer le rôle du maillage et du schéma ; une couche limite réelle est plus complexe.",
+      photo: { src: 'img/Sediment_plume_at_sea_1280px.jpg', alt: 'Panache de sédiments en mer observé par satellite', legende: 'Exemple de panache réel, soumis à plusieurs processus de transport et de mélange ; il ne mesure pas la diffusion moléculaire du modèle. ESA/Copernicus Sentinel-2B, <a href="https://creativecommons.org/licenses/by-sa/3.0/igo/deed.en">CC BY-SA 3.0 IGO</a>, <a href="https://commons.wikimedia.org/wiki/File:Sediment_plume_at_sea.jpg">via Wikimedia Commons</a>.' },
+      texte: "Le phénomène réel motive l’étude, mais le calculateur résout un modèle stationnaire axial 1D à vitesse a et diffusivité D constantes, entre deux concentrations imposées. Le nombre de Péclet de maille Pe_h compare advection et diffusion sur une maille ; le schéma ci-dessous représente le problème effectivement calculé. Il ne prédit pas à lui seul la dispersion d’un rejet en rivière.",
       svg: wrap(
-        `<rect x="10" y="120" width="360" height="24" fill="var(--red)" opacity="0.5" stroke="var(--plot-axis)"/>` + t(14, 160, 'paroi chaude') +
-        arr(24, 50, 120, 50, 'var(--blue)', 2.4) + arr(24, 80, 120, 80, 'var(--blue)', 2.4) + t(130, 44, 'fluide en mouvement') +
-        `<path d="M10 120 C60 118 160 98 370 80" fill="none" stroke="var(--orange)" stroke-width="2.6" stroke-dasharray="1 0"/>` +
-        `<path d="M10 120 C60 120 160 112 370 104" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-dasharray="5 4"/>` +
-        t(230, 74, 'couche limite (Pe petit)', 'fill="var(--orange)"') + t(214, 100, 'couche plus mince (Pe grand)', 'fill="var(--green)"'))
+        `<rect x="20" y="38" width="340" height="48" rx="5" fill="var(--blue)" opacity="0.14" stroke="var(--plot-axis)"/>` +
+        arr(40, 62, 130, 62, 'var(--blue)', 2.2) + arr(145, 62, 235, 62, 'var(--blue)', 2.2) + arr(250, 62, 340, 62, 'var(--blue)', 2.2) +
+        t(20, 30, 'entrée : c(0)') + t(270, 30, 'sortie : c(L)') + t(130, 80, 'écoulement axial uniforme') +
+        `<path d="M35 145 C105 143 155 135 205 120 C255 105 295 100 350 98" fill="none" stroke="var(--orange)" stroke-width="2.8"/>` +
+        `<path d="M35 145 H350" fill="none" stroke="var(--plot-axis)" stroke-width="1" stroke-dasharray="3 4"/>` +
+        t(20, 164, 'x = 0') + t(335, 164, 'x = L') + t(135, 158, 'profil c(x) du modèle 1D'))
     },
     ordre: {
       texte: "Dans le modèle 1D de paroi, la température est portée par les nœuds : une pente T′ ou une courbure T″ se reconstruit à partir de valeurs voisines. Pour mesurer l’erreur des formules sans dépendre de données expérimentales, le calculateur utilise le profil analytique test u(x)=sin(x), en x=1. Le schéma donne le contexte physique ; le test mesure l’approximation numérique.",
@@ -87,13 +88,13 @@
         arr(100, 142, 190, 142, 'var(--orange)', 1.8) + arr(190, 142, 100, 142, 'var(--orange)', 1.8) + t(130, 160, 'pas h') + t(20, 38, 'capteurs de température dans une paroi'))
     },
     neumann: {
-      texte: "Dans le modèle thermique stationnaire de S2, la température est imposée à une face et le flux à l’autre. Un flux nul représente une face isolée ; une condition de Fourier (Robin) modélise l’échange avec le fluide. Le calculateur isole la formule au bord : le flux devient une dérivée à discrétiser, sans reconstruire toute la paroi.",
+      texte: "Dans le modèle thermique stationnaire de S2, la température est imposée à une face et la condition au bord opposé est étudiée séparément. Le schéma illustre un flux sortant positif q_L ≥ 0 ; q_L = 0 correspond à une face isolée. La condition de Fourier (Robin) représente l’échange avec le fluide. Le calculateur isole la formule au bord, sans reconstruire toute la paroi.",
       svg: wrap(
         grad('gn', '--blue', '--orange') + hatch('hn') +
         `<rect x="14" y="50" width="30" height="70" fill="var(--blue)" opacity="0.5" stroke="var(--plot-axis)"/>` + t(8, 40, 'T imposée') +
         `<rect x="44" y="60" width="240" height="50" fill="url(#gn)" opacity="0.5" stroke="var(--plot-axis)"/>` +
-        `<rect x="284" y="50" width="40" height="70" fill="url(#hn)" stroke="var(--plot-axis)"/>` + t(280, 40, 'isolant ou') + t(280, 140, 'film chauffant') +
-        arr(310, 150, 340, 150, 'var(--orange)', 2.2) + t(272, 164, 'flux imposé : T′ connue'))
+        `<rect x="284" y="50" width="40" height="70" fill="url(#hn)" stroke="var(--plot-axis)"/>` + t(280, 40, 'frontière x = L') +
+        arr(310, 150, 340, 150, 'var(--orange)', 2.2) + t(258, 164, 'flux sortant qL ≥ 0 : T′ connue'))
     },
     jg: {
       texte: "En S2, la discrétisation spatiale de la paroi thermique conduit à un système linéaire tridiagonal. Cet onglet simplifie le problème en isolant la résolution de ce système : il ne réassemble pas toute la source et la condition de flux. Le but est de comparer les itérations de Jacobi et de Gauss–Seidel et de suivre leur résidu ; le schéma montre comment une valeur nodale est mise à jour à partir de ses voisines.",

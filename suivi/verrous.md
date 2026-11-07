@@ -157,3 +157,5 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Tâche miroir 193 — calculateurs chaleur app.js/index.html et registres | ACTIF — annotation des pentes puis contrôle et publication | Codex | 2026-11-07 14:09:32 Europe/Paris (UTC+01:00) |
 
 | Clôture tâche miroir 193 — app.js/index.html et registres | LIBRE — commit 766659d poussé ; Pages run 42375883659 réussi ; scripts HTTP 200 | Codex | 2026-11-07 14:13:55 Europe/Paris (UTC+01:00) |
+| Tâche miroir 196 — mftn/calculateurs/{index.html,app.js,calc.js,equations.js,guide.js,situations.js} et registres | ACTIF — audit et corrections source miroir | Codex | 2026-11-07 14:37:19 +01:00 |
+| Clôture tâche miroir 196 — mftn/calculateurs/{index.html,app.js,calc.js,equations.js,guide.js,situations.js} et registres | LIBRE — code synchronisé localement, publication Pages en attente | Codex | 2026-11-07 14:51 Europe/Paris (UTC+01:00) |

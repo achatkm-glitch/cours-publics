@@ -747,3 +747,8 @@ Demande : afficher directement dans les figures les pentes déjà calculées pou
 
 #### Clôture tâche miroir 193 — pente visible dans les graphes chaleur — 2026-11-07 14:13:55 Europe/Paris (UTC+01:00)
 Pentes log-log observées affichées dans les deux figures d’erreur, avec couleur correspondant à chaque courbe ; valeurs de pente conservées dans la légende. Scripts contrôlés, page et app.js versionné HTTP 200 ; Pages run 42375883659 réussi. Commit miroir 766659d12f18a223a8259ecc1ce6e395faab9bcc. Verrou libéré.
+#### Tâche miroir 196 — audit site polluant/batterie — 2026-11-07 14:37:19 +01:00
+Codex prend le miroir après contrôle du verrou précédent (clôture 193, LIBRE à 14:13:55) et de l'état Git propre. Périmètre réservé : mftn/calculateurs/{index.html,app.js,calc.js,equations.js,guide.js,situations.js} et registres de suivi. La source maître est C:\Latex\MFTN\Peda_inv\site; ne pas modifier de chemins hors périmètre.
+
+#### Clôture tâche miroir 196 — audit polluant/batterie — 2026-11-07 14:51 Europe/Paris (UTC+01:00)
+Corrections source recopiées à l'identique dans le miroir : accueil des deux missions, formulation FTCS, résidu relatif, schéma 1D du Péclet, convention de flux, pentes observées, repères EDP repliés, nombre de Biot avec L=1 m. Cinq empreintes source/miroir concordent ; tests de calcul et syntaxe JS passés. Contrôle de navigateur non réalisé. Aucun nouveau média ajouté. Publication Pages à vérifier après commit.

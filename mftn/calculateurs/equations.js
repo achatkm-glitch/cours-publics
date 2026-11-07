@@ -20,11 +20,11 @@ window.EQUATIONS = {
     {"type": "hyperbolique", "titre": "Modèle hyperbolique — onde", "tex": "u_{tt}=c^2u_{xx},\\qquad u(x,0)=f(x),\\qquad u_t(x,0)=0"}
   ],
   "cl": [
-    {"titre": "Conduction stationnaire avec production", "tex": "\\lambda\\,T''+q=0,\\qquad T(0)=T_0\\qquad\\Longrightarrow\\qquad T(x)=T_0+C_1x-\\frac{q}{2\\lambda}\\,x^2"},
-    {"titre": "Trois conditions possibles en x = L", "tex": "\\text{Dirichlet : }T(L)=T_L,\\qquad\\text{Neumann : }-\\lambda T'(L)=q_L,\\qquad\\text{Robin : }-\\lambda T'(L)=h\\,\\bigl[T(L)-T_\\infty\\bigr]"}
+    {"titre": "Conduction stationnaire avec production", "tex": "\\lambda\\,\\dfrac{\\mathrm d^2T}{\\mathrm dx^2}+q=0,\\qquad T(0)=T_0\\qquad\\Longrightarrow\\qquad T(x)=T_0+C_1x-\\frac{q}{2\\lambda}\\,x^2"},
+    {"titre": "Trois conditions possibles en x = L", "tex": "\\text{Dirichlet : }T(L)=T_L,\\qquad\\text{Neumann : }-\\lambda \\dfrac{\\mathrm dT}{\\mathrm dx}(L)=q_L,\\qquad\\text{Fourier : }-\\lambda \\dfrac{\\mathrm dT}{\\mathrm dx}(L)=h\\,\\bigl[T(L)-T_\\infty\\bigr]"}
   ],
   "barre": [
-    {"titre": "Problème sur une barre de longueur fixée", "tex": "\\lambda\\,T''+q=0,\\qquad T(0)=T_0,\\quad T(1\\,\\mathrm{m})=T_L"},
+    {"titre": "Problème sur une barre de longueur fixée", "tex": "\\lambda\\,\\dfrac{\\mathrm d^2T}{\\mathrm dx^2}+q=0,\\qquad T(0)=T_0,\\quad T(1\\,\\mathrm{m})=T_L"},
     {"titre": "Différences finies aux nœuds : uniforme ou non uniforme", "tex": "\\begin{gathered}h_-=x_i-x_{i-1},\\quad h_+=x_{i+1}-x_i,\\\\D_{xx}T_i=\\frac{2T_{i-1}}{h_-(h_-+h_+)}-\\frac{2T_i}{h_-h_+}+\\frac{2T_{i+1}}{h_+(h_-+h_+)}=-\\frac q\\lambda\\end{gathered}"},
     {"titre": "Volumes finis : distances réelles, demi-cellule aux bords", "tex": "F_e-F_w+q\\,\\Delta x_P=0,\\qquad F_e=\\lambda\\,\\frac{T_E-T_P}{d_{PE}},\\quad F_w=\\lambda\\,\\frac{T_P-T_W}{d_{WP}}"},
     {"titre": "Bilan global de flux", "tex": "\\dot q_{0,\\text{sortant}}+\\dot q_{L,\\text{sortant}}=q\\,L"}
@@ -39,36 +39,36 @@ window.EQUATIONS = {
     {"titre": "Système tridiagonal de la diffusion 1D", "tex": "A\\,\\boldsymbol u=\\boldsymbol b,\\qquad A=\\operatorname{tridiag}(-1,2,-1)"},
     {"titre": "Jacobi", "tex": "\\boldsymbol u^{(k+1)}=D_A^{-1}\\bigl(\\boldsymbol b-(L_A+U_A)\\,\\boldsymbol u^{(k)}\\bigr)"},
     {"titre": "Gauss–Seidel", "tex": "(D_A+L_A)\\,\\boldsymbol u^{(k+1)}=\\boldsymbol b-U_A\\,\\boldsymbol u^{(k)}"},
-    {"titre": "Résidu", "tex": "\\boldsymbol r^{(k)}=\\boldsymbol b-A\\,\\boldsymbol u^{(k)}"}
+    {"titre": "Résidu absolu et résidu relatif", "tex": "\\boldsymbol r^{(k)}=\\boldsymbol b-A\\,\\boldsymbol u^{(k)},\\qquad R_k=\\frac{\\lVert\\boldsymbol r^{(k)}\\rVert_\\infty}{\\lVert\\boldsymbol r^{(0)}\\rVert_\\infty}\\quad (\\lVert\\boldsymbol r^{(0)}\\rVert_\\infty>0)"}
   ],
   "ordre1": [
-    {"titre": "Progressive (ordre 1)", "tex": "\\frac{u_{i+1}-u_i}{h}=u'_i+\\mathcal O(h)"},
-    {"titre": "Centrée (ordre 2)", "tex": "\\frac{u_{i+1}-u_{i-1}}{2h}=u'_i+\\mathcal O(h^2)"},
-    {"titre": "Régressive à trois points (ordre 2)", "tex": "\\frac{3u_i-4u_{i-1}+u_{i-2}}{2h}=u'_i+\\mathcal O(h^2)"}
+    {"titre": "Progressive (ordre 1)", "tex": "\\frac{u_{i+1}-u_i}{h}=\\dfrac{\\mathrm du}{\\mathrm dx}\\Big|_i+\\mathcal O(h)"},
+    {"titre": "Centrée (ordre 2)", "tex": "\\frac{u_{i+1}-u_{i-1}}{2h}=\\dfrac{\\mathrm du}{\\mathrm dx}\\Big|_i+\\mathcal O(h^2)"},
+    {"titre": "Régressive à trois points (ordre 2)", "tex": "\\frac{3u_i-4u_{i-1}+u_{i-2}}{2h}=\\dfrac{\\mathrm du}{\\mathrm dx}\\Big|_i+\\mathcal O(h^2)"}
   ],
   "ordre2": [
-    {"titre": "Centrée, trois points (ordre 2)", "tex": "\\frac{u_{i-1}-2u_i+u_{i+1}}{h^2}=u''_i+\\frac{h^2}{12}u_i^{(4)}+\\mathcal O(h^4)"},
-    {"titre": "Progressive au bord gauche, trois points (ordre 1)", "tex": "\\frac{u_i-2u_{i+1}+u_{i+2}}{h^2}=u''_i+h u'''_i+\\mathcal O(h^2)"},
-    {"titre": "Régressive au bord droit, trois points (ordre 1)", "tex": "\\frac{u_i-2u_{i-1}+u_{i-2}}{h^2}=u''_i-h u'''_i+\\mathcal O(h^2)"},
-    {"titre": "Trois points sur un maillage non uniforme", "tex": "\\begin{aligned}D_{xx}u_i&=\\frac{2u_{i-1}}{h_-(h_-+h_+)}-\\frac{2u_i}{h_-h_+}\\\\&\\quad+\\frac{2u_{i+1}}{h_+(h_-+h_+)}\\\\&=u''_i+\\frac{h_+-h_-}{3}u'''_i+\\mathcal O(h^2)\\end{aligned}"}
+    {"titre": "Centrée, trois points (ordre 2)", "tex": "\\frac{u_{i-1}-2u_i+u_{i+1}}{h^2}=\\dfrac{\\mathrm d^2u}{\\mathrm dx^2}\\Big|_i+\\frac{h^2}{12}u_i^{(4)}+\\mathcal O(h^4)"},
+    {"titre": "Progressive au bord gauche, trois points (ordre 1)", "tex": "\\frac{u_i-2u_{i+1}+u_{i+2}}{h^2}=\\dfrac{\\mathrm d^2u}{\\mathrm dx^2}\\Big|_i+h \\dfrac{\\mathrm d^3u}{\\mathrm dx^3}\\Big|_i+\\mathcal O(h^2)"},
+    {"titre": "Régressive au bord droit, trois points (ordre 1)", "tex": "\\frac{u_i-2u_{i-1}+u_{i-2}}{h^2}=\\dfrac{\\mathrm d^2u}{\\mathrm dx^2}\\Big|_i-h \\dfrac{\\mathrm d^3u}{\\mathrm dx^3}\\Big|_i+\\mathcal O(h^2)"},
+    {"titre": "Trois points sur un maillage non uniforme", "tex": "\\begin{aligned}D_{xx}u_i&=\\frac{2u_{i-1}}{h_-(h_-+h_+)}-\\frac{2u_i}{h_-h_+}\\\\&\\quad+\\frac{2u_{i+1}}{h_+(h_-+h_+)}\\\\&=\\dfrac{\\mathrm d^2u}{\\mathrm dx^2}\\Big|_i+\\frac{h_+-h_-}{3}\\dfrac{\\mathrm d^3u}{\\mathrm dx^3}\\Big|_i+\\mathcal O(h^2)\\end{aligned}"}
   ],
   "neumann": [
-    {"titre": "Problème", "tex": "-u''=\\cos x,\\qquad u(0)=1,\\quad u'(1)=g=1-\\sin 1,\\qquad u_{\\text{exacte}}=\\cos x+x"},
-    {"titre": "Flux imposé et loi de Fourier : la dérivée à discrétiser", "tex": "q_x=-\\lambda\\,T'(x)\\quad\\Longrightarrow\\quad -\\lambda\\,T'(1)=q_L\\quad\\Longrightarrow\\quad T'(1)=-\\frac{q_L}{\\lambda}=g"},
+    {"titre": "Problème", "tex": "-\\dfrac{\\mathrm d^2u}{\\mathrm dx^2}=\\cos x,\\qquad u(0)=1,\\quad \\dfrac{\\mathrm du}{\\mathrm dx}(1)=g=1-\\sin 1,\\qquad u_{\\text{exacte}}=\\cos x+x"},
+    {"titre": "Flux imposé et loi de Fourier : la dérivée à discrétiser", "tex": "q_x=-\\lambda\\,\\dfrac{\\mathrm dT}{\\mathrm dx}(x)\\quad\\Longrightarrow\\quad -\\lambda\\,\\dfrac{\\mathrm dT}{\\mathrm dx}(1)=q_L\\quad\\Longrightarrow\\quad \\dfrac{\\mathrm dT}{\\mathrm dx}(1)=-\\frac{q_L}{\\lambda}=g"},
     {"titre": "Fermeture d'ordre 1", "tex": "u_N=u_{N-1}+h\\,g"},
     {"titre": "Fermeture d'ordre 2 : différence régressive à trois points", "tex": "\\frac{3u_N-4u_{N-1}+u_{N-2}}{2h}=g"},
     {"titre": "Point fantôme : on prolonge le maillage d'un nœud hors du domaine", "tex": "\\frac{u_{N+1}-u_{N-1}}{2h}=g\\ \\Longrightarrow\\ u_{N+1}=u_{N-1}+2h\\,g,\\qquad \\text{équation au nœud }N:\\ -2u_{N-1}+2u_N=h^2f_N+2h\\,g"},
-    {"titre": "Condition de Fourier (Robin, échange convectif) et solution exacte", "tex": "-\\lambda\\,T'(1)=h\\,\\bigl[T(1)-T_\\infty\\bigr]\\ \\Longrightarrow\\ T'(1)+\\kappa\\,T(1)=g_R,\\qquad \\kappa=\\frac h\\lambda,\\qquad g_R=(1-\\sin 1)+\\kappa(\\cos 1+1)"},
-    {"titre": "Fourier : fermetures d'ordre 1 et d'ordre 2", "tex": "\\frac{u_N-u_{N-1}}{h}+\\kappa\\,u_N=g_R,\\qquad \\frac{3u_N-4u_{N-1}+u_{N-2}}{2h}+\\kappa\\,u_N=g_R"},
-    {"titre": "Fourier : point fantôme", "tex": "u_{N+1}=u_{N-1}+2h\\,(g_R-\\kappa\\,u_N)\\ \\Longrightarrow\\ -2u_{N-1}+(2+2h\\kappa)\\,u_N=h^2f_N+2h\\,g_R"}
+    {"titre": "Loi de Fourier et condition adimensionnelle du problème test", "tex": "-\\lambda\\,\\dfrac{\\mathrm dT}{\\mathrm dx}(L)=h_{\\rm conv}\\,\\bigl[T(L)-T_\\infty\\bigr],\\quad \\xi=\\frac{x}{L},\\quad u(\\xi)=\\cos\\xi+\\xi\\ (0\\le\\xi\\le1)\\ ;\\quad \\text{condition test : }\\dfrac{\\mathrm du}{\\mathrm d\\xi}(1)+\\mathrm{Bi}\\,u(1)=g_R,\\qquad \\mathrm{Bi}=\\frac{h_{\\rm conv}L}{\\lambda},\\qquad L=1\\,\\mathrm m,\\qquad g_R=(1-\\sin 1)+\\mathrm{Bi}(\\cos 1+1)"},
+    {"titre": "Fourier : fermetures d'ordre 1 et d'ordre 2", "tex": "\\frac{u_N-u_{N-1}}{h}+\\mathrm{Bi}\\,u_N=g_R,\\qquad \\frac{3u_N-4u_{N-1}+u_{N-2}}{2h}+\\mathrm{Bi}\\,u_N=g_R"},
+    {"titre": "Fourier : point fantôme", "tex": "u_{N+1}=u_{N-1}+2h\\,(g_R-\\mathrm{Bi}\\,u_N)\\ \\Longrightarrow\\ -2u_{N-1}+(2+2h\\,\\mathrm{Bi})\\,u_N=h^2f_N+2h\\,g_R"}
   ],
   "chaleur": [
     {"titre": "Équation de la chaleur et nombre de Fourier de maille", "tex": "u_t=\\alpha\\,u_{xx},\\qquad \\mathrm{Fo}=\\frac{\\alpha\\,\\Delta t}{h^2}"},
     {"titre": "FTCS (explicite)", "tex": "u_i^{n+1}=u_i^n+\\mathrm{Fo}\\,\\bigl(u_{i+1}^n-2u_i^n+u_{i-1}^n\\bigr),\\qquad \\mathrm{Fo}\\le\\tfrac12"},
     {"titre": "BTCS (implicite)", "tex": "-\\mathrm{Fo}\\,u_{i-1}^{n+1}+(1+2\\,\\mathrm{Fo})\\,u_i^{n+1}-\\mathrm{Fo}\\,u_{i+1}^{n+1}=u_i^n"},
     {"titre": "Crank–Nicolson", "tex": "-\\tfrac{\\mathrm{Fo}}{2}u_{i-1}^{n+1}+(1+\\mathrm{Fo})\\,u_i^{n+1}-\\tfrac{\\mathrm{Fo}}{2}u_{i+1}^{n+1}=\\tfrac{\\mathrm{Fo}}{2}u_{i-1}^n+(1-\\mathrm{Fo})\\,u_i^n+\\tfrac{\\mathrm{Fo}}{2}u_{i+1}^n"},
-    {"titre": "Dufort–Frankel (explicite, trois niveaux)", "tex": "(1+2\\,\\mathrm{Fo})\\,u_i^{n+1}=(1-2\\,\\mathrm{Fo})\\,u_i^{n-1}+2\\,\\mathrm{Fo}\\,\\bigl(u_{i+1}^n+u_{i-1}^n\\bigr)"},
-    {"titre": "Richardson (explicite, trois niveaux)", "tex": "u_i^{n+1}=u_i^{n-1}+2\\,\\mathrm{Fo}\\,\\bigl(u_{i+1}^n-2u_i^n+u_{i-1}^n\\bigr)"}
+    {"titre": "Dufort–Frankel (explicite, trois niveaux ; premier pas : FTCS, faute de niveau n−1)", "tex": "(1+2\\,\\mathrm{Fo})\\,u_i^{n+1}=(1-2\\,\\mathrm{Fo})\\,u_i^{n-1}+2\\,\\mathrm{Fo}\\,\\bigl(u_{i+1}^n+u_{i-1}^n\\bigr)"},
+    {"titre": "Richardson (explicite, trois niveaux ; premier pas : FTCS, comme Dufort–Frankel)", "tex": "u_i^{n+1}=u_i^{n-1}+2\\,\\mathrm{Fo}\\,\\bigl(u_{i+1}^n-2u_i^n+u_{i-1}^n\\bigr)"}
   ],
   "chemin": [
     {"titre": "Chemin de raffinement", "tex": "\\Delta t=c_0\\,h^{\\,r}"},
@@ -77,11 +77,11 @@ window.EQUATIONS = {
   ],
   "adv": [
     {"titre": "Advection et nombre de Courant", "tex": "u_t+a\\,u_x=0,\\qquad C_a=\\frac{a\\,\\Delta t}{h}"},
-    {"titre": "Amont (a > 0)", "tex": "u_i^{n+1}=u_i^n-C_a\\,\\bigl(u_i^n-u_{i-1}^n\\bigr)"},
+    {"titre": "Amont : décentrement du côté d'où vient l'information (a > 0, puis a < 0)", "tex": "\\begin{aligned}a>0:&\\ u_i^{n+1}=u_i^n-C_a\\,\\bigl(u_i^n-u_{i-1}^n\\bigr)\\\\a<0:&\\ u_i^{n+1}=u_i^n-C_a\\,\\bigl(u_{i+1}^n-u_i^n\\bigr)\\end{aligned}"},
     {"titre": "FTCS centré", "tex": "u_i^{n+1}=u_i^n-\\frac{C_a}{2}\\,\\bigl(u_{i+1}^n-u_{i-1}^n\\bigr)"},
     {"titre": "Lax–Friedrichs", "tex": "u_i^{n+1}=\\frac12\\,\\bigl(u_{i+1}^n+u_{i-1}^n\\bigr)-\\frac{C_a}{2}\\,\\bigl(u_{i+1}^n-u_{i-1}^n\\bigr)"},
     {"titre": "Lax–Wendroff", "tex": "u_i^{n+1}=u_i^n-\\frac{C_a}{2}\\,\\bigl(u_{i+1}^n-u_{i-1}^n\\bigr)+\\frac{C_a^2}{2}\\,\\bigl(u_{i+1}^n-2u_i^n+u_{i-1}^n\\bigr)"},
-    {"titre": "Beam–Warming (explicite, amont d'ordre 2, a > 0)", "tex": "u_i^{n+1}=u_i^n-\\frac{C_a}{2}\\,\\bigl(3u_i^n-4u_{i-1}^n+u_{i-2}^n\\bigr)+\\frac{C_a^2}{2}\\,\\bigl(u_i^n-2u_{i-1}^n+u_{i-2}^n\\bigr)"},
+    {"titre": "Beam–Warming (explicite, amont d'ordre 2 : a > 0, puis a < 0 par symétrie)", "tex": "\\begin{aligned}a>0:&\\ u_i^{n+1}=u_i^n-\\frac{C_a}{2}\\,\\bigl(3u_i^n-4u_{i-1}^n+u_{i-2}^n\\bigr)+\\frac{C_a^2}{2}\\,\\bigl(u_i^n-2u_{i-1}^n+u_{i-2}^n\\bigr)\\\\a<0:&\\ u_i^{n+1}=u_i^n-\\frac{C_a}{2}\\,\\bigl(-3u_i^n+4u_{i+1}^n-u_{i+2}^n\\bigr)+\\frac{C_a^2}{2}\\,\\bigl(u_i^n-2u_{i+1}^n+u_{i+2}^n\\bigr)\\end{aligned}"},
     {"titre": "Centré implicite (système linéaire à chaque pas)", "tex": "\\frac{u_i^{n+1}-u_i^n}{\\Delta t}+a\\,\\frac{u_{i+1}^{n+1}-u_{i-1}^{n+1}}{2h}=0"}
   ]
 };

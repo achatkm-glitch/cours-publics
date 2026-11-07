@@ -56,6 +56,10 @@
 <section class="panel active" id="p-home">
   <h2>Le cours, organisé en quatre séances</h2>
   <p class="lead">Calculateurs interactifs associés aux quatre séances : ils permettent de comparer des profils, des maillages et des schémas numériques.</p>
+  <div class="session-grid mission-grid">
+    <article class="session-card"><p class="session-kicker">Mission A · Transport d’un polluant</p><h3>Suivre un traceur</h3><p>Prévoir son déplacement, son étalement et les erreurs des schémas, de la modélisation en S1 à l’analyse de performance en S4.</p><button class="btn" type="button" data-go-tab="transport">Ouvrir le transport</button></article>
+    <article class="session-card"><p class="session-kicker">Mission B · Gestion thermique d’une batterie</p><h3>Évaluer un modèle thermique</h3><p>Étudier une barre de référence pour construire et vérifier les méthodes, sans la confondre avec une cellule réelle : S1 pose le modèle, S2–S4 en évaluent la résolution et la fiabilité.</p><button class="btn" type="button" data-go-tab="barre">Ouvrir la barre 1D</button></article>
+  </div>
   <div class="session-grid">
     <article class="session-card"><p class="session-kicker">Séance 1 · Chapitre 1</p><h3>Modèle et transport</h3><p>Poser le problème, reconnaître les équations et leurs comportements, puis examiner les conditions et les modèles stationnaires.</p><p class="session-tools">Introduction · Transport · Classer une EDP · Comportement · Conditions aux limites · Barre 1D · Péclet</p><button class="btn" type="button" data-go-tab="intro">Commencer la séance 1</button></article>
     <article class="session-card"><p class="session-kicker">Séance 2 · Stationnaire</p><h3>Discrétiser en espace</h3><p>Construire les différences, traiter les frontières, puis résoudre le système stationnaire.</p><p class="session-tools">Ordre d’une différence · Conditions discrétisées · Jacobi / Gauss–Seidel</p><button class="btn" type="button" data-go-tab="ordre">Commencer la séance 2</button></article>
@@ -190,7 +194,7 @@
           <label>Côté droit, en °C<span class="sl"><input type="range" id="k-Tr" min="0" max="100" step="5" value="0"><output></output></span></label>
           <label>Côté haut, en °C<span class="sl"><input type="range" id="k-Tt" min="0" max="100" step="5" value="0"><output></output></span></label>
           <label>Côté bas, en °C<span class="sl"><input type="range" id="k-Tb" min="0" max="100" step="5" value="0"><output></output></span></label>
-          <label>Nœuds par direction<span class="sl"><input type="range" id="k-n" min="9" max="61" step="2" value="31"><output></output></span></label>
+          <label>Nœuds intérieurs par direction<span class="sl"><input type="range" id="k-n" min="9" max="61" step="2" value="31"><output></output></span></label>
         </div>
         <div data-kt="parabolique" class="kgroup" style="display:none">
           <label>Diffusivité D (m²/s)<span class="sl"><input type="range" id="k-D" min="0.01" max="1" step="0.01" value="0.05"><output></output></span></label>
@@ -203,27 +207,25 @@
         </div>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <div class="edpb-work-first" id="k-before-work" aria-live="polite"></div>
+      <details class="repere" data-kt="elliptique"><summary>Voir le repère numérique après votre calcul</summary><p>Avec le côté gauche à 100 °C et les trois autres à 0 °C, la température au centre vaut 25 °C ; avec deux côtés opposés à 100 °C, 50 °C ; avec trois côtés à 100 °C, 75 °C.</p></details>
+      <details class="repere" data-kt="parabolique" style="display:none"><summary>Voir le repère numérique après votre calcul</summary><p>Les profils initiaux sont des bosses cosinus de rayon 0,5 m, donc exactement nuls hors de leurs supports. Avec D = 0,05 m²/s et deux centres en x = ±2 m, u(5,0) = 0 ; à t = 2 s, u(5) ≈ 1,04 × 10⁻⁹ et à t = 8 s, u(5) ≈ 9,81 × 10⁻⁴.</p></details>
+      <details class="repere" data-kt="hyperbolique" style="display:none"><summary>Voir le repère numérique après votre calcul</summary><p>Le profil initial est exactement nul hors de [−0,5 ; 0,5]. Avec c = 1 et t = 2, ses deux bosses de demi-amplitude ont leurs maxima en x = ±2 et un rayon de 0,5 m ; en x = 3, u = 0 exactement.</p></details>
     </div>
     <div>
-      <details id="k-results" class="edpb-results">
-        <summary>Afficher les résultats numériques et les courbes</summary>
-        <div class="msg" id="k-msg" aria-live="polite"></div>
-        <div data-kt="elliptique" class="plots2">
-          <div><canvas id="k-heat" aria-label="Champ de température"></canvas><div class="legend" id="k-heat-leg"></div></div>
-          <div><canvas id="k-line" aria-label="Profil le long de la ligne médiane"></canvas><div class="legend" id="k-line-leg"></div></div>
-        </div>
-        <div data-kt="parabolique" class="plots2" style="display:none">
-          <div><canvas id="k-par" aria-label="Profils de température"></canvas><div class="legend" id="k-par-leg"></div></div>
-        </div>
-        <div class="curve-explanation curve-explanation-par" id="k-par-curve-explanation" data-kt="parabolique" style="display:none" aria-live="polite" aria-atomic="true"></div>
-        <div data-kt="hyperbolique" class="plots2" style="display:none">
-          <div><canvas id="k-hyp" aria-label="Profil de l'onde"></canvas><div class="legend" id="k-hyp-leg"></div></div>
-        </div>
-        <div class="curve-explanation" id="k-hyp-curve-explanation" data-kt="hyperbolique" style="display:none" aria-live="polite" aria-atomic="true"></div>
-        <div class="cards" id="k-cards"></div>
-        <p class="repere">Après comparaison, rédigez l’interprétation demandée pour S1-K1, S1-K2 ou S1-K3 sur la fiche de séance.</p>
-      </details>
+      <div class="msg" id="k-msg" aria-live="polite"></div>
+      <div data-kt="elliptique" class="plots2">
+        <div><canvas id="k-heat" aria-label="Champ de température"></canvas><div class="legend" id="k-heat-leg"></div></div>
+        <div><canvas id="k-line" aria-label="Profil le long de la ligne médiane"></canvas><div class="legend" id="k-line-leg"></div></div>
+      </div>
+      <div data-kt="parabolique" class="plots2" style="display:none">
+        <div><canvas id="k-par" aria-label="Profils de température"></canvas><div class="legend" id="k-par-leg"></div></div>
+      </div>
+      <div class="curve-explanation curve-explanation-par" id="k-par-curve-explanation" data-kt="parabolique" style="display:none" aria-live="polite" aria-atomic="true"></div>
+      <div data-kt="hyperbolique" class="plots2" style="display:none">
+        <div><canvas id="k-hyp" aria-label="Profil de l'onde"></canvas><div class="legend" id="k-hyp-leg"></div></div>
+      </div>
+      <div class="curve-explanation" id="k-hyp-curve-explanation" data-kt="hyperbolique" style="display:none" aria-live="polite" aria-atomic="true"></div>
+      <div class="cards" id="k-cards"></div>
     </div>
   </div>
 </section>
@@ -336,7 +338,7 @@
 <!-- Ch.2 : Jacobi / GS -->
 <section class="panel" id="p-jg">
   <h2>Jacobi et Gauss–Seidel</h2>
-  <p class="lead">Un système tridiagonal issu de la discrétisation de la diffusion 1D est résolu par Jacobi et par Gauss–Seidel, à partir du vecteur nul. Le second membre est fixé à f = 1 pour garder la même échelle de référence pour les résidus et les itérés. Séance 2, exercice C. Les deux méthodes sont comparées sur les mêmes graphiques.</p>
+  <p class="lead">Un système tridiagonal issu de la diffusion 1D est résolu par Jacobi et Gauss–Seidel, à partir du vecteur nul. Le second membre est fixé à f = 1 ; les résidus absolu et relatif permettent de séparer convergence du solveur et effet du maillage. Séance 2, exercice C.</p>
   <div class="eqs" data-eq="jg"></div>
   <div class="grid">
     <div>
@@ -354,7 +356,7 @@
     </div>
     <div>
       <div class="msg" id="j-msg" aria-live="polite"></div>
-      <div class="plots2"><div><canvas id="j-plot" aria-label="Itérés et solution exacte"></canvas><div class="legend" id="j-leg"></div></div><div><canvas id="j-plot2" aria-label="Résidu selon l'itération" style="margin-top:12px"></canvas><div class="legend" id="j-leg2"></div></div></div>
+      <div class="plots2"><div><canvas id="j-plot" aria-label="Itérés et solution exacte"></canvas><div class="legend" id="j-leg"></div></div><div><canvas id="j-plot2" aria-label="Résidu absolu selon l'itération" style="margin-top:12px"></canvas><div class="legend" id="j-leg2"></div><canvas id="j-plot2-rel" aria-label="Résidu relatif au résidu initial selon l'itération" style="margin-top:12px"></canvas><div class="legend" id="j-leg2-rel"></div></div></div>
       <div class="cards" id="j-table"></div>
 
     </div>
@@ -422,7 +424,7 @@
           <label><input type="radio" name="n-bc" value="neumann" checked> Neumann (flux imposé)</label>
           <label><input type="radio" name="n-bc" value="fourier"> Fourier (échange convectif)</label>
         </div>
-        <label data-bc="fourier" style="display:none">Coefficient d'échange κ = h/λ<span class="sl"><input type="range" id="n-kappa" min="0.5" max="20" step="0.5" value="2"><output></output></span></label>
+        <label data-bc="fourier" style="display:none">Nombre de Biot Bi = h<sub>conv</sub>L/λ (L = 1 m)<span class="sl"><input type="range" id="n-kappa" min="0.5" max="20" step="0.5" value="2"><output></output></span></label>
         <label>Plus petit N<span class="sl"><input type="range" id="n-N0" min="4" max="40" step="1" value="10"><output></output></span></label>
         <label>Nombre de maillages testés (N₀, 2N₀, 4N₀, …)<span class="sl"><input type="range" id="n-k" min="2" max="6" step="1" value="5"><output></output></span></label>
         <label>N du profil d'erreur<span class="sl"><input type="range" id="n-Np" min="6" max="100" step="2" value="20"><output></output></span></label>
@@ -558,10 +560,10 @@
   © 2026 Mohammed Khalij — Cours MFTN. Les crédits et licences des médias tiers figurent dans leurs légendes.
 </footer>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<script src="calc.js?v=20261106-157a"></script>
-<script src="equations.js?v=20261105-135a"></script>
-<script src="situations.js?v=20261107-186a"></script>
-<script src="guide.js?v=20261107-194a"></script>
-<script src="app.js?v=20261107-195a"></script>
+<script src="calc.js?v=20261105-145a"></script>
+<script src="equations.js?v=20261107-197a"></script>
+<script src="situations.js?v=20261107-197a"></script>
+<script src="guide.js?v=20261107-197a"></script>
+<script src="app.js?v=20261107-197a"></script>
 </body>
 </html>
