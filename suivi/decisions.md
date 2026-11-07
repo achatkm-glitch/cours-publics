@@ -403,3 +403,9 @@ Le lien « ← Retour au site général des cours » cible l’accueil public ht
 
 ### Clôture tâche miroir 185 — 2026-11-07 12:14:19 +01:00 — publication vérifiée
 Le thème du calculateur MFTN est harmonisé avec l’accueil général. Commit `96758d277bd17eb1bc1f0ad63deaf649e8b4fd02` poussé ; GitHub Pages run 42367166819 réussi. La page publique et le CSS `style.css?v=20261107-188a` répondent HTTP 200 ; le bandeau, le lien général et le thème clair par défaut sont présents. Les verrous sont libérés. Inspection visuelle automatisée indisponible ; le rendu est soumis au contrôle de l’utilisateur.
+
+### Tâche miroir 186 — publier le chapitre 1 du poly — 2026-11-07 12:20:00 Europe/Paris (UTC+01:00)
+- **Instruction utilisateur** : « publie le chapitre un du poly dans le site public ».
+- **Source** : PDF officiel MFTN, chapitre 1 entre les pages PDF 7 et 45 incluses, signet du chapitre 2 à la page 46 ; extrait contrôlé avant mise en ligne.
+- **Prise FIFO et décision** : Codex réserve l’extrait PDF public, l’entrée correspondante de `index.html` et les registres. Le fichier sera clairement indiqué comme extrait du poly en version de travail.
+- **Publication** : commit et push autorisés par la demande ; vérifier le déploiement et l’accès public au PDF.

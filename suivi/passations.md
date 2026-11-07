@@ -687,3 +687,7 @@ Clôture tâche miroir 183 — 2026-11-07 11:35 Europe/Paris (UTC+01:00) — Cod
 - **Limites** : inspection visuelle par navigateur non réalisée ; l’utilisateur peut vérifier le rendu sur ordinateur et téléphone à l’URL publique.
 - **Prochaine étape** : retour utilisateur sur le rendu.
 - **Verrous** : libérés.
+
+### Tâche miroir 186 — publication du chapitre 1 du poly — 2026-11-07 12:20:00 Europe/Paris (UTC+01:00) — Codex
+Prise FIFO : le dépôt miroir `C:\Latex\cours-publics` était propre sur `main`, HEAD `defaf8a`, et la dernière passation libérait l’index public. Réservation limitée à `index.html`, au nouvel extrait `mftn/chapitre-01-poly.pdf` et aux trois registres de suivi. Le PDF source officiel est `C:\Latex\MFTN\output\pdf\MFTN_poly.pdf` ; son signet donne chapitre 1 page PDF 7, chapitre 2 page PDF 46. L’extrait de 39 pages a été contrôlé au début et à la fin. La mention « Version de travail » est visible dans le PDF et sur le site.
+Prochaine action : contrôle HTML, commit/push et vérification GitHub Pages.

@@ -131,3 +131,5 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 
 
 | Clôture tâche miroir 185 — mftn/calculateurs/{index.html,style.css} et registres | LIBRE — Codex | 2026-11-07 12:14:19 +01:00 — commit `96758d277bd17eb1bc1f0ad63deaf649e8b4fd02` poussé ; Pages run 42367166819 réussi ; contrôles HTTP terminés |
+
+| Tâche miroir 186 — `index.html`, `mftn/chapitre-01-poly.pdf`, `suivi/{decisions,passations,verrous}.md` | ACTIF — finir la publication et vérifier le déploiement public | Codex | 2026-11-07 12:20:00 +01:00 |
