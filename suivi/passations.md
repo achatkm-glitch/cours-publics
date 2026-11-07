@@ -723,3 +723,12 @@ Prise FIFO. Périmètre limité à mftn/calculateurs/index.html et registres de 
 - **Contrôlé** : page et CSS HTTP 200 ; cache style.css?v=20261107-191a et les deux libellés présents. GitHub Pages run 42369542577 réussi. Commit miroir 1aa3687abf68b1ff8f7fa37d0a9beecbee788083.
 - **Limite** : pas d’inspection visuelle dans la fenêtre navigateur de cette session.
 - **Verrous** : libérés.
+
+### Tâche miroir 189 — paramètre f dans l’onglet Jacobi / Gauss–Seidel — 2026-11-07 12:51:09 +01:00 — Codex
+Prise FIFO. Répercuter le réglage fixe f = 1 depuis Peda_inv/site/index.html dans mftn/calculateurs/index.html, sans changement du solveur. Préserver l’échelle de référence des valeurs de l’exercice.
+
+### Clôture tâche miroir 189 — second membre fixé — 2026-11-07 12:54:32 +01:00 — Codex
+- **Fait** : curseur du second membre retiré ; la valeur fixe f=1 reste dans le modèle et alimente les mêmes calculs et exemples.
+- **Contrôlé** : page publique HTTP 200, texte de référence et valeur interne présents, contrôle du retrait du curseur réussi ; Pages run 42370021497 réussi. Commit miroir 80d8b23779a433f53d6838216d70afb855b3347e.
+- **Prochaine étape** : aucune modification des autres paramètres avant décision utilisateur ; candidats décrits dans la passation source et le compte rendu.
+- **Verrous** : libérés.

@@ -426,3 +426,9 @@ Instruction utilisateur avec capture. Codex prend la première tâche libre apr�
 ### Clôture tâche miroir 188 — libellés de raffinement — 2026-11-07 12:46:31 +01:00
 Intitulés clarifiés dans les deux sites. Les valeurs et les calculs ne changent pas. Commit miroir 1aa3687abf68b1ff8f7fa37d0a9beecbee788083 ; Pages run 42369542577 réussi ; page et CSS versionné HTTP 200.
 
+### Tâche miroir 189 — second membre f de Jacobi–Gauss–Seidel — 2026-11-07 12:51:09 +01:00
+Demande : fixer le paramètre multiplicatif f à 1 et auditer les autres réglages similaires sans les changer sans décision. Codex prend en charge le miroir public de la modification source et vérifiera l’affichage.
+
+### Clôture tâche miroir 189 — 2026-11-07 12:54:32 +01:00
+Curseur f remplacé par une valeur fixe 1 dans la source et le miroir. Site public HTTP 200, f interne présent et curseur retiré ; Pages run 42370021497 réussi. Commit miroir 80d8b23779a433f53d6838216d70afb855b3347e.
+
