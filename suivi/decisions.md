@@ -452,3 +452,7 @@ Curseur f remplacé par une valeur fixe 1 dans la source et le miroir. Site publ
 - **Demande** : la capture montre encore « Source compilée le 7 novembre 2026 à 10 h 39 » dans le PDF public du chapitre 1 ; corriger le libellé et l'heure selon la couverture actuelle du poly officiel.
 - **Prise en charge** : Codex, après vérification que la tâche précédente est libérée et le dépôt public propre.
 - **État** : prise en charge ; changement limité au bandeau en première page, pages du chapitre conservées.
+
+### Clôture tâche miroir 201 — 2026-11-07 15:16:12 +01:00
+- **État** : livré et contrôlé ; le PDF public a le tampon LaTeX officiel et le contenu des pages du chapitre est inchangé.
+- **Preuves** : commit e59bafe6e6df231d4772241a09905b17ad8fd0a, Pages run 42380705818, téléchargement public HTTP 200 et empreinte identique.

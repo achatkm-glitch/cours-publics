@@ -764,3 +764,6 @@ Le curseur de diffusivité est retiré ; α=10⁻⁵ m²/s est fixé et Δt est 
 
 #### Tâche miroir 201 — corriger le tampon du PDF public du chapitre 1 — 2026-11-07 15:10:12 +01:00
 Prise de tâche après contrôle de la dernière section des verrous : tâche 198 libérée, dépôt public propre. Le tampon obsolète est dans le PDF d’extrait lui-même, pas dans le HTML. Périmètre verrouillé : mftn/chapitre-01-poly.pdf et registres publics. Le tampon sera remplacé par la date/heure compilée figurant sur le poly officiel ; le contenu des pages sera préservé.
+
+#### Clôture tâche miroir 201 — PDF public du chapitre 1 — 2026-11-07 15:16:12 +01:00
+Remplacement effectué : le bandeau de la première page indique maintenant « LaTeX compilé le 7 novembre 2026 à 14 h 25 », conformément à la couverture du poly officiel. Contrôle du PDF local et public : 39 pages A4 ; le texte exact du nouveau tampon est présent, l’ancien « Source compilée … 10 h 39 » est absent de la première page. Pages 2 à 39 identiques à l’ancienne version en texte et en pixels. SHA-256 public/local : 7AF4C18F12244AA49F01439D904BF406B923C6BAD52C3820B1A388A2A8D6504F. Pages run 42380705818 réussi ; téléchargement public HTTP 200, application/pdf, hash identique. Commit e59bafe6e6df231d4772241a09905b17ad8fd0a poussé et confirmé ; source Git propre. Verrou libéré.
