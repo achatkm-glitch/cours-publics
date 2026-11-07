@@ -773,3 +773,5 @@ Prise FIFO après clôture miroir 201 et vérification worktree public propre. D
 
 #### Clôture tâche miroir 202 — correction responsive du calculateur MFTN — 2026-11-07 18:55:46 +01:00
 La source et le miroir ont été synchronisés sur les libellés Péclet/Biot et les règles mobile de l’en-tête. Contrôles des fichiers et capture locale 390 × 844 effectués ; label Biot masqué jusqu’au choix Fourier, contrôlé dans sa structure HTML. Hashes : index 58CC07438D8294DC5867689F71420F809EC7F1E347BE404D0BD84614ECBC706F ; style 95FC5B2D95FEC81801B6A14038860CCFE9DD818627010936386402BD2AD2FF05. Déploiement à confirmer après push.
+### Addendum de publication — tâche miroir 202 — 2026-11-07 18:59:08 +01:00
+Commit 18f03495d71258ae41d12835bd5439e090cf71ea poussé et confirmé sur origin/main. GitHub Pages 42398858961 terminé avec succès. Vérification de la page et de style.css en HTTP 200 ; la version servie contient les libellés regroupés et les règles responsive. Source MFTN : commit 630cb473e1f7a994b3340526524361f86d19c140.
