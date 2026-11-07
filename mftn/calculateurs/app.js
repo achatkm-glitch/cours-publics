@@ -1001,6 +1001,14 @@
     const reading = readings[type], changed = renderedEdpbType !== type, panel = $('k-type-dynamic');
     panel.dataset.type = type;
     panel.innerHTML = `<strong>${reading.title}</strong><span>${reading.text}</span>`;
+    if (changed) {
+      const status = $('k-edpb-play-status');
+      if (status && edpbAnimationTimer === null && edpbAnimationTarget === null) {
+        status.textContent = type === 'elliptique'
+          ? 'Cas stationnaire : aucune évolution temporelle à animer.'
+          : 'Lancez l’animation pour suivre le profil et la courbe au cours du temps.';
+      }
+    }
     const beforeWork = $('k-before-work');
     if (beforeWork) {
       const prompts = {
@@ -1333,6 +1341,7 @@
     const type = checked('k-type')[0] || 'elliptique';
     const slider = $(type === 'hyperbolique' ? 'k-th' : 'k-tp'), button = $('k-edpb-play'), status = $('k-edpb-play-status');
     if (!slider || !button || !status) return;
+    if (type === 'elliptique') { status.textContent = 'Cas stationnaire : aucune évolution temporelle à animer.'; return; }
     if (type === 'elliptique') { status.textContent = 'Ce modèle d’équilibre ne comporte pas d’évolution à animer.'; return; }
     const results = $('k-results'); if (results) results.open = true;
     const step = Number(slider.step) || 0.5;
