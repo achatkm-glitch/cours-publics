@@ -644,3 +644,9 @@ Orientation confirmée par l’utilisateur : surveillance active visant des livr
 
 ### Preuve de livraison publique — tâche miroir 157 — 2026-11-06 00:17:21 +01:00 — Codex
 Commit `f15a20f822fe82af118631d1d44b8513327d4c2b` confirmé sur `origin/main`. GitHub Pages run `42128262801` : `completed / success`. Contrôle HTTP public : page principale, `style.css?v=20261106-157a`, `calc.js?v=20261106-157a` et `app.js?v=20261106-157a` renvoient 200 ; le JavaScript déployé contient la mention de diffusivité illustrative et les réponses de guide repliées. Travail local propre après publication.
+
+### Tâche 180 — alignement des mises en situation MFTN — 2026-11-07 11:03:34 +01:00 — Codex
+État : terminé. Fiches S1–S4 lues en lecture seule. Changements réservés aux mises en situation et à l’introduction du site source MFTN puis du miroir mftn/calculateurs. Écarts corrigés : distinction entre barre S1 sans source et exercices S1-X5/X6 avec production ; description Jacobi/Gauss–Seidel explicitement présentée comme système simplifié ; retrait du mode d’emploi redondant. Alignements S2 à S4 vérifiés. Aucun changement aux paramètres ou aux fiches.
+
+### Clôture tâche 180 — 2026-11-07 11:08:52 Europe/Paris (UTC+01:00) — Codex
+`node --check` passe sur `situations.js` ; empreinte du fichier identique entre la source MFTN et le miroir. `git diff --check` est propre sur les changements de contenu. Audit éditorial statique terminé ; rendu visuel navigateur non inspecté. Le miroir est prêt à être synchronisé et sa publication sera vérifiée après le push.

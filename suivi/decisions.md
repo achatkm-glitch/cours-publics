@@ -373,3 +373,9 @@ Livrable ciblé contrôlé : les trois réponses S1-K1 à K3 sont derrière une 
 
 ### Tâche miroir 157 — publication vérifiée — 2026-11-06 00:17:21 +01:00 — Codex
 Commit `f15a20f822fe82af118631d1d44b8513327d4c2b` présent sur `origin/main`. GitHub Pages run `42128262801` terminé avec succès. Page et ressources `style.css`, `calc.js`, `app.js` en HTTP 200 ; l’HTML sert le cache-buster `20261106-157a` et le JavaScript public contient les corrections du lot. Verrous libérés. Le niveau technique est atteint pour le lot #edpb ; validation scientifique indépendante non atteinte.
+
+### 2026-11-07 — Tâche 180 : alignement des mises en situation MFTN
+- **Décision** : vérifier les descriptions du site au regard des quatre fiches, retirer le mode d’emploi redondant de l’introduction et corriger les écarts concrets dans le miroir public, sans modifier les fiches ni les calculateurs.
+- **Raison** : distinguer le cas étalon S1 sans source des exercices avec production, et clarifier le rôle des bancs numériques utilisés dans les séances.
+- **Preuve** : consigne utilisateur du 2026-11-07 ; source C:\Latex\MFTN\Peda_inv\site et miroir mftn/calculateurs.
+- **Responsable** : Codex.

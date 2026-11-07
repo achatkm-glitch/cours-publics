@@ -42,7 +42,7 @@
 
 <section class="panel active" id="p-home">
   <h2>Le cours, organisé en quatre séances</h2>
-  <p class="lead">Choisissez la séance en cours. Les calculateurs servent pendant les activités : commencez par le problème et les calculs à la main, puis ouvrez l’onglet indiqué dans votre fiche. Le polycopié se consulte en salle, au fil des notions nécessaires.</p>
+  <p class="lead">Calculateurs interactifs associés aux quatre séances : ils permettent de comparer des profils, des maillages et des schémas numériques.</p>
   <div class="session-grid">
     <article class="session-card"><p class="session-kicker">Séance 1 · Chapitre 1</p><h3>Modèle et transport</h3><p>Poser le problème, reconnaître les équations et leurs comportements, puis examiner les conditions et les modèles stationnaires.</p><p class="session-tools">Introduction · Transport · Classer une EDP · Comportement · Conditions aux limites · Barre 1D · Péclet</p><button class="btn" type="button" data-go-tab="intro">Commencer la séance 1</button></article>
     <article class="session-card"><p class="session-kicker">Séance 2 · Stationnaire</p><h3>Discrétiser en espace</h3><p>Construire les différences, traiter les frontières, puis résoudre le système stationnaire.</p><p class="session-tools">Ordre d’une différence · Conditions discrétisées · Jacobi / Gauss–Seidel</p><button class="btn" type="button" data-go-tab="ordre">Commencer la séance 2</button></article>
@@ -55,9 +55,8 @@
 <!-- Introduction -->
 <section class="panel" id="p-intro">
   <h2>Introduction : pourquoi le choix du schéma compte</h2>
-  <p class="lead">Pourquoi un cours de méthodes numériques ? Pour une même équation, on peut écrire de nombreux schémas de calcul, et ils ne se valent pas : selon le schéma, la solution calculée présente des comportements non voulus. Ici, un signal (une bosse lisse et un créneau) est transporté à vitesse constante sur un domaine périodique : après un tour entier, la solution exacte est identique au signal initial. Cinq schémas, notés A à E (leurs formules et leurs noms seront vus plus tard dans le cours), essaient de la reproduire. Observez ce que chacun fait du signal. Test inspiré de la figure 6.1 de LeVeque (2002) ; les paramètres sont ceux de ce site. Introduction du cours, séance 1.</p>
-  <p class="repere"><b>Comment travailler :</b> commencez par une prévision ou une première explication sans ouvrir le cours. Si une notion vous manque, consultez le passage indiqué dans la fiche de séance, puis revenez à l'exploration pour vérifier et expliquer votre réponse. Le cours se lit en salle, au fil des questions ; aucune lecture préalable à domicile n'est demandée.</p>
-  <div class="situation"><b>Mise en situation.</b> Un rejet polluant, une bouffée lisse suivie d'un front brusque, est entraîné par un courant uniforme dans un canal. On veut prévoir par le calcul, sans mesure, la forme du rejet un peu plus loin en aval : où arrive-t-il, avec quelle concentration maximale, et la concentration peut-elle devenir négative ou exploser ? Le signal du calculateur (une bosse et un créneau, sans unité) représente cette concentration ; après un tour, un courant parfait la ramène à l'identique. Les schémas A à E sont cinq façons de faire ce calcul : tous ne donnent pas un résultat exploitable.
+  <p class="lead">Un même signal transporté peut être calculé avec plusieurs schémas. Le calculateur compare cinq schémas anonymes sur une bosse lisse et un front abrupt ; leurs résultats peuvent lisser le front, osciller ou croître. Séance 1, phase 1.</p>
+  <div class="situation"><b>Mission A — suivre un traceur.</b> Une concentration est emportée par un courant uniforme. Prévoir son déplacement et son maximum, puis repérer les déformations non physiques. Le test est périodique : ce qui sort à droite réapparaît à gauche. Il isole les effets numériques et ne représente pas un canal ouvert.
   <svg class="sit-fig" viewBox="0 0 640 250" role="img" aria-label="Schéma : un rejet polluant, une bosse lisse et un front brusque, entraîné par le courant dans un canal" title="Schéma du signal transporté dans un canal périodique.">
     <rect x="50" y="170" width="540" height="50" fill="var(--blue)" opacity="0.15"/>
     <line x1="50" y1="170" x2="590" y2="170" stroke="var(--blue)" stroke-width="2"/>
@@ -108,7 +107,7 @@
 <!-- Ch.1 : transport -->
 <section class="panel" id="p-transport">
   <h2>Transport : advection et diffusion d’un profil initial</h2>
-    <p class="lead"><b>Objectif :</b> comprendre le transport physique. Que font l’advection et la diffusion au profil transporté φ ? Le curseur règle Pe<sub>σ₀</sub> = |a|σ₀/D et la lecture dynamique compare les temps caractéristiques. Dans l’exemple d’un rejet, φ peut représenter la concentration c. Le calculateur suit un profil gaussien et permet de superposer jusqu’à six cas. Séance 1, bloc A.</p>
+    <p class="lead"><b>Objectif :</b> comprendre le transport physique. Ce calculateur suit un profil gaussien transporté par a et étalé par D ; le curseur Pe<sub>σ₀</sub> compare ces effets à l’échelle initiale. C’est l’illustration advection–diffusion du bloc A ; la comparaison des schémas sur signal périodique se trouve dans « Introduction ».</p>
   <div class="eqs" data-eq="transport"></div>
   <div class="grid">
     <div>

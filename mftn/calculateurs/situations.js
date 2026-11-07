@@ -58,14 +58,13 @@
         `<path d="M290 70 q10 -8 20 0 t20 0 M290 90 q10 -8 20 0 t20 0 M290 110 q10 -8 20 0 t20 0" fill="none" stroke="var(--blue)" stroke-width="2"/>` + t(292, 40, 'air ambiant') + t(284, 138, 'échange convectif', 'font-weight="600"') + t(284, 152, '(Robin)'))
     },
     barre: {
-      texte: "Une barre métallique parcourue par un courant s'échauffe par effet Joule ; ses deux extrémités sont maintenues à des températures connues. On calcule T(x) sur des nœuds (différences finies) ou sur des cellules (volumes finis).",
+      texte: "Dans le cas étalon de S1, une barre homogène en régime permanent, sans source, relie T(0) = 300 K à T(L) = 400 K. Le préréglage q = 100 W/m³ correspond ensuite aux explorations S1-X5 et X6 : le curseur q permet de revenir au cas sans source. Les différences finies calculent aux nœuds ; les volumes finis, aux centres des cellules. Cette barre sert à vérifier les méthodes, pas à simuler une cellule industrielle.",
       svg: wrap(
         grad('gb', '--blue', '--orange') +
         `<rect x="10" y="40" width="40" height="60" fill="var(--blue)" opacity="0.5" stroke="var(--plot-axis)"/>` + `<rect x="330" y="40" width="40" height="60" fill="var(--red)" opacity="0.45" stroke="var(--plot-axis)"/>` +
         `<rect x="50" y="55" width="280" height="30" rx="3" fill="url(#gb)" opacity="0.55" stroke="var(--plot-axis)"/>` +
         [0, 1, 2, 3, 4].map(i => `<circle cx="${50 + i * 70}" cy="70" r="4.5" fill="var(--ink)"/>`).join('') +
-        `<path d="M70 60 l6 10 l6 -10 l6 10 l6 -10" fill="none" stroke="var(--orange)" stroke-width="1.6"/>` +
-        t(8, 30, 'T₀ imposée') + t(300, 30, 'T_L imposée') + t(104, 120, 'effet Joule : production q') + t(104, 138, 'nœuds (●) ou cellules'))
+        t(8, 30, 'T(0) = 300 K') + t(286, 30, 'T(L) = 400 K') + t(98, 120, 'q = 0 : cas étalon') + t(82, 140, 'q = 100 pour S1-X5/X6'))
     },
     peclet: {
       photo: { src: 'img/Schlieren-color-candle-plume.jpg', alt: 'Panache thermique d’une bougie par strioscopie', legende: 'Panache thermique d’une bougie visualisé par strioscopie. Settles1, <a href="https://creativecommons.org/licenses/by/3.0/deed.en">CC BY 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Schlieren-color-candle-plume.jpg">via Wikimedia Commons</a>.' },
@@ -87,7 +86,7 @@
         arr(100, 142, 190, 142, 'var(--orange)', 1.8) + arr(190, 142, 100, 142, 'var(--orange)', 1.8) + t(130, 160, 'pas h') + t(20, 38, 'capteurs de température dans une paroi'))
     },
     neumann: {
-      texte: "À une extrémité on connaît le flux de chaleur (film chauffant ; paroi isolée si le flux est nul), pas la température : la loi de Fourier le transforme en une dérivée imposée, qu'il faut discrétiser par une formule au bord dont l'ordre compte.",
+      texte: "Dans le modèle thermique stationnaire de S2, la température est imposée à une face et le flux à l'autre. Un flux nul correspond à une face isolée ; une condition de Fourier (Robin) représente l'échange avec le fluide. Pour le calcul, le flux imposé est traduit par une dérivée puis discrétisé au bord.",
       svg: wrap(
         grad('gn', '--blue', '--orange') + hatch('hn') +
         `<rect x="14" y="50" width="30" height="70" fill="var(--blue)" opacity="0.5" stroke="var(--plot-axis)"/>` + t(8, 40, 'T imposée') +
@@ -96,7 +95,7 @@
         arr(310, 150, 340, 150, 'var(--orange)', 2.2) + t(272, 164, 'flux imposé : T′ connue'))
     },
     jg: {
-      texte: "Une barre découpée en nœuds : à chaque itération, la valeur d'un nœud est corrigée à partir de ses voisins ; on répète jusqu'à ce que le résidu soit petit. Jacobi lit l'ancienne itération, Gauss–Seidel les valeurs déjà mises à jour.",
+      texte: "Cet onglet isole la résolution itérative d'un système tridiagonal de diffusion, exercice numérique de S2 ; il ne résout pas à lui seul toute la paroi à source uniforme et à flux imposé décrite dans la mise en situation. À chaque itération, une valeur nodale est corrigée à partir de ses voisines : Jacobi utilise l'ancienne itération, Gauss–Seidel les valeurs déjà mises à jour.",
       svg: wrap(
         [0, 1, 2, 3, 4, 5, 6].map(i => `<circle cx="${40 + i * 50}" cy="60" r="11" fill="var(--blue)" opacity="${0.25 + 0.1 * (i % 3)}" stroke="var(--plot-axis)"/>`).join('') +
         `<line x1="40" y1="60" x2="340" y2="60" stroke="var(--plot-axis)" stroke-width="1.2" opacity="0.5"/>` +

@@ -114,3 +114,7 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Tâche miroir 157 — mftn/calculateurs/{index.html,app.js,situations.js,style.css} et suivi/{decisions,passations,verrous}.md | ACTIF — Codex | 2026-11-06 00:00:43 +01:00 — audit #edpb et corrections autorisées ; préserver explorations/IDs/paramètres, tester localement avant commit et Pages |
 | Tâche miroir 157 — mftn/calculateurs/calc.js ajouté au périmètre | ACTIF — Codex | 2026-11-06 00:04:03 +01:00 — audit des coins Dirichlet et de la convergence du solveur elliptique |
 | Tâche miroir 157 — `mftn/calculateurs/{index.html,app.js,calc.js,style.css}` et `suivi/{decisions,passations,verrous}.md` | LIBRE — Codex | 2026-11-06 00:15:06 +01:00 — passe #edpb contrôlée localement ; synchronisation et contrôle public en cours |
+
+| Tâche miroir 180 — mftn/calculateurs/index.html, situations.js, registres | ACTIF — Codex | 2026-11-07 11:03:34 +01:00 — synchroniser les corrections autorisées depuis C:\Latex\MFTN\Peda_inv\site ; préserver les autres fichiers |
+
+| Clôture tâche miroir 180 — mftn/calculateurs/index.html, situations.js, registres | LIBRE — Codex | 2026-11-07 11:08:52 +01:00 — contrôles statiques passés ; prêt pour synchronisation publique |
