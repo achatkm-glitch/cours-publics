@@ -758,3 +758,6 @@ Commit miroir `fed0523a7b319c47b5e75b7af6d36d9de12bb711`, poussé et vérifié s
 
 #### Tâche miroir 198 — calculateur chaleur, Fo comme curseur principal — 2026-11-07 14:57:44 Europe/Paris (UTC+01:00)
 Le miroir public est libre depuis la clôture de la tâche 196, publication Pages réussie. Réserver le calculateur chaleur pour synchroniser la suppression du curseur de diffusivité et garder Δt calculé à partir de Fo ; conserver les valeurs de comparaison Fo. Source maître : Peda_inv/site.
+
+#### Clôture tâche miroir 198 — calculateur chaleur, Fo seul — 2026-11-07 15:05:10 Europe/Paris (UTC+01:00)
+Le curseur de diffusivité est retiré ; α=10⁻⁵ m²/s est fixé et Δt est dérivé de Fo h²/α. L=1 m, h réglable et comparaisons Fo conservés. Miroir vérifié identique à la source par empreintes. Pages run `42379581331` succès, page HTML avec cache busting : note α fixe présente, `c-alpha` absent, version `20261107-198a`. Tests `test_calc.js` et syntaxes JS passés. Commit miroir `8584c48e27a87584e3655c9e21f1524eb8fa4fa6`. Verrous libérés. Contrôle visuel automatisé non obtenu.
