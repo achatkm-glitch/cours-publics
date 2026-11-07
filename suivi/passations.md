@@ -741,3 +741,6 @@ L est fixé à 1 m dans l’onglet chaleur et ses préréglages ; Fo reste régl
 
 ### Addendum hashes de la tâche miroir 190 — 2026-11-07 14:06:15 Europe/Paris (UTC+01:00)
 Correction de transcription : le commit du code du site est b28176ac365a6955718a239a60be70b0b95c8fc2 ; le commit de clôture du suivi est c8904054d32d6d5e3072201bb3d6bec53eff964d. Les deux hashes ont été vérifiés sur origin/main. La ligne précédente n’est pas réécrite.
+
+### Tâche miroir 193 — pente visible dans les graphes de chaleur — 2026-11-07 14:09:32 Europe/Paris (UTC+01:00)
+Demande : afficher directement dans les figures les pentes déjà calculées pour les graphes d’erreur selon Δt et d’erreur selon h. Légende et calcul conservés ; annotation à distinguer comme pente observée.

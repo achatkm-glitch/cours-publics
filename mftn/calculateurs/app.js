@@ -153,8 +153,8 @@
     'c-plot': 'Profils calculés de température au temps indiqué ; x est la position et u la température normalisée.',
     'c-amp': 'Module du facteur d’amplification selon le nombre d’onde φ. Comparez les courbes sur l’intervalle tracé.',
     'c-g-signed': 'Facteur d’amplification signé selon φ ; le signe conserve l’information sur l’alternance du mode.',
-    'c-plot2': 'Erreur maximale selon le pas de temps Δt pour les schémas affichés.',
-    'c-refine': 'Erreur maximale au même temps final selon le maillage. La légende distingue les schémas.',
+    'c-plot2': 'Erreur maximale selon le pas de temps Δt. Les pastilles dans la figure indiquent les pentes log-log observées pour les séries de même couleur.',
+    'c-refine': 'Erreur maximale au même temps final selon le maillage. Les pastilles indiquent les pentes observées pour les séries de même couleur.',
     'p-plot': 'Valeur du terme associé à Dufort–Frankel selon h, pour les chemins de raffinement affichés.',
     'p-plot2': 'Valeur du terme associé à Lax–Friedrichs selon h, pour les chemins de raffinement affichés.',
     'p-effect-df': 'Profils calculés par Dufort–Frankel selon le maillage ; la légende indique les valeurs de r.',
@@ -393,6 +393,25 @@
         else { g.beginPath(); g.arc(X(v), Y(y), 3, 0, 6.2832); g.fill(); }
       });
     });
+    if (o.showSlopeInPlot) {
+      const slopes = series.map(s => ({ color: s.color, value: observedLogSlope(s) }))
+        .filter(s => isFinite(s.value));
+      if (slopes.length) {
+        g.save(); g.font = '600 11px system-ui, sans-serif'; g.textAlign = 'left'; g.textBaseline = 'middle';
+        let xRight = L + pw - 6, row = 0;
+        slopes.slice().reverse().forEach(s => {
+          const label = `p ≈ ${fmt(s.value, 2)}`, w = g.measureText(label).width + 19;
+          if (xRight - w < L + 4) { row++; xRight = L + pw - 6; }
+          const bx = xRight - w, by = T + 6 + row * 18;
+          g.fillStyle = css('--card'); g.strokeStyle = s.color; g.lineWidth = 1;
+          g.fillRect(bx, by, w, 16); g.strokeRect(bx, by, w, 16);
+          g.fillStyle = s.color; g.fillText(label, bx + 14, by + 8);
+          g.beginPath(); g.moveTo(bx + 5, by + 8); g.lineTo(bx + 10, by + 8); g.stroke();
+          xRight = bx - 4;
+        });
+        g.restore();
+      }
+    }
     g.restore();
     g.fillStyle = muted; g.textAlign = 'center';
     if (o.xlabel) g.fillText(o.xlabel, L + pw / 2, H - 8);
@@ -704,11 +723,11 @@
     schemes.forEach((s, i) => dts.forEach(dt => { const r = run(s, dt); rows.push({ s, i, dt: tf / Math.max(1, Math.round(tf / dt)), r }); }));
     cards($('c-table'), rows.map(o => ({ color: c[o.i], title: `${SCHEME[o.s]} · Δt = ${fmt(o.dt, 4)} s`, lines: [`Fo = <b>${fmt(o.r.Fo, 4)}</b> (${Math.max(1, Math.round(tf / o.dt))} pas ; temps final = ${fmt(o.r.t, 4)} s)`, `erreur maximale = <b>${fmt(o.r.maxErr, 4)}</b>`, o.s === 'ri' ? '<b>instable pour tout Fo</b>' : (o.s === 'ftcs' ? (o.r.stable ? 'critère Fo ≤ 1/2 respecté' : '<b>Fo > 1/2 : critère de FTCS non respecté</b>') : (o.s === 'df' ? 'erreur bornée dans ce calcul (stabilité vue au chapitre 4)' : 'stable pour tout Fo'))] })));
     const S2 = schemes.map((s, i) => { const pr = rows.filter(o => o.s === s).sort((p, q) => p.dt - q.dt); return { x: pr.map(o => o.dt), y: pr.map(o => o.r.maxErr), color: c[i], label: SCHEME[s], points: true }; });
-    draw('c-plot2', 'c-leg2', S2, { logx: true, logy: true, showSlope: true, xlabel: 'Δt (s)', ylabel: 'erreur maximale', title: 'Erreur selon Δt' });
+    draw('c-plot2', 'c-leg2', S2, { logx: true, logy: true, showSlope: true, showSlopeInPlot: true, xlabel: 'Δt (s)', ylabel: 'erreur maximale', title: 'Erreur selon Δt' });
     const Fo0 = dts[0] * alpha / (h * h), N0 = Math.max(2, Math.round(L / h));
     const refNs = [Math.floor(N0 / 2), N0, 2 * N0].filter((N, k) => N >= 4 && (k < 2 || N * Math.max(1, Math.round(tf / (Fo0 * (L / N) * (L / N) / alpha))) <= 3e6));
     const refS = schemes.map((s, i) => { const pts = refNs.map(N => { const hk = L / N, steps = Math.max(1, Math.round(tf / (Fo0 * hk * hk / alpha))); return { hk, err: Calc.chaleur({ alpha, L, h: hk, dt: tf / steps, steps, scheme: s }).maxErr }; }); return { x: pts.map(p => p.hk), y: pts.map(p => p.err), color: c[i], points: true, label: SCHEME[s] }; });
-    draw('c-refine', 'c-refine-leg', refS, { logx: true, logy: true, showSlope: true, xlabel: 'h (m)', ylabel: 'erreur maximale', title: `Raffinement à Fo = ${fmt(Fo0, 3)}, t = ${fmt(tf, 3)} s` });
+    draw('c-refine', 'c-refine-leg', refS, { logx: true, logy: true, showSlope: true, showSlopeInPlot: true, xlabel: 'h (m)', ylabel: 'erreur maximale', title: `Raffinement à Fo = ${fmt(Fo0, 3)}, t = ${fmt(tf, 3)} s` });
     const Lx = [];
     schemes.forEach(s => { const pr = rows.filter(o => o.s === s).sort((p, q) => q.dt - p.dt), o0 = pr[0];
       const st = s === 'ftcs' ? (o0.r.stable ? `Fo = ${fmt(o0.r.Fo, 3)} ≤ 1/2 : stable` : `Fo = ${fmt(o0.r.Fo, 3)} > 1/2 : <b>instable</b>, l’erreur explose`) : (s === 'ri' ? `<b>instable</b> pour tout Fo (Fo = ${fmt(o0.r.Fo, 3)}), l’erreur explose` : (s === 'df' ? `erreur bornée dans ce calcul (Fo = ${fmt(o0.r.Fo, 3)})` : `inconditionnellement stable (Fo = ${fmt(o0.r.Fo, 3)})`));
