@@ -450,7 +450,7 @@ window.GUIDE = {
           ],
           "reglages": {
             "c-alpha": "-5",
-            "c-L": "0.1",
+            "c-L": "1",
             "c-h": "5",
             "c-tf": "200",
             "c-Fo": "0.8",
@@ -472,7 +472,7 @@ window.GUIDE = {
           "id": "S4-X2",
           "titre": "Calculer le gain avant de lire la courbe",
           "comp": ["C4.3"],
-          "reglages": {"c-alpha": "-5", "c-L": "0.1", "c-h": "5", "c-tf": "200", "c-Fo": "0.6", "c-Fox": ""},
+          "reglages": {"c-alpha": "-5", "c-L": "1", "c-h": "5", "c-tf": "200", "c-Fo": "0.6", "c-Fox": ""},
           "checks": {"c-s": ["ftcs"]},
           "main": "Pour le mode φ = π et Fo = 0,4 puis 0,6, calculez G = 1 − 4Fo sin²(φ/2), son module et votre prévision après plusieurs pas.",
           "consigne": "Appliquez les réglages. Comparez le facteur modal au seuil |G| = 1 et au profil calculé ; recommencez avec Fo = 0,4.",
@@ -486,7 +486,7 @@ window.GUIDE = {
           ],
           "reglages": {
             "c-alpha": "-5",
-            "c-L": "0.1",
+            "c-L": "1",
             "c-h": "1",
             "c-tf": "1",
             "c-Fo": "10",
@@ -513,7 +513,7 @@ window.GUIDE = {
           ],
           "reglages": {
             "c-alpha": "-5",
-            "c-L": "0.1",
+            "c-L": "1",
             "c-h": "5",
             "c-tf": "200",
             "c-Fo": "0.8",

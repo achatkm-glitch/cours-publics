@@ -432,3 +432,5 @@ Demande : fixer le paramètre multiplicatif f à 1 et auditer les autres réglag
 ### Clôture tâche miroir 189 — 2026-11-07 12:54:32 +01:00
 Curseur f remplacé par une valeur fixe 1 dans la source et le miroir. Site public HTTP 200, f interne présent et curseur retiré ; Pages run 42370021497 réussi. Commit miroir 80d8b23779a433f53d6838216d70afb855b3347e.
 
+
+| 191 | 2026-11-07 13:59:27 +01:00 | Utilisateur | Dans le calculateur chaleur, garder Fo réglable et fixer L=1 m. | Codex | En cours : mêmes réglages dans la source et le miroir ; vérifier le comportement quand Fo varie puis publier. | Peda_inv/site/index.html ; mftn/calculateurs/index.html |

@@ -683,7 +683,8 @@
     const r0 = first[0].r, mid = Math.floor(r0.u.length / 2);
     const warn = first.some(o => (o.s === 'ftcs' && o.r.Fo > 0.5) || o.s === 'ri');
     $('c-msg').className = warn ? 'msg bad' : 'msg good';
-    $('c-msg').textContent = `Fo = ${fmt(r0.Fo, 4)} (Δt = ${fmt(dts[0], 4)} s) ; pas de temps maximal de FTCS = ${fmt(r0.dtMax, 4)} s.` + (warn ? (first.some(o => o.s === 'ri') ? ' Richardson est instable quel que soit Fo' + (first.some(o => o.s === 'ftcs' && o.r.Fo > 0.5) ? ' ; FTCS aussi, car Fo > 1/2.' : '.') : ' Fo > 1/2 : FTCS est instable.') : '');
+    const dtEffectif = r0.Fo * r0.h * r0.h / alpha;
+    $('c-msg').textContent = `Fo = ${fmt(r0.Fo, 4)} (Δt = ${fmt(dtEffectif, 4)} s) ; pas de temps maximal de FTCS = ${fmt(r0.dtMax, 4)} s.` + (warn ? (first.some(o => o.s === 'ri') ? ' Richardson est instable quel que soit Fo' + (first.some(o => o.s === 'ftcs' && o.r.Fo > 0.5) ? ' ; FTCS aussi, car Fo > 1/2.' : '.') : ' Fo > 1/2 : FTCS est instable.') : '');
     const lim = Math.max(1.2, ...first.flatMap(o => o.r.u.map(Math.abs)).filter(isFinite));
     const S1 = [{ x: r0.x, y: r0.u0, color: c[5], dash: [2, 4], label: 'état initial' },
                 { x: r0.x, y: r0.exact, color: css('--plot-axis'), dash: [6, 4], label: 'solution exacte' }]

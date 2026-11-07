@@ -732,3 +732,6 @@ Prise FIFO. Répercuter le réglage fixe f = 1 depuis Peda_inv/site/index.html d
 - **Contrôlé** : page publique HTTP 200, texte de référence et valeur interne présents, contrôle du retrait du curseur réussi ; Pages run 42370021497 réussi. Commit miroir 80d8b23779a433f53d6838216d70afb855b3347e.
 - **Prochaine étape** : aucune modification des autres paramètres avant décision utilisateur ; candidats décrits dans la passation source et le compte rendu.
 - **Verrous** : libérés.
+
+### Tâche miroir 190 — Fo variable, L=1 m fixe — 2026-11-07 13:59:27 Europe/Paris (UTC+01:00) — Codex
+Synchroniser le calculateur chaleur depuis la source MFTN : Fo demeure réglable et pilote Δt ; L est fixé à 1 m. Contrôler le repère, les valeurs initiales et la publication Pages.

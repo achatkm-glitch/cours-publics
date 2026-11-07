@@ -455,12 +455,12 @@
         </div>
         <label>Nombre de Fourier de maille Fo = αΔt/h² (sert au profil ; Δt en découle)<span class="sl"><input type="range" id="c-Fo" min="0.05" max="12" step="0.05" value="0.4"><output></output></span><input id="c-Fox" value="0.2 0.1" placeholder="autres valeurs de Fo à comparer, séparées par des espaces" aria-label="Autres valeurs de Fo à comparer"></label>
         <label>Diffusivité α, en m²/s (échelle logarithmique)<span class="sl"><input type="range" id="c-alpha" min="-7" max="-3" step="0.1" value="-5" data-log="1" data-unit="m²/s"><output></output></span></label>
-        <label>Longueur L, en m<span class="sl"><input type="range" id="c-L" min="0.05" max="0.5" step="0.01" value="0.1" data-unit="m"><output></output></span></label>
+        <label>Longueur de la barre L, fixée<span class="sl"><output>1 m</output></span><input type="hidden" id="c-L" value="1"></label>
         <label>Pas d'espace h<span class="sl"><input type="range" id="c-h" min="1" max="20" step="0.5" value="5" data-scale="0.001" data-unit="mm"><output></output></span></label>
-        <label>Temps final<span class="sl"><input type="range" id="c-tf" min="0.5" max="300" step="0.5" value="1" data-unit="s"><output></output></span></label>
+        <label>Temps final<span class="sl"><input type="range" id="c-tf" min="0.5" max="300" step="0.5" value="200" data-unit="s"><output></output></span></label>
         <div class="row"><button type="button" class="btn alt" data-reset>Valeurs initiales</button></div>
       </form>
-      <p class="repere"><b>Repère :</b> avec α = 10⁻⁵ m²/s, L = 0,10 m, h = 5 mm, Fo = 0,4 (Δt = 1 s) et FTCS : valeur centrale 0,990151 après un pas, contre 0,990179 pour la solution exacte ; pas de temps maximal 1,25 s. Avec un temps final de 200 s et Fo = 0,8 (Δt = 2 s), FTCS devient instable alors que BTCS et Crank–Nicolson restent précis.</p>
+      <p class="repere"><b>Repère :</b> la barre a une longueur fixe L = 1 m ; le curseur Fo règle Δt = Fo h²/α. Avec α = 10⁻⁵ m²/s, h = 5 mm et Fo = 0,4, on a Δt = 1 s. Après un pas FTCS, la température au centre vaut 0,999901306, contre 0,999901309 pour la solution exacte. La condition générale de stabilité FTCS est Fo ≤ 1/2. Avec Fo = 0,8, elle n’est pas satisfaite ; toutefois, le profil initial ne contient qu’un mode sinusoïdal, qui peut rester régulier : ce seul essai ne suffit donc pas à montrer l’instabilité. BTCS et Crank–Nicolson sont stables pour ces pas, sans garantir pour autant une précision suffisante.</p>
     </div>
     <div>
       <div class="msg" id="c-msg" aria-live="polite"></div>
@@ -561,7 +561,7 @@
 <script src="calc.js?v=20261106-157a"></script>
 <script src="equations.js?v=20261105-135a"></script>
 <script src="situations.js?v=20261107-186a"></script>
-<script src="guide.js?v=20261105-135a"></script>
-<script src="app.js?v=20261107-190a"></script>
+<script src="guide.js?v=20261107-194a"></script>
+<script src="app.js?v=20261107-194a"></script>
 </body>
 </html>
