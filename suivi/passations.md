@@ -752,3 +752,6 @@ Codex prend le miroir après contrôle du verrou précédent (clôture 193, LIBR
 
 #### Clôture tâche miroir 196 — audit polluant/batterie — 2026-11-07 14:51 Europe/Paris (UTC+01:00)
 Corrections source recopiées à l'identique dans le miroir : accueil des deux missions, formulation FTCS, résidu relatif, schéma 1D du Péclet, convention de flux, pentes observées, repères EDP repliés, nombre de Biot avec L=1 m. Cinq empreintes source/miroir concordent ; tests de calcul et syntaxe JS passés. Contrôle de navigateur non réalisé. Aucun nouveau média ajouté. Publication Pages à vérifier après commit.
+
+### Clôture tâche miroir 196 — publication vérifiée — 2026-11-07 14:54:30 Europe/Paris (UTC+01:00)
+Commit miroir `fed0523a7b319c47b5e75b7af6d36d9de12bb711`, poussé et vérifié sur origin/main. GitHub Pages run `42379026187` est terminé avec succès ; page, app.js et equations.js renvoient HTTP 200 et la page servie contient les deux cartes de mission, le champ Biot et le graphe de résidu relatif. Le contrôle visuel navigateur demeure à faire. Aucun verrou miroir restant.
