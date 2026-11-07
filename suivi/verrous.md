@@ -122,3 +122,5 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Tâche miroir 183 — mftn/calculateurs/situations.js | ACTIF — Codex | 2026-11-07 11:34:00 +01:00 — relier chaque explication au cas effectivement étudié et justifier les simplifications |
 
 | Clôture tâche miroir 183 — mftn/calculateurs/situations.js | LIBRE — Codex | 2026-11-07 11:35 +01:00 — contenu publié ; Pages run 42364547644 réussi ; HTTP 200 vérifié |
+
+| Tâche miroir 184 — mftn/calculateurs/index.html et suivi/{decisions,passations,verrous}.md | ACTIF — Codex | 2026-11-07 12:00:13 +01:00 — lien de retour vers le site général public |

@@ -384,3 +384,9 @@ Commit `f15a20f822fe82af118631d1d44b8513327d4c2b` présent sur `origin/main`. Gi
 - **Décision** : décrire pour chaque calculateur le cas modélisé, ses simplifications et le but pédagogique de celles-ci ; distinguer schéma de contexte physique et banc numérique quand ils diffèrent.
 - **Preuve** : instruction utilisateur et capture du nœud Jacobi/Gauss–Seidel ; fiches S1–S4 et fichiers `mftn/calculateurs/situations.js`.
 - **Responsable** : Codex.
+
+### Tâche miroir 184 — 2026-11-07 12:00:13 +01:00 — Lien de retour vers l’accueil général
+- **Instruction utilisateur** : « il manque peut-être le retour au site général public » (capture du calculateur MFTN).
+- **Prise FIFO** : Codex réserve la tâche 184, limitée au miroir public.
+- **Décision** : ajouter dans l’en-tête un lien distinct vers https://achatkm-glitch.github.io/cours-publics/ ; conserver le QR code et le lien vers le calculateur.
+- **Périmètre** : mftn/calculateurs/index.html et registres de suivi ; aucun autre fichier du site.
