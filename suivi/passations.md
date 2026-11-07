@@ -649,4 +649,6 @@ Commit `f15a20f822fe82af118631d1d44b8513327d4c2b` confirmé sur `origin/main`. G
 État : terminé. Fiches S1–S4 lues en lecture seule. Changements réservés aux mises en situation et à l’introduction du site source MFTN puis du miroir mftn/calculateurs. Écarts corrigés : distinction entre barre S1 sans source et exercices S1-X5/X6 avec production ; description Jacobi/Gauss–Seidel explicitement présentée comme système simplifié ; retrait du mode d’emploi redondant. Alignements S2 à S4 vérifiés. Aucun changement aux paramètres ou aux fiches.
 
 ### Clôture tâche 180 — 2026-11-07 11:08:52 Europe/Paris (UTC+01:00) — Codex
-`node --check` passe sur `situations.js` ; empreinte du fichier identique entre la source MFTN et le miroir. `git diff --check` est propre sur les changements de contenu. Audit éditorial statique terminé ; rendu visuel navigateur non inspecté. Le miroir est prêt à être synchronisé et sa publication sera vérifiée après le push.
+`node --check` passe sur `situations.js` ; empreinte du fichier identique entre la source MFTN et le miroir. `git diff --check` est propre sur les changements de contenu. Audit éditorial statique terminé ; rendu visuel navigateur non inspecté.
+
+Addendum publication : commit `f1a3c1e4e5ab347a42733a0e2462bdb89c6c81ac` poussé sur `main` ; GitHub Pages run `42362919175` réussi. Page et script publics HTTP 200, avec les textes mis à jour servis.
