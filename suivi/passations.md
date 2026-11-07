@@ -755,3 +755,6 @@ Corrections source recopiées à l'identique dans le miroir : accueil des deux m
 
 ### Clôture tâche miroir 196 — publication vérifiée — 2026-11-07 14:54:30 Europe/Paris (UTC+01:00)
 Commit miroir `fed0523a7b319c47b5e75b7af6d36d9de12bb711`, poussé et vérifié sur origin/main. GitHub Pages run `42379026187` est terminé avec succès ; page, app.js et equations.js renvoient HTTP 200 et la page servie contient les deux cartes de mission, le champ Biot et le graphe de résidu relatif. Le contrôle visuel navigateur demeure à faire. Aucun verrou miroir restant.
+
+#### Tâche miroir 198 — calculateur chaleur, Fo comme curseur principal — 2026-11-07 14:57:44 Europe/Paris (UTC+01:00)
+Le miroir public est libre depuis la clôture de la tâche 196, publication Pages réussie. Réserver le calculateur chaleur pour synchroniser la suppression du curseur de diffusivité et garder Δt calculé à partir de Fo ; conserver les valeurs de comparaison Fo. Source maître : Peda_inv/site.

@@ -160,3 +160,4 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Tâche miroir 196 — mftn/calculateurs/{index.html,app.js,calc.js,equations.js,guide.js,situations.js} et registres | ACTIF — audit et corrections source miroir | Codex | 2026-11-07 14:37:19 +01:00 |
 | Clôture tâche miroir 196 — mftn/calculateurs/{index.html,app.js,calc.js,equations.js,guide.js,situations.js} et registres | LIBRE — code synchronisé localement, publication Pages en attente | Codex | 2026-11-07 14:51 Europe/Paris (UTC+01:00) |
 | Addendum clôture tâche miroir 196 — mftn/calculateurs et registres | LIBRE — fed0523 poussé ; Pages run 42379026187 réussi ; HTTP 200 vérifié | Codex | 2026-11-07 14:54:30 Europe/Paris (UTC+01:00) |
+| Tâche miroir 198 — mftn/calculateurs/{index.html,app.js,guide.js,style.css} et registres | ACTIF — refléter le curseur Fo seul, puis publier | Codex | 2026-11-07 14:57:44 Europe/Paris (UTC+01:00) |

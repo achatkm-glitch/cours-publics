@@ -708,7 +708,7 @@
 
   /* ---------- Chapitre 3 : chaleur 1D, comparaison de schémas et de pas de temps ---------- */
   function runChaleur() {
-    const c = pal(), alpha = num('c-alpha'), L = num('c-L'), h = num('c-h'), tf = num('c-tf');
+    const c = pal(), alpha = 1e-5, L = num('c-L'), h = num('c-h'), tf = num('c-tf');
     const dts = vals('c-Fo').filter(v => v > 0).map(F => F * h * h / alpha), schemes = checked('c-s');   // Fo est la variable ; Δt = Fo h²/α
     if (!dts.length || !schemes.length) return;
     const run = (s, dt) => { const steps = Math.max(1, Math.round(tf / dt)); return Calc.chaleur({ alpha, L, h, dt: tf / steps, steps, scheme: s }); };
