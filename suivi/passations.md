@@ -655,3 +655,5 @@ Addendum publication : commit `f1a3c1e4e5ab347a42733a0e2462bdb89c6c81ac` poussé
 
 ### 2026-11-07 11:34 +01:00 — Tâche 183 : situations reliées aux modèles étudiés
 Le texte de situation a été relié aux modèles effectivement calculés et les simplifications sont justifiées : transport 1D à coefficients constants, paroi de S2, système tridiagonal de Jacobi/Gauss–Seidel, refroidissement de référence en S3, et banc périodique d’advection. L’onglet « Ordre » distingue maintenant le dessin de paroi du profil analytique test sin(x) utilisé par le calculateur. Copie synchronisée depuis la source MFTN ; syntaxe JavaScript vérifiée ; déploiement à faire.
+
+Clôture tâche miroir 183 — 2026-11-07 11:35 Europe/Paris (UTC+01:00) — Codex. Commit de contenu `8773a867427836e31a19bd7cfcdd1bfe4fa2c9e9` poussé sur `main` ; Pages run `42364547644` réussi. Le script public répond HTTP 200 et contient les descriptions mises à jour (système de paroi S2, profil-test sin(x), cas de chaleur S3, banc périodique). Les fichiers source et miroir ont la même empreinte. Verrou libéré.
