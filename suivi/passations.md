@@ -820,3 +820,6 @@ Fiche étudiante S1 13 p. publiée en miroir, SHA-256 2DD7B7C31A83F63D10A21C74B2
 - **Contrôlé** : dépôt main propre, aucun verrou sur le PDF S1 ; copie maître à 13 pages, SHA-256 299C051D6730A0FEA09A12E8A2AF8040FDD9C48CF4B585A56A0CC322B46A6CDF.
 - **Limites** : commit, déploiement GitHub Pages et contrôle du PDF servi à effectuer.
 - **Prochaine étape** : remplacer le PDF, vérifier l’identité, publier et libérer le verrou.
+
+### Clôture tâche miroir 208 — 2026-11-08 20:50:20 +01:00 — Codex
+Le PDF public S1 a été remplacé, publié et vérifié. Commit `7b4d4d2cc1ef62030c570fc56051cc8a911c9dbd`, branche `main` confirmée sur origin. GitHub Pages run `42516911902` terminé avec succès. L’URL publique répond HTTP 200, type application/pdf, 1 411 563 octets ; empreinte SHA-256 `299C051D6730A0FEA09A12E8A2AF8040FDD9C48CF4B585A56A0CC322B46A6CDF`, identique au PDF canonique de 13 pages. Verrou libéré.

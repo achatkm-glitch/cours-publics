@@ -201,3 +201,5 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Clôture repères S1 — mftn/seance1_chapitre1.pdf | LIBRE — commit b5c53bb, Pages 42504713837 réussi ; PDF public 13 p., SHA-256 CCA57F51BABC05566DFD1E0EA1FB9FF54D4DCF1FF9379108F85E1F9BC8191860 identique à la fiche | Codex | 2026-11-08 18:24:37 Europe/Paris (UTC+01:00) |
 
 | mftn/seance1_chapitre1.pdf et registres — tâche miroir 208 | ACTIF — Codex | 2026-11-08 20:47:41 +01:00 |
+
+| mftn/seance1_chapitre1.pdf et registres — tâche miroir 208 | LIBRE — commit 7b4d4d2 confirmé, Pages run 42516911902 réussi, PDF servi SHA identique | Codex | 2026-11-08 20:50:20 +01:00 |
