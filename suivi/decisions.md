@@ -488,3 +488,7 @@ Reçu par : Codex. Instruction utilisateur : ajouter date et heure de la version
 ### Correction S1 et site — 2026-11-08 18:04:46 Europe/Paris (UTC+01:00)
 Reçu par Codex : corriger les deux audits, alléger la fiche S1 et examiner les mentions légales. Premier lot : PDF étudiant S1 et erreurs de tracé du calculateur ; les mentions légales requièrent une qualification éditoriale et des coordonnées d'hébergeur vérifiées.
 
+
+### Suite corrections AUD-2026-030 — 2026-11-08 18:11:53 Europe/Paris (UTC+01:00)
+Reçu par Codex : livrable S1 et site actualisé ; corriger F02/F03. Prise FIFO : mettre à jour le PDF étudiant S1 et guide.js sur le miroir public, sans toucher app.js réservé à un autre agent Codex dans MFTN.
+

@@ -806,3 +806,11 @@ Miroir public du PDF S1 et de app.js ; version du script dans index.html ; contr
 ### Clôture correction S1/site — 2026-11-08 18:06:52 Europe/Paris (UTC+01:00) — Codex
 PDF étudiant S1 remplacé par la fiche contrôlée de 13 pages, SHA-256 9043CCAD3E6E072EB3656DC9CC20F9BA4E429E3A02DA9A3B2D04CB3989410E6F. app.js : pente restaurée avec ses abscisses et graduations protégées contre une boucle infinie ; tests JS syntaxiques et quatre cas d'axes passés. Source et miroir identiques par empreinte. Contrôle visuel navigateur local refusé par la politique du navigateur pour les URLs file: ; pas de contournement. Mention légale : examen en cours, aucune adresse personnelle ajoutée. Prochaine action : vérifier Pages puis traiter les autres constats.
 
+
+### Suite S1 F02/F03 — 2026-11-08 18:11:53 Europe/Paris (UTC+01:00) — Codex
+Réservation du PDF étudiant, de guide.js et du lien de cache dans index.html ; app.js hors périmètre, agent site en cours côté MFTN. PDF S1 vérifié 13 pages, nouvelle empreinte 2DD7B7C31A83F63D10A21C74B22AD6663941424D0ADA4797254E40E23A9BB318.
+
+
+### Livraison suite S1 F02/F03 — 2026-11-08 18:12:22 Europe/Paris (UTC+01:00) — Codex
+Fiche étudiante S1 13 p. publiée en miroir, SHA-256 2DD7B7C31A83F63D10A21C74B22AD6663941424D0ADA4797254E40E23A9BB318. Guide S1-X6 règle explicitement l'intensité cosinus 1 et distingue le calcul uniforme. La source S1 et le corrigé ont été compilés deux fois sans erreur ni débordement ; page 14 corrigé inspectée. Publication Pages à contrôler après push.
+

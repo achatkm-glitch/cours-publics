@@ -240,7 +240,8 @@ window.GUIDE = {
             "b-T0": "300",
             "b-TL": "400",
             "b-lambda": "1",
-            "b-q": "100"
+            "b-q": "100",
+            "b-stretch": "1"
           },
           "checks": {
             "b-s": [
@@ -249,9 +250,9 @@ window.GUIDE = {
             ],
             "b-mesh": ["uniforme", "nonuniforme"]
           },
-          "consigne": "Comparez les différences finies (cercles) et les volumes finis (carrés) sur maillages uniforme et non uniforme, pour N = 4 et 8. Lisez les erreurs et les bilans de flux.",
+          "consigne": "Comparez les différences finies (cercles) et les volumes finis (carrés) sur maillages uniforme et non uniforme, pour N = 4 et 8 ; pour le second, réglez l'intensité cosinus à 1. Lisez les erreurs maximales et les bilans de flux.",
           "question": "Les volumes finis sont-ils exacts ici ? Comment leur erreur évolue-t-elle quand N double ? Que valent les bilans de flux des deux schémas ? Où sont les inconnues de chaque schéma et comment le flux est-il approché aux frontières ? L'écart tient-il seulement à « DF contre VF » ? Distinguez conservation (bilan de flux) et précision ponctuelle (erreur sur T).",
-          "main": "Avec q = 100 W/m³, λ = 1 W/(m·K) et L = 1 m, calculez q h²/(8λ) pour N = 4, 8, 16 (h = L/N) et prévoyez comment cette quantité évolue quand N double."
+          "main": "Sur maillage uniforme, avec q = 100 W/m³, λ = 1 W/(m·K) et L = 1 m, calculez q h²/(8λ) pour N = 4, 8, 16 (h = L/N) et prévoyez comment cette quantité évolue quand N double."
         }
       ]
     },
