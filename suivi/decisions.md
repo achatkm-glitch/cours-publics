@@ -467,3 +467,8 @@ Curseur f remplacé par une valeur fixe 1 dans la source et le miroir. Site publ
 Miroir responsive synchronisé. Trois libellés mathématiques avec <sub> regroupés ; en-tête et carte téléphone adaptés aux petites largeurs. Capture locale à 390 × 844 inspectée ; label Biot vérifié dans sa structure HTML, car masqué avant sélection Fourier. SHA-256 identiques : index 58CC07438D8294DC5867689F71420F809EC7F1E347BE404D0BD84614ECBC706F, style 95FC5B2D95FEC81801B6A14038860CCFE9DD818627010936386402BD2AD2FF05. Publication à confirmer après commit.
 ### Addendum de publication — tâche miroir 202 — 2026-11-07 18:59:08 +01:00
 Commit 18f03495d71258ae41d12835bd5439e090cf71ea poussé et confirmé sur origin/main. GitHub Pages 42398858961 terminé avec succès. Vérification de la page et de style.css en HTTP 200 ; la version servie contient les libellés regroupés et les règles responsive. Source MFTN : commit 630cb473e1f7a994b3340526524361f86d19c140.
+
+| 99 | 2026-11-08 12:43:16 +01:00 | Utilisateur | Les animations du calculateur doivent se lancer sans clic et tourner en boucle, avec contrôle de pause. | Codex — prise FIFO | Miroir de la tâche MFTN 201 : advection et diffusion/onde démarrent en entrant sur leur onglet ; respecter la préférence de mouvement réduit et suspendre hors écran. | mftn/calculateurs/app.js ; registres |
+
+### Clôture demande utilisateur 99 / tâche 201 — 2026-11-08 14:53:19 +01:00 Europe/Paris
+Les deux démonstrations animées sont publiées en boucle avec pause/reprise. Source MFTN fa0b4d1 et miroir public 62f2f29 ; Pages run 42486651975 réussi. Contrôles détaillés dans suivi/passations.md. Tâche terminée.

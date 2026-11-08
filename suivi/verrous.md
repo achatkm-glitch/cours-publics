@@ -171,3 +171,7 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Tâche miroir 202 — mftn/calculateurs/{index.html,style.css} et registres | ACTIF — corriger et contrôler les ruptures de libellés mobile/tablette | Codex | 2026-11-07 18:44:28 +01:00 |
 | Clôture tâche miroir 202 — mftn/calculateurs/index.html et style.css | LIBRE — correction responsive vérifiée localement ; publication à confirmer | Codex | 2026-11-07 18:55:46 +01:00 |
 | Addendum clôture tâche miroir 202 — mftn/calculateurs et suivi | LIBRE — commit 18f0349 confirmé ; Pages run 42398858961 réussi ; ressources HTTP 200 | Codex | 2026-11-07 18:59:08 +01:00 |
+| Tâche miroir 203 — mftn/calculateurs/app.js et suivi | ACTIF — synchroniser et publier l’autoplay en boucle des animations | Codex | 2026-11-08 12:43:16 +01:00 |
+| Extension tâche miroir 203 — mftn/calculateurs/index.html (version du script) | ACTIF — synchronisation et cache busting | Codex | 2026-11-08 12:46:11 +01:00 |
+
+| Clôture tâche miroir 203 — calculateurs MFTN app.js/index.html | LIBRE — commits source fa0b4d1 et miroir 62f2f29 confirmés ; Pages run 42486651975 réussi ; animation publique contrôlée | Codex | 2026-11-08 14:53:19 +01:00 Europe/Paris (UTC+01:00) |
