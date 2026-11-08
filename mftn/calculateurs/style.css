@@ -2,13 +2,13 @@
   color-scheme: light;
   --bg: #f4f6f8; --card: #ffffff; --ink: #0d2236; --muted: #5a6e7d; --line: #dde4e8;
   --blue: #0a6b70; --blue-soft: #e8f5f5; --orange: #a86b00; --green: #08735b; --red: #b3261e;
-  --plot-grid: #e4e9ef; --plot-axis: #0d2236; --c5: #7b3fa0; --c6: #8a6d00; --c7: #c23b68; --c8: #5b6b7d;
+  --plot-grid: #e4e9ef; --plot-axis: #0d2236; --c5: #7b3fa0; --c6: #8a6d00; --c7: #c23b68; --c8: #5b6b7d; --c9: #874b1f; --c10: #2456a5;
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #12181f; --card: #1a232d; --ink: #e6edf4; --muted: #9fb0c0; --line: #2b3946;
   --blue: #79cfc9; --blue-soft: #1c3035; --orange: #efb84b; --green: #55c79a; --red: #ff8a80;
-  --plot-grid: #2b3946; --plot-axis: #e6edf4; --c5: #c59bf0; --c6: #e8d44d; --c7: #ff8fd0; --c8: #9aa7b4;
+  --plot-grid: #2b3946; --plot-axis: #e6edf4; --c5: #c59bf0; --c6: #e8d44d; --c7: #ff8fd0; --c8: #9aa7b4; --c9: #e69a6b; --c10: #86a8ff;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, "Segoe UI", Roboto, sans-serif; }

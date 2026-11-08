@@ -191,3 +191,5 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Suite S1 F02/F03 — mftn/seance1_chapitre1.pdf, mftn/calculateurs/{guide.js,index.html} | ACTIF — mise à jour PDF et préréglage | Codex pilote | 2026-11-08 18:11:53 Europe/Paris (UTC+01:00) |
 
 | Clôture suite S1 F02/F03 — PDF S1, guide.js, index.html | LIBRE — miroir prêt et contrôle Pages à suivre | Codex pilote | 2026-11-08 18:12:22 Europe/Paris (UTC+01:00) |
+
+| Correction site AUD-2026-031 — mftn/calculateurs/{app.js,index.html,style.css} | ACTIF — publication des corrections contrôlées | Codex | 2026-11-08 18:16:38 Europe/Paris (UTC+01:00) |

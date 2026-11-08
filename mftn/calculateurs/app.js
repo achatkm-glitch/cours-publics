@@ -111,7 +111,7 @@
     const n = parseInt(m[1], 16), mix = v => Math.round(v + (255 - v) * f);
     return 'rgb(' + mix((n >> 16) & 255) + ',' + mix((n >> 8) & 255) + ',' + mix(n & 255) + ')';
   };
-  const pal = () => ['--blue', '--orange', '--green', '--red', '--c5', '--c6', '--c7', '--c8'].map(css);   // huit couleurs bien séparées : jamais deux courbes de même couleur sur un graphique
+  const pal = () => ['--blue', '--orange', '--green', '--red', '--c5', '--c6', '--c7', '--c8', '--c9', '--c10'].map(css);
   const SCHEME = { ftcs: 'FTCS (explicite)', btcs: 'BTCS (implicite)', cn: 'Crank–Nicolson (θ = 1/2)', df: 'Dufort–Frankel (explicite)', ri: 'Richardson (explicite)', amont: 'Amont (explicite)', lxf: 'Lax–Friedrichs (explicite)', lw: 'Lax–Wendroff (explicite)', bw: 'Beam–Warming (explicite)', cimp: 'Centré implicite', jacobi: 'Jacobi', gs: 'Gauss–Seidel' };
 
   /* ---------- tracé : cadre d'axes carré, axes linéaires ou logarithmiques ---------- */
@@ -579,14 +579,13 @@
 
   /* ---------- Chapitre 1 : Péclet, convection-diffusion en volumes finis ---------- */
   function runPeclet() {
-    const c = pal(), PeL = num('e-PeL'), schemes = checked('e-s'), Ns = vals('e-N').map(Math.round).filter(v => v >= 4 && v <= 400).slice(0, 4);
+    const c = pal(), PeL = num('e-PeL'), schemes = checked('e-s'), Ns = vals('e-N').map(Math.round).filter(v => v >= 4 && v <= 400).slice(0, 5);
     if (!schemes.length || !Ns.length) return;
     const xf = Calc.linspace(0, 1, 400), exf = xf.map(x => (Math.exp(PeL * (x - 1)) - Math.exp(-PeL)) / (1 - Math.exp(-PeL)));
     const S1 = [{ x: xf, y: exf, color: css('--plot-axis'), dash: [6, 4], label: 'solution analytique' }], S2 = [], items = [], rec = [];
     const names = { centre: 'Centré', amont: 'Amont' };
-    let kc = 0;
-    Ns.forEach((N, i) => schemes.forEach(s => {
-      const r = Calc.peclet({ N, PeL, scheme: s }), col = c[kc++ % 8];
+    Ns.forEach((N, i) => schemes.forEach((s, j) => {
+      const r = Calc.peclet({ N, PeL, scheme: s }), col = c[i * schemes.length + j];
       const sty = s === 'centre' ? { points: true } : { points: true, marker: 'square', dash: [3, 3], width: 1.6 };
       S1.push(Object.assign({ x: r.x, y: r.phi, color: col, label: `${names[s]}, N = ${N}` }, sty));
       S2.push(Object.assign({ x: r.x, y: r.err, color: col, label: `${names[s]}, N = ${N}` }, sty));
@@ -595,14 +594,14 @@
     }));
     const bad = schemes.includes('centre') && Ns.some(N => PeL / N > 2);
     $('e-msg').className = bad ? 'msg warn' : 'msg';
-    $('e-msg').textContent = 'Courant a > 0 : Pe_L signé = aL/D > 0. Cercles : centré ; carrés : amont ; une couleur par courbe (quatre maillages au plus). ' +
+    $('e-msg').textContent = 'Courant a > 0 : Pe_L signé = aL/D > 0. Cercles : centré ; carrés : amont ; une couleur par courbe (cinq maillages au plus). ' +
       (bad ? 'Pe_h signé > 2 : le coefficient du voisin aval du schéma centré devient négatif, les oscillations sont possibles.' : 'Pe_h signé ≤ 2 : les coefficients du schéma centré restent positifs.');
     draw('e-plot', 'e-leg', S1, { xlabel: 'x', ylabel: 'φ', title: 'Solution' });
     draw('e-plot2', 'e-leg2', S2, { xlabel: 'x', ylabel: 'erreur', title: 'Erreur / solution analytique' });
     cards($('e-table'), items);
     gauge($('e-gauge'), { min: 0.1, max: 100, title: `Péclet de maille signé Pe_h = Pe_L/N = ${Ns.map(N => fmt(PeL / N, 3)).join(' ; ')}`,
       zones: [{ from: 0.1, to: 2, color: 'color-mix(in srgb, var(--green) 35%, transparent)', label: 'Pe_h ≤ 2 : centré monotone' }, { from: 2, to: 100, color: 'color-mix(in srgb, var(--orange) 35%, transparent)', label: 'Pe_h > 2 : oscillations possibles' }],
-      marks: Ns.map((N, i) => ({ v: PeL / N, color: c[(schemes.length * i) % 8], label: `N = ${N}` })), text: 'Les repères indiquent Pe_h de chaque maillage ; la limite 2 sépare coefficients positifs et négatifs du schéma centré.' });
+      marks: Ns.map((N, i) => ({ v: PeL / N, color: c[i * schemes.length], label: `N = ${N}` })), text: 'Les repères indiquent Pe_h de chaque maillage ; la limite 2 sépare coefficients positifs et négatifs du schéma centré.' });
     const cen = rec.filter(o => o.s === 'centre'), amo = rec.filter(o => o.s === 'amont'), lst = arr => arr.map(o => o.N).join(', ');
     const L = [`Pe_L signé = ${fmt(PeL, 3)} : la solution exacte a une couche limite près de x = L.`];
     if (cen.length) { const os = cen.filter(o => o.osc), mo = cen.filter(o => !o.osc); L.push(`Centré : ${os.length ? 'oscille pour N = ' + lst(os) + ' (Pe_h > 2 : un coefficient devient négatif)' : ''}${os.length && mo.length ? ' ; ' : ''}${mo.length ? 'monotone pour N = ' + lst(mo) + ' (Pe_h ≤ 2)' : ''}.`); }
@@ -747,9 +746,11 @@
     draw('c-plot2', 'c-leg2', S2, { logx: true, logy: true, showSlope: true, showSlopeInPlot: true, xlabel: 'Δt (s)', ylabel: 'erreur maximale', title: 'Erreur selon Δt' });
     const Fo0 = dts[0] * alpha / (h * h), N0 = Math.max(2, Math.round(L / h));
     const refNs = [Math.floor(N0 / 2), N0, 2 * N0].filter((N, k) => N >= 4 && (k < 2 || N * Math.max(1, Math.round(tf / (Fo0 * (L / N) * (L / N) / alpha))) <= 3e6));
-    const refS = schemes.map((s, i) => { const pts = refNs.map(N => { const hk = L / N, steps = Math.max(1, Math.round(tf / (Fo0 * hk * hk / alpha))); return { hk, err: Calc.chaleur({ alpha, L, h: hk, dt: tf / steps, steps, scheme: s }).maxErr }; }); return { x: pts.map(p => p.hk), y: pts.map(p => p.err), color: c[i], points: true, label: SCHEME[s] }; });
-    draw('c-refine', 'c-refine-leg', refS, { logx: true, logy: true, showSlope: true, showSlopeInPlot: true, xlabel: 'h (m)', ylabel: 'erreur maximale', title: `Raffinement à Fo = ${fmt(Fo0, 3)}, t = ${fmt(tf, 3)} s` });
+    const refPath = refNs.map(N => { const hk = L / N, steps = Math.max(1, Math.round(tf / (Fo0 * hk * hk / alpha))); return { N, hk, steps, Fo: alpha * (tf / steps) / (hk * hk) }; });
+    const refS = schemes.map((s, i) => { const pts = refPath.map(p => ({ hk: p.hk, err: Calc.chaleur({ alpha, L, h: p.hk, dt: tf / p.steps, steps: p.steps, scheme: s }).maxErr })); return { x: pts.map(p => p.hk), y: pts.map(p => p.err), color: c[i], points: true, label: SCHEME[s] }; });
+    draw('c-refine', 'c-refine-leg', refS, { logx: true, logy: true, showSlope: true, showSlopeInPlot: true, xlabel: 'h (m)', ylabel: 'erreur maximale', title: `Raffinement : Fo cible = ${fmt(Fo0, 3)}, t = ${fmt(tf, 3)} s` });
     const Lx = [];
+    Lx.push(`Raffinement : Fo cible = ${fmt(Fo0, 4)} ; valeurs effectives à temps final commun t = ${fmt(tf, 4)} s : ${refPath.map(p => `N = ${p.N}, ${p.steps} pas, Fo = ${fmt(p.Fo, 6)}`).join(' ; ')}. L’arrondi du nombre de pas ne garantit pas Fo constant ; la pente suit ce chemin effectif.`);
     schemes.forEach(s => { const pr = rows.filter(o => o.s === s).sort((p, q) => q.dt - p.dt), o0 = pr[0];
       const st = s === 'ftcs' ? (o0.r.stable ? `Fo = ${fmt(o0.r.Fo, 3)} ≤ 1/2 : critère général respecté` : `Fo = ${fmt(o0.r.Fo, 3)} > 1/2 : critère général non respecté ; des modes peuvent être amplifiés`) : (s === 'ri' ? `critère général non respecté pour tout Fo (Fo = ${fmt(o0.r.Fo, 3)}) ; des modes peuvent être amplifiés` : (s === 'df' ? `erreur bornée dans ce calcul (Fo = ${fmt(o0.r.Fo, 3)})` : `inconditionnellement stable (Fo = ${fmt(o0.r.Fo, 3)})`));
       const p = pr.length > 1 && pr[0].r.stable && pr[1].r.stable ? ` ; entre Δt = ${fmt(pr[0].dt, 3)} et ${fmt(pr[1].dt, 3)}, pente de l’erreur ${fmt(ord2(pr[0].r.maxErr, pr[1].r.maxErr, pr[0].dt / pr[1].dt), 3)} (inclut aussi l’erreur spatiale)` : '';
@@ -845,21 +846,22 @@
     modalPhase.push({ x: theta, y: theta.map(() => 0), color: css('--plot-axis'), dash: [5, 4], label: 'phase exacte' });
     draw('a-modal-phase', 'a-modal-phase-leg', modalPhase, { xlabel: 'nombre d’onde φ', ylabel: 'erreur de phase (rad/pas)', ylim: [-Math.PI, Math.PI], title: 'Erreur de phase modulo 2π' });
     const Nbase = Math.min(500, Nxs[0]), convNs = [Nbase, 2 * Nbase, 4 * Nbase];
+    // Un seul arrondi sur le maillage de base : les pas doublent ensuite avec Nx.
+    const convSteps = Math.max(1, Math.ceil(tf / (Co * (10 / Nbase) / Math.abs(a))));
+    const convCo = Math.abs(a) * tf / (convSteps * (10 / Nbase));
     const conv = schemes.map((s, i) => {
       const rows = convNs.map(Nx => {
-        const h = 10 / Nx, steps = Math.max(1, Math.round(tf / (Co * h / Math.abs(a))));
-        const CoFinal = Math.abs(a) * tf / (steps * h);
-        const r = Calc.advection({ scheme: s, a, Nx, Co: CoFinal, tf });
-        return { Nx, h, err: r.maxErr, t: r.t };
+        const r = Calc.advection({ scheme: s, a, Nx, Co: convCo, tf });
+        return { Nx, h: r.h, err: r.maxErr, t: r.t, steps: r.steps, Co: Math.abs(r.C) };
       });
       const observed = rows.slice(1).map((r, j) => Math.log(rows[j].err / r.err) / Math.log(rows[j].h / r.h));
       return { s, i, rows, observed };
     });
     draw('a-conv', 'a-conv-leg', conv.map(o => ({ x: o.rows.map(r => r.h), y: o.rows.map(r => r.err), color: c[o.i], points: true, label: SCHEME[o.s] })),
-      { logx: true, logy: true, showSlope: true, xlabel: 'h = 10/Nx (m)', ylabel: 'erreur maximale', title: `Erreur au temps t = ${fmt(tf, 3)} s` });
+      { logx: true, logy: true, showSlope: true, xlabel: 'h = 10/Nx (m)', ylabel: 'erreur maximale', title: `Erreur à t = ${fmt(tf, 3)} s, Co effectif = ${fmt(convCo, 4)} (cible ${fmt(Co, 4)})` });
     const items = [];
     schemes.forEach((s, i) => Nxs.forEach(Nx => { const r = run(s, Nx); items.push({ color: c[i], title: `${SCHEME[s]} · Nx = ${Nx}`, lines: [`max <b>${fmt(r.max, 3)}</b> · min <b>${fmt(r.min, 3)}</b>`, `erreur maximale = <b>${fmt(r.maxErr, 3)}</b>`] }); }));
-    conv.forEach(o => items.push({ color: c[o.i], title: `${SCHEME[o.s]} · erreur au raffinement`, lines: [`Nx = ${o.rows.map(r => r.Nx).join(' ; ')}`, `ordres observés : ${o.observed.map(v => `<b>${fmt(v, 3)}</b>`).join(' ; ')}`, `temps finaux vérifiés : ${o.rows.map(r => fmt(r.t, 6)).join(' ; ')} s`] }));
+    conv.forEach(o => items.push({ color: c[o.i], title: `${SCHEME[o.s]} · erreur au raffinement`, lines: [`Nx = ${o.rows.map(r => r.Nx).join(' ; ')}`, `nombres de pas : ${o.rows.map(r => r.steps).join(' ; ')}`, `Co effectifs : ${o.rows.map(r => fmt(r.Co, 6)).join(' ; ')} (cible ${fmt(Co, 4)})`, `ordres observés : ${o.observed.map(v => `<b>${fmt(v, 3)}</b>`).join(' ; ')}`, `temps finaux vérifiés : ${o.rows.map(r => fmt(r.t, 6)).join(' ; ')} s`] }));
     cards($('a-table'), items);
     const hMod = r0.h, dtMod = r0.dt, ca = Math.sign(a) * Co, eq = [];
     if (schemes.includes('ftcs')) {
@@ -1276,6 +1278,7 @@
   /* ---------- Guide : notions, compétences, explorations avec réglages prêts à l'emploi ---------- */
   function applyPreset(tab, idx) {
     const e = window.GUIDE.tabs[tab].explorations[idx];
+    if (tab === 'edpb') { stopEdpbAnimation(''); edpbUserPaused = true; }
     Object.keys(e.reglages || {}).forEach(id => { const el = $(id); if (el) el.value = e.reglages[id]; });
     if (e.reglages && e.reglages['t-D'] && $('t-Pe')) {   // le curseur de Péclet suit la diffusivité imposée
       const D = Number(e.reglages['t-D']), speed = Math.abs(num('t-a')), sigma0 = num('t-s0');
@@ -1283,6 +1286,10 @@
     }
     Object.keys(e.checks || {}).forEach(name => document.querySelectorAll('input[name="' + name + '"]').forEach(cb => { cb.checked = e.checks[name].indexOf(cb.value) >= 0; }));
     syncSliders(); safe(current);
+    if (tab === 'edpb' && checked('k-type')[0] !== 'elliptique') {
+      const slider = $(checked('k-type')[0] === 'hyperbolique' ? 'k-th' : 'k-tp');
+      pauseEdpbAnimation(`Préréglage ${e.id} : animation en pause à t = ${fmt(Number(slider.value), 2)} s. Utilisez le bouton pour la lancer.`, true);
+    }
     const m = $('p-' + tab).querySelector('.preset-note'); if (m) m.textContent = 'Réglages de ' + e.id + ' appliqués : lisez le résultat, puis répondez sur la fiche.';
     $('p-' + tab).querySelector('.grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
