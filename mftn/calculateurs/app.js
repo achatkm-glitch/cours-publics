@@ -905,10 +905,10 @@
       const v = S[tab].video ? (tab === 'transport'
         ? `<figure class="sit-video"><a class="btn alt" href="${S[tab].video.page}" target="_blank" rel="noopener">${S[tab].video.titre}</a><figcaption>${S[tab].video.legende} <a href="${S[tab].video.page}" target="_blank" rel="noopener">Source officielle UC San Diego</a>.</figcaption></figure>`
         : `<figure class="sit-video"><video controls playsinline preload="metadata" poster="${S[tab].video.poster}" aria-label="${S[tab].video.alt}"><source src="${S[tab].video.src}" type="video/mp4">Votre navigateur ne peut pas lire cette vidéo. <a href="${S[tab].video.src}">Télécharger la vidéo MP4</a>.</video><figcaption>${S[tab].video.legende}</figcaption></figure>`) : '';
-      const advAnimation = tab === 'adv' ? `<figure class="adv-animation"><div class="adv-animation-plot"><canvas id="adv-demo" aria-label="Comparaison animée du paquet transporté : solution exacte, schéma amont, Lax–Wendroff et FTCS"></canvas><div class="legend" id="adv-demo-leg" aria-label="Légende des courbes"></div></div><div class="adv-animation-controls"><button type="button" class="btn alt" id="adv-demo-play" aria-pressed="false">Animer le transport</button><span id="adv-demo-status" aria-live="polite">À t* = 0, les profils calculés coïncident avec le paquet initial.</span></div><figcaption>${S[tab].legende}</figcaption></figure>` : '';
+      const advAnimation = tab === 'adv' ? `<figure class="adv-animation"><div class="adv-animation-plot"><canvas id="adv-demo" aria-label="Comparaison animée du paquet transporté : solution exacte, schéma amont, Lax–Wendroff et FTCS"></canvas><div class="legend" id="adv-demo-leg" aria-label="Légende des courbes"></div></div><div class="adv-animation-controls"><button type="button" class="btn alt" id="adv-demo-play" aria-pressed="false">Lire l’animation</button><span id="adv-demo-status" aria-live="polite">L’animation démarre automatiquement à l’ouverture de cet onglet.</span></div><figcaption>${S[tab].legende}</figcaption></figure>` : '';
       box.innerHTML = tab === 'transport'
         ? `${ph}${v}<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}`
-        : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${tab === 'edpb' ? '<div class="sit-animation" data-kt="parabolique"><button id="k-edpb-play" class="btn alt" type="button" aria-pressed="false">Animer la diffusion</button><span id="k-edpb-play-status" aria-live="polite">Le schéma suit le temps choisi dans le curseur.</span><span class="sit-animation-key"><i></i><span>profil initial</span><b></b><span>profil à l’instant t</span></span></div>' : ''}${advAnimation}${ph}${v}`;
+        : `<div class="sit-txt"><b>Situation physique.</b> ${S[tab].texte}</div>${S[tab].svg}${tab === 'edpb' ? '<div class="sit-animation" data-kt="parabolique"><button id="k-edpb-play" class="btn alt" type="button" aria-pressed="true">Mettre en pause</button><span id="k-edpb-play-status" aria-live="polite">Lecture automatique en boucle ; mettez en pause pour examiner un instant.</span><span class="sit-animation-key"><i></i><span>profil initial</span><b></b><span>profil à l’instant t</span></span></div>' : ''}${advAnimation}${ph}${v}`;
       box.querySelectorAll('.sit-svg').forEach(svg => {
         svg.setAttribute('title', notes[tab] || 'Schéma de la situation physique associée à cet onglet.');
         svg.setAttribute('aria-label', notes[tab] || 'Schéma de la situation physique associée à cet onglet.');
@@ -987,9 +987,11 @@
       animation.hidden = type === 'elliptique';
       animation.dataset.kt = type;
       const button = $('k-edpb-play'), legend = animation.querySelector('.sit-animation-key');
-      if (button) button.textContent = edpbAnimationTimer !== null ? 'Mettre en pause'
-        : edpbAnimationTarget !== null ? 'Reprendre l’animation'
-          : type === 'hyperbolique' ? 'Animer la propagation' : 'Animer la diffusion';
+      if (button) {
+        button.textContent = edpbAnimationTimer !== null ? 'Mettre en pause'
+          : edpbAnimationTarget !== null ? 'Reprendre l’animation' : 'Lire l’animation';
+        button.setAttribute('aria-pressed', edpbAnimationTimer !== null ? 'true' : 'false');
+      }
       if (legend) {
         const labels = legend.querySelectorAll('span');
         if (type === 'hyperbolique') {
@@ -1041,7 +1043,9 @@
       if (status && edpbAnimationTimer === null && edpbAnimationTarget === null) {
         status.textContent = type === 'elliptique'
           ? 'Cas stationnaire : aucune évolution temporelle à animer.'
-          : 'Lancez l’animation pour suivre le profil et la courbe au cours du temps.';
+          : window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            ? 'Animation en pause selon la préférence de mouvement réduit ; utilisez le bouton pour la lancer.'
+            : 'La courbe évolue automatiquement en boucle ; mettez en pause pour examiner un instant.';
       }
     }
     if (changed) {
@@ -1296,8 +1300,9 @@
     });
   }
 
-  let current = 'home', edpbAnimationTimer = null, edpbAnimationTarget = null;
-  let advDemoTimer = null, advDemoTime = 0;
+  let current = 'home', edpbAnimationTimer = null, edpbAnimationTarget = null, edpbAtEnd = false, edpbUserPaused = false;
+  let advDemoTimer = null, advDemoTime = 0, advDemoUserPaused = false;
+  const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function advDemoInitial(x) {
     if (x < 0.55 || x > 0.8) return 0;
     if (x < 0.575) return 0.5 * (1 - Math.cos(Math.PI * (x - 0.55) / 0.025));
@@ -1328,62 +1333,93 @@
     if (status) status.textContent = `t* = ${fmt(t, 3)} : ${upwindNote} ${lwNote} ${ftcsNote}`;
     canvas.setAttribute('aria-label', `À t étoile ${fmt(t, 3)} : solution exacte, amont, Lax–Wendroff et FTCS ; minimum FTCS ${fmt(ftcs.min, 2)}, maximum FTCS ${fmt(ftcs.max, 2)}.`);
   }
-  function pauseAdvDemo(message) {
+  function pauseAdvDemo(message, userInitiated = false) {
     if (advDemoTimer !== null) { window.clearInterval(advDemoTimer); advDemoTimer = null; }
     const button = $('adv-demo-play'), status = $('adv-demo-status');
-    if (button) { button.textContent = advDemoTime >= 0.4 ? 'Rejouer l’animation' : 'Reprendre l’animation'; button.setAttribute('aria-pressed', 'false'); }
+    if (userInitiated) advDemoUserPaused = true;
+    if (button) { button.textContent = 'Reprendre l’animation'; button.setAttribute('aria-pressed', 'false'); }
     if (status && message) status.textContent = message;
   }
-  function startAdvDemo() {
+  function toggleAdvDemo() {
+    if (advDemoTimer !== null) pauseAdvDemo(`Animation en pause à t* = ${fmt(advDemoTime, 3)}.`, true);
+    else startAdvDemo(true);
+  }
+  function startAdvDemo(manual = false) {
     const button = $('adv-demo-play');
-    if (!button) return;
-    if (advDemoTimer !== null) { pauseAdvDemo(`Animation en pause à t* = ${fmt(advDemoTime, 3)}.`); return; }
+    if (!button || advDemoTimer !== null || current !== 'adv' || document.hidden) return;
+    if (!manual && reducedMotion()) {
+      button.textContent = 'Lire l’animation'; button.setAttribute('aria-pressed', 'false');
+      const status = $('adv-demo-status');
+      if (status) status.textContent = 'Lecture automatique désactivée par la préférence de mouvement réduit ; utilisez ce bouton pour lancer l’animation.';
+      return;
+    }
+    if (!manual && advDemoUserPaused) return;
+    if (manual) advDemoUserPaused = false;
     if (advDemoTime >= 0.4) advDemoTime = 0;
     renderAdvDemo(advDemoTime);
     button.textContent = 'Mettre en pause'; button.setAttribute('aria-pressed', 'true');
     advDemoTimer = window.setInterval(() => {
-      advDemoTime = Math.min(0.4, Math.round((advDemoTime + 0.008) * 1000) / 1000);
+      advDemoTime = advDemoTime >= 0.4 ? 0 : Math.min(0.4, Math.round((advDemoTime + 0.008) * 1000) / 1000);
       renderAdvDemo(advDemoTime);
-      if (advDemoTime >= 0.4) pauseAdvDemo('Animation terminée à t* = 0,4. Les profils calculés sont comparés à la solution exacte.');
     }, 160);
   }
   function stopEdpbAnimation(message) {
     if (edpbAnimationTimer !== null) { window.clearInterval(edpbAnimationTimer); edpbAnimationTimer = null; }
     edpbAnimationTarget = null;
+    edpbAtEnd = false;
     const button = $('k-edpb-play'), status = $('k-edpb-play-status');
-    if (button) { button.textContent = checked('k-type')[0] === 'hyperbolique' ? 'Animer la propagation' : 'Animer la diffusion'; button.setAttribute('aria-pressed', 'false'); }
+    if (button) { button.textContent = 'Lire l’animation'; button.setAttribute('aria-pressed', 'false'); }
     if (status && message) status.textContent = message;
   }
-  function startEdpbAnimation() {
+  function startEdpbAnimation(manual = false) {
     const type = checked('k-type')[0] || 'elliptique';
     const slider = $(type === 'hyperbolique' ? 'k-th' : 'k-tp'), button = $('k-edpb-play'), status = $('k-edpb-play-status');
     if (!slider || !button || !status) return;
     if (type === 'elliptique') { status.textContent = 'Cas stationnaire : aucune évolution temporelle à animer.'; return; }
-    const step = Number(slider.step) || 0.5;
     if (edpbAnimationTimer !== null) {
-      window.clearInterval(edpbAnimationTimer); edpbAnimationTimer = null;
-      button.textContent = 'Reprendre l’animation'; button.setAttribute('aria-pressed', 'false');
-      status.textContent = `Animation en pause à t = ${fmt(Number(slider.value), 2)} s.`;
+      if (manual) pauseEdpbAnimation(`Animation en pause à t = ${fmt(Number(slider.value), 2)} s.`, true);
       return;
     }
+    if (!manual && (reducedMotion() || edpbUserPaused || current !== 'edpb' || document.hidden)) return;
+    if (manual) edpbUserPaused = false;
+    const step = Number(slider.step) || 0.5;
     const target = edpbAnimationTarget ?? Number(slider.value);
-    if (target <= 0) { status.textContent = 'Choisissez un instant final supérieur à 0 s avec le curseur pour lancer l’animation.'; return; }
-    if (edpbAnimationTarget === null) { edpbAnimationTarget = target; slider.value = '0'; syncSliders(); safe('edpb'); }
+    if (target <= 0) { status.textContent = 'Choisissez un instant final positif pour lancer l’animation.'; return; }
+    edpbAnimationTarget = target;
+    if (Number(slider.value) >= target) { slider.value = '0'; edpbAtEnd = false; syncSliders(); safe('edpb'); }
     button.textContent = 'Mettre en pause'; button.setAttribute('aria-pressed', 'true');
-    status.textContent = `${type === 'hyperbolique' ? 'Propagation' : 'Diffusion'} animée : t = ${fmt(Number(slider.value), 2)} sur ${fmt(target, 2)} s.`;
+    status.textContent = `${type === 'hyperbolique' ? 'Propagation' : 'Diffusion'} en boucle : t = ${fmt(Number(slider.value), 2)} sur ${fmt(target, 2)} s.`;
     const frameDelay = Math.max(100, Math.min(400, 8000 / Math.max(1, target / step)));
     edpbAnimationTimer = window.setInterval(() => {
+      if (edpbAtEnd) {
+        slider.value = '0'; edpbAtEnd = false; syncSliders(); safe('edpb');
+        status.textContent = `${type === 'hyperbolique' ? 'Propagation' : 'Diffusion'} en boucle : nouveau cycle, t = 0 sur ${fmt(target, 2)} s.`;
+        return;
+      }
       const next = Math.min(target, Number(slider.value) + step);
       slider.value = String(next); syncSliders(); safe('edpb');
-      status.textContent = `${type === 'hyperbolique' ? 'Propagation' : 'Diffusion'} animée : t = ${fmt(next, 2)} sur ${fmt(target, 2)} s.`;
-      if (next >= target) stopEdpbAnimation(`Animation terminée à t = ${fmt(target, 2)} s.`);
+      status.textContent = `${type === 'hyperbolique' ? 'Propagation' : 'Diffusion'} en boucle : t = ${fmt(next, 2)} sur ${fmt(target, 2)} s.`;
+      if (next >= target) edpbAtEnd = true;
     }, frameDelay);
+  }
+  function pauseEdpbAnimation(message, userInitiated = false) {
+    if (edpbAnimationTimer !== null) { window.clearInterval(edpbAnimationTimer); edpbAnimationTimer = null; }
+    if (userInitiated) edpbUserPaused = true;
+    const button = $('k-edpb-play'), status = $('k-edpb-play-status');
+    if (button) { button.textContent = 'Reprendre l’animation'; button.setAttribute('aria-pressed', 'false'); }
+    if (status && message) status.textContent = message;
+  }
+  function toggleEdpbAnimation() {
+    if (edpbAnimationTimer !== null) {
+      const slider = $(checked('k-type')[0] === 'hyperbolique' ? 'k-th' : 'k-tp');
+      pauseEdpbAnimation(`Animation en pause à t = ${fmt(Number(slider?.value || 0), 2)} s.`, true);
+    } else startEdpbAnimation(true);
   }
   function safe(name) {
     try { if (RUN[name]) RUN[name](); } catch (e) { const panel = $('p-' + name); const p = panel && panel.querySelector('.msg'); if (p) { p.className = 'msg bad'; p.textContent = 'Paramètres invalides : ' + e.message; } }
   }
   function show(name) {
-    if (name !== 'edpb' && edpbAnimationTimer !== null) stopEdpbAnimation('Animation arrêtée en quittant cet onglet.');
+    if (name !== 'edpb' && edpbAnimationTimer !== null) pauseEdpbAnimation('Animation suspendue hors de cet onglet.');
     if (name !== 'adv' && advDemoTimer !== null) pauseAdvDemo('Animation mise en pause en quittant cet onglet.');
     current = name;
     document.querySelectorAll('section.panel').forEach(s => s.classList.toggle('active', s.id === 'p-' + name));
@@ -1393,7 +1429,8 @@
     });
     try { history.replaceState(null, '', '#' + name); } catch (e) { /* ignoré */ }
     safe(name);
-    if (name === 'adv') renderAdvDemo(advDemoTime);
+    if (name === 'adv') { renderAdvDemo(advDemoTime); startAdvDemo(); }
+    if (name === 'edpb') startEdpbAnimation();
   }
   function init() {
     const transportForm = document.querySelector('#p-transport form.params');
@@ -1409,12 +1446,24 @@
     }));
     document.querySelectorAll('section.panel form').forEach(f => {
       f.addEventListener('submit', e => { e.preventDefault(); safe(current); });
-      f.addEventListener('input', e => { if (edpbAnimationTimer !== null && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
-      f.addEventListener('change', e => { if (edpbAnimationTimer !== null && e.target.closest('#p-edpb')) stopEdpbAnimation('Animation arrêtée : réglage modifié.'); safe(current); });
+      f.addEventListener('input', e => {
+        if (e.target.closest('#p-edpb')) pauseEdpbAnimation('Animation suspendue pendant le réglage.');
+        safe(current);
+      });
+      f.addEventListener('change', e => {
+        if (e.target.closest('#p-edpb')) {
+          if (['k-tp', 'k-th'].includes(e.target.id)) edpbAnimationTarget = Number(e.target.value);
+          safe(current);
+          if (current === 'edpb' && !edpbUserPaused) startEdpbAnimation();
+        } else {
+          safe(current);
+          if (e.target.closest('#p-edpb') && current === 'edpb' && !edpbUserPaused) startEdpbAnimation();
+        }
+      });
     });
-    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncBarreMeshControl(); syncSliders(); safe(current); }));
+    document.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', () => { b.closest('form').reset(); if (b.closest('#p-edpb')) { const first = document.querySelector('#p-edpb input[name="k-type"][value="elliptique"]'); if (first) first.checked = true; edpbUserPaused = false; stopEdpbAnimation(''); } if (b.closest('#p-ordre')) { const first = document.querySelector('#p-ordre input[name="o-kind"][value="premiere"]'); if (first) first.checked = true; syncOrdreSelector(); } if (b.closest('#p-transport')) updateTransportPe('t-a'); syncBarreMeshControl(); syncSliders(); safe(current); if (current === 'edpb') startEdpbAnimation(); }));
     document.querySelectorAll('input[name="b-mesh"]').forEach(i => i.addEventListener('change', syncBarreMeshControl));
-    document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => { stopEdpbAnimation(''); safe('edpb'); }));
+    document.querySelectorAll('input[name="k-type"]').forEach(input => input.addEventListener('change', () => { edpbUserPaused = false; stopEdpbAnimation(''); safe('edpb'); startEdpbAnimation(); }));
     document.querySelectorAll('#p-ordre input[name="o-kind"]').forEach(input => input.addEventListener('change', () => safe('ordre')));
     document.querySelectorAll('input[type="range"]').forEach(r => r.addEventListener('input', syncSliders));
     // intro : le calcul de N et C est lourd (≈ 1,4 s à N = 400, C = 1) ; on attend la fin du geste du curseur
@@ -1429,9 +1478,26 @@
     renderEquations();
     renderSituations();
     renderAdvDemo(0);
-    const edpbPlay = $('k-edpb-play'); if (edpbPlay) edpbPlay.addEventListener('click', startEdpbAnimation);
-    const advDemoPlay = $('adv-demo-play'); if (advDemoPlay) advDemoPlay.addEventListener('click', startAdvDemo);
-    document.addEventListener('visibilitychange', () => { if (document.hidden && advDemoTimer !== null) pauseAdvDemo('Animation mise en pause lorsque la page est masquée.'); });
+    const edpbPlay = $('k-edpb-play'); if (edpbPlay) edpbPlay.addEventListener('click', toggleEdpbAnimation);
+    const advDemoPlay = $('adv-demo-play'); if (advDemoPlay) advDemoPlay.addEventListener('click', toggleAdvDemo);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (edpbAnimationTimer !== null) pauseEdpbAnimation('Animation suspendue lorsque la page est masquée.');
+        if (advDemoTimer !== null) pauseAdvDemo('Animation suspendue lorsque la page est masquée.');
+      } else {
+        if (current === 'edpb') startEdpbAnimation();
+        if (current === 'adv') startAdvDemo();
+      }
+    });
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener?.('change', e => {
+      if (e.matches) {
+        if (edpbAnimationTimer !== null) pauseEdpbAnimation('Animation suspendue selon la préférence de mouvement réduit.');
+        if (advDemoTimer !== null) pauseAdvDemo('Animation suspendue selon la préférence de mouvement réduit.');
+      } else {
+        if (current === 'edpb') startEdpbAnimation();
+        if (current === 'adv') startAdvDemo();
+      }
+    });
     // onglets à deux graphiques : commandes en haut, graphiques côte à côte sur toute la largeur
     document.querySelectorAll('.grid').forEach(g => { if (g.querySelector('.plots2')) g.classList.add('grid2'); });
     window.addEventListener('load', renderEquations);
