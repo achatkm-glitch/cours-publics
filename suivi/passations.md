@@ -792,3 +792,9 @@ PDF étudiant 13 p., nom officiel seance1_chapitre1.pdf, SHA-256 3E1C412FE2FF2B6
 
 ### Publication vérifiée tâche 204 — 2026-11-08 17:31:34 Europe/Paris (UTC+01:00) — Codex
 Commit public 5eabf82acf32a715e70370c27591872aeaed508b poussé et confirmé ; GitHub Pages run 42500157416 terminé avec succès. PDF public HTTP 200, application/pdf, 13 p. et SHA-256 3E1C412FE2FF2B6753483ACBFD8697474806AF1D2CA84DC8352D4EEC1D0E6BBC identique à la copie contrôlée. Accueil général et calculateur HTTP 200, liens S1 présents. Figure conservée sur confirmation des droits par l'utilisateur, avec crédit. Version de travail ; corrigé et audits non publiés. Les réserves scientifiques d'AUD-2026-030 restent ouvertes hors F09. Verrous libérés.
+
+### Ouverture tâche 206 — 2026-11-08 17:52:22 Europe/Paris (UTC+01:00) — Codex
+Ajout de la date et heure de version en haut du calculateur, demandé par l'utilisateur. Source et miroir réservés, autres scripts laissés inchangés ; audit AUD-2026-031 en finalisation côté MFTN.
+
+### Livraison tâche 206 — 2026-11-08 17:58:14 Europe/Paris (UTC+01:00) — Codex
+Ajout limité à une ligne visible sous le titre Calculateurs MFTN : Version du 8 novembre 2026 à 17 h 52 (Europe/Paris), élément time 2026-11-08T17:52:38+01:00. Source et miroir identiques. Scripts, calculs et réglages conservés ; audit scientifique non clos par cet affichage. Diff contrôlé, publication en cours.

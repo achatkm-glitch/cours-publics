@@ -481,3 +481,6 @@ Instruction reçue : conserver la figure, l'utilisateur confirme disposer des dr
 
 ### Clôture publication S1 — 2026-11-08 17:31:34 Europe/Paris (UTC+01:00) — Codex
 Fiche étudiante publiée avec figure et crédit, 13 p., version de travail. Source de l'autorisation de diffusion : confirmation explicite de Mohammed. Pages run 42500157416 réussi ; URL et empreinte contrôlées. Aucun corrigé ni audit publié.
+
+### Version datée du calculateur — 2026-11-08 17:52:22 Europe/Paris (UTC+01:00)
+Reçu par : Codex. Instruction utilisateur : ajouter date et heure de la version sur le site. Prise FIFO tâche 206, en-tête du calculateur uniquement ; site toujours version de travail avec audit ouvert.
