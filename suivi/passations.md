@@ -798,3 +798,11 @@ Ajout de la date et heure de version en haut du calculateur, demandé par l'util
 
 ### Livraison tâche 206 — 2026-11-08 17:58:14 Europe/Paris (UTC+01:00) — Codex
 Ajout limité à une ligne visible sous le titre Calculateurs MFTN : Version du 8 novembre 2026 à 17 h 52 (Europe/Paris), élément time 2026-11-08T17:52:38+01:00. Source et miroir identiques. Scripts, calculs et réglages conservés ; audit scientifique non clos par cet affichage. Diff contrôlé, publication en cours.
+
+### Prise correction S1/site — 2026-11-08 18:04:46 Europe/Paris (UTC+01:00) — Codex
+Miroir public du PDF S1 et de app.js ; version du script dans index.html ; contrôle Pages après publication. Source maître MFTN réservée dans sa passation. Autres outils et PDF hors périmètre.
+
+
+### Clôture correction S1/site — 2026-11-08 18:06:52 Europe/Paris (UTC+01:00) — Codex
+PDF étudiant S1 remplacé par la fiche contrôlée de 13 pages, SHA-256 9043CCAD3E6E072EB3656DC9CC20F9BA4E429E3A02DA9A3B2D04CB3989410E6F. app.js : pente restaurée avec ses abscisses et graduations protégées contre une boucle infinie ; tests JS syntaxiques et quatre cas d'axes passés. Source et miroir identiques par empreinte. Contrôle visuel navigateur local refusé par la politique du navigateur pour les URLs file: ; pas de contournement. Mention légale : examen en cours, aucune adresse personnelle ajoutée. Prochaine action : vérifier Pages puis traiter les autres constats.
+

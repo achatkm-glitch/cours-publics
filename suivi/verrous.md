@@ -183,3 +183,7 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Tâche 206 — mftn/calculateurs/index.html et suivi | ACTIF — horodatage visible de version | Codex | 2026-11-08 17:52:22 Europe/Paris (UTC+01:00) |
 
 | Clôture tâche 206 — mftn/calculateurs/index.html et suivi | LIBRE — horodatage visible préparé et diff vérifié ; publication en cours | Codex | 2026-11-08 17:58:14 Europe/Paris (UTC+01:00) |
+
+| Correction S1/site — mftn/seance1_chapitre1.pdf, mftn/calculateurs/{app.js,index.html} et registres | ACTIF — synchronisation et contrôle | Codex | 2026-11-08 18:04:46 Europe/Paris (UTC+01:00) |
+
+| Clôture correction S1/site — PDF S1, app.js, index.html et registres | LIBRE — publication préparée, contrôle Pages à suivre | Codex | 2026-11-08 18:06:52 Europe/Paris (UTC+01:00) |

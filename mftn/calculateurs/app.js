@@ -116,10 +116,17 @@
 
   /* ---------- tracé : cadre d'axes carré, axes linéaires ou logarithmiques ---------- */
   function niceTicks(lo, hi, n) {
+    if (!isFinite(lo) || !isFinite(hi) || hi < lo) return [];
     const span = hi - lo, raw = span / n, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    if (!(span > Number.EPSILON * Math.max(1, Math.abs(lo), Math.abs(hi)))) return [(lo + hi) / 2];
     const step = [1, 2, 5, 10].map(k => k * mag).find(s => s >= raw) || raw;
     const t = [];
-    for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-12 * step; v += step) t.push(Math.abs(v) < 1e-12 * step ? 0 : v);
+    const first = Math.ceil(lo / step) * step;
+    for (let i = 0; i < 20; i++) {
+      const v = first + i * step;
+      if (!isFinite(v) || v > hi + 1e-12 * step || (i > 0 && v <= t[t.length - 1])) break;
+      t.push(Math.abs(v) < 1e-12 * step ? 0 : v);
+    }
     return t;
   }
   function observedLogSlope(s) {
@@ -394,7 +401,7 @@
       });
     });
     if (o.showSlopeInPlot) {
-      const slopes = series.map(s => ({ color: s.color, value: observedLogSlope(s) }))
+      const slopes = series.map(s => ({ color: s.color, x: s.x, value: observedLogSlope(s) }))
         .filter(s => isFinite(s.value));
       if (slopes.length) {
         g.save(); g.font = '600 11px system-ui, sans-serif'; g.textAlign = 'left'; g.textBaseline = 'middle';

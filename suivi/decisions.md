@@ -484,3 +484,7 @@ Fiche étudiante publiée avec figure et crédit, 13 p., version de travail. Sou
 
 ### Version datée du calculateur — 2026-11-08 17:52:22 Europe/Paris (UTC+01:00)
 Reçu par : Codex. Instruction utilisateur : ajouter date et heure de la version sur le site. Prise FIFO tâche 206, en-tête du calculateur uniquement ; site toujours version de travail avec audit ouvert.
+
+### Correction S1 et site — 2026-11-08 18:04:46 Europe/Paris (UTC+01:00)
+Reçu par Codex : corriger les deux audits, alléger la fiche S1 et examiner les mentions légales. Premier lot : PDF étudiant S1 et erreurs de tracé du calculateur ; les mentions légales requièrent une qualification éditoriale et des coordonnées d'hébergeur vérifiées.
+
