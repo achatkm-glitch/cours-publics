@@ -199,3 +199,5 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Mise en page des repères S1 — mftn/seance1_chapitre1.pdf | ACTIF — remplacer et déployer le PDF demandé | Codex | 2026-11-08 18:23:07 Europe/Paris (UTC+01:00) |
 
 | Clôture repères S1 — mftn/seance1_chapitre1.pdf | LIBRE — commit b5c53bb, Pages 42504713837 réussi ; PDF public 13 p., SHA-256 CCA57F51BABC05566DFD1E0EA1FB9FF54D4DCF1FF9379108F85E1F9BC8191860 identique à la fiche | Codex | 2026-11-08 18:24:37 Europe/Paris (UTC+01:00) |
+
+| mftn/seance1_chapitre1.pdf et registres — tâche miroir 208 | ACTIF — Codex | 2026-11-08 20:47:41 +01:00 |

@@ -814,3 +814,9 @@ Réservation du PDF étudiant, de guide.js et du lien de cache dans index.html ;
 ### Livraison suite S1 F02/F03 — 2026-11-08 18:12:22 Europe/Paris (UTC+01:00) — Codex
 Fiche étudiante S1 13 p. publiée en miroir, SHA-256 2DD7B7C31A83F63D10A21C74B22AD6663941424D0ADA4797254E40E23A9BB318. Guide S1-X6 règle explicitement l'intensité cosinus 1 et distingue le calcul uniforme. La source S1 et le corrigé ont été compilés deux fois sans erreur ni débordement ; page 14 corrigé inspectée. Publication Pages à contrôler après push.
 
+
+### 2026-11-08 20:47:41 +01:00 De Codex → à Codex — tâche miroir 208
+- **Fait** : prise en charge du remplacement du PDF étudiant S1 sur le miroir public après retrait du test papier doublon.
+- **Contrôlé** : dépôt main propre, aucun verrou sur le PDF S1 ; copie maître à 13 pages, SHA-256 299C051D6730A0FEA09A12E8A2AF8040FDD9C48CF4B585A56A0CC322B46A6CDF.
+- **Limites** : commit, déploiement GitHub Pages et contrôle du PDF servi à effectuer.
+- **Prochaine étape** : remplacer le PDF, vérifier l’identité, publier et libérer le verrou.

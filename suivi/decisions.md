@@ -492,3 +492,9 @@ Reçu par Codex : corriger les deux audits, alléger la fiche S1 et examiner les
 ### Suite corrections AUD-2026-030 — 2026-11-08 18:11:53 Europe/Paris (UTC+01:00)
 Reçu par Codex : livrable S1 et site actualisé ; corriger F02/F03. Prise FIFO : mettre à jour le PDF étudiant S1 et guide.js sur le miroir public, sans toucher app.js réservé à un autre agent Codex dans MFTN.
 
+
+### 2026-11-08 20:47:41 +01:00 Mise à jour du PDF public S1 après retrait du test papier
+- **Décision** : remplacer le PDF public S1 par la version étudiante compilée le 8 novembre 2026 à 20 h 38, sans le test papier redondant ; le Test d’Arche reste le test de fin de séance.
+- **Raison** : maintenir le fichier public aligné sur la fiche étudiante maître.
+- **Preuve** : demande utilisateur et SHA-256 du maître 299C051D6730A0FEA09A12E8A2AF8040FDD9C48CF4B585A56A0CC322B46A6CDF.
+- **Responsable** : Codex, tâche miroir 208.
