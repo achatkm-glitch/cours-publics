@@ -195,3 +195,5 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Correction site AUD-2026-031 — mftn/calculateurs/{app.js,index.html,style.css} | ACTIF — publication des corrections contrôlées | Codex | 2026-11-08 18:16:38 Europe/Paris (UTC+01:00) |
 
 | Clôture correction AUD-2026-031 — calculateurs MFTN | LIBRE — commit 27e761c, Pages run 42504157051 réussi ; ressources HTTP 200 et contenu identique après normalisation des fins de ligne | Codex | 2026-11-08 18:18:11 Europe/Paris (UTC+01:00) |
+
+| Mise en page des repères S1 — mftn/seance1_chapitre1.pdf | ACTIF — remplacer et déployer le PDF demandé | Codex | 2026-11-08 18:23:07 Europe/Paris (UTC+01:00) |
