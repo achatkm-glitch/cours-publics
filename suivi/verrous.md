@@ -175,3 +175,5 @@ MFTN tâche 156 / miroir — `mftn/calculateurs/{index.html,style.css}` et regis
 | Extension tâche miroir 203 — mftn/calculateurs/index.html (version du script) | ACTIF — synchronisation et cache busting | Codex | 2026-11-08 12:46:11 +01:00 |
 
 | Clôture tâche miroir 203 — calculateurs MFTN app.js/index.html | LIBRE — commits source fa0b4d1 et miroir 62f2f29 confirmés ; Pages run 42486651975 réussi ; animation publique contrôlée | Codex | 2026-11-08 14:53:19 +01:00 Europe/Paris (UTC+01:00) |
+
+| Tâche 204 — mftn/seance1_chapitre1.pdf, index.html, mftn/calculateurs/index.html et suivi | ACTIF — publication PDF S1 et liens | Codex tâche 204 | 2026-11-08 17:24:29 Europe/Paris (UTC+01:00) |

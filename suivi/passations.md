@@ -780,3 +780,12 @@ Prise FIFO après clôture de la tâche miroir 202 (commit 20dfd60 confirmé). P
 
 ### Clôture tâche miroir 203 — animations automatiques en boucle — 2026-11-08 14:53:19 +01:00 Europe/Paris
 Le miroir public correspond exactement à la source maître. Le site public a été vérifié sur #edpb (diffusion et onde progressent, bouclent, pause/reprise) et #adv (advection progresse et boucle). Les ressources proviennent du commit miroir 62f2f297256a6c0cb399443db85c89542ad583a0 ; GitHub Pages run 42486651975 réussi. SHA-256 app.js 36F36A5DEDEB36CA1A34B547A3F0BC56AF32508A45AE3A1DCA51A532BF9617C2 ; index.html 1840E77F36D255BA51907740A223FDBB6A60867B6073129413B889189ECA1B07. Aucun PDF modifié ni média/source ajouté. Le mode de réduction des mouvements est codé mais n’a pas été testé sous une préférence système active.
+
+### Tâche 204 — publication de la fiche S1 — 2026-11-08 17:24:29 Europe/Paris (UTC+01:00) — Codex
+Prise après clôture miroir 203, dépôt propre main b226e13. Source maître MFTN/Peda_inv/seance1_chapitre1.tex ; préparer uniquement la copie publique sans la figure non vérifiée, compiler deux passes et inspecter le rendu. Publication comme version de travail et liens depuis index.html et l'accueil du calculateur.
+
+### Précision utilisateur — figure S1 — 2026-11-08 17:25:55 Europe/Paris (UTC+01:00) — Codex
+Instruction reçue : conserver la figure, l'utilisateur confirme disposer des droits. Cette instruction remplace la préparation sans illustration annoncée au début de la tâche 204. Conserver la figure dans le PDF public avec attribution ; retirer de cette copie le marqueur de droits non vérifiés. Autorisation déclarée par l'utilisateur, sans prétendre à une vérification indépendante de licence. Aucune nouvelle suppression d'image.
+
+### Préparation terminée tâche 204 — 2026-11-08 17:28:51 Europe/Paris (UTC+01:00) — Codex
+PDF étudiant 13 p., nom officiel seance1_chapitre1.pdf, SHA-256 3E1C412FE2FF2B6753483ACBFD8697474806AF1D2CA84DC8352D4EEC1D0E6BBC. Figure conservée sur instruction utilisateur et créditée ; version de travail. Compilation deux passes, pages 1 et 6–7 inspectées. Liens dans index général (carte et menu MFTN) et accueil calculateur. Aucun corrigé ni audit diffusé. Publication Pages à vérifier après push.

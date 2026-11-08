@@ -472,3 +472,9 @@ Commit 18f03495d71258ae41d12835bd5439e090cf71ea poussé et confirmé sur origin/
 
 ### Clôture demande utilisateur 99 / tâche 201 — 2026-11-08 14:53:19 +01:00 Europe/Paris
 Les deux démonstrations animées sont publiées en boucle avec pause/reprise. Source MFTN fa0b4d1 et miroir public 62f2f29 ; Pages run 42486651975 réussi. Contrôles détaillés dans suivi/passations.md. Tâche terminée.
+
+### Publication de S1 — 2026-11-08 17:24:29 Europe/Paris (UTC+01:00)
+Reçu par : Codex. Instruction explicite : publier la séance 1 sur le site. Copie publique étudiante en version de travail, sans illustration de cellule aux droits non vérifiés ; schéma 1D original conservé. Ajouter les accès depuis la liste générale et l'accueil des calculateurs. Corrigé enseignant exclu du périmètre demandé.
+
+### Précision utilisateur — figure S1 — 2026-11-08 17:25:55 Europe/Paris (UTC+01:00) — Codex
+Instruction reçue : conserver la figure, l'utilisateur confirme disposer des droits. Cette instruction remplace la préparation sans illustration annoncée au début de la tâche 204. Conserver la figure dans le PDF public avec attribution ; retirer de cette copie le marqueur de droits non vérifiés. Autorisation déclarée par l'utilisateur, sans prétendre à une vérification indépendante de licence. Aucune nouvelle suppression d'image.
