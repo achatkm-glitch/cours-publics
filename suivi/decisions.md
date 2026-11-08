@@ -478,3 +478,6 @@ Reçu par : Codex. Instruction explicite : publier la séance 1 sur le site. Cop
 
 ### Précision utilisateur — figure S1 — 2026-11-08 17:25:55 Europe/Paris (UTC+01:00) — Codex
 Instruction reçue : conserver la figure, l'utilisateur confirme disposer des droits. Cette instruction remplace la préparation sans illustration annoncée au début de la tâche 204. Conserver la figure dans le PDF public avec attribution ; retirer de cette copie le marqueur de droits non vérifiés. Autorisation déclarée par l'utilisateur, sans prétendre à une vérification indépendante de licence. Aucune nouvelle suppression d'image.
+
+### Clôture publication S1 — 2026-11-08 17:31:34 Europe/Paris (UTC+01:00) — Codex
+Fiche étudiante publiée avec figure et crédit, 13 p., version de travail. Source de l'autorisation de diffusion : confirmation explicite de Mohammed. Pages run 42500157416 réussi ; URL et empreinte contrôlées. Aucun corrigé ni audit publié.

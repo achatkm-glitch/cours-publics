@@ -789,3 +789,6 @@ Instruction reçue : conserver la figure, l'utilisateur confirme disposer des dr
 
 ### Préparation terminée tâche 204 — 2026-11-08 17:28:51 Europe/Paris (UTC+01:00) — Codex
 PDF étudiant 13 p., nom officiel seance1_chapitre1.pdf, SHA-256 3E1C412FE2FF2B6753483ACBFD8697474806AF1D2CA84DC8352D4EEC1D0E6BBC. Figure conservée sur instruction utilisateur et créditée ; version de travail. Compilation deux passes, pages 1 et 6–7 inspectées. Liens dans index général (carte et menu MFTN) et accueil calculateur. Aucun corrigé ni audit diffusé. Publication Pages à vérifier après push.
+
+### Publication vérifiée tâche 204 — 2026-11-08 17:31:34 Europe/Paris (UTC+01:00) — Codex
+Commit public 5eabf82acf32a715e70370c27591872aeaed508b poussé et confirmé ; GitHub Pages run 42500157416 terminé avec succès. PDF public HTTP 200, application/pdf, 13 p. et SHA-256 3E1C412FE2FF2B6753483ACBFD8697474806AF1D2CA84DC8352D4EEC1D0E6BBC identique à la copie contrôlée. Accueil général et calculateur HTTP 200, liens S1 présents. Figure conservée sur confirmation des droits par l'utilisateur, avec crédit. Version de travail ; corrigé et audits non publiés. Les réserves scientifiques d'AUD-2026-030 restent ouvertes hors F09. Verrous libérés.
